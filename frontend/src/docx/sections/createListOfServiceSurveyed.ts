@@ -1,0 +1,52 @@
+import { Paragraph, Table, TableRow, TableCell } from "docx";
+import type { FeedbackItem } from "../../components/buttons/BtnGenerateReport";
+
+export interface ServiceSurveyed {
+    feedback: FeedbackItem[]
+    selectedOfficeName?: string
+}
+
+export const createListOfServiceSurveyed = ({ feedback, selectedOfficeName }: ServiceSurveyed) => {
+
+    const serviceCounts = feedback.reduce<Record<string, number>>((acc, item) => {
+        acc[item.service] = (acc[item.service] ?? 0) + 1;
+        return acc;
+    }, {});
+
+    const table = new Table({
+        rows: [
+        new TableRow({
+            children: [
+            new TableCell({
+                children: [new Paragraph(`${selectedOfficeName}`)],
+            }),
+            new TableCell({
+                children: [new Paragraph("Responses")],
+            }),
+            ],
+        }),
+
+        ...Object.entries(serviceCounts).map(
+            ([service, count]) =>
+            new TableRow({
+                children: [
+                new TableCell({
+                    children: [new Paragraph(service)],
+                }),
+                new TableCell({
+                    children: [new Paragraph(count.toString())],
+                }),
+                ],
+            })
+        ),
+        ],
+    });
+
+  return [
+    new Paragraph({
+      text: "List of services surveyed"
+    }),
+
+    table,
+  ];
+};

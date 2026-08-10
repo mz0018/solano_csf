@@ -1,0 +1,43 @@
+{
+  "common": { "next": "Susunod", "back": "Bumalik", "submit": "Ipasa", "translate": "Isalin", "gotIt": "Sige" },
+  "feedback": {
+    "dearClient": {
+      "title": "Mahal naming Kliyente,",
+      "p1": "Salamat sa pagpili sa Local Government Unit (LGU) ng Solano para sa inyong mga pangangailangan sa serbisyo. Ang Client Satisfaction Measurement (CSM) na ito ay sinisukat ang karanasan ng mga kliyente sa mga opisina ng gobyerno.",
+      "p2": "Ang inyong feedback sa inyong kamakailang transaksyon ay makatutulong sa opisinang ito na magbigay ng mas mahusay na serbisyo. Tiyakin na ang lahat ng impormasyong ibinigay sa survey na ito ay ituturing na mahigpit na kumpidensyal alinsunod sa Data Privacy Act ng 2012.",
+      "p3": "Ang inyong pakikilahok ay kusang-loob, at ang inyong mga sagot ay gagamitin lamang para sa pagpapabuti ng serbisyo. Tinitiyak namin na ang inyong privacy ay isang priyoridad sa amin.",
+      "p4": "Salamat sa pagtulong sa amin na makalikha ng isang LGU Solano na mas mabilis tumugon at nakatuon sa kliyente."
+    },
+    "verifyQueue": { "title": "Beripikahin ang Pila", "queueNumber": "Numero ng Pila", "queuePlaceholder": "e.g. MMO-IT-2026-AB12CD", "checking": "Sine-check…" },
+    "respondentProfile": {
+      "title": "Profile ng Respondeyt",
+      "nameLabel": "Pangalan ng Kliyente (Opsyonal)",
+      "namePlaceholder": "e.g. Maria Santos",
+      "telLabel": "Numero ng Telepono / CP (Opsyonal)",
+      "telPlaceholder": "e.g. 09171234567",
+      "nameError": "Ang pangalan ay hindi maaaring lumampas sa {{max}} character.",
+      "contactError": "Ang numero ng telepono ay hindi maaaring lumampas sa {{max}} digit.",
+      "genderLabel": "Kasarian",
+      "male": "Lalaki",
+      "female": "Babae"
+    },
+    "serviceAssessment": { "title": "Pagsusuri ng Serbisyo", "label": "Mga Uri ng Serbisyo na Kailangan", "empty": "Walang natagping serbisyo para sa opisinang ito." },
+    "affiliation": { "title": "Kaakibat", "label": "Kaakibat", "generalPublic": "Pangkalahatang Publiko", "withinLgu": "Gobyerno (Sa loob ng LGU)", "otherAgencies": "Gobyerno (Ibang Opisina/Ahensya)" },
+    "ageGroup": { "title": "Pangkat ng Edad", "label": "Pangkat ng Edad", "17below": "17 pababa", "18_29": "18-29", "30_39": "30-39", "40_49": "40-49", "50_59": "50-59", "60above": "60 pataas" },
+    "address": { "title": "Addres", "label": "Addres", "withinSolano": "Loob ng Solano", "outsideSolano": "Labas ng Solano", "barangayLabel": "Barangay", "barangayPlaceholder": "Pumili ng barangay", "specifyLabel": "Tukuyin ang Addres", "specifyPlaceholder": "e.g. Brgy San Antonio, Bayombong, Nueva Vizcaya" },
+    "employmentStatus": { "title": "Katayuan sa Empleyo", "label": "Katayuan sa Empleyo", "employed": "Empliyado", "unemployed": "Walang Trabaho", "selfEmployed": "Self-employed" },
+    "serviceRating": {
+      "title": "Pagrarating sa Serbisyo",
+      "responsiveness": "Pagtugon", "responsivenessQ": "Ang serbisyo ay ibinigay nang maluwag at agarangan sa kliyente.",
+      "reliability": "Katiyakan", "reliabilityQ": "Ipinagkaloob ang serbisyo ayon sa inaasahan ng kliyente.",
+      "accessFacilities": "Access at Pasilidad", "accessFacilitiesQ": "Ang mga pasilidad, recurso, at teknolohiya ay madaling makukuha para sa kaginhawaan ng transaksyon.",
+      "communication": "Komunikasyon", "communicationQ": "Ang mga materyal ng serbisyo ay madaling maunawaan at may mekanismo ng feedback na kaugnay sa alalahanin ng kliyente.",
+      "costs": "Gastos", "costsQ": "Ang halaga para sa perang ginastos sa mga serbisyo.",
+      "integrity": "Integridad", "integrityQ": "Nagbigay ng serbisyo nang may mataas na moral at katapatan.",
+      "assurance": "Kasiguruhan", "assuranceQ": "Ang serbisyo ay ibinigay ng mga kompetenteng tauhan.",
+      "outcome": "Resulta", "outcomeQ": "Ang kabuuang inaasahan ng kliyente ay natugunan.",
+      "stronglyDisagree": "Labis na Hindi Sumasang-ayon", "disagree": "Hindi Sumasang-ayon", "neutral": "Neutral", "agree": "Sumasang-ayon", "stronglyAgree": "Labis na Sumasang-ayon"
+    },
+    "otherSuggestion": { "title": "Ibang mga Mungkahi", "label": "Mga Komento / Mungkahi", "placeholder": "Ibahagi ang iyong karanasan...", "commentsError": "Ang mga komento ay hindi maaaring lumampas sa {{max}} character." }
+  }
+}

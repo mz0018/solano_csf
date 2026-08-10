@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-UyaNSxZQ.js";import{t}from"./react-Bv8XCUKB.js";t();var n=e(),r=({className:e=``,children:t,...r})=>(0,n.jsx)(`button`,{...r,className:`cursor-pointer p-4 rounded-sm tracking-wider flex items-center justify-center gap-2 ${e}`,children:t});export{r as t};

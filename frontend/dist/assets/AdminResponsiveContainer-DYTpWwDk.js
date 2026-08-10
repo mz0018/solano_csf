@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-UyaNSxZQ.js";var t=e(),n=({children:e})=>(0,t.jsx)(`div`,{className:`w-full min-w-0 overflow-x-scroll p-6 admin-scroll flex flex-col items-start gap-6`,children:e});export{n as t};

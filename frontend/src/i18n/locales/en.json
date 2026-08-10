@@ -1,0 +1,49 @@
+{
+  "common": {
+    "next": "Next",
+    "back": "Back",
+    "submit": "Submit",
+    "translate": "Translate",
+    "gotIt": "Got it"
+  },
+  "feedback": {
+    "dearClient": {
+      "title": "Dear Valued Client,",
+      "p1": "Thank you for choosing the Local Government Unit (LGU) of Solano for your service needs. This Client Satisfaction Measurement (CSM) tracks the customer experience of government offices.",
+      "p2": "Your feedback on your recently concluded transaction will help this office provide a better service. Rest assured, all information provided in this survey will be treated with the utmost confidentiality in accordance with the Data Privacy Act of 2012.",
+      "p3": "Your participation is voluntary, and your responses will only be used for the purpose of service improvement. We assure you that your privacy is a priority for us.",
+      "p4": "Thank you for helping us create a more responsive and client-oriented LGU Solano."
+    },
+    "verifyQueue": { "title": "Verify Queue", "queueNumber": "Queue Number", "queuePlaceholder": "e.g. MMO-IT-2026-AB12CD", "checking": "Checking…" },
+    "respondentProfile": {
+      "title": "Respondent Profile",
+      "nameLabel": "Client's Name Optional",
+      "namePlaceholder": "e.g. Maria Santos",
+      "telLabel": "Tel. No./ CP No. Optional",
+      "telPlaceholder": "e.g. 09171234567",
+      "nameError": "Name cannot exceed {{max}} characters.",
+      "contactError": "Contact number cannot exceed {{max}} digits.",
+      "genderLabel": "Sex",
+      "male": "Male",
+      "female": "Female"
+    },
+    "serviceAssessment": { "title": "Service Assessment", "label": "Types of Services needed", "empty": "No services found for this office." },
+    "affiliation": { "title": "Affiliation", "label": "Affiliation", "generalPublic": "General Public", "withinLgu": "Government (Within LGU)", "otherAgencies": "Government (Other Offices/Agencies)" },
+    "ageGroup": { "title": "Age Group", "label": "Age Group", "17below": "17 and below", "18_29": "18-29", "30_39": "30-39", "40_49": "40-49", "50_59": "50-59", "60above": "60 and above" },
+    "address": { "title": "Address", "label": "Address", "withinSolano": "Within Solano", "outsideSolano": "Outside Solano", "barangayLabel": "Barangay", "barangayPlaceholder": "Select barangay", "specifyLabel": "Specify Address", "specifyPlaceholder": "e.g. Brgy San Antonio, Bayombong, Nueva Vizcaya" },
+    "employmentStatus": { "title": "Employment Status", "label": "Employment Status", "employed": "Employed", "unemployed": "Unemployed", "selfEmployed": "Self-employed" },
+    "serviceRating": {
+      "title": "Service Rating",
+      "responsiveness": "Responsiveness", "responsivenessQ": "The service was willingly and promptly extended to the client/customer.",
+      "reliability": "Reliability", "reliabilityQ": "Performed the service within the expectation of the client/customer served.",
+      "accessFacilities": "Access and Facilities", "accessFacilitiesQ": "Facilities/resources/modes of technology were readily available for convenient transactions.",
+      "communication": "Communication", "communicationQ": "Material associated with the service are easily understood and feed-back mechanisms are present relevant to the client's concern.",
+      "costs": "Costs", "costsQ": "Value for money spent on services rendered.",
+      "integrity": "Integrity", "integrityQ": "Provided services with high morale and spirit of honesty.",
+      "assurance": "Assurance", "assuranceQ": "The service was provided by the competent personnel.",
+      "outcome": "Outcome", "outcomeQ": "The overall expectations of the client are met.",
+      "stronglyDisagree": "Strongly Disagree", "disagree": "Disagree", "neutral": "Neutral", "agree": "Agree", "stronglyAgree": "Strongly Agree"
+    },
+    "otherSuggestion": { "title": "Other Suggestions", "label": "Comments / Suggestions", "placeholder": "Share your experience...", "commentsError": "Comments cannot exceed {{max}} characters." }
+  }
+}

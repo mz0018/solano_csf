@@ -1,0 +1,90 @@
+:root {
+  --theme-bg: #111827;
+  --theme-surface: #18181b;
+  --theme-text: #fafafa;
+  --theme-muted: #a1a1aa;
+  --theme-btn-bg: #fafafa;
+  --theme-btn-text: #09090b;
+  --theme-about-bg: #1d158f;
+
+  --theme-radius: 1rem;
+  --theme-border: color-mix(in srgb, var(--theme-text) 14%, transparent);
+  --theme-shadow: 0 12px 30px -12px rgba(0, 0, 0, 0.6);
+  --theme-grid: color-mix(in srgb, var(--theme-text) 9%, transparent);
+  --theme-nav-bg: color-mix(in srgb, var(--theme-bg) 90%, transparent);
+}
+
+:root[data-theme="light"] {
+  --theme-bg: #dee0e0;
+  --theme-surface: #f4f4f5;
+  --theme-text: #18181b;
+  --theme-muted: #52525b;
+  --theme-btn-bg: #18181b;
+  --theme-btn-text: #ffffff;
+  --theme-about-bg: #eef2ff;
+
+  --theme-border: color-mix(in srgb, var(--theme-text) 12%, transparent);
+  --theme-shadow: 0 12px 30px -12px color-mix(in srgb, var(--theme-text) 22%, transparent);
+  /* --theme-grid: color-mix(in srgb, var(--theme-text) 2%, transparent); */
+  --theme-grid: rgba(59, 130, 246, 0.1);
+}
+
+#respect-theme {
+  background-color: var(--theme-bg);
+
+  background-image:
+    radial-gradient(circle at center,
+      rgba(0,255,255,.06),
+      transparent 65%),
+
+    linear-gradient(var(--theme-grid) 1px, transparent 0.9px),
+    linear-gradient(90deg, var(--theme-grid) 1px, transparent 0.9px),
+
+    repeating-linear-gradient(
+      0deg,
+      rgba(255,255,255,.015) 0,
+      rgba(255,255,255,.015) 2px,
+      transparent 2px,
+      transparent 6px
+    );
+
+  background-size:
+    100% 100%,
+    40px 40px,
+    40px 40px,
+    100% 6px;
+
+  background-attachment: fixed;
+}
+
+#respect-theme .bg-blue-500,
+#respect-theme .bg-green-500,
+#respect-theme .bg-orange-500 {
+  background-color: transparent;
+}
+
+#respect-theme .bg-white:not(a),
+#respect-theme .bg-orange-50,
+#respect-theme .bg-gray-100 {
+  background-color: var(--theme-surface);
+  border: 0.5px solid var(--theme-border);
+  box-shadow: var(--theme-shadow);
+  transition: background-color .3s ease, color .3s ease, border-color .3s ease, box-shadow .3s ease, transform .2s ease;
+}
+
+#respect-theme .bg-white:not(a):hover,
+#respect-theme .bg-orange-50:hover {
+  transform: translateY(-2px);
+}
+
+#respect-theme .text-white,
+#respect-theme .text-gray-900,
+#respect-theme .text-gray-800,
+#respect-theme .text-orange-600 {
+  color: var(--theme-text);
+}
+
+#respect-theme .text-gray-600,
+#respect-theme .text-blue-100 {
+  color: var(--theme-muted);
+}

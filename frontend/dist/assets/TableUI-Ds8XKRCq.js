@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-UyaNSxZQ.js";var t=e(),n=({children:e,className:n=``})=>(0,t.jsx)(`table`,{className:`text-xs ${n}`,children:e});export{n as t};

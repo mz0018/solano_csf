@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+/* ----- Global scrollbar (applies to every scrollable container) ----- */
+:root {
+  --sb-track: #f3f4f6;
+  --sb-thumb: #d1d5db;
+  --sb-thumb-hover: #9ca3af;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--sb-thumb) var(--sb-track);
+}
+
+/* WebKit (Chrome, Edge, Safari) */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--sb-track); }
+::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb);
+  border-radius: 9999px;
+  border: 2px solid var(--sb-track);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--sb-thumb-hover); }
+
+.nav-link-underline {
+  position: relative;
+}
+.nav-link-underline::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background-color: #628dec; 
+  transition: width 300ms ease;
+}
+.nav-link-underline:hover::after {
+  width: 100%;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 1.0s ease-out both;
+}
+
+.animate-fade-in-left {
+  animation: fade-in-left 1s ease-out both;
+}
+
+.delay-animation {
+  animation-delay: 1s;
+}
+
+/* Sidebar links */
+.sidebar-link-border {
+  border-left: 2px solid transparent;
+  transition: border-color 300ms ease;
+}
+.sidebar-link-border:hover {
+  border-left-color: #628dec;
+}
+/* Add this line: */
+.sidebar-link-border.active {
+  border-left-color: #628dec;
+}
