@@ -1,1 +1,0 @@
-import{t as e}from"./jsx-runtime-UyaNSxZQ.js";import"./react-Bv8XCUKB.js";import{o as t,r as n}from"./index-BKrWsHuU.js";var r=e(),i=()=>(0,r.jsxs)(r.Fragment,{children:[(0,r.jsx)(`main`,{className:`pt-16`,children:(0,r.jsx)(t,{})}),(0,r.jsx)(n,{})]});export{i as default};

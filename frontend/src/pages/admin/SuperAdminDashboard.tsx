@@ -34,6 +34,10 @@ const SuperAdminDashboard = () => {
             <h2 className="text-lg font-medium">Settings</h2>
             <p className="mt-2 text-sm text-[#6b7280]">Configure global system settings and monitor configuration changes.</p>
           </div>
+          <div className="rounded-lg border border-[#e5e7eb] bg-[#f8fafc] p-5 shadow-sm">
+            <h2 className="text-lg font-medium">Password reset for Client</h2>
+            <p className="mt-2 text-sm text-[#6b7280]">Configure global system settings and monitor configuration changes.</p>
+          </div>
         </div>
       </div>
     </AdminResponsiveContainer>
