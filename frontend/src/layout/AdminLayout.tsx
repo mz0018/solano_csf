@@ -9,17 +9,18 @@ const AdminLayout = () => {
   const { user } = useAuth()
 
   const navLinks = [
+    { name: 'Dashboard', path: '/admin/dashboard', icon: <Radio size={20} />, roles: ['super_admin'] },
     { name: 'Live Monitoring', path: '/admin/queue/monitor', icon: <Radio size={20} />, roles: ['office_admin', 'hr_admin'] },
     {
       name: 'Reports',
       icon: <Files size={20} />,
-      roles: ['hr_admin'],
+      roles: ['hr_admin', 'super_admin'],
       children: [
-        { name: 'Queue Statistics', path: '/admin/queue/statistics', roles: ['hr_admin'] },
-        { name: 'Review Office Feedback', path: '/admin/queue/offices/feedbacks', roles: ['hr_admin'] },
+        { name: 'Queue Statistics', path: '/admin/queue/statistics', roles: ['hr_admin', 'super_admin'] },
+        { name: 'Review Office Feedback', path: '/admin/queue/offices/feedbacks', roles: ['hr_admin', 'super_admin'] },
       ]
     },
-    { name: 'Settings', path: '/admin/settings', icon: <Settings2 size={20} />, roles: ['office_admin', 'hr_admin'] }
+    { name: 'Settings', path: '/admin/settings', icon: <Settings2 size={20} />, roles: ['office_admin', 'hr_admin', 'super_admin'] }
   ]
 
   const filteredNavLinks = navLinks.filter((link) =>

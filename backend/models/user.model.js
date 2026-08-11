@@ -6,7 +6,7 @@ const userModel = new mongoose.Schema({
     userName: { type: String, unique: true },
     password: String,
     officeCode: String,
-    role: { type: String, enum: ['office_admin', 'hr_admin'], required: true },
+    role: { type: String, enum: ['office_admin', 'hr_admin', 'super_admin'], required: true },
     loginHistory: [{
         ip: String,
         userAgent: String,

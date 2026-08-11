@@ -59,7 +59,11 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
           </p>
 
           <span className="text-md text-[#6b7280]">
-            {user?.role === "hr_admin" ? 'Human Resource' : 'Office Admin'}
+            {user?.role === "hr_admin"
+              ? 'Human Resource'
+              : user?.role === 'super_admin'
+              ? 'Super Admin'
+              : 'Office Admin'}
           </span>
         </div>
 

@@ -17,6 +17,8 @@ class UserService {
             throw new ErrorController('Username already taken', 409)
         }
 
+        console.log(userData)
+
         const hashedPassword = await argon2.hash(userData.password)
 
         const newUser = await User.create({

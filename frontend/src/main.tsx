@@ -26,6 +26,7 @@ const PublicLayout = lazy(() => import('./layout/PublicLayout.tsx'))
 const ActiveQueueTicket = lazy(() => import('./pages/admin/ActiveQueueTicket.tsx'))
 const ReportsStatistics = lazy(() => import('./pages/admin/ReportStatistics.tsx'))
 const OfficesFeedbacks = lazy(() => import('./pages/admin/OfficesFeedbacks.tsx'))
+const SuperAdminDashboard = lazy(() => import('./pages/admin/SuperAdminDashboard.tsx'))
 
 const Settings = lazy(() => import('./pages/admin/Settings.tsx'))
 const ProfileSettings = lazy(() => import('./pages/admin/settings/ProfileSettings.tsx'))
@@ -60,6 +61,7 @@ const router = createBrowserRouter([
           { path: "queue/monitor", element: <ActiveQueueTicket /> },
           { path: "queue/statistics", element: <ReportsStatistics /> },
           { path: "queue/offices/feedbacks", element: <OfficesFeedbacks /> },
+          { path: "dashboard", element: <SuperAdminDashboard /> },
           { path: "settings", element: <Settings />,
             children: [
               { index: true, element: <Navigate to="profile" replace /> },

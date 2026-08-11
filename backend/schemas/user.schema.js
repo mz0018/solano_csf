@@ -28,7 +28,7 @@ export const signupSchema = z.object({
     .max(12, "Office code must not exceed 12 characters"),
 
   role: z
-    .enum(['office_admin', 'hr_admin'])
+    .enum(['office_admin', 'hr_admin', 'super_admin'])
 
 });
 
