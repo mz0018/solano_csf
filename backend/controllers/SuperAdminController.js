@@ -1,0 +1,18 @@
+import jwt from 'jsonwebtoken'
+import UserService from '../services/UserService.js'
+import SuperAdminService from '../services/SuperAdminService.js'
+
+class UserController {
+
+    authorizePasswordReset = async (req, res, next) => {
+        try {
+            const result = await SuperAdminService.resetClientPassword(req.params.id)
+            res.status(200).json(result)
+        } catch (error) {
+            next(error)
+        }
+    }
+
+}
+
+export default new UserController()

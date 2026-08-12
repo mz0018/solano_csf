@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser'
 import userRoute from './routes/userRoute.js'
 import adminRoute from './routes/adminRoute.js'
 import queueRoute from './routes/queueRoute.js'
+import superAdmin from './routes/superAdminRoute.js'
 import connection from './config/connection.js'
 
 import { createServer } from 'http'
@@ -56,6 +57,7 @@ app.use(cors({
 app.use('/api/users', userRoute)
 app.use('/api/admin', adminRoute)
 app.use('/api/queues', queueRoute)
+app.use('/api/superadmin', superAdmin)
 
 app.use(errorHandler)
 
