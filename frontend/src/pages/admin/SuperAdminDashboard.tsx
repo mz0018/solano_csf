@@ -1,10 +1,15 @@
+import { useState } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { AdminResponsiveContainer } from '../../ui/form/AdminResponsiveContainer'
+import { SuperAdminClientChangePasswordModal } from '../../components/Modals/SuperAdminClientChangePasswordModal'
 
 const SuperAdminDashboard = () => {
   const { user } = useAuth()
 
+  const [showPasswordReset, setShowPasswordReset] = useState<boolean>(false)
+
   return (
+    <>
     <AdminResponsiveContainer>
       <div className="flex flex-col gap-4">
         <div>
@@ -34,13 +39,16 @@ const SuperAdminDashboard = () => {
             <h2 className="text-lg font-medium">Settings</h2>
             <p className="mt-2 text-sm text-[#6b7280]">Configure global system settings and monitor configuration changes.</p>
           </div>
-          <div className="rounded-lg border border-[#e5e7eb] bg-[#f8fafc] p-5 shadow-sm">
-            <h2 className="text-lg font-medium">Password reset for Client</h2>
-            <p className="mt-2 text-sm text-[#6b7280]">Configure global system settings and monitor configuration changes.</p>
-          </div>
+          <button type="button" onClick={() => setShowPasswordReset(true)} className="rounded-lg border border-[#e5e7eb] bg-[#f8fafc] p-5 text-left shadow-sm transition hover:border-blue-300 hover:bg-blue-50" > 
+            <h2 className="text-lg font-medium"> Password Reset for Client </h2> <p className="mt-2 text-sm text-[#6b7280]"> Reset a client's password. </p> </button>
         </div>
       </div>
     </AdminResponsiveContainer>
+    <SuperAdminClientChangePasswordModal 
+      passwordModalOpen={showPasswordReset}
+      setPasswordModalOpen={setShowPasswordReset}
+    />
+    </>
   )
 }
 
