@@ -6,6 +6,7 @@ interface AuthUser {
   id: string
   userName: string
   role: string
+  officeCode?: string
 }
 
 interface AuthContextType {
@@ -37,7 +38,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser({
           id: data.user.id,
           userName: data.user.userName,
-          role: data.user.role
+          role: data.user.role,
+          officeCode: data.user.officeCode
         })
       } else {
         setUser(null)

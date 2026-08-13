@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
+import { getRoleBasedNavigationPath } from '../utils/getRoleBasedNavigationPath'
 
 export const useSignin = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -47,8 +48,12 @@ export const useSignin = () => {
             })
 
             if (res.ok) {
+                const data = await res.json()
                 await verifyAuth()
-                navigate('/admin/queue/monitor')
+                
+                // Navigate based on user role
+                const path = getRoleBasedNavigationPath(data.role)
+                navigate(path)
             } else {
                 if (res.status === 401) {
                     setHasError({ general: "Invalid credentials. Please try again." })
