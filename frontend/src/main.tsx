@@ -26,12 +26,15 @@ const PublicLayout = lazy(() => import('./layout/PublicLayout.tsx'))
 const ActiveQueueTicket = lazy(() => import('./pages/admin/ActiveQueueTicket.tsx'))
 const ReportsStatistics = lazy(() => import('./pages/admin/ReportStatistics.tsx'))
 const OfficesFeedbacks = lazy(() => import('./pages/admin/OfficesFeedbacks.tsx'))
-const SuperAdminDashboard = lazy(() => import('./pages/admin/SuperAdminDashboard.tsx'))
 
 const Settings = lazy(() => import('./pages/admin/Settings.tsx'))
 const ProfileSettings = lazy(() => import('./pages/admin/settings/ProfileSettings.tsx'))
 const SecuritySettings = lazy(() => import('./pages/admin/settings/SecuritySettings.tsx'))
 const NotificationSettings = lazy(() => import('./pages/admin/settings/NotificationSettings.tsx'))
+
+const SuperAdmin = lazy(() => import('./pages/admin/SuperAdmin.tsx'))
+const UserManagement = lazy(() => import('./pages/admin/overview/UserManagement.tsx'))
+const Reports = lazy(() => import('./pages/admin/overview/Reports.tsx'))
 
 const queryClient = new QueryClient()
 
@@ -61,7 +64,6 @@ const router = createBrowserRouter([
           { path: "queue/monitor", element: <ActiveQueueTicket /> },
           { path: "queue/statistics", element: <ReportsStatistics /> },
           { path: "queue/offices/feedbacks", element: <OfficesFeedbacks /> },
-          { path: "dashboard", element: <SuperAdminDashboard /> },
           { path: "settings", element: <Settings />,
             children: [
               { index: true, element: <Navigate to="profile" replace /> },
@@ -69,7 +71,14 @@ const router = createBrowserRouter([
               { path: "security", element: <SecuritySettings /> },
               { path: "notifications", element: <NotificationSettings /> },
             ]
-          }
+          },
+          { path: "overview", element: <SuperAdmin />,
+          children: [
+            { index: true, element: <Navigate to="user-management" replace /> },
+            { path: "user-management", element: <UserManagement /> },
+            { path: "reports", element: <Reports /> },
+          ]
+        }
         ]
        },
     ]

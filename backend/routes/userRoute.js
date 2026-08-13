@@ -15,7 +15,7 @@ router.get('/verify', authorizeViaCookie, UserController.verifyUser)
 router.post('/signup', validate(signupSchema), signupRateLimiter, UserController.signupUser)
 router.post('/signin', signinRateLimiter, UserController.signinUser)
 router.post('/signout', UserController.signoutUser)
-router.post('/change-password', authorizeViaCookie, validate(changePasswordSchema), authorizeViaRole('office_admin', 'hr_admin'), changePasswordRateLimiter, UserController.changePassword)
-router.get('/login-history', authorizeViaCookie, authorizeViaRole('office_admin', 'hr_admin'), UserController.getLoginHistory)
+router.post('/change-password', authorizeViaCookie, validate(changePasswordSchema), authorizeViaRole('office_admin', 'hr_admin', 'super_admin'), changePasswordRateLimiter, UserController.changePassword)
+router.get('/login-history', authorizeViaCookie, authorizeViaRole('office_admin', 'hr_admin', 'super_admin'), UserController.getLoginHistory)
 
 export default router

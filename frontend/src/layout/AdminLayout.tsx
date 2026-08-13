@@ -9,7 +9,7 @@ const AdminLayout = () => {
   const { user } = useAuth()
 
   const navLinks = [
-    { name: 'Dashboard', path: '/admin/dashboard', icon: <Radio size={20} />, roles: ['super_admin'] },
+    { name: 'Overview', path: '/admin/overview', icon: <Radio size={20} />, roles: ['super_admin'] },
     { name: 'Live Monitoring', path: '/admin/queue/monitor', icon: <Radio size={20} />, roles: ['office_admin', 'hr_admin'] },
     {
       name: 'Reports',
