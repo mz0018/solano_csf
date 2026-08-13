@@ -29,14 +29,24 @@ export const DropdownHelper = ({ item, collapsed, setCollapsed }: Props) => {
 
           setOpen(prev => !prev)
         }}
-        className="font-semibold sidebar-link-border w-full flex items-center gap-3 px-4 py-2 rounded-sm text-md text-[#6b7280] hover:bg-[#f3f4f6] hover:text-[#1f2937] transition-colors duration-150 focus:ring-0 focus:outline-none"
+        className="sidebar-link-border relative w-full flex items-center gap-3 px-4 py-2 rounded-sm text-md text-[#6b7280] hover:bg-[#f3f4f6] hover:text-[#1f2937] transition-colors duration-150 focus:ring-0 focus:outline-none"
       >
-        <span>{item.icon}</span>
+        <span className="shrink-0">
+          {item.icon}
+        </span>
 
         {!collapsed && (
           <>
-            <span>{item.name}</span>
-            <ChevronDown size={20} className={`ml-auto transition-transform duration-150 ${open ? 'rotate-180' : ''}`} />
+            <span className="whitespace-nowrap">
+              {item.name}
+            </span>
+
+            <ChevronDown
+              size={18}
+              className={`absolute right-3 top-1/2 -translate-y-1/2 transition-transform duration-150 ${
+                open ? 'rotate-180' : ''
+              }`}
+            />
           </>
         )}
       </button>
@@ -62,7 +72,7 @@ export const DropdownHelper = ({ item, collapsed, setCollapsed }: Props) => {
               }
               >
                 <span className="text-[0.5rem] text-[#9ca3af]">●</span>
-                {child.name}
+                <span className="whitespace-nowrap">{child.name}</span>
               </NavLink>
           ))}
         </div>
