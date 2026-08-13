@@ -33,8 +33,9 @@ const SecuritySettings = lazy(() => import('./pages/admin/settings/SecuritySetti
 const NotificationSettings = lazy(() => import('./pages/admin/settings/NotificationSettings.tsx'))
 
 const SuperAdmin = lazy(() => import('./pages/admin/SuperAdmin.tsx'))
-const UserManagement = lazy(() => import('./pages/admin/overview/UserManagement.tsx'))
-const Reports = lazy(() => import('./pages/admin/overview/Reports.tsx'))
+const ResetPassword = lazy(() => import('./pages/admin/overview/ResetPassword.tsx'))
+const RegisterNewClient = lazy(() => import('./pages/admin/overview/RegisterNewClient.tsx'))
+const SystemReport = lazy(() => import('./pages/admin/overview/SystemReport.tsx'))
 
 const queryClient = new QueryClient()
 
@@ -74,9 +75,10 @@ const router = createBrowserRouter([
           },
           { path: "overview", element: <SuperAdmin />,
           children: [
-            { index: true, element: <Navigate to="user-management" replace /> },
-            { path: "user-management", element: <UserManagement /> },
-            { path: "reports", element: <Reports /> },
+            { index: true, element: <Navigate to="user-management/password-reset" replace /> },
+            { path: "user-management/password-reset", element: <ResetPassword /> },
+            { path: "user-management/add-client", element: <RegisterNewClient /> },
+            { path: "report/system", element: <SystemReport /> },
           ]
         }
         ]
