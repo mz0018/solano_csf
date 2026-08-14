@@ -2,8 +2,8 @@ import { useEffect, useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 
 type Client = {
-    id: string
-    name: string
+    _id: string
+    firstName: string
 }
 
 const searchClients = async (search: string): Promise<Client[]> => {
