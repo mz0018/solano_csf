@@ -33,7 +33,18 @@ class UserService {
     }
 
     async searchClient(clientName) {
-        console.log(clientName)
+
+        const client = await User.find({
+            firstName: {
+                $regex: clientName,
+                $options: 'i',
+            },
+        })
+            .select('_id firstName')
+            .limit(10)
+            .lean()
+
+        return client
     }
 
 }
