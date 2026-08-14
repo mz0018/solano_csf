@@ -6,6 +6,7 @@ import { authorizeViaCookie } from '../middleware/authorizeViaCookie.js'
 
 const router = express.Router()
 
+router.get('/clients', SuperAdminController.searchClient)
 router.post('/password/reset/:id', SuperAdminController.authorizePasswordReset)
 
 export default router

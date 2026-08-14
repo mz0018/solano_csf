@@ -51,7 +51,6 @@ export const useSignin = () => {
                 const data = await res.json()
                 await verifyAuth()
                 
-                // Navigate based on user role
                 const path = getRoleBasedNavigationPath(data.role)
                 navigate(path)
             } else {

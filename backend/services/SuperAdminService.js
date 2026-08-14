@@ -32,6 +32,10 @@ class UserService {
         
     }
 
+    async searchClient(clientName) {
+        console.log(clientName)
+    }
+
 }
 
 export default new UserService()

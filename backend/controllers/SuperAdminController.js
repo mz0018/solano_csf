@@ -1,8 +1,17 @@
 import jwt from 'jsonwebtoken'
-import UserService from '../services/UserService.js'
+// import UserService from '../services/UserService.js'
 import SuperAdminService from '../services/SuperAdminService.js'
 
-class UserController {
+class SuperAdminController {
+
+    searchClient = async (req, res, next) => {
+        try {
+            const result = await SuperAdminService.searchClient(req.query.search)
+            res.status(200).json(result)
+        } catch (error) {
+            next(error)
+        }
+    }
 
     authorizePasswordReset = async (req, res, next) => {
         try {
@@ -15,4 +24,4 @@ class UserController {
 
 }
 
-export default new UserController()
+export default new SuperAdminController()

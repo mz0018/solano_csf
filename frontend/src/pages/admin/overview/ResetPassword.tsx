@@ -1,33 +1,15 @@
-import { useState, useEffect } from "react"
+import { useSearchClient } from "../../../hooks/useSearchClient"
+import { ErrorText } from "../../../ui/form/ErrorText"
 
 const ResetPassword = () => {
-
-    const [search, setSearch] = useState<string>("")
-    const [isLoading, setIsLoading] = useState<boolean>(false)
-
-    const handleSearch = async () => {
-
-        if (!search.trim()) {
-            return
-        }
-
-        setIsLoading(true)
-        try {
-            console.log('Searching...', search)
-        } catch (err) {
-            console.error('Something went wrong: ', err)
-        } finally {
-            setIsLoading(false)
-        }
-    }
-
-    useEffect(() => {   
-        const timer = setTimeout(() => {
-            handleSearch()
-        }, 400)
-
-        return () => clearTimeout(timer)
-    }, [search])
+    const {
+        setSearch,
+        search,
+        results,
+        isLoading,
+        isFetching,
+        error,
+    } = useSearchClient()
 
     return (
         <>
@@ -38,10 +20,20 @@ const ResetPassword = () => {
                 placeholder="Search client by name..."
             />
 
-            {isLoading ? (
+            {isLoading || isFetching ? (
                 <div>Loading...</div>
+            ) : error ? (
+                <ErrorText message="Something went wrong" />
             ) : (
-                <p>{search}</p>
+                <>
+                    <p>Search: {search}</p>
+
+                    {results?.map((client) => (
+                        <div key={client.id}>
+                            {client.name}
+                        </div>
+                    ))}
+                </>
             )}
         </>
     )
