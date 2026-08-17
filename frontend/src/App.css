@@ -33,25 +33,29 @@
   background-color: var(--theme-bg);
 
   background-image:
-    radial-gradient(circle at center,
-      rgba(0,255,255,.06),
-      transparent 65%),
+    radial-gradient(
+      circle at center,
+      rgba(0, 255, 255, .06),
+      transparent 65%
+    ),
 
-    linear-gradient(var(--theme-grid) 1px, transparent 0.9px),
-    linear-gradient(90deg, var(--theme-grid) 1px, transparent 0.9px),
+    radial-gradient(
+      circle,
+      var(--theme-grid) 1px,
+      transparent 1.2px
+    ),
 
     repeating-linear-gradient(
       0deg,
-      rgba(255,255,255,.015) 0,
-      rgba(255,255,255,.015) 2px,
+      rgba(255, 255, 255, .015) 0,
+      rgba(255, 255, 255, .015) 2px,
       transparent 2px,
       transparent 6px
     );
 
   background-size:
     100% 100%,
-    40px 40px,
-    40px 40px,
+    12px 12px,
     100% 6px;
 
   background-attachment: fixed;

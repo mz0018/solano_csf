@@ -3,14 +3,29 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import { Navbar } from "../components/Navbar/Navbar";
 
+const THEME_KEY = "theme";
+
+const getInitialTheme = (): "light" | "dark" => {
+  const saved = localStorage.getItem(THEME_KEY);
+
+  if (saved === "light" || saved === "dark") {
+    return saved;
+  }
+
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+};
+
 export const RootLayout = () => {
-  const [theme, setTheme] = useState<"light" | "dark">("dark");
+  const [theme, setTheme] = useState<"light" | "dark">(getInitialTheme);
   const [isScrolling, setIsScrolling] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem(THEME_KEY, theme);
   }, [theme]);
 
   useEffect(() => {
@@ -20,7 +35,9 @@ export const RootLayout = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const toggleTheme = () => setTheme((t) => (t === "light" ? "dark" : "light"));
+  const toggleTheme = () => {
+    setTheme((t) => (t === "light" ? "dark" : "light"));
+  };
 
   const scrollTo = (key: string) => {
     if (key === "home") {
@@ -28,11 +45,12 @@ export const RootLayout = () => {
       else window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
-    // section links: scroll if on home, otherwise just go home
+
     if (location.pathname !== "/") {
       navigate("/");
       return;
     }
+
     document.getElementById(key)?.scrollIntoView({ behavior: "smooth" });
   };
 
