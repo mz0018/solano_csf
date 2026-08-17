@@ -12,7 +12,7 @@ import { changePasswordRateLimiter } from '../middleware/changePasswordLimiter.j
 const router = express.Router()
 
 router.get('/verify', authorizeViaCookie, UserController.verifyUser)
-router.post('/signup', validate(signupSchema), signupRateLimiter, UserController.signupUser)
+router.post('/signup', authorizeViaCookie, authorizeViaRole('super_admin'), validate(signupSchema), signupRateLimiter, UserController.signupUser)
 router.post('/signin', signinRateLimiter, UserController.signinUser)
 router.post('/signout', UserController.signoutUser)
 router.post('/change-password', authorizeViaCookie, validate(changePasswordSchema), authorizeViaRole('office_admin', 'hr_admin', 'super_admin'), changePasswordRateLimiter, UserController.changePassword)
