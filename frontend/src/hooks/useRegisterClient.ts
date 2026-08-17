@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 
 export type RegisterClientForm = {
   firstName: string
@@ -9,6 +10,13 @@ export type RegisterClientForm = {
   role: 'office_admin' | 'hr_admin' | 'super_admin'
 }
 
+type Office = {
+  code: string
+  name: string
+}
+
+const VALID_ROLES = ['office_admin', 'hr_admin', 'super_admin'] as const
+
 const initialForm: RegisterClientForm = {
   firstName: '',
   lastName: '',
@@ -18,11 +26,33 @@ const initialForm: RegisterClientForm = {
   role: 'office_admin',
 }
 
+// Fetch available offices from backend
+const fetchOffices = async (): Promise<Office[]> => {
+  const res = await fetch(
+    `${import.meta.env.VITE_API_URL}/api/admin/offices`,
+    { credentials: 'include' }
+  )
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch offices')
+  }
+
+  return res.json()
+}
+
 export const useRegisterClient = () => {
   const [form, setForm] = useState<RegisterClientForm>(initialForm)
   const [errors, setErrors] = useState<Partial<Record<keyof RegisterClientForm | 'general', string>>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [successMessage, setSuccessMessage] = useState('')
+
+  // Fetch offices from backend
+  const { data: offices = [], isLoading: officesLoading } = useQuery({
+    queryKey: ['register-offices'],
+    queryFn: fetchOffices,
+    staleTime: 1000 * 60 * 60, // 1 hour
+    gcTime: 1000 * 60 * 60,
+  })
 
   const updateField = <K extends keyof RegisterClientForm>(field: K, value: RegisterClientForm[K]) => {
     setForm((prev) => ({ ...prev, [field]: value }))
@@ -48,12 +78,16 @@ export const useRegisterClient = () => {
       nextErrors.password = 'Password must be at least 6 characters.'
     }
 
-    if (form.officeCode.trim().length < 3) {
-      nextErrors.officeCode = 'Office code must be at least 3 characters.'
+    if (!form.officeCode) {
+      nextErrors.officeCode = 'Please select an office.'
+    } else if (!offices.find((o) => o.code === form.officeCode)) {
+      nextErrors.officeCode = 'Selected office is invalid.'
     }
 
     if (!form.role) {
       nextErrors.role = 'Please select a role.'
+    } else if (!VALID_ROLES.includes(form.role)) {
+      nextErrors.role = 'Selected role is invalid.'
     }
 
     return nextErrors
@@ -112,5 +146,8 @@ export const useRegisterClient = () => {
     successMessage,
     updateField,
     submit,
+    offices,
+    officesLoading,
+    validRoles: VALID_ROLES,
   }
 }

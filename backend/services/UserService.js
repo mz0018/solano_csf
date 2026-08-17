@@ -1,4 +1,5 @@
 import User from '../models/user.model.js'
+import Office from '../models/office.model.js'
 import argon2 from 'argon2'
 import jwt from 'jsonwebtoken'
 import ErrorController from '../controllers/ErrorController.js'
@@ -15,6 +16,18 @@ class UserService {
 
         if (existingUser) {
             throw new ErrorController('Username already taken', 409)
+        }
+
+        // Validate that the office code exists
+        const office = await Office.findOne({ code: userData.officeCode })
+        if (!office) {
+            throw new ErrorController('Invalid office code', 400)
+        }
+
+        // Validate that the role is one of the allowed roles
+        const validRoles = ['office_admin', 'hr_admin', 'super_admin']
+        if (!validRoles.includes(userData.role)) {
+            throw new ErrorController('Invalid role', 400)
         }
 
         console.log(userData)

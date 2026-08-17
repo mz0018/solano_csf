@@ -2,11 +2,12 @@ import { Button } from '../../../ui/form/Buttons'
 import { ErrorText } from '../../../ui/form/ErrorText'
 import { Input } from '../../../ui/form/Input'
 import { Select } from '../../../ui/form/Select'
+import { Loader } from '../../../components/Loader'
 import { AdminResponsiveContainer } from '../../../ui/form/AdminResponsiveContainer'
 import { useRegisterClient, type RegisterClientForm } from '../../../hooks/useRegisterClient'
 
 const RegisterNewClient = () => {
-  const { form, errors, isSubmitting, successMessage, updateField, submit } = useRegisterClient()
+  const { form, errors, isSubmitting, successMessage, updateField, submit, offices, officesLoading, validRoles } = useRegisterClient()
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -74,15 +75,26 @@ const RegisterNewClient = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="mb-1 block text-sm font-medium">Office code</label>
-              <Input
-                type="text"
-                value={form.officeCode}
-                onChange={(event) => updateField('officeCode', event.target.value)}
-                placeholder="e.g. HRMO"
-                error={errors.officeCode}
-                className="w-full p-4 text-black"
-              />
+              <label className="mb-1 block text-sm font-medium">Office</label>
+              {officesLoading ? (
+                <div className="w-full p-4 flex items-center justify-center">
+                  <Loader />
+                </div>
+              ) : (
+                <Select
+                  value={form.officeCode}
+                  onChange={(event) => updateField('officeCode', event.target.value)}
+                  error={errors.officeCode}
+                  className="w-full p-4 text-black"
+                >
+                  <option value="">Select an office...</option>
+                  {offices.map((office) => (
+                    <option key={office.code} value={office.code}>
+                      {office.name} ({office.code})
+                    </option>
+                  ))}
+                </Select>
+              )}
             </div>
 
             <div>
@@ -95,9 +107,12 @@ const RegisterNewClient = () => {
                 error={errors.role}
                 className="w-full p-4 text-black"
               >
-                <option value="office_admin">Office Admin</option>
-                <option value="hr_admin">HR Admin</option>
-                <option value="super_admin">Super Admin</option>
+                <option value="">Select a role...</option>
+                {validRoles.map((role) => (
+                  <option key={role} value={role}>
+                    {role.replace(/_/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                  </option>
+                ))}
               </Select>
             </div>
           </div>
