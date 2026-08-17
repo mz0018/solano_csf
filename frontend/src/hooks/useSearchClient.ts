@@ -8,7 +8,10 @@ type Client = {
 
 const searchClients = async (search: string): Promise<Client[]> => {
     const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/superadmin/clients?search=${encodeURIComponent(search)}`
+        `${import.meta.env.VITE_API_URL}/api/superadmin/clients?search=${encodeURIComponent(search)}`,
+        {
+            credentials: "include",
+        }
     )
 
     if (!response.ok) {

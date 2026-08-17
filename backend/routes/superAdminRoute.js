@@ -1,12 +1,23 @@
 import express from 'express'
-import UserController from '../controllers/UserController.js'
 import SuperAdminController from '../controllers/SuperAdminController.js'
 
 import { authorizeViaCookie } from '../middleware/authorizeViaCookie.js'
+import { authorizeViaRole } from '../middleware/authorizeViaRole.js'
 
 const router = express.Router()
 
-router.get('/clients', SuperAdminController.searchClient)
-router.post('/password/reset/:id', SuperAdminController.authorizePasswordReset)
+router.get(
+    '/clients', 
+    authorizeViaCookie, 
+    authorizeViaRole('super_admin'), 
+    SuperAdminController.searchClient
+)
+
+router.post(
+    '/password/reset/:id', 
+    authorizeViaCookie,
+    authorizeViaRole('super_admin'),
+    SuperAdminController.authorizePasswordReset
+)
 
 export default router

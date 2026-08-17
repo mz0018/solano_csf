@@ -16,10 +16,13 @@ const ResetPassword = () => {
     const handleResetPassword = async (clientId: string) => {
         if (!confirm("Are you sure you want to reset this client's password?")) return
         try {
-            const response = await fetch(`/api/superadmin/password/reset/${clientId}`, {
-                method: "POST",
-                credentials: "include",
-            })
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/api/superadmin/password/reset/${clientId}`,
+                {
+                    method: "POST",
+                    credentials: "include",
+                }
+            )
             if (!response.ok) throw new Error("Failed to reset password")
             alert("Password reset successfully. Default password: 12345678")
         } catch (err) {
