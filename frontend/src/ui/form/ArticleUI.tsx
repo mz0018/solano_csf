@@ -41,7 +41,7 @@ export const ArticleUI = ({
       </p>
 
       {/* Lottie placeholder */}
-      <div className="my-6 flex min-h-32 items-center justify-center">
+      <div className="my-6 flex min-h-12 items-center justify-center">
         {lottie}
       </div>
 

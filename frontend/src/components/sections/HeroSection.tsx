@@ -1,4 +1,4 @@
-import { PenLine } from "lucide-react";
+import { PenLine, Check } from "lucide-react";
 import { FeedbackArticleUI } from "../../ui/form/FeedbackArticleUI";
 
 export const HeroSection = () => {
@@ -22,26 +22,46 @@ export const HeroSection = () => {
               improve service quality and better serve our community.
             </p>
 
-            <a
-              href="/create-feedback"
-              className="
-                inline-flex
-                items-center
-                gap-2
-                rounded-lg
-                bg-[#628dec]
-                px-6
-                py-3
-                font-semibold
-                text-gray-200
-                transition
-                hover:opacity-90
-                animate-fade-in-up
-              "
-            >
-              <PenLine className="size-5" />
-              Create Feedback
-            </a>
+            {/* CTA + Benefits */}
+            <div>
+              <a
+                href="/create-feedback"
+                className="
+                  inline-flex
+                  items-center
+                  gap-2
+                  rounded-lg
+                  bg-[#628dec]
+                  px-6
+                  py-3
+                  font-semibold
+                  text-gray-200
+                  transition
+                  hover:opacity-90
+                  animate-fade-in-up
+                "
+              >
+                <PenLine className="size-5" />
+                Create Feedback
+              </a>
+
+              <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-medium text-[var(--theme-muted)]">
+                <span className="flex items-center gap-2 tracking-wide">
+                  <Check className="size-5 stroke-[2.5] text-green-600" />
+                  Faster queue
+                </span>
+
+                <span className="flex items-center gap-2 tracking-wide">
+                  <Check className="size-5 stroke-[2.5] text-green-600" />
+                  Clear updates
+                </span>
+
+                <span className="flex items-center gap-2 tracking-wide">
+                  <Check className="size-5 stroke-[2.5] text-green-600" />
+                  Real-time feedback
+                </span>
+              </div>
+            </div>
           </article>
 
           {/* Right Card */}

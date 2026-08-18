@@ -17,7 +17,7 @@ export const HowItWorks_03 = () => {
           data={sending}
           loop
           autoplay
-          style={{ width: "100%", height: "100%" }}
+          style={{ width: "80%", height: "80%" }}
         />
       }
       title={

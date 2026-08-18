@@ -23,7 +23,7 @@ export const HowItWorks_01 = ({ howItWorksRef }: HowItWorks_01Props) => {
           data={questioning}
           loop
           autoplay
-          style={{ width: "100%", height: "100%" }}
+          style={{ width: "80%", height: "80%" }}
         />
       }
       title={

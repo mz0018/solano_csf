@@ -28,7 +28,7 @@ export const Navbar = ({ isScrolling, scrollTo, theme, onToggleTheme }: NavbarPr
       <div className="flex h-24 w-full items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <a href="/" className="flex items-center">
-          <img src="/img/logo.png" alt="Logo" className="h-12 w-auto" />
+          <img src="/img/logo.png" alt="Logo" className="h-14 md:h-16 w-auto" />
         </a>
 
         {/* Desktop Navigation */}
@@ -38,7 +38,7 @@ export const Navbar = ({ isScrolling, scrollTo, theme, onToggleTheme }: NavbarPr
               key={item.name}
               href={item.href}
               onClick={(e) => { e.preventDefault(); scrollTo(item.key); }}
-              className="text-sm font-medium text-[var(--theme-muted)] transition hover:text-[var(--theme-text)] nav-link-underline tracking-wider"
+              className="text-md font-medium text-[var(--theme-muted)] transition hover:text-[var(--theme-text)] nav-link-underline tracking-wider"
             >
               {item.name}
             </a>
