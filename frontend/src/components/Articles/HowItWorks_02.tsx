@@ -1,5 +1,8 @@
 import { ArticleUI } from "../../ui/form/ArticleUI";
 import { useIntersectionObserver } from "../../hooks/useIntersectionObserver";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+
+import steps from "../../assets/Steps.json"
 
 export const HowItWorks_02 = () => {
 
@@ -9,6 +12,14 @@ export const HowItWorks_02 = () => {
   return (
     <ArticleUI
       viewMoreLink="/article/how-it-works/page2"
+      lottie={
+        <DotLottieReact
+          data={steps}
+          loop
+          autoplay
+          style={{ width: "100%", height: "100%" }}
+        />
+      }
       title={
         <div ref={howItWorks_02}>
           <h1 className={`${howItWorks_02_Visible ? 'animate-fade-in-up' : 'opacity-0'}`}>How to Give<br />Your Feedback in a Few{" "}</h1>

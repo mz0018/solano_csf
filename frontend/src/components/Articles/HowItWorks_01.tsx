@@ -1,6 +1,9 @@
 import type { RefObject } from "react";
 import { ArticleUI } from "../../ui/form/ArticleUI";
 import { useIntersectionObserver } from "../../hooks/useIntersectionObserver";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+
+import questioning from "../../assets/Questioning.json"
 
 type HowItWorks_01Props = {
   howItWorksRef: RefObject<HTMLDivElement | null>;
@@ -15,6 +18,14 @@ export const HowItWorks_01 = ({ howItWorksRef }: HowItWorks_01Props) => {
     <ArticleUI
       articleRef={howItWorksRef}
       viewMoreLink="/article/how-it-works/page1"
+      lottie={
+        <DotLottieReact
+          data={questioning}
+          loop
+          autoplay
+          style={{ width: "100%", height: "100%" }}
+        />
+      }
       title={
         <div ref={howItWorks_01}>
           <h1 className={`${howItWorks_01_Visible ? 'animate-fade-in-up' : 'opacity-0'}`}>What CSF Is<br />and Why Your{" "}Feedback{" "}<span className="text-[#628dec]">Matters</span></h1>

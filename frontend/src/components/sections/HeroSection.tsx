@@ -4,7 +4,7 @@ import { FeedbackArticleUI } from "../../ui/form/FeedbackArticleUI";
 export const HeroSection = () => {
   return (
     <section>
-      <div className="bg-[var(--theme-nav-bg)] md:bg-transparent border-b border-[var(--theme-border)] md:border-b-0">
+      <div className="bg-[var(--theme-nav-bg)] md:bg-transparent border-b border-[var(--theme-border)] md:border-b-0 mt-10">
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-9 px-4 py-28 sm:px-6 md:py-32 lg:flex-row lg:px-8 lg:py-40">
           {/* Left Content */}
           <article className="max-w-8xl text-[var(--theme-text)]">
