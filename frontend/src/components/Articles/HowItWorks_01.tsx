@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { RefObject } from "react";
 import { ArticleUI } from "../../ui/form/ArticleUI";
 import { useIntersectionObserver } from "../../hooks/useIntersectionObserver";
@@ -14,17 +15,29 @@ export const HowItWorks_01 = ({ howItWorksRef }: HowItWorks_01Props) => {
   const { ref: howItWorks_01, isVisible: howItWorks_01_Visible } =
     useIntersectionObserver<HTMLDivElement>({ threshold: 0.1 });
 
+    const [dotLottie, setDotLottie] = useState<any>(null);
+
   return (
     <ArticleUI
       articleRef={howItWorksRef}
       viewMoreLink="/article/how-it-works/page1"
+      onMouseEnter={() => dotLottie?.play()}
+      onMouseLeave={() => dotLottie?.pause()}
       lottie={
-        <DotLottieReact
-          data={questioning}
-          loop
-          autoplay
-          style={{ width: "80%", height: "80%" }}
-        />
+        <div className="flex w-full justify-center">
+          <DotLottieReact
+            data={questioning}
+            loop
+            autoplay={false}
+            dotLottieRefCallback={setDotLottie}
+            style={{
+              width: "100%",
+              maxWidth: "420px",
+              height: "auto",
+              display: "block",
+            }}
+          />
+        </div>
       }
       title={
         <div ref={howItWorks_01}>

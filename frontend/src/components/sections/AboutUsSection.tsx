@@ -38,7 +38,7 @@ export const AboutUsSection = ({ aboutUsRef }: AboutUsSectionProps) => {
             government.
           </p>
 
-          <button className="mt-6 rounded-full bg-[var(--theme-text)] px-6 py-3 text-sm text-[var(--theme-bg)]">
+          <button onClick={() => alert('Contact da erp')} className="mt-6 rounded-full bg-[var(--theme-text)] px-6 py-3 text-sm text-[var(--theme-bg)]">
             Contact Us
           </button>
         </div>
@@ -81,9 +81,12 @@ export const AboutUsSection = ({ aboutUsRef }: AboutUsSectionProps) => {
             Ready to Share Your Experience?
           </h3>
 
-          <button className="mt-6 rounded-full bg-[var(--theme-bg)] px-6 py-3 text-sm text-[var(--theme-text)]">
+          <a
+            href="/create-feedback"
+            className="mt-6 inline-flex items-center justify-center rounded-full bg-[var(--theme-bg)] px-6 py-3 text-sm font-medium text-[var(--theme-text)] transition-colors hover:bg-[var(--theme-bg)]/80"
+          >
             Get Started
-          </button>
+          </a>
         </div>
       </div>
     </section>

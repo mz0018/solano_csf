@@ -10,6 +10,8 @@ type ArticleUIProps = {
   articleRef?: RefObject<HTMLElement | null>;
   viewMoreLink?: string;
   className?: string;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 };
 
 export const ArticleUI = ({
@@ -20,17 +22,26 @@ export const ArticleUI = ({
   articleRef,
   viewMoreLink,
   className = "",
+  onMouseEnter,
+  onMouseLeave,
 }: ArticleUIProps) => {
   return (
     <article
       ref={articleRef}
-      className={`w-full max-w-3xl shrink-0 rounded-lg border border-[var(--theme-border)] bg-[var(--theme-nav-bg)]/90 shadow-xl
-        px-4 py-8
-        sm:px-6 sm:py-10
-        md:px-8 md:py-12
-        lg:px-12 lg:py-16
-        xl:px-16 xl:py-20
-        ${className}`}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      className={`
+        w-full max-w-3xl shrink-0 rounded-lg
+        border border-[var(--theme-border)]
+        bg-[var(--theme-nav-bg)]/90
+        shadow-xl
+        px-3 py-5
+        sm:px-5 sm:py-7
+        md:px-6 md:py-8
+        lg:px-8 lg:py-10
+        xl:px-10 xl:py-12
+        ${className}
+      `}
     >
       <h1 className="mb-5 text-2xl font-bold tracking-wide text-[var(--theme-text)] sm:text-3xl md:text-4xl lg:text-5xl">
         {title}
