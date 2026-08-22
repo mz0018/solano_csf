@@ -26,7 +26,7 @@
 @keyframes reveal-left {
   from {
     opacity: 0;
-    transform: translateX(-60px);
+    transform: translateX(-200px);
   }
 
   to {
@@ -38,7 +38,7 @@
 @keyframes reveal-right {
   from {
     opacity: 0;
-    transform: translateX(60px);
+    transform: translateX(200px);
   }
 
   to {
