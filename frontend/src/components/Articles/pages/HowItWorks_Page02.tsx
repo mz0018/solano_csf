@@ -1,3 +1,4 @@
+import { ArrowDown } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const HowItWorks_Page02 = () => {
@@ -17,6 +18,9 @@ const HowItWorks_Page02 = () => {
             After selecting Get Started and confirming the privacy reminder,
             you can begin the survey. The process only takes a few minutes.
           </p>
+          <div className="mt-8 flex justify-center">
+            <ArrowDown size={18} className="animate-bounce text-[var(--theme-muted)]" />
+          </div>
         </section>
 
         {/* ─────────────────────────────────────

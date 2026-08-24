@@ -1,3 +1,5 @@
+import { ArrowDown } from "lucide-react";
+
 const HowItWorks_Page03 = () => {
   return (
     <div className="min-h-screen px-4 py-12 sm:px-6 lg:px-8">
@@ -16,6 +18,9 @@ const HowItWorks_Page03 = () => {
             saves your response, and sends the information to LGU Solano for
             service improvement.
           </p>
+          <div className="mt-8 flex justify-center">
+            <ArrowDown size={18} className="animate-bounce text-[var(--theme-muted)]" />
+          </div>
         </section>
 
         {/* ─────────────────────────────────────
