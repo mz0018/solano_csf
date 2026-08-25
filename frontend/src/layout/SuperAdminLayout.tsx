@@ -7,7 +7,7 @@ const tabs = [
     name: 'User Management',
     icon: <User />,
     children: [
-    { name: 'Client Password Reset', path: 'user-management/password-reset' },
+    { name: 'Account Management', path: 'user-management/manage' },
     { name: 'Add Client Account', path: 'user-management/add-client' },
   ],
     roles: ['super_admin'],

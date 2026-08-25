@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query"
 type Client = {
     _id: string
     firstName: string
+    lastName: string
 }
 
 const searchClients = async (search: string): Promise<Client[]> => {

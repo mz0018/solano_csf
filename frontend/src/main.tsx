@@ -75,8 +75,8 @@ const router = createBrowserRouter([
           },
           { path: "overview", element: <SuperAdmin />,
           children: [
-            { index: true, element: <Navigate to="user-management/password-reset" replace /> },
-            { path: "user-management/password-reset", element: <ResetPassword /> },
+            { index: true, element: <Navigate to="user-management/manage" replace /> },
+            { path: "user-management/manage", element: <ResetPassword /> },
             { path: "user-management/add-client", element: <RegisterNewClient /> },
             { path: "report/system", element: <SystemReport /> },
           ]
