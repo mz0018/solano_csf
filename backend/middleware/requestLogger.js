@@ -4,7 +4,7 @@ const requestLogger = (req, res, next) => {
     if (!token) return next()
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
-        console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl} | User: ${decoded.id}`)
+        // console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl} | User: ${decoded.id}`)
     } catch {
         // invalid/expired token — skip logging
     }

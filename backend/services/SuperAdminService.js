@@ -1,6 +1,6 @@
 import User from '../models/user.model.js'
+import Notification from '../models/notification.model.js'
 import argon2 from 'argon2'
-import jwt from 'jsonwebtoken'
 import ErrorController from '../controllers/ErrorController.js'
 import mongoose from 'mongoose'
 
@@ -23,11 +23,19 @@ class UserService {
         client.password = hashedPassword
         await client.save()
 
+        await Notification.create({
+            clientId: client._id,
+            type: 'PASSWORD_RESET',
+            content: 'Your password has been reset by an administrator',
+        })
+
         if (global.io) {
             global.io.to(`user:${clientId}`).emit('password:reset', { 
                 message: 'Your password has been reset by an administrator' 
             })
         }
+
+        console.log(clientId)
 
         return true
     }

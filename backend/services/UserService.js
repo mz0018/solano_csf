@@ -30,8 +30,6 @@ class UserService {
             throw new ErrorController('Invalid role', 400)
         }
 
-        console.log(userData)
-
         const hashedPassword = await argon2.hash(userData.password)
 
         const newUser = await User.create({
