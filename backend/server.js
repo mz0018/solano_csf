@@ -37,6 +37,10 @@ io.on('connection', (socket) => {
   if (socket.user?.officeCode) {
     socket.join(`office:${socket.user.officeCode}`)
   }
+  if (socket.user?.id) {        
+    socket.join(`user:${socket.user.id}`)
+    console.log(socket.user.id)
+  }
 })
 
 global.io = io

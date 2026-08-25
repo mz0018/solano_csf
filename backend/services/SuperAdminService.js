@@ -23,6 +23,12 @@ class UserService {
         client.password = hashedPassword
         await client.save()
 
+        if (global.io) {
+            global.io.to(`user:${clientId}`).emit('password:reset', { 
+                message: 'Your password has been reset by an administrator' 
+            })
+        }
+
         return true
     }
 
