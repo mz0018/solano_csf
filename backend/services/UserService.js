@@ -1,5 +1,6 @@
 import User from '../models/user.model.js'
 import Office from '../models/office.model.js'
+import Notification from '../models/notification.model.js'
 import argon2 from 'argon2'
 import jwt from 'jsonwebtoken'
 import ErrorController from '../controllers/ErrorController.js'
@@ -126,6 +127,15 @@ class UserService {
         const history = sorted.slice(start, start + limit)
         
         return { history, total, totalPages, page }
+    }
+
+    async getNotifications(userId) {
+        const notifications = await Notification.find({ clientId: userId })
+            .select('_id type content createdAt')
+            .sort({ createdAt: -1 })
+            .lean()
+
+        return { notifications }
     }
 
 }

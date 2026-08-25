@@ -89,6 +89,15 @@ class UserController {
         }
     }
 
+    getNotifications = async (req, res, next) => {
+        try {
+            const result = await UserService.getNotifications(req.user.id)
+            res.status(200).json(result)
+        } catch (error) {
+            next(error)
+        }
+    }
+
 }
 
 export default new UserController()
