@@ -24,11 +24,22 @@ type SidebarUIProps = {
 }
 
 export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
-  const [collapsed, setCollapsed] = useState(false)
+  const [collapsed, setCollapsed] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('sidebar-collapsed')
+      if (saved !== null) return JSON.parse(saved)
+      return window.innerWidth < 768
+    }
+    return false
+  })
 
   useEffect(() => {
-  const checkIfShouldCollapse = () => {
-      setCollapsed(window.innerWidth < 768)
+    const checkIfShouldCollapse = () => {
+
+      if (window.innerWidth < 768) {
+        setCollapsed(true)
+      }
+      
     };
     
     checkIfShouldCollapse();
@@ -37,6 +48,10 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
     
     return () => window.removeEventListener('resize', checkIfShouldCollapse);
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem('sidebar-collapsed', JSON.stringify(collapsed))
+  }, [collapsed])
 
   return (
     <aside
