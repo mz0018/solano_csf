@@ -47,8 +47,11 @@ class UserService {
                 $regex: clientName,
                 $options: 'i',
             },
+            role: {
+                $ne: 'super_admin',
+            },
         })
-            .select('_id firstName lastName userName officeCode role')
+            .select('_id firstName lastName userName officeCode status role')
             .limit(10)
             .lean()
 
@@ -69,6 +72,30 @@ class UserService {
         }
 
         return client
+    }
+
+    async updateClientStatus(clientId) {    
+        if (!mongoose.Types.ObjectId.isValid(clientId)) {
+            throw new ErrorController('Invalid user ID', 404)
+        }
+
+        const client = await User.findById(clientId)
+            .select('_id status')
+
+        if (!client) {
+            throw new ErrorController('Client not found', 404)
+        }
+
+        client.status = client.status === 'active'
+            ? 'inactive'
+            : 'active'
+
+        await client.save()
+
+        return {
+            _id: client._id,
+            status: client.status
+        }
     }
 
 }

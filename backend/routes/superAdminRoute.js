@@ -27,4 +27,11 @@ router.post(
     SuperAdminController.authorizePasswordReset
 )
 
+router.post(
+    '/client/status/:id', 
+    authorizeViaCookie,
+    authorizeViaRole('super_admin'),
+    SuperAdminController.updateClientStatus
+)
+
 export default router

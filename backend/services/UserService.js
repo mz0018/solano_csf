@@ -57,6 +57,13 @@ class UserService {
             throw new ErrorController('Invalid username or password', 401)
         }
 
+        if (user.status === 'inactive') {
+            recordFailedSigninAttempt(credentials.req)
+            await this.recordLogin(user, credentials.req, false)
+
+            throw new ErrorController('Invalid username or password', 401)
+        }
+
         const isPasswordValid = await argon2.verify(user.password, password)
 
         if (!isPasswordValid) {

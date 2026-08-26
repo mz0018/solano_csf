@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { Button } from "../../../ui/form/Buttons"
 import { useSearchClient } from "../../../hooks/useSearchClient"
@@ -9,6 +10,8 @@ const ResetPassword = () => {
     const { setSearch, search, results, isLoading, isFetching, error } = useSearchClient()
 
     const navigate = useNavigate()
+
+    const [clientStatuses, setClientStatuses] = useState<Record<string, string>>({})
 
     const handleResetPassword = async (clientId: string) => {
         if (!confirm("Are you sure you want to reset this client's password?")) {
@@ -34,8 +37,37 @@ const ResetPassword = () => {
         }
     }
 
-    const handleToggleStatus = (clientId: string) => {
-        console.log(`Updated status ${clientId}`)
+    const handleToggleStatus = async (clientId: string) => {
+        if (!confirm("Are you sure you want to continue?")) {
+            return
+        }
+
+        try {
+            const response = await fetch(
+                `${import.meta.env.VITE_API_URL}/api/superadmin/client/status/${clientId}`,
+                {
+                    method: "POST",
+                    credentials: "include",
+                }
+            )
+
+            if (!response.ok) {
+                throw new Error("Failed to update status")
+            }
+
+            const data = await response.json()
+
+            console.log(data)
+
+            setClientStatuses(prev => ({
+                ...prev,
+                [clientId]: data.status
+            }))
+
+            alert("Client status updated successfully")
+        } catch (err) {
+            alert((err as Error).message)
+        }
     }
 
     return (
@@ -158,31 +190,79 @@ const ResetPassword = () => {
                                                         <RotateCcw size={16} />
                                                     </Button>
 
-                                                    <span className="pointer-events-none absolute left-1/2 top-full z-10 mt-2 -translate-x-1/2 whitespace-nowrap rounded-md bg-white px-2 py-1 text-xs text-white opacity-0 shadow-md transition-opacity duration-150 group-hover:opacity-100">
+                                                    <span
+                                                        className="
+                                                            pointer-events-none
+                                                            absolute left-1/2 top-full z-10 mt-2
+                                                            -translate-x-1/2
+                                                            whitespace-nowrap
+                                                            rounded-md
+                                                            bg-white
+                                                            px-2 py-1
+                                                            text-xs text-white
+                                                            opacity-0
+                                                            shadow-md
+                                                            transition-opacity duration-150
+                                                            group-hover:opacity-100
+                                                        "
+                                                    >
                                                         Reset Password
                                                     </span>
                                                 </div>
 
                                                 {/* Active / Inactive Toggle */}
-                                                <button
-                                                    type="button"
-                                                    role="switch"
-                                                    aria-checked={client.status === 'active'}
-                                                    onClick={() => handleToggleStatus(client._id)}
-                                                    className={`relative inline-flex h-4 w-7 shrink-0 cursor-pointer items-center rounded-full transition-colors duration-200 ${
-                                                        client.status === 'active'
-                                                            ? 'bg-[#628dec]'
-                                                            : 'bg-gray-300'
-                                                    }`}
-                                                >
+                                                <div className="group relative">
+                                                    <button
+                                                        type="button"
+                                                        role="switch"
+                                                        aria-checked={
+                                                            (clientStatuses[client._id] ?? client.status) === "active"
+                                                        }
+                                                        onClick={() => handleToggleStatus(client._id)}
+                                                        className={`
+                                                            relative inline-flex h-4 w-7 shrink-0
+                                                            cursor-pointer items-center rounded-full
+                                                            transition-colors duration-200
+                                                            ${
+                                                                (clientStatuses[client._id] ?? client.status) === "active"
+                                                                    ? "bg-[#628dec]"
+                                                                    : "bg-gray-300"
+                                                            }
+                                                        `}
+                                                    >
+                                                        <span
+                                                            className={`
+                                                                absolute left-0.5 h-3 w-3
+                                                                rounded-full bg-white shadow-sm
+                                                                transition-transform duration-200
+                                                                ${
+                                                                    (clientStatuses[client._id] ?? client.status) === "active"
+                                                                        ? "translate-x-3"
+                                                                        : "translate-x-0"
+                                                                }
+                                                            `}
+                                                        />
+                                                    </button>
+
                                                     <span
-                                                        className={`inline-block h-3 w-3 transform rounded-full bg-white shadow-sm transition-transform duration-200 ${
-                                                            client.status === 'active'
-                                                                ? 'translate-x-3.5'
-                                                                : 'translate-x-0.5'
-                                                        }`}
-                                                    />
-                                                </button>
+                                                        className="
+                                                            pointer-events-none
+                                                            absolute left-1/2 top-full z-10 mt-2
+                                                            -translate-x-1/2
+                                                            whitespace-nowrap
+                                                            rounded-md
+                                                            bg-white
+                                                            px-2 py-1
+                                                            text-xs text-white
+                                                            opacity-0
+                                                            shadow-md
+                                                            transition-opacity duration-150
+                                                            group-hover:opacity-100
+                                                        "
+                                                    >
+                                                        Change Status
+                                                    </span>
+                                                </div>
 
                                             </div>
                                         </td>
