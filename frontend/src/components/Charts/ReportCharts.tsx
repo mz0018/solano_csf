@@ -86,7 +86,7 @@ export const ReportCharts = ({ feedback, selectedOfficeName, selectedDateFrom, s
                         <Pie
                             data={data}
                             dataKey="value"
-                            innerRadius={55}
+                            // innerRadius={55}
                             outerRadius={80}
                             labelLine={false}
                             label={({
