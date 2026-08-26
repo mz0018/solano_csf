@@ -61,7 +61,7 @@ class UserService {
             recordFailedSigninAttempt(credentials.req)
             await this.recordLogin(user, credentials.req, false)
 
-            throw new ErrorController('Invalid username or password', 401)
+            throw new ErrorController('Invalid username or password', 423)
         }
 
         const isPasswordValid = await argon2.verify(user.password, password)

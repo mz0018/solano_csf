@@ -59,6 +59,8 @@ export const useSignin = () => {
                 } else if (res.status === 429) {
                     setHasError({ general: "Too many requests. Please try again later." })
                     setStatus({ rateLimit: true })
+                } else if (res.status === 423) {
+                    setHasError({ general: "Your account has been disabled. Please contact your administrator." })
                 } else {
                     setHasError({ general: "An error occurred during sign-in. Please try again later." })
                 }
