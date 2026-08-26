@@ -3,29 +3,57 @@ const MAX_ATTEMPTS = 10
 const WINDOW_MS = 15 * 60 * 1000
 
 export const signinRateLimiter = (req, res, next) => {
-    const ip = req.headers['x-forwarded-for']?.split(',')[0] || req.ip || req.socket.remoteAddress
+    const ip =
+        req.headers['x-forwarded-for']?.split(',')[0] ||
+        req.ip ||
+        req.socket.remoteAddress
+
     const now = Date.now()
     const record = attempts.get(ip)
 
     if (!record) {
-        attempts.set(ip, { count: 1, resetTime: now + WINDOW_MS })
         return next()
     }
 
-    if (now > record.resetTime) {
-        attempts.set(ip, { count: 1, resetTime: now + WINDOW_MS })
+    if (now >= record.resetTime) {
+        attempts.delete(ip)
         return next()
     }
 
     if (record.count >= MAX_ATTEMPTS) {
-        const remainingTime = Math.ceil((record.resetTime - now) / 1000)
+        const remainingTime = Math.ceil(
+            (record.resetTime - now) / 1000
+        )
+
+        res.setHeader('Retry-After', remainingTime)
+
         return res.status(429).json({
-            message: `Too many login attempts. Try again in ${remainingTime} seconds.`
+            message: `Too many login attempts. Try again in ${remainingTime} seconds.`,
         })
+    }
+
+    next()
+}
+
+export const recordFailedSigninAttempt = (req) => {
+    const ip =
+        req.headers['x-forwarded-for']?.split(',')[0] ||
+        req.ip ||
+        req.socket.remoteAddress
+
+    const now = Date.now()
+    const record = attempts.get(ip)
+
+    if (!record || now >= record.resetTime) {
+        attempts.set(ip, {
+            count: 1,
+            resetTime: now + WINDOW_MS,
+        })
+
+        return
     }
 
     record.count++
     attempts.set(ip, record)
-
-    next()
 }
+

@@ -4,6 +4,7 @@ import Notification from '../models/notification.model.js'
 import argon2 from 'argon2'
 import jwt from 'jsonwebtoken'
 import ErrorController from '../controllers/ErrorController.js'
+import { recordFailedSigninAttempt } from '../middleware/signinRateLimiter.js'
 
 class UserService {
     
@@ -51,12 +52,14 @@ class UserService {
         const user = await User.findOne({ userName })
 
         if (!user) {
+            recordFailedSigninAttempt(credentials.req)
             throw new ErrorController('Invalid username or password', 401)
         }
 
         const isPasswordValid = await argon2.verify(user.password, password)
 
         if (!isPasswordValid) {
+            recordFailedSigninAttempt(credentials.req)
             await this.recordLogin(user, credentials.req, false)
             throw new ErrorController('Invalid username or password', 401)
         }
