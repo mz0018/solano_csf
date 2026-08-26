@@ -1,1 +1,0 @@
-import{t as e}from"./useQuery-CvRCpGch.js";var t=async()=>{let e=await fetch(`http://localhost:5001/api/admin/offices`,{credentials:`include`});if(!e.ok)throw Error(`Failed to fetch offices`);return e.json()},n=1e3*60*60,r=()=>e({queryKey:[`offices`],queryFn:t,staleTime:n,gcTime:n});export{r as t};

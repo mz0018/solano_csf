@@ -64,7 +64,7 @@ const ResetPassword = () => {
                 [clientId]: data.status
             }))
 
-            alert("Client status updated successfully")
+            alert(`Client status changed to ${data.status}.`)
         } catch (err) {
             alert((err as Error).message)
         }
@@ -260,7 +260,9 @@ const ResetPassword = () => {
                                                             group-hover:opacity-100
                                                         "
                                                     >
-                                                        Change Status
+                                                        Change to {(clientStatuses[client._id] ?? client.status) === "active"
+                                                            ? "inactive"
+                                                            : "active"} status
                                                     </span>
                                                 </div>
 

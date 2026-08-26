@@ -1,1 +1,0 @@
-import{t as e}from"./jsx-runtime-UyaNSxZQ.js";var t=e(),n=()=>(0,t.jsx)(t.Fragment,{children:`Notification settings`});export{n as default};
