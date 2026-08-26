@@ -48,7 +48,7 @@ class UserService {
                 $options: 'i',
             },
         })
-            .select('_id firstName lastName')
+            .select('_id firstName lastName userName officeCode role')
             .limit(10)
             .lean()
 

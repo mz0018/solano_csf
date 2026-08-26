@@ -8,7 +8,7 @@ const tabs = [
     icon: <User />,
     children: [
     { name: 'Account Management', path: 'user-management/manage' },
-    { name: 'Add Client Account', path: 'user-management/add-client' },
+    // { name: 'Add Client Account', path: 'user-management/add-client' },
   ],
     roles: ['super_admin'],
   },

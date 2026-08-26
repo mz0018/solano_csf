@@ -5,6 +5,10 @@ type Client = {
     _id: string
     firstName: string
     lastName: string
+    userName: string
+    officeCode: string
+    role: string
+    createdAt: string
 }
 
 const searchClients = async (search: string): Promise<Client[]> => {
@@ -44,7 +48,7 @@ export const useSearchClient = () => {
     } = useQuery({
         queryKey: ["clients", "search", debouncedSearch],
         queryFn: () => searchClients(debouncedSearch),
-        enabled: debouncedSearch.length > 0,
+        enabled: true,
         staleTime: 30_000,
     })
 
