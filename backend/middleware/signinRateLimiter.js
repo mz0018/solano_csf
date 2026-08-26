@@ -1,5 +1,5 @@
 const attempts = new Map()
-const MAX_ATTEMPTS = 5
+const MAX_ATTEMPTS = 10
 const WINDOW_MS = 15 * 60 * 1000
 
 export const signinRateLimiter = (req, res, next) => {
