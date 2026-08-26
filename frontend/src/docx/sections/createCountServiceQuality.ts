@@ -1,4 +1,4 @@
-import { Paragraph, Table, TableRow, TableCell } from "docx";
+import { Paragraph, Table, TableRow, TableCell, TextRun } from "docx";
 import type { FeedbackItem } from "../../components/buttons/BtnGenerateReport";
 export interface ServiceSurveyed {
   feedback: FeedbackItem[];
@@ -53,10 +53,25 @@ export const createCountServiceQuality = ({ feedback }: ServiceSurveyed) => {
       }),
     ],
   });
+
+  const tableSpacing = new Paragraph({
+      text: "",
+      spacing: {
+          after: 200,
+      },
+  });
+
   return [
     new Paragraph({
-      text: "Count of Service Quality Dimensions results",
+        children: [
+            new TextRun({
+            text: "Count of Service Quality Dimensions results",
+            bold: true,
+            }),
+        ],
     }),
+    
     table,
+    tableSpacing,
   ];
 };

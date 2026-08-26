@@ -1,4 +1,4 @@
-import { Paragraph, Table, TableRow, TableCell } from "docx";
+import { Paragraph, Table, TableRow, TableCell, TextRun } from "docx";
 import type { FeedbackItem } from "../../components/buttons/BtnGenerateReport";
 
 export interface ServiceSurveyed {
@@ -27,7 +27,14 @@ export const createFreeResponses = ({ feedback }: ServiceSurveyed) => {
 
   Object.entries(monthGroups).forEach(([month, comments]) => {
     children.push(
-      new Paragraph("Free Responses")
+      new Paragraph({
+        children: [
+          new TextRun({
+            text: "Free Responses",
+            bold: true,
+          }),
+        ],
+      })
     );
 
     children.push(

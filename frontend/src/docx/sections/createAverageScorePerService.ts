@@ -1,4 +1,4 @@
-import { Paragraph, Table, TableRow, TableCell } from "docx";
+import { Paragraph, Table, TableRow, TableCell, TextRun } from "docx";
 import type { FeedbackItem } from "../../components/buttons/BtnGenerateReport";
 export interface ServiceSurveyed {
   feedback: FeedbackItem[];
@@ -34,8 +34,24 @@ export const createAverageScorePerService = ({ feedback }: ServiceSurveyed) => {
       }),
     ],
   });
+
+   const tableSpacing = new Paragraph({
+      text: "",
+      spacing: {
+          after: 200,
+      },
+  });
+
   return [
-    new Paragraph({ text: "Average Score Per Service" }),
+    new Paragraph({
+        children: [
+            new TextRun({
+            text: "Average Score Per Service",
+            bold: true,
+            }),
+        ],
+    }),
     table,
+    tableSpacing,
   ];
 };

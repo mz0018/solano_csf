@@ -1,4 +1,4 @@
-import { Paragraph, Table, TableRow, TableCell } from "docx";
+import { Paragraph, Table, TableRow, TableCell, TextRun } from "docx";
 import type { FeedbackItem } from "../../components/buttons/BtnGenerateReport";
 
 export interface ServiceSurveyed {
@@ -42,11 +42,24 @@ export const createListOfServiceSurveyed = ({ feedback, selectedOfficeName }: Se
         ],
     });
 
+    const tableSpacing = new Paragraph({
+        text: "",
+        spacing: {
+            after: 200,
+        },
+    });
+
   return [
     new Paragraph({
-      text: "List of services surveyed"
+        children: [
+            new TextRun({
+            text: "List of services surveyed",
+            bold: true,
+            }),
+        ],
     }),
 
     table,
+    tableSpacing,
   ];
 };
