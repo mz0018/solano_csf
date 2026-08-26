@@ -37,6 +37,7 @@ class UserService {
         const newUser = await User.create({
             ...userData,
             password: hashedPassword,
+            status: 'active'
         })
 
         return {

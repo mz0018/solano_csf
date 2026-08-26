@@ -7,6 +7,7 @@ type Client = {
     lastName: string
     userName: string
     officeCode: string
+    status: string
     role: string
     createdAt: string
 }

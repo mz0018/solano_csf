@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom"
 import { Button } from "../../../ui/form/Buttons"
 import { useSearchClient } from "../../../hooks/useSearchClient"
 import { ErrorText } from "../../../ui/form/ErrorText"
+import { RotateCcw } from "lucide-react"
 import { AdminResponsiveContainer } from "../../../ui/form/AdminResponsiveContainer"
 
 const ResetPassword = () => {
@@ -31,6 +32,10 @@ const ResetPassword = () => {
         } catch (err) {
             alert((err as Error).message)
         }
+    }
+
+    const handleToggleStatus = (clientId: string) => {
+        console.log(`Updated status ${clientId}`)
     }
 
     return (
@@ -141,14 +146,45 @@ const ResetPassword = () => {
                                         </td>
 
                                         <td className="p-4">
-                                            <Button
-                                                type="button"
-                                                onClick={() => handleResetPassword(client._id)}
-                                                className="inline-flex shrink-0 items-center justify-center gap-2 rounded-md border border-[#628dec] bg-white px-3 py-2 text-xs font-medium text-[#628dec] transition hover:bg-[#628dec] hover:text-white sm:text-sm whitespace-nowrap"
+                                            <div className="flex items-center justify-start gap-1">
+
+                                                {/* Reset Password */}
+                                                <div className="group relative">
+                                                    <Button
+                                                        type="button"
+                                                        onClick={() => handleResetPassword(client._id)}
+                                                        className="inline-flex shrink-0 items-center justify-center rounded-md p-2 text-[#628dec] hover:bg-[#628dec]/10"
+                                                    >
+                                                        <RotateCcw size={16} />
+                                                    </Button>
+
+                                                    <span className="pointer-events-none absolute left-1/2 top-full z-10 mt-2 -translate-x-1/2 whitespace-nowrap rounded-md bg-white px-2 py-1 text-xs text-white opacity-0 shadow-md transition-opacity duration-150 group-hover:opacity-100">
+                                                        Reset Password
+                                                    </span>
+                                                </div>
+
+                                                {/* Active / Inactive Toggle */}
+                                                <button
+                                                    type="button"
+                                                    role="switch"
+                                                    aria-checked={client.status === 'active'}
+                                                    onClick={() => handleToggleStatus(client._id)}
+                                                    className={`relative inline-flex h-4 w-7 shrink-0 cursor-pointer items-center rounded-full transition-colors duration-200 ${
+                                                        client.status === 'active'
+                                                            ? 'bg-[#628dec]'
+                                                            : 'bg-gray-300'
+                                                    }`}
                                                 >
-                                                
-                                                Reset Password
-                                            </Button>
+                                                    <span
+                                                        className={`inline-block h-3 w-3 transform rounded-full bg-white shadow-sm transition-transform duration-200 ${
+                                                            client.status === 'active'
+                                                                ? 'translate-x-3.5'
+                                                                : 'translate-x-0.5'
+                                                        }`}
+                                                    />
+                                                </button>
+
+                                            </div>
                                         </td>
                                     </tr>
                                 ))
