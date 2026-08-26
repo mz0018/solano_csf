@@ -13,6 +13,15 @@ class SuperAdminController {
         }
     }
 
+    getClient = async (req, res, next) => {
+        try {
+            const result = await SuperAdminService.getClient(req.params.id)
+            res.status(200).json(result)
+        } catch (error) {
+            next(error)
+        }
+    }
+
     authorizePasswordReset = async (req, res, next) => {
         try {
             const result = await SuperAdminService.resetClientPassword(req.params.id)

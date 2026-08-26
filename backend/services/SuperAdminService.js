@@ -55,6 +55,22 @@ class UserService {
         return client
     }
 
+    async getClient(clientId) {
+        if (!mongoose.Types.ObjectId.isValid(clientId)) {
+            throw new ErrorController('Invalid user ID', 404)
+        }
+
+        const client = await User.findById(clientId)
+            .select('_id firstName lastName userName officeCode role createdAt')
+            .lean()
+
+        if (!client) {
+            throw new ErrorController('User not found', 404)
+        }
+
+        return client
+    }
+
 }
 
 export default new UserService()

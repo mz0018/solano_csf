@@ -1,4 +1,5 @@
 import { Button } from "../../ui/form/Buttons";
+import { useGetSuperAdminClient } from "../../hooks/useGetSuperAdminClient";
 
 interface ViewClientModalProps {
   open: boolean;
@@ -7,6 +8,8 @@ interface ViewClientModalProps {
 }
 
 export const ViewClientModal = ({ open, onClose, selectedClientId }: ViewClientModalProps) => {
+  const { data: client, isLoading, error } = useGetSuperAdminClient(selectedClientId, open);
+
   if (!open) return null;
 
     const handleResetPassword = async (clientId: string) => {
@@ -33,6 +36,17 @@ export const ViewClientModal = ({ open, onClose, selectedClientId }: ViewClientM
         <h2 className="text-xl font-semibold">
           View Client
         </h2>
+
+        {isLoading && <p className="mt-4 text-gray-500">Loading client...</p>}
+        {error && <p className="mt-4 text-red-500">{(error as Error).message}</p>}
+        {client && (
+          <dl className="mt-4 space-y-2 text-sm text-gray-700">
+            <div><dt className="font-medium">Name</dt><dd className="capitalize">{client.firstName} {client.lastName}</dd></div>
+            <div><dt className="font-medium">Username</dt><dd>{client.userName}</dd></div>
+            <div><dt className="font-medium">Office</dt><dd>{client.officeCode}</dd></div>
+            <div><dt className="font-medium">Role</dt><dd>{client.role}</dd></div>
+          </dl>
+        )}
 
         <Button 
             className="bg-red-500 hover:bg-red-600 text-white" 

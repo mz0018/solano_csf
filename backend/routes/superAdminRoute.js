@@ -13,6 +13,13 @@ router.get(
     SuperAdminController.searchClient
 )
 
+router.get(
+    '/clients/:id',
+    authorizeViaCookie,
+    authorizeViaRole('super_admin'),
+    SuperAdminController.getClient
+)
+
 router.post(
     '/password/reset/:id', 
     authorizeViaCookie,
