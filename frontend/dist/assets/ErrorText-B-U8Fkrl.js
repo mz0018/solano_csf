@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-UyaNSxZQ.js";import{t}from"./circle-alert-Dnuj_fO7.js";var n=e(),r=({message:e})=>e?(0,n.jsxs)(`div`,{className:`p-2 flex items-center gap-2 text-red-500 tracking-wider rounded mt-1`,children:[(0,n.jsx)(t,{size:18}),(0,n.jsx)(`small`,{children:e})]}):null;export{r as t};

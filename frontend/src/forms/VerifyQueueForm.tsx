@@ -31,6 +31,7 @@ export const VerifyQueueForm = ({ onNext, onBack }: Props) => {
           <label className="block">
             <span className="text-sm text-[var(--theme-text)]">{t("feedback.verifyQueue.queueNumber")}</span>
             <Input
+              id="queue-number"
               name="queueNumber"
               type="text"
               value={code}

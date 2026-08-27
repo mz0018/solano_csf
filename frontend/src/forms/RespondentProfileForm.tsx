@@ -34,23 +34,23 @@ export const RespondentProfileForm = ({ onNext, onBack }: Props) => {
             <form onSubmit={handleNext} className="flex flex-col">
                 <h2 className="text-xl font-semibold text-[var(--theme-text)] mb-6">{t("feedback.respondentProfile.title")}</h2>
                 <div className="space-y-4">
-                    <label className="block">
+                    <label htmlFor="client-name" className="block">
                         <span className="text-sm text-[var(--theme-text)]">{t("feedback.respondentProfile.nameLabel")}</span>
-                        <Input name="clientName" type="text" value={clientName}
+                        <Input id="client-name" name="clientName" type="text" value={clientName}
                             onChange={(e) => setClientName(e.target.value)}
                             className="w-full mt-1 p-3" placeholder={t("feedback.respondentProfile.namePlaceholder")}
                             error={nameError ? "error" : undefined} />
                         {nameError && <ErrorText message={t("feedback.respondentProfile.nameError", { max: NAME_MAX })} />}
                     </label>
-                    <label className="block">
+                    <label htmlFor="contact-number" className="block">
                         <span className="text-sm text-[var(--theme-text)]">{t("feedback.respondentProfile.telLabel")}</span>
-                        <Input name="contactNumber" type="tel" value={contactNumber}
+                        <Input id="contact-number" name="contactNumber" type="tel" value={contactNumber}
                             onChange={(e) => setContactNumber(e.target.value.replace(/\D/g, ""))}
                             className="w-full mt-1 p-3" placeholder={t("feedback.respondentProfile.telPlaceholder")}
                             error={contactError ? "error" : undefined} />
                         {contactError && <ErrorText message={t("feedback.respondentProfile.contactError", { max: TEL_MAX })} />}
                     </label>
-                    <label className="block">
+                    <div className="block">
                         <span className="text-sm text-[var(--theme-text)] mb-2 block">{t("feedback.respondentProfile.genderLabel")}</span>
                         <div className="space-y-3 mt-2">
                             <label className="flex items-center gap-3 cursor-pointer">
@@ -62,7 +62,7 @@ export const RespondentProfileForm = ({ onNext, onBack }: Props) => {
                                 <span className="text-[var(--theme-text)]">{t("feedback.respondentProfile.female")}</span>
                             </label>
                         </div>
-                    </label>
+                    </div>
                 </div>
                 <div className="flex justify-between mt-8">
                     <button type="button" onClick={onBack} className="flex items-center gap-2 px-6 py-2 rounded-lg border border-[var(--theme-border)] text-[var(--theme-text)] hover:bg-[var(--theme-border)] transition"><ArrowLeft size={18} /> {t("common.back")}</button>

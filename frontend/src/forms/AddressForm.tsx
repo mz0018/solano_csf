@@ -33,7 +33,7 @@ export const AddressForm = ({ onNext, onBack }: Props) => {
             <form onSubmit={handleNext} className="flex flex-col">
                 <h2 className="text-xl font-semibold text-[var(--theme-text)] mb-6">{t("feedback.address.title")}</h2>
 
-                <label className="block">
+                <div className="block">
                     <span className="text-sm text-[var(--theme-text)] mb-2 block">{t("feedback.address.label")}</span>
                     <div className="space-y-3 mt-2">
                         <label className="flex items-center gap-3 cursor-pointer">
@@ -45,12 +45,12 @@ export const AddressForm = ({ onNext, onBack }: Props) => {
                             <span className="text-[var(--theme-text)]">{t("feedback.address.outsideSolano")}</span>
                         </label>
                     </div>
-                </label>
+                </div>
 
                 {selected === "Within Solano" && (
                     <div className="mt-4">
-                        <span className="text-sm text-[var(--theme-text)] mb-2 block">{t("feedback.address.barangayLabel")}</span>
-                        <Select name="barangay" value={barangay} onChange={(e) => setBarangay(e.target.value)} className="w-full">
+                        <label htmlFor="barangay" className="text-sm text-[var(--theme-text)] mb-2 block">{t("feedback.address.barangayLabel")}</label>
+                        <Select id="barangay" name="barangay" value={barangay} onChange={(e) => setBarangay(e.target.value)} className="w-full">
                             <option value="">{t("feedback.address.barangayPlaceholder")}</option>
                             {Barangays.map((b) => (
                                 <option key={b.title} value={b.title}>{b.title}</option>
@@ -61,8 +61,8 @@ export const AddressForm = ({ onNext, onBack }: Props) => {
 
                 {selected === "Outside Solano" && (
                     <div className="mt-4">
-                        <span className="text-sm text-[var(--theme-text)] mb-2 block">{t("feedback.address.specifyLabel")}</span>
-                        <Input name="addressDetail" type="text" value={addressDetail}
+                        <label htmlFor="address-detail" className="text-sm text-[var(--theme-text)] mb-2 block">{t("feedback.address.specifyLabel")}</label>
+                        <Input id="address-detail" name="addressDetail" type="text" value={addressDetail}
                             onChange={(e) => setAddressDetail(e.target.value)} className="w-full mt-1 p-3"
                             placeholder={t("feedback.address.specifyPlaceholder")} />
                     </div>

@@ -25,8 +25,10 @@ const RegisterNewClient = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="mb-1 block text-sm font-medium">First name</label>
+              <label htmlFor="client-first-name" className="mb-1 block text-sm font-medium">First name</label>
               <Input
+                id="client-first-name"
+                name="firstName"
                 type="text"
                 value={form.firstName}
                 onChange={(event) => updateField('firstName', event.target.value)}
@@ -37,8 +39,10 @@ const RegisterNewClient = () => {
             </div>
 
             <div>
-              <label className="mb-1 block text-sm font-medium">Last name</label>
+              <label htmlFor="client-last-name" className="mb-1 block text-sm font-medium">Last name</label>
               <Input
+                id="client-last-name"
+                name="lastName"
                 type="text"
                 value={form.lastName}
                 onChange={(event) => updateField('lastName', event.target.value)}
@@ -50,8 +54,10 @@ const RegisterNewClient = () => {
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium">Username</label>
+            <label htmlFor="client-username" className="mb-1 block text-sm font-medium">Username</label>
             <Input
+              id="client-username"
+              name="username"
               type="text"
               value={form.userName}
               onChange={(event) => updateField('userName', event.target.value)}
@@ -62,8 +68,10 @@ const RegisterNewClient = () => {
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium">Password</label>
+            <label htmlFor="client-password" className="mb-1 block text-sm font-medium">Password</label>
             <Input
+              id="client-password"
+              name="password"
               type="password"
               value={form.password}
               onChange={(event) => updateField('password', event.target.value)}
@@ -75,13 +83,15 @@ const RegisterNewClient = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="mb-1 block text-sm font-medium">Office</label>
+              <label htmlFor="client-office" className="mb-1 block text-sm font-medium">Office</label>
               {officesLoading ? (
                 <div className="w-full p-4 flex items-center justify-center">
                   <Loader />
                 </div>
               ) : (
                 <Select
+                  id="client-office"
+                  name="officeCode"
                   value={form.officeCode}
                   onChange={(event) => updateField('officeCode', event.target.value)}
                   error={errors.officeCode}
@@ -98,8 +108,10 @@ const RegisterNewClient = () => {
             </div>
 
             <div>
-              <label className="mb-1 block text-sm font-medium">Role</label>
+              <label htmlFor="client-role" className="mb-1 block text-sm font-medium">Role</label>
               <Select
+                id="client-role"
+                name="role"
                 value={form.role}
                 onChange={(event) =>
                   updateField('role', event.target.value as RegisterClientForm['role'])

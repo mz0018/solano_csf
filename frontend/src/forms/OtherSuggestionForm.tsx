@@ -38,6 +38,7 @@ export const OtherSuggestionForm = ({ onBack, isLoading, onSubmit }: Props) => {
                     <label className="block">
                         <span className="text-sm text-[var(--theme-text)]">{t("feedback.otherSuggestion.label")}</span>
                         <textarea
+                            id="comments"
                             name="comments"
                             rows={4}
                             value={comments}

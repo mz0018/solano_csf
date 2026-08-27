@@ -82,11 +82,13 @@ export const GenerateTicketModal = ({ isModalOpen, setIsModalOpen }: GenerateTic
 
             {isMultipleMode && (
                 <div>
-                <label className="text-sm font-medium text-gray-700">
+                <label htmlFor="ticket-count" className="text-sm font-medium text-gray-700">
                     How many tickets should be generated?
                 </label>
 
                 <input
+                  id="ticket-count"
+                  name="ticketCount"
                   type="number"
                   min={2}
                   value={ticketCount}

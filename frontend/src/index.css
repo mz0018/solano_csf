@@ -128,6 +128,40 @@
 .sidebar-link-border {
   border-left: 2px solid transparent;
   transition: border-color 300ms ease;
+.admin-content {
+  color: #1f2937;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+}
+.admin-content h1 {
+  color: #1f2937;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 2rem;
+}
+.admin-content h2 {
+  color: #1f2937;
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.75rem;
+}
+.admin-content h3 {
+  color: #1f2937;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+}
+.admin-content label,
+.admin-content th {
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+}
+.admin-content p,
+.admin-content span {
+  line-height: 1.25rem;
+}
 }
 .sidebar-link-border:hover {
   border-left-color: #628dec;

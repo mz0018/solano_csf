@@ -53,8 +53,10 @@ export const ChangePassword = () => {
       </span>
       <form onSubmit={handleChangePassword} className="space-y-4 max-w-md">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
+          <label htmlFor="current-password" className="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
           <Input
+            id="current-password"
+            name="currentPassword"
             type={showPassword ? "text" : "password"}
             value={currentPassword}
             onChange={(e) => setCurrentPassword(e.target.value)}
@@ -65,8 +67,10 @@ export const ChangePassword = () => {
           {currentPasswordError && <ErrorText message="Current password is required" />}
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+          <label htmlFor="new-password" className="block text-sm font-medium text-gray-700 mb-1">New Password</label>
           <Input
+            id="new-password"
+            name="newPassword"
             type={showPassword ? "text" : "password"}
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
@@ -77,8 +81,10 @@ export const ChangePassword = () => {
           {newPasswordError && <ErrorText message="Password must be at least 8 characters" />}
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
+          <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
           <Input
+            id="confirm-password"
+            name="confirmPassword"
             type={showPassword ? "text" : "password"}
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}

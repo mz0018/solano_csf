@@ -16,10 +16,11 @@ export const SuperAdminClientChangePasswordModal = ({ passwordModalOpen, setPass
             title="Client password reset"
         >
             <div className="space-y-4">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
+                <label htmlFor="client-current-password" className="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
                 <Input 
-                    name="addressDetail" 
-                    type="text" 
+                    id="client-current-password"
+                    name="currentPassword" 
+                    type="password" 
                     onChange={(e) => console.log(e.target.value)} 
                     className="w-full mt-1 p-3 text-black"
                     placeholder="Enter Client Name" 

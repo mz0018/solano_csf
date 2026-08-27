@@ -16,19 +16,19 @@ const ProfileSettings = () => {
       <div className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="text-sm text-gray-500">First Name</label>
+            <span className="text-sm text-gray-500">First Name</span>
             <p className="font-medium capitalize">{user?.firstName || '-'}</p>
           </div>
           <div>
-            <label className="text-sm text-gray-500">Last Name</label>
+            <span className="text-sm text-gray-500">Last Name</span>
             <p className="font-medium capitalize">{user?.lastName || '-'}</p>
           </div>
           <div>
-            <label className="text-sm text-gray-500">Username</label>
+            <span className="text-sm text-gray-500">Username</span>
             <p className="font-medium">{user?.userName || '-'}</p>
           </div>
           <div>
-            <label className="text-sm text-gray-500">Role</label>
+            <span className="text-sm text-gray-500">Role</span>
             <p className="font-medium capitalize">
               {user?.role
               ? user.role === "hr_admin"
@@ -38,7 +38,7 @@ const ProfileSettings = () => {
             </p>
           </div>
           <div className="col-span-2">
-            <label className="text-sm text-gray-500">Office Code</label>
+            <span className="text-sm text-gray-500">Office Code</span>
             <p className="font-medium">{user?.officeCode || '-'}</p>
           </div>
         </div>

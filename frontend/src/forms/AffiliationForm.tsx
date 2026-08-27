@@ -22,7 +22,7 @@ export const AffiliationForm = ({ onNext, onBack }: Props) => {
         <CsfFormUI>
             <form onSubmit={handleNext} className="flex flex-col">
                 <h2 className="text-xl font-semibold text-[var(--theme-text)] mb-6">{t("feedback.affiliation.title")}</h2>
-                <label className="block">
+                <div className="block">
                     <span className="text-sm text-[var(--theme-text)] mb-2 block">{t("feedback.affiliation.label")}</span>
                     <div className="space-y-3 mt-2">
                         <label className="flex items-center gap-3 cursor-pointer">
@@ -38,7 +38,7 @@ export const AffiliationForm = ({ onNext, onBack }: Props) => {
                             <span className="text-[var(--theme-text)]">{t("feedback.affiliation.otherAgencies")}</span>
                         </label>
                     </div>
-                </label>
+                </div>
                 <div className="flex justify-between mt-8">
                     <button type="button" onClick={onBack} className="flex items-center gap-2 px-6 py-2 rounded-lg border border-[var(--theme-border)] text-[var(--theme-text)] hover:bg-[var(--theme-border)] transition"><ArrowLeft size={18} /> {t("common.back")}</button>
                     <button type="submit" disabled={!selected} className="flex items-center gap-2 px-6 py-2 rounded-lg bg-[var(--theme-btn-bg)] text-[var(--theme-btn-text)] hover:opacity-90 transition disabled:opacity-50">{t("common.next")} <ArrowRightToLine size={18} /></button>

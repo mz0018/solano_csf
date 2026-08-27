@@ -4,6 +4,7 @@ import { Button } from "../../../ui/form/Buttons"
 import { useSearchClient } from "../../../hooks/useSearchClient"
 import { ErrorText } from "../../../ui/form/ErrorText"
 import { RotateCcw } from "lucide-react"
+import { TableUI } from "../../../ui/form/TableUI"
 import { AdminResponsiveContainer } from "../../../ui/form/AdminResponsiveContainer"
 
 const ResetPassword = () => {
@@ -80,7 +81,7 @@ const ResetPassword = () => {
                     Account Management
                     </h1>
 
-                    <span className="text-sm text-gray-500 mt-2 leading-relaxed">
+                    <span className="text-sm text-gray-500 leading-relaxed">
                     Search for a client to manage their account access and password
                     </span>
                 </div>
@@ -118,7 +119,7 @@ const ResetPassword = () => {
 
                 {/* Table */}
                 <div className="w-full overflow-x-auto">
-                    <table className="w-full border-collapse">
+                    <TableUI className="w-full border-collapse">
                         <thead>
                             <tr className="border-b border-gray-200">
                                 <th className="text-left p-4 font-medium text-gray-500">
@@ -177,7 +178,11 @@ const ResetPassword = () => {
                                         </td>
 
                                         <td className="p-4 text-gray-700 capitalize">
-                                            {client.role}
+                                        {client.role === 'office_admin'
+                                            ? 'Office Administrator'
+                                            : client.role === 'hr_admin'
+                                            ? 'Human Resource Administrator'
+                                            : ''}
                                         </td>
 
                                         <td className="p-4">
@@ -275,7 +280,7 @@ const ResetPassword = () => {
                                 ))
                             )}
                         </tbody>
-                    </table>
+                    </TableUI>
                 </div>
             </div>
         </AdminResponsiveContainer>

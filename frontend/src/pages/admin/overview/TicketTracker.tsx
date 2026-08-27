@@ -18,7 +18,7 @@ const TicketTracker = () => {
             <div className="flex flex-col gap-6 w-full">
                 <div className="flex flex-col leading-none">
                     <h1 className="text-2xl font-semibold">Ticket Tracker</h1>
-                    <span className="text-sm text-gray-500 mt-2">
+                    <span className="text-sm text-gray-500">
                         Search for a ticket to track its status and updates
                     </span>
                 </div>
@@ -27,7 +27,7 @@ const TicketTracker = () => {
                 <div className="flex items-end gap-3 w-full">
                     <div className="flex-1">
                         <label
-                            htmlFor="client-search"
+                            htmlFor="office"
                             className="mb-1 block text-sm font-medium"
                         >
                             Select Office
@@ -76,7 +76,7 @@ const TicketTracker = () => {
                                             : "Unknown user"}
                                     </p>
                                 </div>
-                                <span className="text-sm capitalize text-gray-600">{ticket.status}</span>
+                                <span className="text-sm uppercase text-gray-600 tracking-wider">{ticket.status}</span>
                             </div>
                         ))}
                     </div>

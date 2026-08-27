@@ -68,30 +68,62 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
       `}
     >
       <div className="p-4 flex justify-between items-center border-b border-[#cbd5e1]">
-        <div
-          className={`
-            flex flex-col leading-tight
-            overflow-hidden
-            whitespace-nowrap
-            transition-all duration-300 ease-in-out
-            ${
-              collapsed
-                ? 'w-0 max-w-0 opacity-0 -translate-x-2'
-                : 'w-auto max-w-[220px] opacity-100 translate-x-0'
-            }
-          `}
-        >
-          <p className="font-semibold text-md text-[#1f2937] uppercase">
-            {user?.userName}
-          </p>
+        <div className="flex items-center gap-3 min-w-0">
+          {/* User Initial Avatar */}
+          <div
+            className={`
+              flex
+              items-center
+              justify-center
+              shrink-0
+              h-10
+              rounded-full
+              bg-blue-500
+              text-white
+              font-semibold
+              text-sm
+              uppercase
+              shadow-sm
+              overflow-hidden
+              transition-all
+              duration-300
+              ease-in-out
+              ${
+                collapsed
+                  ? 'w-0 opacity-0 scale-75 -ml-3'
+                  : 'w-10 opacity-100 scale-100 ml-0'
+              }
+            `}
+          >
+            {user?.userName?.charAt(0) || 'U'}
+          </div>
 
-          <span className="text-md text-[#6b7280]">
-            {user?.role === "hr_admin"
-              ? 'Human Resource'
-              : user?.role === 'super_admin'
-              ? 'Super Admin'
-              : 'Office Admin'}
-          </span>
+          {/* User Information */}
+          <div
+            className={`
+              flex flex-col leading-tight
+              overflow-hidden
+              whitespace-nowrap
+              transition-all duration-300 ease-in-out
+              ${
+                collapsed
+                  ? 'w-0 max-w-0 opacity-0 -translate-x-2'
+                  : 'w-[180px] max-w-[180px] opacity-100 translate-x-0'
+              }
+            `}
+          >
+            <p className="font-semibold text-md text-[#1f2937] uppercase truncate">
+              {user?.userName}
+            </p>
+
+            <span className="text-sm text-[#6b7280] truncate">
+              {user?.role === "hr_admin"
+                ? 'Human Resource'
+                : user?.role === 'super_admin'
+                ? 'Super Admin'
+                : 'Office Admin'}
+            </span>
+          </div>
         </div>
 
         <button
@@ -102,7 +134,7 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
         </button>
       </div>
 
-      <nav className="flex-1 p-2 space-y-1">
+      <nav className="flex-1 p-2 space-y-1 overflow-hidden">
         {navLinks.map((item) =>
           item.children ? (
             <DropdownHelper
@@ -116,16 +148,73 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
               key={item.path}
               to={item.path || '#'}
               className={({ isActive }) =>
-                `sidebar-item sidebar-link-border flex items-center gap-3 px-4 py-2 rounded-sm transition-colors duration-150 ${
-                  isActive
-                    ? 'bg-[#dbeafe] text-[#1e3a5f] active'
-                    : 'text-[#476581] hover:bg-[#dbeafe] hover:text-[#1e3a5f]'
-                }`
+                `
+                  sidebar-item
+                  sidebar-link-border
+                  flex
+                  items-center
+                  h-10
+                  rounded-sm
+                  overflow-hidden
+                  transition-all
+                  duration-300
+                  ease-in-out
+
+                  ${collapsed
+                    ? 'w-full justify-center px-0'
+                    : 'w-full px-4 gap-3'
+                  }
+
+                  ${
+                    isActive
+                      ? 'bg-[#dbeafe] text-[#1e3a5f] active'
+                      : 'text-[#476581] hover:bg-[#dbeafe] hover:text-[#1e3a5f]'
+                  }
+                `
               }
             >
-              <span>{item.icon}</span>
+              {({ isActive }) => (
+                <>
+                  {/* Fixed icon container */}
+                  <span
+                    className={`
+                      flex
+                      items-center
+                      justify-center
+                      shrink-0
+                      w-6
+                      h-6
+                      transition-all
+                      duration-300
+                      ${
+                        isActive
+                          ? 'text-[#1e3a5f]'
+                          : 'text-[#476581]'
+                      }
+                    `}
+                  >
+                    {item.icon}
+                  </span>
 
-              {!collapsed && <span>{item.name}</span>}
+                  {/* Animated label */}
+                  <span
+                    className={`
+                      whitespace-nowrap
+                      overflow-hidden
+                      transition-all
+                      duration-300
+                      ease-in-out
+                      ${
+                        collapsed
+                          ? 'w-0 max-w-0 opacity-0 -translate-x-2'
+                          : 'w-auto max-w-[200px] opacity-100 translate-x-0'
+                      }
+                    `}
+                  >
+                    {item.name}
+                  </span>
+                </>
+              )}
             </NavLink>
           )
         )}

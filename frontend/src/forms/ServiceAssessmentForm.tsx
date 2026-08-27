@@ -24,7 +24,7 @@ export const ServiceAssessmentForm = ({ onNext, onBack }: Props) => {
             <form onSubmit={handleNext} className="flex flex-col">
                 <h2 className="text-xl font-semibold text-[var(--theme-text)] mb-6">{t("feedback.serviceAssessment.title")}</h2>
                 <div className="space-y-4">
-                    <label className="block">
+                    <div className="block">
                         <span className="text-sm text-[var(--theme-text)] mb-2 block">{t("feedback.serviceAssessment.label")}</span>
                         {services.length === 0 ? (
                             <p className="text-sm text-[var(--theme-text)] opacity-70">{t("feedback.serviceAssessment.empty")}</p>
@@ -54,7 +54,7 @@ export const ServiceAssessmentForm = ({ onNext, onBack }: Props) => {
                                 ))}
                             </div>
                         )}
-                    </label>
+                    </div>
                 </div>
                 <div className="flex justify-between mt-8">
                     <button type="button" onClick={onBack} className="flex items-center gap-2 px-6 py-2 rounded-lg border border-[var(--theme-border)] text-[var(--theme-text)] hover:bg-[var(--theme-border)] transition"><ArrowLeft size={18} /> {t("common.back")}</button>

@@ -53,8 +53,10 @@ const Signin = () => {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-3">
-            <label className="block text-sm font-medium text-[var(--theme-text)]/70 mb-1">Enter your username</label>
+            <label htmlFor="signin-username" className="block text-sm font-medium text-[var(--theme-text)]/70 mb-1">Enter your username</label>
             <Input
+              id="signin-username"
+              name="username"
               type="text"
               value={userName}
               placeholder="e.g., John Doe"
@@ -65,9 +67,11 @@ const Signin = () => {
 
             <div>
               <div className="relative">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                <label htmlFor="signin-password" className="block text-sm font-medium text-gray-700 mb-1">Password</label>
                 <div className="relative flex items-center">
                   <Input
+                    id="signin-password"
+                    name="password"
                     type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
