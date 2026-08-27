@@ -1,3 +1,0 @@
-import{t as e}from"./jsx-runtime-UyaNSxZQ.js";import{t}from"./chevron-down-CmzseSpp.js";var n=e(),r=({className:e=``,error:r,children:i,...a})=>(0,n.jsxs)(`div`,{className:`relative`,children:[(0,n.jsx)(`select`,{...a,className:`w-full p-4 pr-10 rounded-sm focus:outline-none border appearance-none bg-transparent
-                    ${r?`border-red-500 text-red-500`:`border-gray-300 text-gray-500`}
-                    ${e}`,children:i}),(0,n.jsx)(t,{size:16,className:`absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400`})]});export{r as t};

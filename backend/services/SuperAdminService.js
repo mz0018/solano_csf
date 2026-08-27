@@ -3,6 +3,7 @@ import Notification from '../models/notification.model.js'
 import argon2 from 'argon2'
 import ErrorController from '../controllers/ErrorController.js'
 import mongoose from 'mongoose'
+import Queue from '../models/queue.model.js'
 
 class UserService {
 
@@ -97,6 +98,45 @@ class UserService {
             status: client.status
         }
     }
+
+    async getTicketTrackerByDate(officeCode, dateFrom, page = 1, limit = 10) {
+        const startOfDay = new Date(dateFrom);
+        startOfDay.setHours(0, 0, 0, 0);
+
+        const endOfDay = new Date(dateFrom);
+        endOfDay.setHours(23, 59, 59, 999);
+
+        const filter = {
+            officeCode,
+            createdAt: {
+                $gte: startOfDay,
+                $lte: endOfDay
+            }
+        };
+
+        const skip = (page - 1) * limit;
+
+        const tickets = await Queue.find(filter)
+            .select('_id code status createdAt generatedBy')
+            .populate('generatedBy', '_id firstName lastName userName')
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit)
+            .lean();
+
+        const total = await Queue.countDocuments(filter);
+
+        return {
+            tickets,
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit),
+            officeCode,
+            date: startOfDay.toISOString()
+        };
+    }
+
 
 }
 

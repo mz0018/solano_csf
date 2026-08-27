@@ -34,4 +34,11 @@ router.post(
     SuperAdminController.updateClientStatus
 )
 
+router.get(
+    '/ticket-tracker',
+    authorizeViaCookie,
+    authorizeViaRole('super_admin'),
+    SuperAdminController.getTicketTracker
+)
+
 export default router

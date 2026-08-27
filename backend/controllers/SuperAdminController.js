@@ -40,6 +40,16 @@ class SuperAdminController {
         }
     }
 
+    async getTicketTracker(req, res, next) {
+        try {
+            const { officeCode, dateFrom, page = 1, limit = 10 } = req.query;
+            const result = await SuperAdminService.getTicketTrackerByDate(officeCode, dateFrom, parseInt(page), parseInt(limit));
+            res.status(200).json(result);
+        } catch (error) {
+            next(error);
+        }
+    }
+
 }
 
 export default new SuperAdminController()

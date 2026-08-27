@@ -1,6 +1,9 @@
 import { useState } from "react"
 import { Select } from "../../../ui/form/Select"
 import { useGetOffices } from "../../../hooks/useGetOffices"
+import { ErrorText } from "../../../ui/form/ErrorText"
+import { InlineLoader } from "../../../components/Loader"
+import { useGetTicketTracker } from "../../../hooks/useGetTicketTracker"
 import { AdminResponsiveContainer } from "../../../ui/form/AdminResponsiveContainer"
 
 const TicketTracker = () => {
@@ -8,6 +11,7 @@ const TicketTracker = () => {
     const { data: offices, isLoading: officesLoading } = useGetOffices();
     const [officeCode, setOfficeCode] = useState("");
     const [dateFrom, setDateFrom] = useState("")
+    const { data: tracker, isLoading: trackerLoading, isError: trackerError } = useGetTicketTracker(officeCode, dateFrom)
 
     return (
         <AdminResponsiveContainer>
@@ -54,6 +58,29 @@ const TicketTracker = () => {
                         />
                     </div>
                 </div>
+
+                {trackerLoading && <InlineLoader />}
+                {trackerError && <ErrorText message="Unable to load tickets."/>}
+                {!trackerLoading && !trackerError && tracker && (
+                    <div className="flex flex-col gap-3">
+                        <p className="text-sm text-gray-500">
+                            {tracker.total} ticket{tracker.total === 1 ? "" : "s"} found
+                        </p>
+                        {tracker.tickets.map((ticket) => (
+                            <div key={ticket._id} className="flex items-center justify-between border-b border-gray-200 py-3">
+                                <div>
+                                    <p className="font-medium">{ticket.code}</p>
+                                    <p className="text-sm text-gray-500 capitalize">
+                                        {ticket.generatedBy
+                                            ? `${ticket.generatedBy.firstName} ${ticket.generatedBy.lastName}`
+                                            : "Unknown user"}
+                                    </p>
+                                </div>
+                                <span className="text-sm capitalize text-gray-600">{ticket.status}</span>
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
         </AdminResponsiveContainer>
     )
