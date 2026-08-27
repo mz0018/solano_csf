@@ -74,21 +74,24 @@ const ResetPassword = () => {
         <AdminResponsiveContainer>
             <div className="flex flex-col gap-6 w-full">
                 {/* Header */}
-                <div className="flex items-start justify-between w-full">
-                    <div className="flex flex-col leading-none">
-                        <h1 className="text-2xl font-semibold">Account Management</h1>
-                        <span className="text-sm text-gray-500 mt-2">
-                            Search for a client to manage their account access and password
-                        </span>
-                    </div>
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 w-full">
+                <div className="flex flex-col leading-none min-w-0">
+                    <h1 className="text-xl sm:text-2xl font-semibold">
+                    Account Management
+                    </h1>
 
-                    <Button
-                        onClick={() => navigate('/admin/overview/user-management/add-client')}
-                        className="cursor-pointer p-4 rounded-sm tracking-wider flex items-center justify-center gap-2 bg-blue-500 text-white p-4 rounded-sm cursor-pointer hover:bg-blue-600 transition-colors whitespace-nowrap"
-                    >
-                        Add Client Account
-                    </Button>
+                    <span className="text-sm text-gray-500 mt-2 leading-relaxed">
+                    Search for a client to manage their account access and password
+                    </span>
                 </div>
+
+                <Button
+                    onClick={() => navigate('/admin/overview/user-management/add-client')}
+                    className="admin-blue-button w-full sm:w-auto shrink-0"
+                >
+                    Add Client Account
+                </Button>
+            </div>
 
                 {/* Search */}
                 <div>

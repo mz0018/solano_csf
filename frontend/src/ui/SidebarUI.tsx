@@ -58,17 +58,29 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
      className={`
         fixed lg:static
         h-full
-        bg-[#f9fafb] text-[#1f2937]
+        sidebar-surface text-[#1f2937]
         flex flex-col
         z-50
         transition-all duration-300
         ${collapsed ? 'w-16' : 'w-80'}
         translate-x-0
-        border-r border-[#e5e7eb]
+        border-r border-[#cbd5e1]
       `}
     >
-      <div className="p-4 flex justify-between items-center border-b border-[#e5e7eb]">
-        <div className={`${collapsed ? 'hidden' : 'flex flex-col leading-tight'}`}>
+      <div className="p-4 flex justify-between items-center border-b border-[#cbd5e1]">
+        <div
+          className={`
+            flex flex-col leading-tight
+            overflow-hidden
+            whitespace-nowrap
+            transition-all duration-300 ease-in-out
+            ${
+              collapsed
+                ? 'w-0 max-w-0 opacity-0 -translate-x-2'
+                : 'w-auto max-w-[220px] opacity-100 translate-x-0'
+            }
+          `}
+        >
           <p className="font-semibold text-md text-[#1f2937] uppercase">
             {user?.userName}
           </p>
@@ -84,7 +96,7 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
 
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="cursor-pointer flex items-center justify-center p-2 rounded-sm text-[#6b7280] hover:bg-[#f3f4f6] hover:text-[#1f2937] transition-colors duration-150"
+          className="cursor-pointer flex items-center justify-center p-2 rounded-sm text-[#476581] hover:bg-[#dbeafe] hover:text-[#1e3a5f] transition-colors duration-150"
         >
           <PanelLeft size={20}/>
         </button>
@@ -104,10 +116,10 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
               key={item.path}
               to={item.path || '#'}
               className={({ isActive }) =>
-                `font-medium sidebar-link-border flex items-center gap-3 px-4 py-2 rounded-sm text-md transition-colors duration-150 ${
+                `sidebar-item sidebar-link-border flex items-center gap-3 px-4 py-2 rounded-sm transition-colors duration-150 ${
                   isActive
-                    ? 'bg-[#eff6ff] active'
-                    : 'text-[#6b7280] hover:bg-[#f3f4f6] hover:text-[#1f2937]'
+                    ? 'bg-[#dbeafe] text-[#1e3a5f] active'
+                    : 'text-[#476581] hover:bg-[#dbeafe] hover:text-[#1e3a5f]'
                 }`
               }
             >
@@ -119,7 +131,7 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
         )}
       </nav>
 
-      <div className={`p-4 border-t border-[#e5e7eb] ${collapsed ? 'px-2' : ''}`}>
+      <div className={`p-4 border-t border-[#cbd5e1] ${collapsed ? 'px-2' : ''}`}>
         <BtnSignout collapsed={collapsed} />
       </div>
 

@@ -125,7 +125,7 @@ export const ChangePassword = () => {
         <button
           type="submit"
           disabled={changePasswordMutation.isPending || !isFormValid || isRateLimited}
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 disabled:opacity-50 transition"
+          className="admin-blue-button"
         >
           {changePasswordMutation.isPending ? "Changing..." : "Change Password"}
         </button>

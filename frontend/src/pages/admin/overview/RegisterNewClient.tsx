@@ -128,7 +128,7 @@ const RegisterNewClient = () => {
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-[#628dec] hover:opacity-90 text-white rounded-lg"
+            className="admin-blue-button"
           >
             {isSubmitting ? 'Creating account...' : 'Create account'}
           </Button>

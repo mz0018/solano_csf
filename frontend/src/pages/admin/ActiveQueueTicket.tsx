@@ -19,7 +19,7 @@ const ActiveQueueTicket = () => {
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="bg-blue-500 text-white p-4 rounded-sm cursor-pointer hover:bg-blue-600 transition-colors"
+          className="admin-blue-button"
         >
           Generate Ticket
         </button>

@@ -36,7 +36,7 @@ export const SuperAdminLayout = () => {
         ))}
       </nav>
 
-      <div className="flex-1 min-w-0 bg-white border border-[#e5e7eb] rounded-lg p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+      <div className="flex-1 min-w-0 bg-white">
         <Outlet />
       </div>
     </div>

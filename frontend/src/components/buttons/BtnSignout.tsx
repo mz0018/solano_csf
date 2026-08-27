@@ -18,7 +18,7 @@ export const BtnSignout = ({ collapsed = false }: BtnSignoutProps) => {
 
     return (
         <Button
-            className={`font-medium sidebar-link-border w-full text-md text-[#6b7280] bg-transparent hover:bg-[#f3f4f6] transition-colors duration-150 ${
+            className={`sidebar-item sidebar-link-border w-full text-[#476581] bg-transparent hover:bg-[#dbeafe] hover:text-[#1e3a5f] transition-colors duration-150 ${
                 collapsed ? 'justify-center' : 'justify-start'
             }`}
             onClick={handleSignOut}

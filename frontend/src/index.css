@@ -114,6 +114,17 @@
 }
 
 /* Sidebar links */
+.sidebar-surface {
+  background-color: #eef4fb;
+}
+.sidebar-item {
+  width: 100%;
+  min-height: 2.5rem;
+  box-sizing: border-box;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+}
 .sidebar-link-border {
   border-left: 2px solid transparent;
   transition: border-color 300ms ease;
@@ -124,4 +135,35 @@
 /* Add this line: */
 .sidebar-link-border.active {
   border-left-color: #628dec;
+}
+
+.admin-blue-button {
+  background-color: #3b82f6; /* bg-blue-500 */
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.admin-blue-button:hover {
+  background-color: #2563eb;
+}
+
+.admin-blue-button:active {
+  background-color: #1d4ed8;
+  transform: translateY(1px);
+}
+
+.admin-blue-button:focus-visible {
+  outline: 2px solid #93c5fd;
+  outline-offset: 2px;
+}
+
+.admin-blue-button:disabled {
+  background-color: #93c5fd;
+  color: #e5e7eb;
+  cursor: not-allowed;
 }

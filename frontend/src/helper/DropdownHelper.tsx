@@ -29,7 +29,7 @@ export const DropdownHelper = ({ item, collapsed, setCollapsed }: Props) => {
 
           setOpen(prev => !prev)
         }}
-        className="sidebar-link-border relative w-full flex items-center gap-3 px-4 py-2 rounded-sm text-md text-[#6b7280] hover:bg-[#f3f4f6] hover:text-[#1f2937] transition-colors duration-150 focus:ring-0 focus:outline-none"
+        className="sidebar-item sidebar-link-border relative w-full flex items-center gap-3 px-4 py-2 rounded-sm text-[#476581] hover:bg-[#dbeafe] hover:text-[#1e3a5f] transition-colors duration-150 focus:ring-0 focus:outline-none"
       >
         <span className="shrink-0">
           {item.icon}
@@ -64,10 +64,10 @@ export const DropdownHelper = ({ item, collapsed, setCollapsed }: Props) => {
                 }
               }}
               className={({ isActive }) =>
-                `font-medium sidebar-link-border flex items-center gap-2 pl-6 pr-4 py-2 rounded-sm text-md transition-colors duration-150 ${
+                `sidebar-item sidebar-link-border flex items-center gap-2 pl-6 pr-4 py-2 rounded-sm transition-colors duration-150 ${
                   isActive
-                    ? 'bg-[#eff6ff] active'
-                    : 'text-[#6b7280] hover:bg-[#f3f4f6] hover:text-[#1f2937]'
+                    ? 'bg-[#dbeafe] text-[#1e3a5f] active'
+                    : 'text-[#476581] hover:bg-[#dbeafe] hover:text-[#1e3a5f]'
                 }`
               }
               >
