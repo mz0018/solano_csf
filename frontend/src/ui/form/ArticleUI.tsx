@@ -10,6 +10,7 @@ type ArticleUIProps = {
   articleRef?: RefObject<HTMLElement | null>;
   viewMoreLink?: string;
   className?: string;
+  decorative?: string | number;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
 };
@@ -22,6 +23,7 @@ export const ArticleUI = ({
   articleRef,
   viewMoreLink,
   className = "",
+  decorative,
   onMouseEnter,
   onMouseLeave,
 }: ArticleUIProps) => {
@@ -31,10 +33,12 @@ export const ArticleUI = ({
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       className={`
-        w-full max-w-3xl shrink-0 rounded-lg
-        border border-[var(--theme-border)]
-        bg-[var(--theme-nav-bg)]/90
-        shadow-xl
+        relative
+        w-full
+        max-w-3xl
+        shrink-0
+        overflow-hidden
+        rounded-lg
         px-3 py-5
         sm:px-5 sm:py-7
         md:px-6 md:py-8
@@ -43,31 +47,73 @@ export const ArticleUI = ({
         ${className}
       `}
     >
-      <h1 className="mb-5 text-2xl font-bold tracking-wide text-[var(--theme-text)] sm:text-3xl md:text-4xl lg:text-5xl">
-        {title}
-      </h1>
-
-      <p className="mb-5 line-clamp-2 text-[var(--theme-text)] sm:text-xs md:text-sm lg:text-base">
-        {paragraph}
-      </p>
-
-      {/* Lottie placeholder */}
-      <div className="my-6 flex min-h-12 items-center justify-center">
-        {lottie}
-      </div>
-
-      {viewMoreLink && (
-        <Link
-          className="inline-flex items-center gap-2 rounded-full border border-[var(--theme-border)] px-6 py-1 text-sm text-[var(--theme-muted)] hover:text-[var(--theme-text)] sm:text-base"
-          to={viewMoreLink}
-          onClick={() => window.scrollTo(0, 0)}
+      {/* Decorative background */}
+      {decorative !== undefined && (
+        <span
+          aria-hidden="true"
+          className="
+            pointer-events-none
+            absolute
+            -top-4
+            left-1
+            select-none
+            text-[8rem]
+            font-bold
+            leading-none
+            tracking-[-0.08em]
+            text-[var(--theme-text)]/[0.035]
+            sm:-top-6
+            sm:left-1
+            sm:text-[10rem]
+            md:-top-8
+            md:left-0
+          "
         >
-          <CircleSmall className="size-3 fill-green-500 text-green-500" />
-          Read more
-        </Link>
+          {decorative}
+        </span>
       )}
 
-      {children}
+      {/* Content */}
+      <div className="relative z-10">
+        <h1 className="mb-5 text-2xl font-bold tracking-wide text-[var(--theme-text)] sm:text-3xl md:text-4xl lg:text-5xl">
+          {title}
+        </h1>
+
+        <p className="mb-5 line-clamp-2 text-[var(--theme-text)] sm:text-xs md:text-sm lg:text-base">
+          {paragraph}
+        </p>
+
+        {/* Lottie */}
+        <div className="my-6 flex min-h-12 items-center justify-center">
+          {lottie}
+        </div>
+
+        {viewMoreLink && (
+          <Link
+            className="
+              inline-flex
+              items-center
+              gap-2
+              rounded-full
+              border
+              border-[var(--theme-border)]
+              px-6
+              py-1
+              text-sm
+              text-[var(--theme-muted)]
+              hover:text-[var(--theme-text)]
+              sm:text-base
+            "
+            to={viewMoreLink}
+            onClick={() => window.scrollTo(0, 0)}
+          >
+            <CircleSmall className="size-3 fill-green-500 text-green-500" />
+            Read more
+          </Link>
+        )}
+
+        {children}
+      </div>
     </article>
   );
 };

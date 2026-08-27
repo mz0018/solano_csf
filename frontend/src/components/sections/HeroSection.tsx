@@ -38,7 +38,6 @@ export const HeroSection = () => {
                   text-gray-200
                   transition
                   hover:opacity-90
-                  animate-fade-in-up
                 "
               >
                 <PenLine className="size-5" />
@@ -65,7 +64,7 @@ export const HeroSection = () => {
           </article>
 
           {/* Right Card */}
-          <FeedbackArticleUI className="hidden lg:block animate-fade-in-up relative top-12" />
+          <FeedbackArticleUI className="hidden lg:block relative top-12" />
         </div>
       </div>
     </section>
