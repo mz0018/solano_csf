@@ -34,6 +34,7 @@ const NotificationSettings = lazy(() => import('./pages/admin/settings/Notificat
 
 const SuperAdmin = lazy(() => import('./pages/admin/SuperAdmin.tsx'))
 const ResetPassword = lazy(() => import('./pages/admin/overview/ResetPassword.tsx'))
+const TicketTracker = lazy(() => import('./pages/admin/overview/TicketTracker.tsx'))
 const RegisterNewClient = lazy(() => import('./pages/admin/overview/RegisterNewClient.tsx'))
 const SystemReport = lazy(() => import('./pages/admin/overview/SystemReport.tsx'))
 
@@ -77,6 +78,7 @@ const router = createBrowserRouter([
           children: [
             { index: true, element: <Navigate to="user-management/manage" replace /> },
             { path: "user-management/manage", element: <ResetPassword /> },
+            { path: "user-management/ticket-tracker", element: <TicketTracker /> },
             { path: "user-management/add-client", element: <RegisterNewClient /> },
             { path: "report/system", element: <SystemReport /> },
           ]
