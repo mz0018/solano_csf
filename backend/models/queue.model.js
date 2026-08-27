@@ -15,6 +15,11 @@ const queueSchema = new mongoose.Schema(
       enum: ['pending', 'used', 'expired'],
       default: 'pending',
     },
+    generatedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
+    }
   },
   { timestamps: true }
 );

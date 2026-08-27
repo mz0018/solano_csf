@@ -38,7 +38,8 @@ class AdminService {
         for (let i = 0; i < count; i++) {
             const ticket = await Queue.create({
                 officeCode: `${officeCode}`,
-                code: `${officeCode}${year}-${generateCode()}`
+                code: `${officeCode}${year}-${generateCode()}`,
+                generatedBy: userId
             })
             tickets.push(ticket)
         }
