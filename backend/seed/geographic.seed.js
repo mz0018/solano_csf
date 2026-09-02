@@ -1,5 +1,8 @@
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import Region from '../models/regions.model.js';
+import Province from '../models/provinces.model.js';
+import Municipality from '../models/municipalities.model.js';
 import PhilippineStandardGeographicService from '../services/PhilippineStandardGeographicService.js';
 
 dotenv.config();
@@ -19,19 +22,19 @@ const run = async () => {
 
     const regions = psgcData.regions.map((region) => ({
       name: region.name,
-      psgcCode: region.code
+      code: region.code
     }));
 
     const provinces = psgcData.provinces.map((province) => ({
       name: province.name,
-      psgcCode: province.code
+      code: province.code
     }));
 
     const municipalities = psgcData.municipalities.map((municipality) => ({
       name: municipality.name,
-      psgcCode: municipality.code,
+      code: municipality.code,
       type: municipality.type,
-      zipCode: municipality.zip_code,
+      zipCode: municipality.zip_code ? String(municipality.zip_code) : undefined,
       district: municipality.district
     }));
 
@@ -47,21 +50,36 @@ const run = async () => {
       throw new Error('No municipalities found');
     }  
 
-    regions.forEach((region) => {
-      console.log(`Region: ${region.name}, PSGC Code: ${region.psgcCode}`);
-    });
+    const [regionResult, provinceResult, municipalityResult] = await Promise.all([
+      Region.bulkWrite(regions.map((region) => ({
+        updateOne: {
+          filter: { code: region.code },
+          update: { $set: region },
+          upsert: true
+        }
+      })), { ordered: false }),
+      Province.bulkWrite(provinces.map((province) => ({
+        updateOne: {
+          filter: { code: province.code },
+          update: { $set: province },
+          upsert: true
+        }
+      })), { ordered: false }),
+      Municipality.bulkWrite(municipalities.map((municipality) => ({
+        updateOne: {
+          filter: { code: municipality.code },
+          update: { $set: municipality },
+          upsert: true
+        }
+      })), { ordered: false })
+    ]);
 
-    provinces.forEach((province) => {
-      console.log(`Province: ${province.name}, PSGC Code: ${province.psgcCode}`);
-    });
-
-    municipalities.forEach((municipality) => {
-      console.log(`Municipality: ${municipality.name}, PSGC Code: ${municipality.psgcCode}`);
-    });
-
-    // TODO: Transform and validate data
-    // TODO: Save to MongoDB
-    // TODO: Implement upsert logic
+    console.log(
+      `Synced ${regions.length} regions, ${provinces.length} provinces, ` +
+      `${municipalities.length} municipalities ` +
+      `(${regionResult.upsertedCount + provinceResult.upsertedCount + municipalityResult.upsertedCount} inserted, ` +
+      `${regionResult.modifiedCount + provinceResult.modifiedCount + municipalityResult.modifiedCount} updated)`
+    );
 
   } catch (error) {
     console.error('Error syncing geographic data:', error);
