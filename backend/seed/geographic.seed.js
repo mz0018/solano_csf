@@ -15,26 +15,49 @@ const run = async () => {
 
     console.log('Syncing geographic data from PSGC API...');
 
-    const psgcData =
-      await PhilippineStandardGeographicService
-        .syncPhilippineStandardGeographicData();
+    const psgcData = await PhilippineStandardGeographicService.syncPhilippineStandardGeographicData();
 
-    console.log('\n✓ PSGC Data fetched successfully');
+    const regions = psgcData.regions.map((region) => ({
+      name: region.name,
+      psgcCode: region.code
+    }));
 
-    console.log('Data structure:', {
-      regions: `${psgcData.regions.length} items`,
-      provinces: `${psgcData.provinces.length} items`,
-      municipalities: `${psgcData.municipalities.length} items`
+    const provinces = psgcData.provinces.map((province) => ({
+      name: province.name,
+      psgcCode: province.code
+    }));
+
+    const municipalities = psgcData.municipalities.map((municipality) => ({
+      name: municipality.name,
+      psgcCode: municipality.code,
+      type: municipality.type,
+      zipCode: municipality.zip_code,
+      district: municipality.district
+    }));
+
+    if (!regions.length) {
+      throw new Error('No regions found');
+    }
+
+    if (!provinces.length) {
+      throw new Error('No provinces found');
+    }
+
+    if (!municipalities.length) {
+      throw new Error('No municipalities found');
+    }  
+
+    regions.forEach((region) => {
+      console.log(`Region: ${region.name}, PSGC Code: ${region.psgcCode}`);
     });
 
-    console.log('\nFirst region:');
-    console.log(psgcData.regions[0]);
+    provinces.forEach((province) => {
+      console.log(`Province: ${province.name}, PSGC Code: ${province.psgcCode}`);
+    });
 
-    console.log('\nFirst province:');
-    console.log(psgcData.provinces[0]);
-
-    console.log('\nFirst municipality:');
-    console.log(psgcData.municipalities[0]);
+    municipalities.forEach((municipality) => {
+      console.log(`Municipality: ${municipality.name}, PSGC Code: ${municipality.psgcCode}`);
+    });
 
     // TODO: Transform and validate data
     // TODO: Save to MongoDB
