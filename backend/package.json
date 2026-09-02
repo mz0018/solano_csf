@@ -6,6 +6,7 @@
   "scripts": {
     "seed": "node seed/seed.js",
     "seed:feedback": "node seed/feedback.seed.js",
+    "seed:geographic": "node seed/geographic.seed.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
