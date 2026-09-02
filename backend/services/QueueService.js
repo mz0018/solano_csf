@@ -68,6 +68,9 @@ class QueueService {
         employmentStatus: formData.employmentStatus,
         address: formData.address,
         barangay: formData.barangay || undefined,
+        region: formData.region || undefined,
+        province: formData.province || undefined,
+        municipality: formData.municipality || undefined,
         addressDetail: formData.addressDetail || undefined,
       },
       ratings: {

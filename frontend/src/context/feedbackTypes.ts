@@ -15,8 +15,11 @@ export interface FeedbackFormData {
   ageGroup: string;
   employmentStatus: string;
   address: string;
-  barangay: string;
-  addressDetail: string;
+  barangay?: string;
+  region?: string;
+  province?: string;
+  municipality?: string;
+  addressDetail?: string;
   responsiveness: number;
   reliability: number;
   accessFacilities: number;

@@ -30,7 +30,7 @@
     "serviceAssessment": { "title": "Service Assessment", "label": "Types of Services needed", "empty": "No services found for this office." },
     "affiliation": { "title": "Affiliation", "label": "Affiliation", "generalPublic": "General Public", "withinLgu": "Government (Within LGU)", "otherAgencies": "Government (Other Offices/Agencies)" },
     "ageGroup": { "title": "Age Group", "label": "Age Group", "17below": "17 and below", "18_29": "18-29", "30_39": "30-39", "40_49": "40-49", "50_59": "50-59", "60above": "60 and above" },
-    "address": { "title": "Address", "label": "Address", "withinSolano": "Within Solano", "outsideSolano": "Outside Solano", "barangayLabel": "Barangay", "barangayPlaceholder": "Select barangay", "specifyLabel": "Specify Address", "specifyPlaceholder": "e.g. Brgy San Antonio, Bayombong, Nueva Vizcaya" },
+    "address": { "title": "Address", "label": "Address", "withinSolano": "Within Solano", "outsideSolano": "Outside Solano", "barangayLabel": "Barangay", "barangayPlaceholder": "Select barangay", "regionLabel": "Region", "regionPlaceholder": "Select region", "provinceLabel": "Province", "provincePlaceholder": "Select province", "municipalityLabel": "Municipality", "municipalityPlaceholder": "Select municipality", "specifyLabel": "Specify Address", "specifyPlaceholder": "e.g. Brgy San Antonio, Bayombong, Nueva Vizcaya" },
     "employmentStatus": { "title": "Employment Status", "label": "Employment Status", "employed": "Employed", "unemployed": "Unemployed", "selfEmployed": "Self-employed" },
     "serviceRating": {
       "title": "Service Rating",

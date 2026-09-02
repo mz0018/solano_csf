@@ -2,23 +2,51 @@ import { CsfFormUI } from "../ui/form/CsfFormUI"
 import { Input } from "../ui/form/Input"
 import { Select } from "../ui/form/Select"
 import { ArrowLeft, ArrowRightToLine } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useFeedback } from "../context/FeedbackContext";
 import { Barangays } from "../utils/barangays";
 
 type Props = { onNext: () => void; onBack: () => void; };
 
+type GeographicEntry = { name: string; code?: string; type?: string };
+
 export const AddressForm = ({ onNext, onBack }: Props) => {
     const { t } = useTranslation();
     const { updateFormData } = useFeedback();
     const [selected, setSelected] = useState<string>("");
     const [barangay, setBarangay] = useState<string>("");
-    const [addressDetail, setAddressDetail] = useState<string>("");
+    const [region, setRegion] = useState<string>("");
+    const [province, setProvince] = useState<string>("");
+    const [municipality, setMunicipality] = useState<string>("");
+    const [geographicOptions, setGeographicOptions] = useState({
+        regions: [] as GeographicEntry[],
+        provinces: [] as GeographicEntry[],
+        municipalities: [] as GeographicEntry[],
+    });
+
+    useEffect(() => {
+        const loadGeographicOptions = async () => {
+            try {
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/queues/geographic-options`);
+                if (!res.ok) return;
+                const data = await res.json();
+                setGeographicOptions({
+                    regions: data.regions ?? [],
+                    provinces: data.provinces ?? [],
+                    municipalities: data.municipalities ?? [],
+                });
+            } catch (error) {
+                console.error("Failed to load geographic options:", error);
+            }
+        };
+
+        loadGeographicOptions();
+    }, []);
 
     const canProceed =
         selected === "Within Solano" ? Boolean(barangay) :
-        selected === "Outside Solano" ? Boolean(addressDetail) :
+        selected === "Outside Solano" ? Boolean(region && province && municipality) :
         false;
 
     const handleNext = (e: React.FormEvent<HTMLFormElement>) => {
@@ -60,11 +88,36 @@ export const AddressForm = ({ onNext, onBack }: Props) => {
                 )}
 
                 {selected === "Outside Solano" && (
-                    <div className="mt-4">
-                        <label htmlFor="address-detail" className="text-sm text-[var(--theme-text)] mb-2 block">{t("feedback.address.specifyLabel")}</label>
-                        <Input id="address-detail" name="addressDetail" type="text" value={addressDetail}
-                            onChange={(e) => setAddressDetail(e.target.value)} className="w-full mt-1 p-3"
-                            placeholder={t("feedback.address.specifyPlaceholder")} />
+                    <div className="mt-4 space-y-4">
+                        <div>
+                            <label htmlFor="region" className="text-sm text-[var(--theme-text)] mb-2 block">{t("feedback.address.regionLabel")}</label>
+                            <Select id="region" name="region" value={region} onChange={(e) => setRegion(e.target.value)} className="w-full">
+                                <option value="">{t("feedback.address.regionPlaceholder")}</option>
+                                {geographicOptions.regions.map((item) => (
+                                    <option key={item.code ?? item.name} value={item.name}>{item.name}</option>
+                                ))}
+                            </Select>
+                        </div>
+
+                        <div>
+                            <label htmlFor="province" className="text-sm text-[var(--theme-text)] mb-2 block">{t("feedback.address.provinceLabel")}</label>
+                            <Select id="province" name="province" value={province} onChange={(e) => setProvince(e.target.value)} className="w-full">
+                                <option value="">{t("feedback.address.provincePlaceholder")}</option>
+                                {geographicOptions.provinces.map((item) => (
+                                    <option key={item.code ?? item.name} value={item.name}>{item.name}</option>
+                                ))}
+                            </Select>
+                        </div>
+
+                        <div>
+                            <label htmlFor="municipality" className="text-sm text-[var(--theme-text)] mb-2 block">{t("feedback.address.municipalityLabel")}</label>
+                            <Select id="municipality" name="municipality" value={municipality} onChange={(e) => setMunicipality(e.target.value)} className="w-full">
+                                <option value="">{t("feedback.address.municipalityPlaceholder")}</option>
+                                {geographicOptions.municipalities.map((item) => (
+                                    <option key={item.code ?? item.name} value={item.name}>{item.name}</option>
+                                ))}
+                            </Select>
+                        </div>
                     </div>
                 )}
 

@@ -38,6 +38,15 @@ export const feedbackSchema = z.object({
   barangay: z
     .string()
     .optional(),
+  region: z
+    .string()
+    .optional(),
+  province: z
+    .string()
+    .optional(),
+  municipality: z
+    .string()
+    .optional(),
   addressDetail: z
     .string()
     .optional(),

@@ -9,6 +9,7 @@ import { savingFeedbackLimiter } from '../middleware/savingFeedbackLimiter.js'
 const router = express.Router()
 
 router.get('/verify', verifyQueueRateLimiter, QueueController.verifyQueue)
+router.get('/geographic-options', QueueController.getGeographicOptions)
 router.post('/feedback', savingFeedbackLimiter, validate(feedbackSchema), QueueController.saveFeedback);
 
 export default router

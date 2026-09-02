@@ -24,7 +24,7 @@
     "serviceAssessment": { "title": "Pagsusuri ng Serbisyo", "label": "Mga Uri ng Serbisyo na Kailangan", "empty": "Walang natagping serbisyo para sa opisinang ito." },
     "affiliation": { "title": "Kaakibat", "label": "Kaakibat", "generalPublic": "Pangkalahatang Publiko", "withinLgu": "Gobyerno (Sa loob ng LGU)", "otherAgencies": "Gobyerno (Ibang Opisina/Ahensya)" },
     "ageGroup": { "title": "Pangkat ng Edad", "label": "Pangkat ng Edad", "17below": "17 pababa", "18_29": "18-29", "30_39": "30-39", "40_49": "40-49", "50_59": "50-59", "60above": "60 pataas" },
-    "address": { "title": "Addres", "label": "Addres", "withinSolano": "Loob ng Solano", "outsideSolano": "Labas ng Solano", "barangayLabel": "Barangay", "barangayPlaceholder": "Pumili ng barangay", "specifyLabel": "Tukuyin ang Addres", "specifyPlaceholder": "e.g. Brgy San Antonio, Bayombong, Nueva Vizcaya" },
+    "address": { "title": "Addres", "label": "Addres", "withinSolano": "Loob ng Solano", "outsideSolano": "Labas ng Solano", "barangayLabel": "Barangay", "barangayPlaceholder": "Pumili ng barangay", "regionLabel": "Rehiyon", "regionPlaceholder": "Pumili ng rehiyon", "provinceLabel": "Probinsya", "provincePlaceholder": "Pumili ng probinsya", "municipalityLabel": "Munisipalidad", "municipalityPlaceholder": "Pumili ng munisipalidad", "specifyLabel": "Tukuyin ang Addres", "specifyPlaceholder": "e.g. Brgy San Antonio, Bayombong, Nueva Vizcaya" },
     "employmentStatus": { "title": "Katayuan sa Empleyo", "label": "Katayuan sa Empleyo", "employed": "Empliyado", "unemployed": "Walang Trabaho", "selfEmployed": "Self-employed" },
     "serviceRating": {
       "title": "Pagrarating sa Serbisyo",

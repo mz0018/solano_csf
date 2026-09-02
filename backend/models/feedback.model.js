@@ -17,6 +17,9 @@ const feedbackSchema = new mongoose.Schema({
 
         address: { type: String, required: true, index: true },
         barangay: { type: String },
+        region: { type: String },
+        province: { type: String },
+        municipality: { type: String },
         addressDetail: { type: String }
     },
 
