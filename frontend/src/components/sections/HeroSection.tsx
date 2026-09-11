@@ -18,7 +18,7 @@ export const HeroSection = () => {
             </h1>
 
             <p className="mb-8 text-lg text-[var(--theme-muted)]">
-              Share your experience with our services. Your feedback helps us
+              Share your experience with our services. Your backfeed helps us
               improve service quality and better serve our community.
             </p>
 
