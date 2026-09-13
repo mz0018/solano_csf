@@ -25,7 +25,11 @@ class PhilippineStandardGeographicCodeService {
         url.searchParams.set('token', token)
 
         Object.entries(params).forEach(([key, value]) => {
-            if (value !== undefined && value !== null && value !== '') {
+            if (
+                value !== undefined &&
+                value !== null &&
+                value !== ''
+            ) {
                 url.searchParams.set(key, value)
             }
         })
@@ -38,33 +42,69 @@ class PhilippineStandardGeographicCodeService {
             )
         }
 
-        return await response.json()
+        const data = await response.json()
+
+        return data.results
     }
 
 
     async getRegions() {
-        return this.request('regions')
+
+        const data = await this.request('regions')
+
+        return data.map(region => ({
+            code: region.code,
+            name: region.area_name,
+            reg: region.reg
+        }))
     }
 
 
     async getProvinces(regionCode) {
-        return this.request('provinces', {
+
+        const data = await this.request('provinces', {
             reg: regionCode
         })
+
+        return data.map(province => ({
+            code: province.code,
+            name: province.area_name,
+            reg: province.reg,
+            prv: province.prv
+        }))
     }
 
 
     async getMunicipalities(provinceCode) {
-        return this.request('municipalities', {
+
+        const data = await this.request('municipalities', {
             prv: provinceCode
         })
+
+        return data.map(municipality => ({
+            code: municipality.code,
+            name: municipality.area_name,
+            reg: municipality.reg,
+            prv: municipality.prv,
+            mun: municipality.mun
+        }))
     }
 
 
     async getBarangays(municipalityCode) {
-        return this.request('barangays', {
+
+        const data = await this.request('barangays', {
             mun: municipalityCode
         })
+
+        return data.map(barangay => ({
+            code: barangay.code,
+            name: barangay.area_name,
+            reg: barangay.reg,
+            prv: barangay.prv,
+            mun: barangay.mun,
+            bgy: barangay.bgy
+        }))
     }
 
 }
