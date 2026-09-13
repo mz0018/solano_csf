@@ -91,9 +91,10 @@ class PhilippineStandardGeographicCodeService {
     }
 
 
-    async getBarangays(municipalityCode) {
+    async getBarangays(municipalityCode, provinceCode) {
 
         const data = await this.request('barangays', {
+            prv: provinceCode,
             mun: municipalityCode
         })
 

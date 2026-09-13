@@ -6,6 +6,6 @@ const router = express.Router()
 router.get('/regions', PsgcController.getPhilippineStandardGeographicCodes)
 router.get('/regions/:regionCode/provinces', PsgcController.getPhilippineStandardGeographicCodes)
 router.get('/provinces/:provinceCode/municipalities', PsgcController.getPhilippineStandardGeographicCodes)
-router.get('/municipalities/:municipalityCode/barangays', PsgcController.getPhilippineStandardGeographicCodes)
+router.get('/provinces/:provinceCode/municipalities/:municipalityCode/barangays', PsgcController.getPhilippineStandardGeographicCodes)
 
 export default router

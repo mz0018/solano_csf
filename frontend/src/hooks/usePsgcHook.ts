@@ -17,8 +17,9 @@ export const usePsgcHook = () => {
         return json.data;
     }
 
-    async function getBarangays(municipalityCode: string) {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/psgc/municipalities/${municipalityCode}/barangays`);
+    async function getBarangays(municipalityCode: string, provinceCode: string) {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/psgc/provinces/${provinceCode}/municipalities/${municipalityCode}/barangays`);
+        console.log(municipalityCode, provinceCode)
         const json = await res.json();
         return json.data;
     }

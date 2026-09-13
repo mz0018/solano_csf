@@ -14,7 +14,8 @@ class PhilippineStandardGeographicCodeController {
 
             if (municipalityCode) {
                 data = await PsgcService.getBarangays(
-                    municipalityCode
+                    municipalityCode,
+                    provinceCode
                 )
             } else if (provinceCode) {
                 data = await PsgcService.getMunicipalities(
