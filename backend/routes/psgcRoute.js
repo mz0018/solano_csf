@@ -1,5 +1,5 @@
 import express from 'express'
-import PsgcController from '../controllers/PsgcController'
+import PsgcController from '../controllers/psgcController.js'
 
 const router = express.Router()
 
