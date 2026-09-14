@@ -67,7 +67,6 @@ export const AddressForm = ({ onNext, onBack }: Props) => {
                 {selected === "Outside Solano" && (
                     <PSGCDropdown 
                         setAddressDetail={setAddressDetail} 
-                        placeholder={t("feedback.address.specifyPlaceholder")}
                     />
                 )}
 

@@ -5,12 +5,10 @@ import { usePsgcDropdownHook } from "../hooks/usePsgcDropdownHook";
 
 type PSGCDropdownProps = {
     setAddressDetail: (value: string) => void;
-    placeholder: string;
 };
 
 export const PSGCDropdown = ({
     setAddressDetail,
-    placeholder,
 }: PSGCDropdownProps) => {
     const {
         regions,
@@ -72,7 +70,7 @@ export const PSGCDropdown = ({
                         disabled={loadingRegions}
                     >
                         <option value="">
-                            {placeholder}
+                            {"Select region"}
                         </option>
 
                         {regions.map((region) => (
@@ -199,8 +197,8 @@ export const PSGCDropdown = ({
 };
 
 const Loading = ({ text }: { text: string }) => (
-    <div className="flex items-center gap-2">
-        <span>{text}</span>
+    <div className="flex items-center gap-2 p-4 rounded-lg border border-[var(--theme-border)] bg-transparent focus:outline-none">
+        <span className="text-[var(--theme-text)]">{text}</span>
         <ClipLoader size={18} color="#6B7280" />
     </div>
 );
