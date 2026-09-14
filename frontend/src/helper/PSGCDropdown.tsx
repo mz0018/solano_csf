@@ -208,10 +208,10 @@ export const PSGCDropdown = ({
                 value={barangayCode}
                 onChange={(e) => {
                     const name = e.target.options[e.target.selectedIndex].text;
+                    const newFullAddress = `${fullAddress}, ${name}`;
                     setBarangayCode(e.target.value);
-                    setFullAddress(prev => `${prev}, ${name}`);
-                    setAddressDetail(fullAddress);
-                    console.log(fullAddress);
+                    setFullAddress(newFullAddress);
+                    setAddressDetail(newFullAddress);
                 }}
                 disabled={!municipalityCode || loading}
             >

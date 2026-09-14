@@ -25,7 +25,11 @@ export const AddressForm = ({ onNext, onBack }: Props) => {
     const handleNext = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!canProceed) return;
-        updateFormData(Object.fromEntries(new FormData(e.currentTarget)));
+        const formData = Object.fromEntries(new FormData(e.currentTarget));
+        if (selected === "Outside Solano") {
+            formData.addressDetail = addressDetail;
+        }
+        updateFormData(formData);
         onNext();
     };
 

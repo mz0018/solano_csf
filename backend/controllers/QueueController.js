@@ -17,8 +17,6 @@ class QueueController {
       const formData = req.body
       const queueNumber = req.body.queueNumber
 
-      console.log(formData)
-
       const result = await QueueService.saveFeedback(formData, queueNumber)
       res.status(200).json(result)
     } catch (error) {
