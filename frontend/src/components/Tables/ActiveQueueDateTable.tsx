@@ -8,13 +8,22 @@ import { Fullscreen } from "lucide-react";
 import { InlineLoader } from "../Loader";
 export interface ActiveQueueDateTableProps {
   onDateChange?: (date: Date) => void;
+  statusFilter?: string;
 }
 
-export const ActiveQueueDateTable = ({ onDateChange }: ActiveQueueDateTableProps) => {
+export const ActiveQueueDateTable = ({ onDateChange, statusFilter }: ActiveQueueDateTableProps) => {
   const [page, setPage] = useState<number>(1);
   const { data, isLoading, isError, error } = useGetActiveQueue(page);
   const [feedbackModalOpen, setFeedbackModalOpen] = useState<boolean>(false);
   const [selectedFeedback, setSelectedFeedback] = useState<string | null>(null);
+
+  const filteredQueue = data?.queue.filter((queue) => {
+    if (!statusFilter) return true;
+
+    return queue.status === statusFilter;
+  });
+
+  const statusLabel = !statusFilter ? "All statuses" : `${statusFilter.charAt(0).toUpperCase()}${statusFilter.slice(1)}`;
 
   useEffect(() => {
     if (data?.date) {
@@ -47,7 +56,7 @@ export const ActiveQueueDateTable = ({ onDateChange }: ActiveQueueDateTableProps
               </td>
             </tr>
           ) : (
-            data?.queue.map((queue) => (
+            filteredQueue?.map((queue) => (
               <tr key={queue._id}>
                 <td>{queue.code}</td>
                 <td className="capitalize">{queue.status}</td>
@@ -72,6 +81,11 @@ export const ActiveQueueDateTable = ({ onDateChange }: ActiveQueueDateTableProps
           )}
         </tbody>
       </TableUI>
+
+      <span>
+        {statusLabel} total: {data?.total ?? 0} ticket
+        {data?.total === 1 ? "" : "s"}
+      </span>
 
       {!isLoading && !isError && (data?.queue?.length ?? 0) > 0 && (
         <PaginationUI
