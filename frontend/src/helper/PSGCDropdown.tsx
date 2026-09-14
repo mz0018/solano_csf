@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { ClipLoader } from "react-spinners";
 import { Select } from "../ui/form/Select";
 import { usePsgcHook } from "../hooks/usePsgcHook";
 
@@ -132,7 +133,9 @@ export const PSGCDropdown = ({
         const load = async () => {
             try {
                 setLoading(true);
-                setBarangays(await getBarangays(municipalityCode, provinceCode));
+                setBarangays(
+                    await getBarangays(municipalityCode, provinceCode)
+                );
             } catch (error) {
                 console.error("Failed to load barangays:", error);
                 setBarangays([]);
@@ -147,82 +150,128 @@ export const PSGCDropdown = ({
     return (
         <div className="mt-4 space-y-4">
             {/* Region */}
-            <Select
-                value={regionCode}
-                onChange={(e) => {
-                    const name = e.target.options[e.target.selectedIndex].text;
-                    setRegionCode(e.target.value);
-                    setFullAddress(name);
-                }}
-                disabled={loading}
-            >
-                <option value="">{placeholder}</option>
+            <div className="relative">
+                <Select
+                    value={regionCode}
+                    onChange={(e) => {
+                        const name =
+                            e.target.options[e.target.selectedIndex].text;
 
-                {regions.map((region) => (
-                    <option key={region.code} value={region.reg}>
-                        {region.name}
-                    </option>
-                ))}
-            </Select>
+                        setRegionCode(e.target.value);
+                        setFullAddress(name);
+                    }}
+                    disabled={loading}
+                >
+                    <option value="">{placeholder}</option>
+
+                    {regions.map((region) => (
+                        <option key={region.code} value={region.reg}>
+                            {region.name}
+                        </option>
+                    ))}
+                </Select>
+
+                {loading && (
+                    <div className="absolute right-10 top-1/2 -translate-y-1/2">
+                        <ClipLoader size={18} color="#6B7280" />
+                    </div>
+                )}
+            </div>
 
             {/* Province */}
-            <Select
-                value={provinceCode}
-                onChange={(e) => {
-                    const name = e.target.options[e.target.selectedIndex].text;
-                    setProvinceCode(e.target.value);
-                    setFullAddress(prev => `${prev}, ${name}`);
-                }}
-                disabled={!regionCode || loading}
-            >
-                <option value="">Select province</option>
+            <div className="relative">
+                <Select
+                    value={provinceCode}
+                    onChange={(e) => {
+                        const name =
+                            e.target.options[e.target.selectedIndex].text;
 
-                {provinces.map((province) => (
-                    <option key={province.code} value={province.prv}>
-                        {province.name}
-                    </option>
-                ))}
-            </Select>
+                        setProvinceCode(e.target.value);
+                        setFullAddress((prev) => `${prev}, ${name}`);
+                    }}
+                    disabled={!regionCode || loading}
+                >
+                    <option value="">Select province</option>
+
+                    {provinces.map((province) => (
+                        <option key={province.code} value={province.prv}>
+                            {province.name}
+                        </option>
+                    ))}
+                </Select>
+
+                {loading && regionCode && (
+                    <div className="absolute right-10 top-1/2 -translate-y-1/2">
+                        <ClipLoader size={18} color="#6B7280" />
+                    </div>
+                )}
+            </div>
 
             {/* Municipality / City */}
-            <Select
-                value={municipalityCode}
-                onChange={(e) => {
-                    const name = e.target.options[e.target.selectedIndex].text;
-                    setMunicipalityCode(e.target.value);
-                    setFullAddress(prev => `${prev}, ${name}`);
-                }}
-                disabled={!provinceCode || loading}
-            >
-                <option value="">Select municipality/city</option>
+            <div className="relative">
+                <Select
+                    value={municipalityCode}
+                    onChange={(e) => {
+                        const name =
+                            e.target.options[e.target.selectedIndex].text;
 
-                {municipalities.map((municipality) => (
-                    <option key={municipality.code} value={municipality.mun}>
-                        {municipality.name}
+                        setMunicipalityCode(e.target.value);
+                        setFullAddress((prev) => `${prev}, ${name}`);
+                    }}
+                    disabled={!provinceCode || loading}
+                >
+                    <option value="">
+                        Select municipality/city
                     </option>
-                ))}
-            </Select>
+
+                    {municipalities.map((municipality) => (
+                        <option
+                            key={municipality.code}
+                            value={municipality.mun}
+                        >
+                            {municipality.name}
+                        </option>
+                    ))}
+                </Select>
+
+                {loading && provinceCode && (
+                    <div className="absolute right-10 top-1/2 -translate-y-1/2">
+                        <ClipLoader size={18} color="#6B7280" />
+                    </div>
+                )}
+            </div>
 
             {/* Barangay */}
-            <Select
-                value={barangayCode}
-                onChange={(e) => {
-                    const name = e.target.options[e.target.selectedIndex].text;
-                    const newFullAddress = `${fullAddress}, ${name}`;
-                    setBarangayCode(e.target.value);
-                    setFullAddress(newFullAddress);
-                    setAddressDetail(newFullAddress);
-                }}
-                disabled={!municipalityCode || loading}
-            >
-                <option value="">Select barangay</option>
+            <div className="relative">
+                <Select
+                    value={barangayCode}
+                    onChange={(e) => {
+                        const name =
+                            e.target.options[e.target.selectedIndex].text;
 
-                {barangays.map((barangay) => (
-                    <option key={barangay.code} value={barangay.code}>
-                        {barangay.name}
-                    </option>
-                ))}
-            </Select>
+                        const newFullAddress = `${fullAddress}, ${name}`;
+
+                        setBarangayCode(e.target.value);
+                        setFullAddress(newFullAddress);
+                        setAddressDetail(newFullAddress);
+                    }}
+                    disabled={!municipalityCode || loading}
+                >
+                    <option value="">Select barangay</option>
+
+                    {barangays.map((barangay) => (
+                        <option key={barangay.code} value={barangay.code}>
+                            {barangay.name}
+                        </option>
+                    ))}
+                </Select>
+
+                {loading && municipalityCode && (
+                    <div className="absolute right-10 top-1/2 -translate-y-1/2">
+                        <ClipLoader size={18} color="#6B7280" />
+                    </div>
+                )}
+            </div>
         </div>
     );
 };
