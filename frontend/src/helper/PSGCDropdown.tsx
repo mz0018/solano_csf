@@ -9,10 +9,12 @@ type PSGCItem = {
 
 type Province = PSGCItem & {
     prv: number;
+    name: string;
 };
 
 type Municipality = PSGCItem & {
     mun: number;
+    name: string;
 };
 
 type Region = PSGCItem & {
@@ -20,13 +22,11 @@ type Region = PSGCItem & {
 };
 
 type PSGCDropdownProps = {
-    addressDetail: string;
     setAddressDetail: (value: string) => void;
     placeholder: string;
 };
 
 export const PSGCDropdown = ({
-    addressDetail,
     setAddressDetail,
     placeholder,
 }: PSGCDropdownProps) => {
@@ -46,6 +46,7 @@ export const PSGCDropdown = ({
     const [provinceCode, setProvinceCode] = useState("");
     const [municipalityCode, setMunicipalityCode] = useState("");
     const [barangayCode, setBarangayCode] = useState("");
+    const [fullAddress, setFullAddress] = useState("");
 
     const [loading, setLoading] = useState(false);
 
@@ -148,7 +149,11 @@ export const PSGCDropdown = ({
             {/* Region */}
             <Select
                 value={regionCode}
-                onChange={(e) => setRegionCode(e.target.value)}
+                onChange={(e) => {
+                    const name = e.target.options[e.target.selectedIndex].text;
+                    setRegionCode(e.target.value);
+                    setFullAddress(name);
+                }}
                 disabled={loading}
             >
                 <option value="">{placeholder}</option>
@@ -163,7 +168,11 @@ export const PSGCDropdown = ({
             {/* Province */}
             <Select
                 value={provinceCode}
-                onChange={(e) => setProvinceCode(e.target.value)}
+                onChange={(e) => {
+                    const name = e.target.options[e.target.selectedIndex].text;
+                    setProvinceCode(e.target.value);
+                    setFullAddress(prev => `${prev}, ${name}`);
+                }}
                 disabled={!regionCode || loading}
             >
                 <option value="">Select province</option>
@@ -178,7 +187,11 @@ export const PSGCDropdown = ({
             {/* Municipality / City */}
             <Select
                 value={municipalityCode}
-                onChange={(e) => setMunicipalityCode(e.target.value)}
+                onChange={(e) => {
+                    const name = e.target.options[e.target.selectedIndex].text;
+                    setMunicipalityCode(e.target.value);
+                    setFullAddress(prev => `${prev}, ${name}`);
+                }}
                 disabled={!provinceCode || loading}
             >
                 <option value="">Select municipality/city</option>
@@ -194,8 +207,11 @@ export const PSGCDropdown = ({
             <Select
                 value={barangayCode}
                 onChange={(e) => {
+                    const name = e.target.options[e.target.selectedIndex].text;
                     setBarangayCode(e.target.value);
-                    setAddressDetail(e.target.value);
+                    setFullAddress(prev => `${prev}, ${name}`);
+                    setAddressDetail(fullAddress);
+                    console.log(fullAddress);
                 }}
                 disabled={!municipalityCode || loading}
             >

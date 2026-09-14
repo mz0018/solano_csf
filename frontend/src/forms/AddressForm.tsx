@@ -61,14 +61,7 @@ export const AddressForm = ({ onNext, onBack }: Props) => {
                 )}
 
                 {selected === "Outside Solano" && (
-                    // <div className="mt-4">
-                    //     <label htmlFor="address-detail" className="text-sm text-[var(--theme-text)] mb-2 block">{t("feedback.address.specifyLabel")}</label>
-                    //     <Input id="address-detail" name="addressDetail" type="text" value={addressDetail}
-                    //         onChange={(e) => setAddressDetail(e.target.value)} className="w-full mt-1 p-3"
-                    //         placeholder={t("feedback.address.specifyPlaceholder")} />
-                    // </div>
                     <PSGCDropdown 
-                        addressDetail={addressDetail} 
                         setAddressDetail={setAddressDetail} 
                         placeholder={t("feedback.address.specifyPlaceholder")}
                     />
