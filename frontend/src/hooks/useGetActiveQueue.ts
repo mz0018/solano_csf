@@ -15,6 +15,11 @@ type ActiveQueueResponse = {
   limit: number;
   totalPages: number;
   date: string;
+  status: {
+    expired: number;
+    pending: number;
+    used: number;
+  };
 };
 
 const getActiveQueueByDate = async (page: number): Promise<ActiveQueueResponse> => {

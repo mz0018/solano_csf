@@ -62,19 +62,51 @@ class AdminService {
 
         const filter = {
             officeCode: userOfficeCode,
-            createdAt: { $gte: startOfDay, $lte: endOfDay }
-        }
+            createdAt: {
+                $gte: startOfDay,
+                $lte: endOfDay
+            }
+        };
 
-        const [queue, total] = await Promise.all([
+        const [queue, total, statusCounts] = await Promise.all([
             Queue.find(filter)
                 .select('_id code status')
                 .sort({ createdAt: -1 })
                 .skip((page - 1) * limit)
                 .limit(limit),
-            Queue.countDocuments(filter)
-        ])
 
-        return { queue, total, page, limit, totalPages: Math.ceil(total / limit), date: startOfDay.toISOString() }
+            Queue.countDocuments(filter),
+
+            Queue.aggregate([
+                { $match: filter },
+                {
+                    $group: {
+                        _id: '$status',
+                        count: { $sum: 1 }
+                    }
+                }
+            ])
+        ]);
+
+        const status = {
+            pending: 0,
+            used: 0,
+            expired: 0
+        };
+
+        statusCounts.forEach(item => {
+            status[item._id] = item.count;
+        });
+
+        return {
+            queue,
+            total,
+            status,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit),
+            date: startOfDay.toISOString()
+        };
     }
 
     async getDetailedFeedbackByCode(code) {

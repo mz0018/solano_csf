@@ -6,30 +6,58 @@ import { ViewFeedbackModal } from "../Modals/ViewFeedbackModal";
 import { PaginationUI } from "../../ui/form/PaginationUI";
 import { Fullscreen } from "lucide-react";
 import { InlineLoader } from "../Loader";
+
 export interface ActiveQueueDateTableProps {
   onDateChange?: (date: Date) => void;
   statusFilter?: string;
 }
 
-export const ActiveQueueDateTable = ({ onDateChange, statusFilter }: ActiveQueueDateTableProps) => {
+export const ActiveQueueDateTable = ({
+  onDateChange,
+  statusFilter = "",
+}: ActiveQueueDateTableProps) => {
   const [page, setPage] = useState<number>(1);
-  const { data, isLoading, isError, error } = useGetActiveQueue(page);
-  const [feedbackModalOpen, setFeedbackModalOpen] = useState<boolean>(false);
-  const [selectedFeedback, setSelectedFeedback] = useState<string | null>(null);
 
-  const filteredQueue = data?.queue.filter((queue) => {
-    if (!statusFilter) return true;
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+  } = useGetActiveQueue(page);
 
-    return queue.status === statusFilter;
-  });
+  const [feedbackModalOpen, setFeedbackModalOpen] =
+    useState<boolean>(false);
 
-  const statusLabel = !statusFilter ? "All statuses" : `${statusFilter.charAt(0).toUpperCase()}${statusFilter.slice(1)}`;
+  const [selectedFeedback, setSelectedFeedback] =
+    useState<string | null>(null);
+
+  useEffect(() => {
+    setPage(1);
+  }, [statusFilter]);
 
   useEffect(() => {
     if (data?.date) {
       onDateChange?.(new Date(data.date));
     }
   }, [data?.date, onDateChange]);
+
+  const filteredQueue = data?.queue?.filter((queue) => {
+    if (!statusFilter) {
+      return true;
+    }
+
+    return queue.status === statusFilter;
+  });
+
+  const statusLabel = !statusFilter
+    ? "All statuses"
+    : `${statusFilter.charAt(0).toUpperCase()}${statusFilter.slice(1)}`;
+
+  const total = statusFilter
+    ? data?.status?.[
+        statusFilter as keyof typeof data.status
+      ] ?? 0
+    : data?.total ?? 0;
 
   return (
     <>
@@ -45,8 +73,8 @@ export const ActiveQueueDateTable = ({ onDateChange, statusFilter }: ActiveQueue
         <tbody>
           {isLoading ? (
             <tr>
-               <td colSpan={3}>
-                  <InlineLoader />
+              <td colSpan={3}>
+                <InlineLoader />
               </td>
             </tr>
           ) : isError ? (
@@ -55,11 +83,15 @@ export const ActiveQueueDateTable = ({ onDateChange, statusFilter }: ActiveQueue
                 <ErrorText message={(error as Error).message} />
               </td>
             </tr>
-          ) : (
-            filteredQueue?.map((queue) => (
+          ) : filteredQueue && filteredQueue.length > 0 ? (
+            filteredQueue.map((queue) => (
               <tr key={queue._id}>
                 <td>{queue.code}</td>
-                <td className="capitalize">{queue.status}</td>
+
+                <td className="capitalize">
+                  {queue.status}
+                </td>
+
                 <td>
                   {queue.status === "pending" ? (
                     <>- -</>
@@ -69,7 +101,7 @@ export const ActiveQueueDateTable = ({ onDateChange, statusFilter }: ActiveQueue
                         setFeedbackModalOpen(true);
                         setSelectedFeedback(queue.code);
                       }}
-                      className="cursor-pointer inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-gray-100"
+                      className="inline-flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-gray-100"
                     >
                       <Fullscreen size={16} />
                       <span>Review</span>
@@ -78,24 +110,41 @@ export const ActiveQueueDateTable = ({ onDateChange, statusFilter }: ActiveQueue
                 </td>
               </tr>
             ))
+          ) : (
+            <tr>
+              <td
+                colSpan={3}
+                className="py-6 text-center text-sm text-gray-500"
+              >
+                No {statusFilter || ""} tickets found.
+              </td>
+            </tr>
           )}
         </tbody>
       </TableUI>
 
-      <span>
-        {statusLabel} total: {data?.total ?? 0} ticket
-        {data?.total === 1 ? "" : "s"}
+      {/* Total */}
+      <span className="mx-2 text-sm text-gray-600 capitalize">
+        Total {statusLabel.toLowerCase()}: {total} ticket{total === 1 ? "" : "s"}
       </span>
 
-      {!isLoading && !isError && (data?.queue?.length ?? 0) > 0 && (
-        <PaginationUI
-          currentPage={data?.page ?? page}
-          totalPages={data?.totalPages ?? 1}
-          onPageChange={setPage}
-        />
-      )}
+      {/* Pagination */}
+      {!isLoading &&
+        !isError &&
+        (data?.queue?.length ?? 0) > 0 && (
+          <PaginationUI
+            currentPage={data?.page ?? page}
+            totalPages={data?.totalPages ?? 1}
+            onPageChange={setPage}
+          />
+        )}
 
-      <ViewFeedbackModal feedbackModalOpen={feedbackModalOpen} setFeedbackModalOpen={setFeedbackModalOpen} selectedFeedback={selectedFeedback} />
+      {/* Feedback Modal */}
+      <ViewFeedbackModal
+        feedbackModalOpen={feedbackModalOpen}
+        setFeedbackModalOpen={setFeedbackModalOpen}
+        selectedFeedback={selectedFeedback}
+      />
     </>
   );
 };
