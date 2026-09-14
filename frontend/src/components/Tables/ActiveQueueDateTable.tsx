@@ -23,7 +23,7 @@ export const ActiveQueueDateTable = ({
     isLoading,
     isError,
     error,
-  } = useGetActiveQueue(page);
+  } = useGetActiveQueue(page, statusFilter);
 
   const [feedbackModalOpen, setFeedbackModalOpen] =
     useState<boolean>(false);
@@ -40,14 +40,6 @@ export const ActiveQueueDateTable = ({
       onDateChange?.(new Date(data.date));
     }
   }, [data?.date, onDateChange]);
-
-  const filteredQueue = data?.queue?.filter((queue) => {
-    if (!statusFilter) {
-      return true;
-    }
-
-    return queue.status === statusFilter;
-  });
 
   const statusLabel = !statusFilter
     ? "All statuses"
@@ -83,8 +75,8 @@ export const ActiveQueueDateTable = ({
                 <ErrorText message={(error as Error).message} />
               </td>
             </tr>
-          ) : filteredQueue && filteredQueue.length > 0 ? (
-            filteredQueue.map((queue) => (
+          ) : data?.queue && data.queue.length > 0 ? (
+              data.queue.map((queue) => (
               <tr key={queue._id}>
                 <td>{queue.code}</td>
 

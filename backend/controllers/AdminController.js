@@ -13,9 +13,19 @@ class AdminController {
     async getActiveQueueByDate(req, res, next) {
         try {
             const dateToday = new Date();
+
             const page = parseInt(req.query.page) || 1;
             const limit = parseInt(req.query.limit) || 10;
-            const result = await AdminService.getActiveQueueByDateService(dateToday, req.user, page, limit);
+            const status = req.query.status || "";
+
+            const result = await AdminService.getActiveQueueByDateService(
+                dateToday,
+                req.user,
+                page,
+                limit,
+                status
+            );
+
             res.status(200).json(result);
         } catch (error) {
             next(error);

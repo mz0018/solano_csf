@@ -51,7 +51,13 @@ class AdminService {
         return tickets         
     }
 
-    async getActiveQueueByDateService(dateToday, user, page = 1, limit = 10) {
+    async getActiveQueueByDateService(
+        dateToday,
+        user,
+        page = 1,
+        limit = 10,
+        status = ""
+    ) {
         const userOfficeCode = user?.officeCode;
 
         const startOfDay = new Date(dateToday);
@@ -68,6 +74,11 @@ class AdminService {
             }
         };
 
+        // Apply status filter only when a status is selected
+        if (status) {
+            filter.status = status;
+        }
+
         const [queue, total, statusCounts] = await Promise.all([
             Queue.find(filter)
                 .select('_id code status')
@@ -78,7 +89,15 @@ class AdminService {
             Queue.countDocuments(filter),
 
             Queue.aggregate([
-                { $match: filter },
+                {
+                    $match: {
+                        officeCode: userOfficeCode,
+                        createdAt: {
+                            $gte: startOfDay,
+                            $lte: endOfDay
+                        }
+                    }
+                },
                 {
                     $group: {
                         _id: '$status',
@@ -88,20 +107,22 @@ class AdminService {
             ])
         ]);
 
-        const status = {
+        const statusCountsResult = {
             pending: 0,
             used: 0,
             expired: 0
         };
 
         statusCounts.forEach(item => {
-            status[item._id] = item.count;
+            if (Object.prototype.hasOwnProperty.call(statusCountsResult, item._id)) {
+                statusCountsResult[item._id] = item.count;
+            }
         });
 
         return {
             queue,
             total,
-            status,
+            status: statusCountsResult,
             page,
             limit,
             totalPages: Math.ceil(total / limit),

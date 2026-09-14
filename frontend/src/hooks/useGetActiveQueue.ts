@@ -22,9 +22,21 @@ type ActiveQueueResponse = {
   };
 };
 
-const getActiveQueueByDate = async (page: number): Promise<ActiveQueueResponse> => {
+const getActiveQueueByDate = async (
+  page: number,
+  statusFilter: string = ""
+): Promise<ActiveQueueResponse> => {
+  const params = new URLSearchParams();
+
+  params.append("page", page.toString());
+  params.append("limit", "10");
+
+  if (statusFilter) {
+    params.append("status", statusFilter);
+  }
+
   const res = await fetch(
-    `${import.meta.env.VITE_API_URL}/api/admin/active-queue?page=${page}&limit=10`,
+    `${import.meta.env.VITE_API_URL}/api/admin/active-queue?${params.toString()}`,
     {
       credentials: "include",
     }
@@ -34,10 +46,13 @@ const getActiveQueueByDate = async (page: number): Promise<ActiveQueueResponse> 
     throw new Error("Failed to fetch active queue");
   }
 
-  return res.json()
+  return res.json();
 };
 
-export const useGetActiveQueue = (page: number = 1) => {
+export const useGetActiveQueue = (
+  page: number = 1,
+  statusFilter: string = ""
+) => {
   const queryClient = useQueryClient();
   const { socketRef, isConnected } = useSocket();
 
@@ -58,13 +73,13 @@ export const useGetActiveQueue = (page: number = 1) => {
 
     return () => {
       socket.off("ticket:created", handler);
-      socket.off("ticket:used", handler)
+      socket.off("ticket:used", handler);
     };
   }, [isConnected, queryClient, socketRef]);
 
   return useQuery({
-    queryKey: ["active-queue", page],
-    queryFn: () => getActiveQueueByDate(page),
+    queryKey: ["active-queue", page, statusFilter],
+    queryFn: () => getActiveQueueByDate(page, statusFilter),
     staleTime: 1000 * 60 * 5,
   });
 };
