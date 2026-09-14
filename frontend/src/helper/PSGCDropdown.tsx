@@ -28,6 +28,11 @@ export const PSGCDropdown = ({
         manualMunicipality,
         manualBarangay,
 
+        manualRegionMode,
+        manualProvinceMode,
+        manualMunicipalityMode,
+        manualBarangayMode,
+
         loadingRegions,
         loadingProvinces,
         loadingMunicipalities,
@@ -52,7 +57,7 @@ export const PSGCDropdown = ({
             <div className="relative">
                 {loadingRegions ? (
                     <Loading text="Loading regions..." />
-                ) : regions.length === 0 ? (
+                ) : manualRegionMode ? (
                     <Input
                         type="text"
                         value={manualRegion}
@@ -86,7 +91,7 @@ export const PSGCDropdown = ({
             <div className="relative">
                 {loadingProvinces ? (
                     <Loading text="Loading provinces..." />
-                ) : provinces.length === 0 && regionCode ? (
+                ) : manualProvinceMode ? (
                     <Input
                         type="text"
                         value={manualProvince}
@@ -120,7 +125,7 @@ export const PSGCDropdown = ({
             <div className="relative">
                 {loadingMunicipalities ? (
                     <Loading text="Loading municipalities/cities..." />
-                ) : municipalities.length === 0 && provinceCode ? (
+                ) : manualMunicipalityMode ? (
                     <Input
                         type="text"
                         value={manualMunicipality}
@@ -157,7 +162,7 @@ export const PSGCDropdown = ({
             <div className="relative">
                 {loadingBarangays ? (
                     <Loading text="Loading barangays..." />
-                ) : barangays.length === 0 && municipalityCode ? (
+                ) : manualBarangayMode ? (
                     <Input
                         type="text"
                         value={manualBarangay}

@@ -62,6 +62,16 @@ export const usePsgcDropdownHook = ({
     const [manualBarangay, setManualBarangay] = useState("");
 
     // =========================
+    // Manual mode
+    // =========================
+
+    const [manualRegionMode, setManualRegionMode] = useState(false);
+    const [manualProvinceMode, setManualProvinceMode] = useState(false);
+    const [manualMunicipalityMode, setManualMunicipalityMode] =
+        useState(false);
+    const [manualBarangayMode, setManualBarangayMode] = useState(false);
+
+    // =========================
     // Loading
     // =========================
 
@@ -125,7 +135,7 @@ export const usePsgcDropdownHook = ({
     ]);
 
     // =========================
-    // Sync address to parent
+    // Sync address
     // =========================
 
     useEffect(() => {
@@ -143,10 +153,16 @@ export const usePsgcDropdownHook = ({
 
                 const data = await getRegions();
 
-                setRegions(data);
+                if (data.length === 0) {
+                    setManualRegionMode(true);
+                } else {
+                    setRegions(data);
+                    setManualRegionMode(false);
+                }
             } catch (error) {
                 console.error("Failed to load regions:", error);
                 setRegions([]);
+                setManualRegionMode(true);
             } finally {
                 setLoadingRegions(false);
             }
@@ -172,6 +188,19 @@ export const usePsgcDropdownHook = ({
         setManualMunicipality("");
         setManualBarangay("");
 
+        // If region is manual,
+        // everything below must also be manual.
+        if (manualRegionMode) {
+            setManualProvinceMode(true);
+            setManualMunicipalityMode(true);
+            setManualBarangayMode(true);
+            return;
+        }
+
+        setManualProvinceMode(false);
+        setManualMunicipalityMode(false);
+        setManualBarangayMode(false);
+
         if (!regionCode) {
             return;
         }
@@ -182,17 +211,30 @@ export const usePsgcDropdownHook = ({
 
                 const data = await getProvinces(regionCode);
 
+                if (data.length === 0) {
+                    // Province becomes manual
+                    // Everything below also becomes manual.
+                    setManualProvinceMode(true);
+                    setManualMunicipalityMode(true);
+                    setManualBarangayMode(true);
+                    return;
+                }
+
                 setProvinces(data);
             } catch (error) {
                 console.error("Failed to load provinces:", error);
+
                 setProvinces([]);
+                setManualProvinceMode(true);
+                setManualMunicipalityMode(true);
+                setManualBarangayMode(true);
             } finally {
                 setLoadingProvinces(false);
             }
         };
 
         loadProvinces();
-    }, [regionCode]);
+    }, [regionCode, manualRegionMode]);
 
     // =========================
     // Load municipalities
@@ -208,6 +250,17 @@ export const usePsgcDropdownHook = ({
         setManualMunicipality("");
         setManualBarangay("");
 
+        // If province is manual,
+        // municipality + barangay must be manual.
+        if (manualProvinceMode) {
+            setManualMunicipalityMode(true);
+            setManualBarangayMode(true);
+            return;
+        }
+
+        setManualMunicipalityMode(false);
+        setManualBarangayMode(false);
+
         if (!provinceCode) {
             return;
         }
@@ -218,6 +271,14 @@ export const usePsgcDropdownHook = ({
 
                 const data = await getMunicipalities(provinceCode);
 
+                if (data.length === 0) {
+                    // Municipality becomes manual
+                    // Barangay automatically becomes manual.
+                    setManualMunicipalityMode(true);
+                    setManualBarangayMode(true);
+                    return;
+                }
+
                 setMunicipalities(data);
             } catch (error) {
                 console.error(
@@ -226,13 +287,15 @@ export const usePsgcDropdownHook = ({
                 );
 
                 setMunicipalities([]);
+                setManualMunicipalityMode(true);
+                setManualBarangayMode(true);
             } finally {
                 setLoadingMunicipalities(false);
             }
         };
 
         loadMunicipalities();
-    }, [provinceCode]);
+    }, [provinceCode, manualProvinceMode]);
 
     // =========================
     // Load barangays
@@ -242,6 +305,15 @@ export const usePsgcDropdownHook = ({
         setBarangayCode("");
         setManualBarangay("");
         setBarangays([]);
+
+        // Municipality is manual,
+        // therefore barangay must also be manual.
+        if (manualMunicipalityMode) {
+            setManualBarangayMode(true);
+            return;
+        }
+
+        setManualBarangayMode(false);
 
         if (!municipalityCode || !provinceCode) {
             return;
@@ -256,17 +328,28 @@ export const usePsgcDropdownHook = ({
                     provinceCode
                 );
 
+                if (data.length === 0) {
+                    setManualBarangayMode(true);
+                    return;
+                }
+
                 setBarangays(data);
             } catch (error) {
                 console.error("Failed to load barangays:", error);
+
                 setBarangays([]);
+                setManualBarangayMode(true);
             } finally {
                 setLoadingBarangays(false);
             }
         };
 
         loadBarangays();
-    }, [municipalityCode, provinceCode]);
+    }, [
+        municipalityCode,
+        provinceCode,
+        manualMunicipalityMode,
+    ]);
 
     // =========================
     // Region handlers
@@ -275,13 +358,31 @@ export const usePsgcDropdownHook = ({
     const handleRegionChange = (
         event: React.ChangeEvent<HTMLSelectElement>
     ) => {
-        setRegionCode(event.target.value);
+        const value = event.target.value;
+
+        setRegionCode(value);
+        setManualRegion("");
+
+        // Region selected from API,
+        // so allow province API lookup again.
+        setManualRegionMode(false);
     };
 
     const handleManualRegionChange = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
         setManualRegion(event.target.value);
+
+        // Manual region means everything below is manual.
+        setManualRegionMode(true);
+        setManualProvinceMode(true);
+        setManualMunicipalityMode(true);
+        setManualBarangayMode(true);
+
+        setRegionCode("");
+        setProvinceCode("");
+        setMunicipalityCode("");
+        setBarangayCode("");
     };
 
     // =========================
@@ -291,13 +392,29 @@ export const usePsgcDropdownHook = ({
     const handleProvinceChange = (
         event: React.ChangeEvent<HTMLSelectElement>
     ) => {
-        setProvinceCode(event.target.value);
+        const value = event.target.value;
+
+        setProvinceCode(value);
+        setManualProvince("");
+
+        setManualProvinceMode(false);
+        setManualMunicipalityMode(false);
+        setManualBarangayMode(false);
     };
 
     const handleManualProvinceChange = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
         setManualProvince(event.target.value);
+
+        // Manual province means everything below is manual.
+        setManualProvinceMode(true);
+        setManualMunicipalityMode(true);
+        setManualBarangayMode(true);
+
+        setProvinceCode("");
+        setMunicipalityCode("");
+        setBarangayCode("");
     };
 
     // =========================
@@ -307,13 +424,26 @@ export const usePsgcDropdownHook = ({
     const handleMunicipalityChange = (
         event: React.ChangeEvent<HTMLSelectElement>
     ) => {
-        setMunicipalityCode(event.target.value);
+        const value = event.target.value;
+
+        setMunicipalityCode(value);
+        setManualMunicipality("");
+
+        setManualMunicipalityMode(false);
+        setManualBarangayMode(false);
     };
 
     const handleManualMunicipalityChange = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
         setManualMunicipality(event.target.value);
+
+        // Manual municipality means barangay is also manual.
+        setManualMunicipalityMode(true);
+        setManualBarangayMode(true);
+
+        setMunicipalityCode("");
+        setBarangayCode("");
     };
 
     // =========================
@@ -323,13 +453,19 @@ export const usePsgcDropdownHook = ({
     const handleBarangayChange = (
         event: React.ChangeEvent<HTMLSelectElement>
     ) => {
-        setBarangayCode(event.target.value);
+        const value = event.target.value;
+
+        setBarangayCode(value);
+        setManualBarangay("");
+        setManualBarangayMode(false);
     };
 
     const handleManualBarangayChange = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
         setManualBarangay(event.target.value);
+        setManualBarangayMode(true);
+        setBarangayCode("");
     };
 
     return {
@@ -350,6 +486,12 @@ export const usePsgcDropdownHook = ({
         manualProvince,
         manualMunicipality,
         manualBarangay,
+
+        // Manual modes
+        manualRegionMode,
+        manualProvinceMode,
+        manualMunicipalityMode,
+        manualBarangayMode,
 
         // Address
         fullAddress,
