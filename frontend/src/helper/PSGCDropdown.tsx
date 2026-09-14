@@ -124,13 +124,20 @@ export const PSGCDropdown = ({
                 {loadingMunicipalities ? (
                     <Loading text="Loading municipalities/cities..." />
                 ) : manualMunicipalityMode ? (
-                    <Input
-                        type="text"
-                        value={manualMunicipality}
-                        onChange={handleManualMunicipalityChange}
-                        placeholder="Enter municipality/city manually"
-                        className="mt-1 w-full p-3"
-                    />
+                    <div className="block">
+                        <span className="text-sm text-[var(--theme-text)] block">Municipality Optional</span>
+                        <div>
+                            <label className="flex items-center gap-3 cursor-pointer">
+                                <Input
+                                    type="text"
+                                    value={manualMunicipality}
+                                    onChange={handleManualMunicipalityChange}
+                                    placeholder="Enter municipality/city manually"
+                                    className="mt-1 w-full p-3"
+                                />
+                            </label>
+                        </div>
+                    </div> 
                 ) : (
                     <Select
                         value={municipalityCode}
@@ -161,13 +168,20 @@ export const PSGCDropdown = ({
                 {loadingBarangays ? (
                     <Loading text="Loading barangays..." />
                 ) : manualBarangayMode ? (
-                    <Input
-                        type="text"
-                        value={manualBarangay}
-                        onChange={handleManualBarangayChange}
-                        placeholder="Enter barangay manually"
-                        className="mt-1 w-full p-3"
-                    />
+                    <div className="block">
+                        <span className="text-sm text-[var(--theme-text)] block">Barangay Optional</span>
+                        <div>
+                            <label className="flex items-center gap-3 cursor-pointer">
+                                <Input
+                                    type="text"
+                                    value={manualBarangay}
+                                    onChange={handleManualBarangayChange}
+                                    placeholder="Enter barangay manually"
+                                    className="mt-1 w-full p-3"
+                                />
+                            </label>
+                        </div>
+                    </div>
                 ) : (
                     <Select
                         value={barangayCode}
