@@ -23,6 +23,7 @@ import { RootLayout } from './layout/RootLayout'
 
 const AdminLayout = lazy(() => import('./layout/AdminLayout.tsx'))
 const PublicLayout = lazy(() => import('./layout/PublicLayout.tsx'))
+const Dashboard = lazy(() => import('./pages/admin/Dashboard.tsx'))
 const ActiveQueueTicket = lazy(() => import('./pages/admin/ActiveQueueTicket.tsx'))
 const ReportsStatistics = lazy(() => import('./pages/admin/ReportStatistics.tsx'))
 const OfficesFeedbacks = lazy(() => import('./pages/admin/OfficesFeedbacks.tsx'))
@@ -63,6 +64,7 @@ const router = createBrowserRouter([
     children: [
       { path: "/admin", element: <AdminLayout />,
         children: [
+          { path: "queue/dashboard", element: <Dashboard /> },
           { path: "queue/monitor", element: <ActiveQueueTicket /> },
           { path: "queue/statistics", element: <ReportsStatistics /> },
           { path: "queue/offices/feedbacks", element: <OfficesFeedbacks /> },
