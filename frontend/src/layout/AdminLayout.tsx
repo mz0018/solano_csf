@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import { SidebarUI } from '../ui/SidebarUI'
 import { MainLayoutUI } from '../ui/MainLayoutUI'
-import { Radio, Settings2, Files } from 'lucide-react'
+import { Radio, Settings2, Files, BrickWallShield } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 
 const AdminLayout = () => {
@@ -10,7 +10,7 @@ const AdminLayout = () => {
 
   const navLinks = [
     { name: 'Overview', path: '/admin/overview', icon: <Radio size={20} />, roles: ['super_admin'] },
-    { name: 'Dashboard', path: '/admin/queue/dashboard', icon: <Radio size={20} />, roles: ['office_admin', 'hr_admin'] },
+    { name: 'Dashboard', path: '/admin/queue/dashboard', icon: <BrickWallShield size={20} />, roles: ['office_admin', 'hr_admin'] },
     { name: 'Live Monitoring', path: '/admin/queue/monitor', icon: <Radio size={20} />, roles: ['office_admin', 'hr_admin'] },
     {
       name: 'Reports',
