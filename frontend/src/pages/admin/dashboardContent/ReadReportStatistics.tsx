@@ -3,6 +3,7 @@ import { useAuth } from "../../../context/AuthContext";
 import { RenderReportStatistics } from "./RenderStatistics";
 import { RenderReportStatisticsTable } from "./RenderReportStatisticsTable";
 import { useGetReportStatistics } from "../../../hooks/useGetReportStatistics";
+import { RenderReportStatisticsDatePicker } from "./RenderReportStatisticsDatePicker";
 
 type ChartData = {
     name: string;
@@ -23,6 +24,16 @@ export type RenderReportStatisticsTableProps = {
     chartsDataArray: Chart[];
 };
 
+export type RenderReportStatisticsDatePickerProps = {
+    officeCode: string;
+    month: number;
+    year: number;
+    startDate: string;
+    endDate: string;
+    setStartDate: (date: string) => void;
+    setEndDate: (date: string) => void;
+};
+
 export const ReadReportStatistics = () => {
     const { user } = useAuth();
 
@@ -39,8 +50,13 @@ export const ReadReportStatistics = () => {
         setCurrentGraph((prev) => (prev + 1) % typeOfGraph.length);
     };
 
-    const startDate = `${year}-${String(month).padStart(2, "0")}-01`;
-    const endDate = `${year}-${String(month).padStart(2, "0")}-${String(lastDayOfMonth).padStart(2, "0")}`;
+    const [startDate, setStartDate] = useState(
+        `${year}-${String(month).padStart(2, "0")}-01`
+    );
+
+    const [endDate, setEndDate] = useState(
+        `${year}-${String(month).padStart(2, "0")}-${String(lastDayOfMonth).padStart(2, "0")}`
+    );
 
     const officeCode = user?.officeCode ?? "";
 
@@ -94,22 +110,34 @@ export const ReadReportStatistics = () => {
         <>
             <h1>Read Report Statistics</h1>
 
-            <ul>
-                <li>Office code: {officeCode}</li>
-                <li>Month: {month}</li>
-                <li>Year: {year}</li>
-                <li>Start date: {startDate}</li>
-                <li>End date: {endDate}</li>
-            </ul>
+            
 
             <button onClick={handleChangeGraph}>
                 Change {typeOfGraph[currentGraph]}
             </button>
 
-            <RenderReportStatistics
-                currentGraph={currentGraph}
-                chartsDataArray={chartsDataArray}
-            />
+            <div className="flex gap-4">
+                <div>
+                    <RenderReportStatistics
+                        currentGraph={currentGraph}
+                        chartsDataArray={chartsDataArray}
+                    />
+                </div>
+
+                <div>
+                    <RenderReportStatisticsDatePicker
+                        officeCode={officeCode}
+                        month={month}
+                        year={year}
+                        startDate={startDate}
+                        endDate={endDate}
+                        setStartDate={setStartDate}
+                        setEndDate={setEndDate}
+                    />
+                </div>
+            </div>
+
+            
 
             <RenderReportStatisticsTable
                 chartsDataArray={chartsDataArray}
