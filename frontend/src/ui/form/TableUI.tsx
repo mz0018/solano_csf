@@ -1,21 +1,45 @@
 type TableUIProps = {
-  children: React.ReactNode
-  className?: string
-}
+    children: React.ReactNode;
+    className?: string;
+};
 
-export const TableUI = ({ children, className = "" }: TableUIProps) => {
-  return (
-    <table
-      className={`text-xs w-full border-collapse ${className}`}
-      style={{ tableLayout: 'fixed', minWidth: 1000 }}
-    >
-      <style>{`
-        table th, table td { border: 1px solid #e5e7eb; padding: 0.75rem 1rem; }
-        table th { background: #f8fafc; font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; text-align: left; }
-        table td { background: #ffffff; font-size: 0.875rem; transition: background-color 0.1s ease; }
-        table tbody tr:hover td { background-color: #f3f4f6; }
-      `}</style>
-      {children}
-    </table>
-  )
-}
+export const TableUI = ({
+    children,
+    className = "",
+}: TableUIProps) => {
+    return (
+        <table
+            className={`
+                w-full table-fixed border-separate border-spacing-0
+                overflow-hidden rounded-lg border border-slate-200
+                text-sm
+
+                [&_th]:border-b
+                [&_th]:border-slate-200
+                [&_th]:bg-slate-50
+                [&_th]:px-4
+                [&_th]:py-3
+                [&_th]:text-left
+                [&_th]:text-xs
+                [&_th]:font-semibold
+                [&_th]:uppercase
+                [&_th]:tracking-wide
+                [&_th]:text-slate-500
+
+                [&_td]:border-b
+                [&_td]:border-slate-100
+                [&_td]:px-4
+                [&_td]:py-3
+                [&_td]:text-sm
+                [&_td]:text-slate-700
+
+                [&_tbody_tr:last-child_td]:border-b-0
+                [&_tbody_tr:nth-child(even)_td]:bg-slate-50/50
+
+                ${className}
+            `}
+        >
+            {children}
+        </table>
+    );
+};

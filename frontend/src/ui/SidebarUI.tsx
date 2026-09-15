@@ -112,11 +112,7 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
               }
             `}
           >
-            <p className="font-semibold text-md text-[#1f2937] uppercase truncate">
-              {user?.userName}
-            </p>
-
-            <span className="text-sm text-[#6b7280] truncate">
+            <span className="text-md text-bold text-[#6b7280] truncate">
               {user?.role === "hr_admin"
                 ? 'Human Resource'
                 : user?.role === 'super_admin'
@@ -134,7 +130,7 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
         </button>
       </div>
 
-      <nav className="flex-1 p-2 space-y-1 overflow-hidden">
+      <nav className="flex-1 p-2 space-y-2 overflow-hidden">
         {navLinks.map((item) =>
           item.children ? (
             <DropdownHelper
@@ -168,7 +164,7 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
                   ${
                     isActive
                       ? 'bg-[#dbeafe] text-[#1e3a5f] active'
-                      : 'text-[#476581] hover:bg-[#dbeafe] hover:text-[#1e3a5f]'
+                      : 'text-[#476581] hover:bg-[#dbeafe] hover:text-[#1e3a5f] p-5'
                   }
                 `
               }

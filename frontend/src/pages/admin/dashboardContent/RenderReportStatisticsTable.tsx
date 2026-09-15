@@ -5,16 +5,18 @@ export const RenderReportStatisticsTable = ({
     chartsDataArray,
 }: RenderReportStatisticsTableProps) => {
     return (
-        <>
+        <div className="mt-6 flex flex-col gap-6">
             {chartsDataArray.map((chart) => (
                 <div key={chart.title}>
-                    <h2>{chart.title}</h2>
+                    <h2 className="mb-3 text-base font-semibold text-slate-800">
+                        {chart.title} Statistics
+                    </h2>
 
                     <TableUI>
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Count</th>
+                                <th>Category</th>
+                                <th>Total Responses</th>
                             </tr>
                         </thead>
 
@@ -29,6 +31,6 @@ export const RenderReportStatisticsTable = ({
                     </TableUI>
                 </div>
             ))}
-        </>
+        </div>
     );
 };
