@@ -30,8 +30,6 @@ export type RenderReportStatisticsDatePickerProps = {
     year: number;
     startDate: string;
     endDate: string;
-    setStartDate: (date: string) => void;
-    setEndDate: (date: string) => void;
 };
 
 export const ReadReportStatistics = () => {
@@ -50,13 +48,8 @@ export const ReadReportStatistics = () => {
         setCurrentGraph((prev) => (prev + 1) % typeOfGraph.length);
     };
 
-    const [startDate, setStartDate] = useState(
-        `${year}-${String(month).padStart(2, "0")}-01`
-    );
-
-    const [endDate, setEndDate] = useState(
-        `${year}-${String(month).padStart(2, "0")}-${String(lastDayOfMonth).padStart(2, "0")}`
-    );
+    const startDate = `${year}-${String(month).padStart(2, "0")}-01`;
+    const endDate = `${year}-${String(month).padStart(2, "0")}-${String(lastDayOfMonth).padStart(2, "0")}`;
 
     const officeCode = user?.officeCode ?? "";
 
@@ -116,28 +109,24 @@ export const ReadReportStatistics = () => {
                 Change {typeOfGraph[currentGraph]}
             </button>
 
-            <div className="flex gap-4">
-                <div>
+            <div className="flex w-full gap-4">
+                <div className="w-2/3">
                     <RenderReportStatistics
                         currentGraph={currentGraph}
                         chartsDataArray={chartsDataArray}
                     />
                 </div>
 
-                <div>
+                <div className="min-w-0 flex-1">
                     <RenderReportStatisticsDatePicker
                         officeCode={officeCode}
                         month={month}
                         year={year}
                         startDate={startDate}
                         endDate={endDate}
-                        setStartDate={setStartDate}
-                        setEndDate={setEndDate}
                     />
                 </div>
-            </div>
-
-            
+            </div>      
 
             <RenderReportStatisticsTable
                 chartsDataArray={chartsDataArray}
