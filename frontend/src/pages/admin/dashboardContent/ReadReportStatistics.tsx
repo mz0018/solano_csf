@@ -1,9 +1,27 @@
 import { useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
-import { TableUI } from "../../../ui/form/TableUI";
+import { RenderReportStatistics } from "./RenderStatistics";
+import { RenderReportStatisticsTable } from "./RenderReportStatisticsTable";
 import { useGetReportStatistics } from "../../../hooks/useGetReportStatistics";
 
-import { LineChart,Line,BarChart,Bar,XAxis,YAxis,Tooltip } from "recharts";
+type ChartData = {
+    name: string;
+    value: number;
+};
+
+export type Chart = {
+    title: string;
+    data: ChartData[];
+};
+
+export type RenderReportStatisticsProps = {
+    currentGraph: number;
+    chartsDataArray: Chart[];
+};
+
+export type RenderReportStatisticsTableProps = {
+    chartsDataArray: Chart[];
+};
 
 export const ReadReportStatistics = () => {
     const { user } = useAuth();
@@ -49,10 +67,32 @@ export const ReadReportStatistics = () => {
     };
 
     const genderChartData = createClientChartData("gender");
+    const ageGroupChartData = createClientChartData("ageGroup");
+    const employmentStatusChartData = createClientChartData("employmentStatus");
+    const affiliationChartData = createClientChartData("affiliation");
+
+    const chartsDataArray = [
+        {
+            title: "Gender",
+            data: genderChartData,
+        },
+        {
+            title: "Age Group",
+            data: ageGroupChartData,
+        },
+        {
+            title: "Employment Status",
+            data: employmentStatusChartData,
+        },
+        {
+            title: "Affiliation",
+            data: affiliationChartData,
+        },
+    ];
 
     return (
         <>
-            <h1>ReadReportStatistics</h1>
+            <h1>Read Report Statistics</h1>
 
             <ul>
                 <li>Office code: {officeCode}</li>
@@ -66,53 +106,15 @@ export const ReadReportStatistics = () => {
                 Change {typeOfGraph[currentGraph]}
             </button>
 
-            {currentGraph === 0 && (
-                <LineChart
-                    width={400}
-                    height={300}
-                    data={genderChartData}
-                >
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
+            <RenderReportStatistics
+                currentGraph={currentGraph}
+                chartsDataArray={chartsDataArray}
+            />
 
-                    <Line
-                        type="monotone"
-                        dataKey="value"
-                        stroke="#3B82F6"
-                    />
-                </LineChart>
-            )}
-
-            {currentGraph === 1 && (
-                <BarChart
-                    width={400}
-                    height={300}
-                    data={genderChartData}
-                >
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
-
-                    <Bar
-                        dataKey="value"
-                        fill="#3B82F6"
-                    />
-                </BarChart>
-            )}
-
-            <TableUI>
-                <thead>
-                    <tr>
-                        <th>Ticket</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                </tbody>
-            </TableUI>
+            <RenderReportStatisticsTable
+                chartsDataArray={chartsDataArray}
+            />
+            
         </>
     );
 };
