@@ -1,5 +1,8 @@
-import { useGetReportStatistics } from "../../../hooks/useGetReportStatistics";
+import { useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
+import { useGetReportStatistics } from "../../../hooks/useGetReportStatistics";
+
+import { PieChart, Pie } from "recharts";
 
 export const ReadReportStatistics = () => {
     const { user } = useAuth();
@@ -7,6 +10,9 @@ export const ReadReportStatistics = () => {
     const year = now.getFullYear();
     const month = now.getMonth() + 1;
     const lastDayOfMonth = new Date(year, month, 0).getDate();
+
+    const [isGraph, setIsGraph] = useState<boolean>(false);
+    {/**Used for different type of graphs */}
 
     const startDate = `${year}-${String(month).padStart(2, "0")}-01`;
     const endDate = `${year}-${String(month).padStart(2, "0")}-${String(lastDayOfMonth).padStart(2, "0")}`;
@@ -17,7 +23,9 @@ export const ReadReportStatistics = () => {
     if (isLoading) return <>Loading....</>;
     if (error) return <>Something error</>;
 
-    console.log(stats)
+    stats?.feedbacks.forEach(s => {
+        console.log(s)
+    })
 
     return (
         <>
@@ -31,9 +39,23 @@ export const ReadReportStatistics = () => {
                 <li>End date: {endDate}</li>
             </ul>
 
-            {stats?.feedbacks.forEach(s => {
-                console.log(s)
-            })}
+            <button onClick={() => setIsGraph(true)}>Change {isGraph}</button>
+
+            <PieChart>
+                <Pie 
+                    data={
+                        [
+                            { name: "Good", value: 10 },
+                            { name: "Average", value: 5 },
+                            { name: "Poor", value: 2 },
+                        ]
+                    }
+                    dataKey="value"
+                >
+                    Testing
+                </Pie>
+                Hello
+            </PieChart>
         </>
     );
 };
