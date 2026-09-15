@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
+import { TableUI } from "../../../ui/form/TableUI";
 import { useGetReportStatistics } from "../../../hooks/useGetReportStatistics";
 
 import { LineChart,Line,BarChart,Bar,XAxis,YAxis,Tooltip } from "recharts";
@@ -99,6 +100,19 @@ export const ReadReportStatistics = () => {
                     />
                 </BarChart>
             )}
+
+            <TableUI>
+                <thead>
+                    <tr>
+                        <th>Ticket</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </TableUI>
         </>
     );
 };
