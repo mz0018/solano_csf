@@ -1,16 +1,16 @@
+import { AdminResponsiveContainer } from "../../ui/form/AdminResponsiveContainer";
+import { MonitorTotalQueue } from "./dashboardContent/MonitorTotalQueue";
+import { ReadReportStatistics } from "./dashboardContent/ReadReportStatistics";
+
 const Dashboard = () => {
+    
 
     return (
-        <>
-        <h1>Dashboard</h1>
-        <ul>
-            <li>KPI cards</li>
-            <li>Charts</li>
-            <li>tables</li>
-            <li>metrics</li>
-        </ul>
-        </>
-    )
-}
+        <AdminResponsiveContainer>
+        <MonitorTotalQueue />
+        <ReadReportStatistics />
+        </AdminResponsiveContainer>
+    );
+};
 
 export default Dashboard;

@@ -45,7 +45,7 @@ router.get(
 router.get(
     '/report-statistics',
     authorizeViaCookie,
-    authorizeViaRole('hr_admin', 'super_admin'),
+    authorizeViaRole('hr_admin', 'super_admin', 'office_admin'),
     AdminController.getReportStatistics
 )
 
