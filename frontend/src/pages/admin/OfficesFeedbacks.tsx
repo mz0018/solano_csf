@@ -56,12 +56,16 @@ const OfficesFeedbacks = () => {
 
     return (
         <AdminResponsiveContainer>
-            <div className="flex flex-col leading-none">
-                <h1 className="text-2xl font-semibold">
-                    Select an office to view specific feedback
-                </h1>
+            <div className="flex w-full flex-col leading-none">
+                <div className="border-b border-gray-300 py-3">
+                    <h1 className="text-xl font-semibold text-gray-900">
+                        Select an office to view specific feedback
+                    </h1>
 
-                <span className="text-sm text-gray-500">Filter and review feedback entries by office</span>
+                    <p className="mt-1 text-sm text-gray-500">
+                        Filter and review feedback entries by office
+                    </p>
+                </div>
             </div>
 
             <div className="flex gap-2">
@@ -70,7 +74,7 @@ const OfficesFeedbacks = () => {
                         htmlFor="office"
                         className="mb-1 block text-sm font-medium"
                     >
-                        Office
+                        Municipality Office
                     </label>
 
                     <Select
@@ -98,7 +102,7 @@ const OfficesFeedbacks = () => {
                         htmlFor="month"
                         className="mb-1 block text-sm font-medium"
                     >
-                        Month
+                        Select Month
                     </label>
 
                     <Select
@@ -128,7 +132,7 @@ const OfficesFeedbacks = () => {
                         htmlFor="year"
                         className="mb-1 block text-sm font-medium"
                     >
-                        Year
+                        Select Year
                     </label>
 
                     <Select
@@ -151,14 +155,15 @@ const OfficesFeedbacks = () => {
             {error && (
                 <ErrorText message={(error as Error).message} />
             )}
-            {data?.feedbacks && (
-                <PerOfficeQueueTable
-                    feedbacks={data.feedbacks}
-                    totalPages={data.totalPages}
-                    page={page}
-                    onPageChange={handlePageChange}
-                />
-            )}
+            
+            <PerOfficeQueueTable
+                feedbacks={data?.feedbacks ?? []}
+                totalPages={data?.totalPages ?? 0}
+                page={page}
+                onPageChange={handlePageChange}
+                hasSelectedOffice={!!selectedOfficeCode}
+            />
+
         </AdminResponsiveContainer>
     );
 };

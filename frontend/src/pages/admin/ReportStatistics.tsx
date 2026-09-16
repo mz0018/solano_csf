@@ -28,7 +28,7 @@ const ReportStatistics = () => {
             <div className="flex gap-4">
                 <div>
                     <label htmlFor="office" className="mb-1 block text-sm font-medium">
-                        Office
+                        Municipality Office
                     </label>
                     <Select id="office" variant="admin" value={officeCode} onChange={(e) => setOfficeCode(e.target.value)}>
                         <option value="">
@@ -42,27 +42,34 @@ const ReportStatistics = () => {
                     </Select>
                 </div>
                 <div>
-                    <label htmlFor="dateFrom" className="mb-1 block text-sm font-medium">
-                        Date From
+                    <label
+                        htmlFor="dateFrom"
+                        className="mb-1 block text-sm font-medium"
+                    >
+                        Start Date
                     </label>
                     <input
                         id="dateFrom"
                         type="date"
                         value={dateFrom}
                         onChange={(e) => setDateFrom(e.target.value)}
-                        className="p-4 rounded-sm border border-gray-300 text-gray-500 focus:outline-none"
+                        className="w-96 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                     />
                 </div>
+
                 <div>
-                    <label htmlFor="dateTo" className="mb-1 block text-sm font-medium">
-                        Date To
+                    <label
+                        htmlFor="dateTo"
+                        className="mb-1 block text-sm font-medium"
+                    >
+                        End Date
                     </label>
                     <input
                         id="dateTo"
                         type="date"
                         value={dateTo}
                         onChange={(e) => setDateTo(e.target.value)}
-                        className="p-4 rounded-sm border border-gray-300 text-gray-500 focus:outline-none"
+                        className="w-96 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                     />
                 </div>
             </div>
