@@ -14,12 +14,16 @@ const ReportStatistics = () => {
 
     return (
         <AdminResponsiveContainer>
-            <div className="flex flex-col leading-none">
-                <h1 className="text-2xl font-semibold">
+            <div className="flex w-full flex-col leading-none">
+                <div className="border-b border-gray-300 py-3">
+                    <h1 className="text-xl font-semibold text-gray-900">
                     Report Statistics
-                </h1>
+                    </h1>
 
-                <span className="text-sm text-gray-500">View queue statistics and feedback reports by office</span>
+                    <p className="mt-1 text-sm text-gray-500">
+                        View queue statistics and feedback reports by office
+                    </p>
+                </div>
             </div>
             <div className="flex gap-4">
                 <div>

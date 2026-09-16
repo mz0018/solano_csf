@@ -47,19 +47,20 @@ export const AdminNavbar = () => {
   };
 
   return (
-    <header className="flex items-center justify-between border-b border-gray-200 bg-white px-6 py-4 shadow-xs">
+    <header className="flex items-center justify-between border-b border-gray-200 bg-white px-6 py-3 shadow-xs">
 
       {/* Left */}
       <div className="flex items-center gap-3">
-        <div className="flex flex-col">
-          <h1 className="text-xl font-semibold text-gray-900">
-              Admin Dashboard
-          </h1>
+        <div className="flex flex-col leading-tight">
+        <h1 className="text-xl font-semibold text-gray-900">
+          Admin Dashboard
+        </h1>
 
-          <p className="mt-1 text-sm text-gray-500">
-            Client Satisfactory Feedback System
-          </p>
-        </div>
+        <p className="text-sm text-gray-500">
+          Client Satisfactory Feedback System
+        </p>
+      </div>
+
       </div>
 
       {/* Right */}

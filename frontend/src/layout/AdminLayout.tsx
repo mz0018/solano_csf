@@ -37,7 +37,7 @@ const AdminLayout = () => {
       `}</style>
 
 
-      <div className="flex">
+      <div className="flex w-full">
         <SidebarUI navLinks={filteredNavLinks} user={user} />
 
         <div className="flex min-w-0 flex-1 flex-col">
