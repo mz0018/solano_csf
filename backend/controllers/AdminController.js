@@ -71,6 +71,16 @@ class AdminController {
             next(error);
         }
     }
+
+    async getOfficeService(req, res, next) {
+        try {
+            const userOfficeCode = req.user.officeCode;
+            const result = await AdminService.getOfficeService(userOfficeCode);
+            res.status(200).json(result);
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 export default new AdminController()

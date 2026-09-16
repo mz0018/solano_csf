@@ -236,6 +236,18 @@ class AdminService {
         };
     }
 
+    async getOfficeService(userOfficeCode) {
+        if (!userOfficeCode) {
+            throw new ErrorController('Office code is required', 400)
+        }
+        
+        const services = await Service.find({ officeCode: userOfficeCode })
+            .select('code name')
+            .lean()
+        
+        return services
+    }
+
 }
 
 export default new AdminService

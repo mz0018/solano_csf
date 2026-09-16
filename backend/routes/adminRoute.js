@@ -49,4 +49,11 @@ router.get(
     AdminController.getReportStatistics
 )
 
+router.get(
+    '/services',
+    authorizeViaCookie,
+    authorizeViaRole('hr_admin', 'office_admin'),
+    AdminController.getOfficeService
+)
+
 export default router
