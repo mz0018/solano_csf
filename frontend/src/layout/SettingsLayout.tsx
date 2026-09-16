@@ -9,7 +9,7 @@ const tabs = [
 
 export const SettingsLayout = () => (
   <div className="flex flex-col lg:flex-row gap-6 p-6">
-    <nav className="w-full lg:w-56 flex-shrink-0 space-y-1 bg-white border border-[#e5e7eb] rounded-lg p-2 shadow-[0_1px_3px_rgba(0,0,0,0.06)] border-b lg:border-r lg:border-b-0">
+    <nav className="w-full lg:w-56 flex-shrink-0 space-y-1 rounded-lg p-2">
       {tabs.map(({ name, path, icon: Icon }) => (
         <NavLink
           key={path}
@@ -27,7 +27,7 @@ export const SettingsLayout = () => (
         </NavLink>
       ))}
     </nav>
-    <div className="flex-1 min-w-0 bg-white border border-[#e5e7eb] rounded-lg p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+    <div className="flex-1 min-w-0 bg-white p-6 shadow-[-3px_0_3px_-3px_rgba(0,0,0,0.15)]">
       <Outlet />
     </div>
   </div>
