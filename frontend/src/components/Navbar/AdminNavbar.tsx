@@ -52,8 +52,8 @@ export const AdminNavbar = () => {
       {/* Left */}
       <div className="flex items-center gap-3">
         <div className="flex flex-col">
-          <h1 className="text-lg font-semibold leading-tight text-gray-800">
-            Admin Dashboard
+          <h1 className="text-xl font-semibold text-gray-900">
+              Admin Dashboard
           </h1>
 
           <p className="mt-1 text-sm text-gray-500">

@@ -12,9 +12,9 @@ const ActiveQueueTicket = () => {
   return (
     <>
       <AdminResponsiveContainer>
-        <div className="flex flex-col leading-none">
-          <div>
-                <h1 className="text-2xl font-semibold">
+        <div className="flex w-full flex-col leading-none">
+          <div className="border-b border-gray-300 py-3">
+              <h1 className="text-xl font-semibold text-gray-900">
               View Active Queue{" "}
               {activeDate
                 ? `- ${activeDate.toLocaleDateString("en-US", {

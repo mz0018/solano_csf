@@ -13,7 +13,7 @@ export const MonitorTotalQueue = () => {
 
     return (
         <div className="w-full">
-            <div className="mb-5">
+            <div className="mb-4 border-b border-gray-300 py-3">
                 <h1 className="text-xl font-semibold text-gray-900">
                     Dashboard
                 </h1>

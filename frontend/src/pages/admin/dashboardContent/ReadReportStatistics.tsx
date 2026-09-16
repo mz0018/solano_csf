@@ -111,13 +111,13 @@ export const ReadReportStatistics = () => {
 
     return (
         <div className="w-full">
-            <div className="mb-5 flex items-center justify-between">
-                <div>
+            <div className="mb-5 flex items-center justify-between border-b border-gray-300">
+                <div className="mb-4">
                     <h1 className="text-xl font-semibold text-gray-900">
                         Report Statistics
                     </h1>
 
-                    <p className="mt-1 text-sm text-gray-500">
+                    <p className="mt-0.5 text-sm text-gray-500">
                         View and compare client feedback statistics.
                     </p>
                 </div>
