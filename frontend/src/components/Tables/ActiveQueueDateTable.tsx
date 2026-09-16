@@ -4,7 +4,7 @@ import { ErrorText } from "../../ui/form/ErrorText";
 import { useGetActiveQueue } from "../../hooks/useGetActiveQueue";
 import { ViewFeedbackModal } from "../Modals/ViewFeedbackModal";
 import { PaginationUI } from "../../ui/form/PaginationUI";
-import { Fullscreen } from "lucide-react";
+import { Fullscreen, Search } from "lucide-react";
 import { InlineLoader } from "../Loader";
 
 export interface ActiveQueueDateTableProps {
@@ -104,11 +104,20 @@ export const ActiveQueueDateTable = ({
             ))
           ) : (
             <tr>
-              <td
-                colSpan={3}
-                className="py-6 text-center text-sm text-gray-500"
-              >
-                No {statusFilter || ""} tickets found.
+              <td colSpan={3} className="py-12">
+                <div className="flex flex-col items-center justify-center text-center m-9">
+                  <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
+                    <Search size={22} className="text-gray-400" />
+                  </div>
+
+                  <p className="text-sm font-medium text-gray-700">
+                    No {statusFilter || ""} tickets found
+                  </p>
+
+                  <p className="mt-1 text-xs text-gray-400">
+                    Try changing the filter or check back later.
+                  </p>
+                </div>
               </td>
             </tr>
           )}
@@ -116,9 +125,9 @@ export const ActiveQueueDateTable = ({
       </TableUI>
 
       {/* Total */}
-      <span className="mx-2 text-sm text-gray-600 capitalize">
+      <p className="mx-2 text-sm text-gray-500 capitalize tracking-wider">
         Total {statusLabel.toLowerCase()}: {total} ticket{total === 1 ? "" : "s"}
-      </span>
+      </p>
 
       {/* Pagination */}
       {!isLoading &&

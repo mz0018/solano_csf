@@ -91,6 +91,7 @@ const RegisterNewClient = () => {
               ) : (
                 <Select
                   id="client-office"
+                  variant="admin"
                   name="officeCode"
                   value={form.officeCode}
                   onChange={(event) => updateField('officeCode', event.target.value)}
@@ -111,6 +112,7 @@ const RegisterNewClient = () => {
               <label htmlFor="client-role" className="mb-1 block text-sm font-medium">Role</label>
               <Select
                 id="client-role"
+                variant="admin"
                 name="role"
                 value={form.role}
                 onChange={(event) =>

@@ -26,7 +26,7 @@ const ReportStatistics = () => {
                     <label htmlFor="office" className="mb-1 block text-sm font-medium">
                         Office
                     </label>
-                    <Select id="office" value={officeCode} onChange={(e) => setOfficeCode(e.target.value)}>
+                    <Select id="office" variant="admin" value={officeCode} onChange={(e) => setOfficeCode(e.target.value)}>
                         <option value="">
                             {officesLoading ? "Loading offices..." : "Select an office"}
                         </option>

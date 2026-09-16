@@ -13,20 +13,23 @@ const ActiveQueueTicket = () => {
     <>
       <AdminResponsiveContainer>
         <div className="flex flex-col leading-none">
-          <h1 className="text-2xl font-semibold">
-            View Active Queue{" "}
-            {activeDate
-              ? `- ${activeDate.toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                  year: "numeric",
-                })}`
-              : "Today"}
-          </h1>
+          <div>
+                <h1 className="text-2xl font-semibold">
+              View Active Queue{" "}
+              {activeDate
+                ? `- ${activeDate.toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  })}`
+                : "Today"}
+            </h1>
 
-          <span className="text-sm text-[#6b7280]">
-            View and manage today's active queue tickets
-          </span>
+                <p className="mt-1 text-sm text-gray-500">
+                    Get an overview of the current queues, pending requests,
+                    and completed services.
+                </p>
+            </div>
         </div>
 
         <div className="flex w-full items-end gap-4">
@@ -34,20 +37,21 @@ const ActiveQueueTicket = () => {
           <div>
             <label
               htmlFor="status"
-              className="mb-1 block text-sm font-medium"
+              className="mb-1 block text-sm font-medium capitalize tracking-wider"
             >
-              Filter By
+              filter by
             </label>
 
             <Select
               id="status"
+              variant="admin"
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
             >
               <option value="">All Status</option>
               <option value="used">Used</option>
               <option value="pending">Pending</option>
-              <option value="expired">Expired</option>
+              {/* <option value="expired">Expired</option> */}
             </Select>
           </div>
 

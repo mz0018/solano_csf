@@ -75,6 +75,7 @@ const OfficesFeedbacks = () => {
 
                     <Select
                         id="office"
+                        variant="admin"
                         value={selectedOfficeCode}
                         onChange={handleOfficeChange}
                     >
@@ -102,6 +103,7 @@ const OfficesFeedbacks = () => {
 
                     <Select
                         id="month"
+                        variant="admin"
                         value={selectedMonth}
                         onChange={handleMonthChange}
                     >
@@ -131,6 +133,7 @@ const OfficesFeedbacks = () => {
 
                     <Select
                         id="year"
+                        variant="admin"
                         value={selectedYear}
                         onChange={handleYearChange}
                     >
