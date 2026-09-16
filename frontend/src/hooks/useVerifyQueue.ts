@@ -30,6 +30,7 @@ export const useVerifyQueue = () => {
       
       if (res.ok) {
         setResult(data);
+        console.log(data);
         return data 
       }
       else setError(data.message || 'Something went wrong')

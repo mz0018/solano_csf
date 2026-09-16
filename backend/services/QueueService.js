@@ -12,9 +12,15 @@ class QueueService {
       throw new ErrorController('Invalid Queue Ticket', 401)
     }
 
+    if (!queue.selectedService) {
+      throw new ErrorController('Service not found', 400)
+    }
+
     if (queue.status === "used") {
       throw new ErrorController('This ticket has already been used.', 409)
     }
+
+    const selectedService = queue.selectedService
 
     const officeCode = code.match(/^(.+?)\d{2}-[A-Z2-9]{6}$/)?.[1]
     if (!officeCode) {
@@ -22,7 +28,7 @@ class QueueService {
     }
 
     const services = await Service.find({ officeCode }).select('code name')
-    return { exists: true, officeCode, services }
+    return { exists: true, officeCode, services, selectedService }
   }
 
   async saveFeedback(formData, queueNumber) {

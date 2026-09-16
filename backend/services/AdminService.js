@@ -21,7 +21,8 @@ const calculateRatingAverage = (ratings = {}) => {
 
 class AdminService {
 
-    async generateTicket(userId, count) {
+    async generateTicket(userId, count, selectedService) {
+        if (!selectedService) throw new ErrorController('No service found', 400)
         if (count < 1 || count > 100) throw new ErrorController('Ticket count must be between 1 and 100', 400) 
 
         const user = await User.findById(userId)
@@ -37,6 +38,7 @@ class AdminService {
 
         for (let i = 0; i < count; i++) {
             const ticket = await Queue.create({
+                selectedService: `${selectedService}`,
                 officeCode: `${officeCode}`,
                 code: `${officeCode}${year}-${generateCode()}`,
                 generatedBy: userId

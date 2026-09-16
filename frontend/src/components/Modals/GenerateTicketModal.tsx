@@ -18,9 +18,10 @@ export const GenerateTicketModal = ({ isModalOpen, setIsModalOpen }: GenerateTic
   const [ticketCount, setTicketCount] = useState<number>(2)
   const [isMultipleMode, setIsMultipleMode] = useState<boolean>(false)
   const [services, setServices] = useState<Service[]>([])
+  const [selectedService, setSelectedService] = useState<string>("");
 
   const handleGenerateTicket = () => {
-    createNewTicket(isMultipleMode ? ticketCount : 1)
+    createNewTicket(isMultipleMode ? ticketCount : 1, selectedService)
   }
 
   useEffect(() => {
@@ -30,7 +31,6 @@ export const GenerateTicketModal = ({ isModalOpen, setIsModalOpen }: GenerateTic
       const data = await getOfficeService()
       if (data) {
         setServices(data)
-        console.log(data)
       }
     }
 
@@ -70,7 +70,7 @@ export const GenerateTicketModal = ({ isModalOpen, setIsModalOpen }: GenerateTic
             <Select
               id="services"
               variant="admin"
-              onChange={(e) => console.log(e.target.value)}
+              onChange={(e) => setSelectedService(e.target.value)}
             >
               <option value="">Please select a service</option>
 

@@ -2,6 +2,10 @@ import mongoose from 'mongoose';
 
 const queueSchema = new mongoose.Schema(
   {
+    selectedService: {
+      type: String,
+      required: true
+    },
     officeCode: {
       type: String,
       required: true

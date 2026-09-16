@@ -5,7 +5,7 @@ export const useGenerateTicket = (closeModal: () => void) => {
   const [isGeneratingTicket, setIsGeneratingTicket] = useState<boolean>(false)
 
 
-  const createNewTicket = async (count: number) => {
+  const createNewTicket = async (count: number, selectedService: string) => {
     setIsGeneratingTicket(true)
     try {
       const res = await fetch(
@@ -14,7 +14,7 @@ export const useGenerateTicket = (closeModal: () => void) => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
-          body: JSON.stringify({ count: Math.max(count, 1) })
+          body: JSON.stringify({ count: Math.max(count, 1), selectedService })
         }
       );
 
