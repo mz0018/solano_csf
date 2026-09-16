@@ -21,7 +21,7 @@ export const RenderReportStatisticsDatePicker = ({
     return (
         <>
             {/* Report Period */}
-            <div className="w-full rounded-lg border border-slate-200 bg-white p-5">
+            <div className="w-full rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
                 <div className="mb-5 border-b border-slate-200 pb-4">
                     <p className="text-base font-semibold text-slate-800">
                         Report Period
@@ -66,7 +66,7 @@ export const RenderReportStatisticsDatePicker = ({
             </div>
 
             {/* Live Tickets */}
-            <div className="mt-3 w-full rounded-lg border border-slate-200 bg-white p-5">
+            <div className="mt-3 w-full rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
                 <div className="mb-4 flex items-center justify-between border-b border-slate-200 pb-4">
                     <div>
                         <p className="text-base font-semibold text-slate-800">

@@ -20,7 +20,7 @@ export const RenderReportStatistics = ({
             {chartsDataArray.map((chart) => (
                 <div
                     key={chart.title}
-                    className="min-w-0 rounded-lg border border-slate-200 bg-white p-5"
+                    className="min-w-0 rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md"
                 >
                     <h2 className="mb-5 text-base font-semibold text-slate-700">
                         {chart.title}

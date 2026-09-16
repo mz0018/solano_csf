@@ -111,13 +111,13 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
               }
             `}
           >
-            <span className="text-md text-bold text-[#6b7280] truncate">
+            <h1 className="text-xl font-semibold text-gray-900">
               {user?.role === "hr_admin"
-                ? 'Human Resource'
-                : user?.role === 'super_admin'
-                ? 'Super Admin'
-                : 'Office Admin'}
-            </span>
+                    ? 'Human Resource'
+                    : user?.role === 'super_admin'
+                    ? 'Super Admin'
+                    : 'Office Admin'}
+            </h1>
           </div>
         </div>
 

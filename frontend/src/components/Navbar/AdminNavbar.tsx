@@ -47,19 +47,19 @@ export const AdminNavbar = () => {
   };
 
   return (
-    <header className="flex items-center justify-between border-b border-gray-200 bg-white px-6 py-3 shadow-xs">
+    <header className="flex items-center justify-between sidebar-surface text-[#1f2937] border-b border-[#cbd5e1] px-6 py-3 shadow-xs">
 
       {/* Left */}
       <div className="flex items-center gap-3">
-        <div className="flex flex-col leading-tight">
-        <h1 className="text-xl font-semibold text-gray-900">
-          Admin Dashboard
-        </h1>
+        {/* <div className="flex flex-col leading-tight">
+          <h1 className="text-xl font-semibold text-gray-900">
+            Admin Dashboard
+          </h1>
 
-        <p className="text-sm text-gray-500">
-          Client Satisfactory Feedback System
-        </p>
-      </div>
+          <p className="text-sm text-gray-500">
+            Client Satisfactory Feedback System
+          </p>
+        </div> */}
 
       </div>
 
@@ -70,7 +70,7 @@ export const AdminNavbar = () => {
         <button
           type="button"
           onClick={() => navigate("/admin/settings/notifications")}
-          className="relative flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-gray-100 text-gray-500 transition hover:bg-gray-200 hover:text-gray-700"
+          className="relative flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-white text-gray-500 transition hover:bg-gray-200 hover:text-gray-700"
           aria-label="Notifications"
         >
           <Bell size={17} />
@@ -89,7 +89,7 @@ export const AdminNavbar = () => {
           <button
             type="button"
             onClick={() => navigate("/admin/settings/profile")}
-            className="relative flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-gray-100 text-gray-500 transition hover:bg-gray-200 hover:text-gray-700"
+            className="relative flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-white text-gray-500 transition hover:bg-gray-200 hover:text-gray-700"
             aria-label="Profile"
           >
             <UserRound size={17} />
