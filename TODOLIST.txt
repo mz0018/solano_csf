@@ -1,0 +1,2 @@
+-Include printing feature, before generating the ticket show a 'print this option'
+-then before generating ticket, select the specific services and attached on the ticket so that when the client used the ticket the specific type of services is automatically selected.
