@@ -12,13 +12,15 @@ export const BtnSignout = ({ collapsed = false }: BtnSignoutProps) => {
     const navigate = useNavigate()
 
     const handleSignOut = async () => {
+        if (!confirm('Are you sure you want to log out?')) return
+
         await signOut()
         navigate('/signin', { replace: true })
     }
 
     return (
         <Button
-            className={`sidebar-item sidebar-link-border w-full text-[#476581] bg-transparent hover:bg-[#dbeafe] hover:text-[#1e3a5f] transition-colors duration-150 ${
+            className={`sidebar-item sidebar-link-border w-full text-[#476581] bg-transparent hover:bg-[#dbeafe] hover:text-[#1e3a5f] ${
                 collapsed ? 'justify-center' : 'justify-start'
             }`}
             onClick={handleSignOut}

@@ -3,6 +3,7 @@ import { SidebarUI } from '../ui/SidebarUI'
 import { MainLayoutUI } from '../ui/MainLayoutUI'
 import { Radio, Settings2, Files, BrickWallShield } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
+import { AdminNavbar } from '../components/Navbar/AdminNavbar'
 
 const AdminLayout = () => {
 
@@ -35,13 +36,20 @@ const AdminLayout = () => {
         #admin-theme aside button:hover, #admin-theme aside a:hover { transform: none !important; }
       `}</style>
 
-      <SidebarUI navLinks={filteredNavLinks} user={user} />
 
-      <main className="flex-1 p-6 w-full border-l border-gray-200" style={{ overflowY: 'auto' }}>
-        <MainLayoutUI>
-          <Outlet />
-        </MainLayoutUI>
-      </main>
+      <div className="flex">
+        <SidebarUI navLinks={filteredNavLinks} user={user} />
+
+        <div className="flex min-w-0 flex-1 flex-col">
+          <AdminNavbar />
+
+          <main className="flex-1 overflow-y-auto p-6">
+            <MainLayoutUI>
+              <Outlet />
+            </MainLayoutUI>
+          </main>
+        </div>
+      </div>
 
     </div>
   )

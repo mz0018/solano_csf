@@ -1,5 +1,4 @@
 import { NavLink } from 'react-router-dom'
-import { BtnSignout } from '../components/buttons/BtnSignout'
 import { DropdownHelper } from '../helper/DropdownHelper'
 import { useState, useEffect } from 'react'
 import { PanelLeft } from 'lucide-react'
@@ -215,11 +214,6 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
           )
         )}
       </nav>
-
-      <div className={`p-4 border-t border-[#cbd5e1] ${collapsed ? 'px-2' : ''}`}>
-        <BtnSignout collapsed={collapsed} />
-      </div>
-
     </aside>
   )
 }
