@@ -1,9 +1,11 @@
 import { useRef, useState } from "react";
+
 import {
   UserRound,
   Bell,
   ChevronDown,
 } from "lucide-react";
+
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { BtnSignout } from "../buttons/BtnSignout";
@@ -14,21 +16,31 @@ export const AdminNavbar = () => {
 
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
-  // Timer used for delayed dropdown closing
+  // Timer for delayed dropdown closing
   const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const handleProfileEnter = () => {
+  const handleProfileToggle = () => {
     // Cancel pending close
     if (closeTimeoutRef.current) {
       clearTimeout(closeTimeoutRef.current);
       closeTimeoutRef.current = null;
     }
 
-    setIsProfileOpen(true);
+    setIsProfileOpen((prev) => !prev);
+  };
+
+  const handleProfileEnter = () => {
+    // Cancel pending close when mouse comes back
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
   };
 
   const handleProfileLeave = () => {
-    // Delay closing the dropdown
+    // Only close if dropdown is currently open
+    if (!isProfileOpen) return;
+
     closeTimeoutRef.current = setTimeout(() => {
       setIsProfileOpen(false);
     }, 200);
@@ -82,10 +94,10 @@ export const AdminNavbar = () => {
             <UserRound size={17} />
           </button>
 
-          {/* Name + Dropdown */}
+          {/* Name + Dropdown Toggle */}
           <button
             type="button"
-            onClick={() => setIsProfileOpen((prev) => !prev)}
+            onClick={handleProfileToggle}
             className="hidden cursor-pointer items-center gap-1 text-left sm:flex"
             aria-expanded={isProfileOpen}
             aria-haspopup="menu"
@@ -112,7 +124,6 @@ export const AdminNavbar = () => {
               <BtnSignout />
             </div>
           )}
-
         </div>
       </div>
     </header>
