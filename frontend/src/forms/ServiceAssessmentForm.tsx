@@ -23,6 +23,8 @@ export const ServiceAssessmentForm = ({ onNext, onBack }: Props) => {
         onNext();
     };
 
+    console.log(services)
+
     return (
         <CsfFormUI>
             <form onSubmit={handleNext} className="flex flex-col">

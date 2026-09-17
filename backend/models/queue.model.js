@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const queueSchema = new mongoose.Schema(
   {
     selectedService: {
-      type: String,
+      type: [String],
       required: true
     },
     officeCode: {

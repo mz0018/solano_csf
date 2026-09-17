@@ -6,7 +6,7 @@ export const useGenerateTicket = (closeModal: () => void) => {
   const [isGeneratingTicket, setIsGeneratingTicket] = useState<boolean>(false)
   const { convertToQuickResponseCode } = useTicketToQrConversion()
 
-  const createNewTicket = async (selectedService: string) => {
+  const createNewTicket = async (selectedService: string[]) => {
     setIsGeneratingTicket(true)
     try {
       const res = await fetch(
