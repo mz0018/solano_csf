@@ -30,9 +30,6 @@ export const useGetServices = () => {
         queryFn: getOfficeServices,
         staleTime: 1000 * 60 * 60,
       })
-
-      console.log("Services:", services)
-
       return services
     } catch (err) {
       console.error("Something went wrong!", err)

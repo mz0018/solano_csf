@@ -53,7 +53,7 @@ export const ServiceAssessmentForm = ({ onNext, onBack }: Props) => {
                                     />
                                     <span className="text-[var(--theme-text)]">{s.name}</span>
                                     {isLocked && selected === s.code && (
-                                        <span className="text-sm italic opacity-70 tracking-wider">(Selected)</span>
+                                        <span className="text-sm italic opacity-70 tracking-wider text-[var(--theme-text)]">(Selected)</span>
                                     )}
                                 </label>
                                 ))}
