@@ -18,7 +18,7 @@ export const VerifyQueueForm = ({ onNext, onBack }: Props) => {
     const data = await verify();
     if (data?.exists) {
       setVerified(data);
-      updateFormData({ queueNumber: code });
+      updateFormData({ queueNumber: code, service: data.selectedService });
       onNext();
     }
   };

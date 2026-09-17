@@ -11,7 +11,11 @@ export const ServiceAssessmentForm = ({ onNext, onBack }: Props) => {
     const { t } = useTranslation();
     const { verified, updateFormData } = useFeedback();
     const services = verified?.services ?? [];
-    const [selected, setSelected] = useState<string>("");
+    const ticketService = verified?.selectedService ?? "";
+    const isLocked = services.some((s) => s.code === ticketService);
+    const [selected, setSelected] = useState<string>(
+        isLocked ? ticketService : ""
+    );
 
     const handleNext = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -37,19 +41,20 @@ export const ServiceAssessmentForm = ({ onNext, onBack }: Props) => {
                                 return 0;
                                 })
                                 .map((s) => (
-                                <label key={s.code} className="flex items-center gap-3 cursor-pointer">
+                                 <label key={s.code} className={`flex items-center gap-3 ${isLocked ? "cursor-default" : "cursor-pointer"}`}>
                                     <Input
                                     type="radio"
                                     name="service"
                                     value={s.code}
                                     checked={selected === s.code}
-                                    onChange={(e) => {
-                                        // console.log("Selected service:", e.target.value);
-                                        setSelected(e.target.value);
-                                    }}
+                                    disabled={isLocked}
+                                    onChange={(e) => setSelected(e.target.value)}
                                     className="h-4 w-4"
                                     />
                                     <span className="text-[var(--theme-text)]">{s.name}</span>
+                                    {isLocked && selected === s.code && (
+                                        <span className="text-sm italic opacity-70 tracking-wider">(Selected)</span>
+                                    )}
                                 </label>
                                 ))}
                             </div>

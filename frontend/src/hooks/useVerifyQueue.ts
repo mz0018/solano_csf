@@ -6,7 +6,7 @@ export const useVerifyQueue = () => {
   const [isRateLimited, setIsRateLimited] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
   const [result, setResult] = useState<{
-    exists: boolean; officeCode?: string; services?: { code: string; name: string }[]
+    exists: boolean; officeCode?: string; selectedService?: string; services?: { code: string; name: string }[]
   } | null>(null)
 
   const verify = async () => {
