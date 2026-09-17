@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { CSFCustomToaster } from '../utils/Toaster';
+import { useTicketToQrConversion } from './useTicketToQrConversion';
 
 export const useGenerateTicket = (closeModal: () => void) => {
   const [isGeneratingTicket, setIsGeneratingTicket] = useState<boolean>(false)
-
+  const { convertToQuickResponseCode } = useTicketToQrConversion()
 
   const createNewTicket = async (count: number, selectedService: string) => {
     setIsGeneratingTicket(true)
@@ -24,7 +25,7 @@ export const useGenerateTicket = (closeModal: () => void) => {
         console.error(data);
         return;
       }
-
+      convertToQuickResponseCode(data)
       closeModal()
       CSFCustomToaster.success('Generated Ticket')
     } catch (err) {

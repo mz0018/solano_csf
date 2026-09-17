@@ -33,9 +33,7 @@ export const GenerateTicketModal = ({ isModalOpen, setIsModalOpen }: GenerateTic
       setServiceError('Service is required')
       return
     }
-
     setServiceError("")
-
     createNewTicket(isMultipleMode ? ticketCount : 1, selectedService)
   }
 
