@@ -1,7 +1,7 @@
 export interface VerifiedQueue {
   code?: string
   officeCode?: string
-  selectedService?: string
+  selectedService?: string[]
   services?: { code: string; name: string }[]
 }
 

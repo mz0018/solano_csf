@@ -4,7 +4,7 @@ const feedbackSchema = new mongoose.Schema({
     officeCode: { type: String, required: true, index: true },
     queueNumber: { type: String, required: true, index: true },
 
-    service: { type: String, required: true, index: true },
+    service: { type: [String], required: true, index: true },
 
     client: {
         name: { type: String, default: 'NA' },

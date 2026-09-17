@@ -7,8 +7,9 @@ export const feedbackSchema = z.object({
     .string()
     .min(1, "Queue number is required"),
   service: z
-    .string()
-    .min(1, "Service is required"),
+    .array(z
+      .string())
+      .min(1, "Service is required"),
   clientName: z
     .string()
     .trim()

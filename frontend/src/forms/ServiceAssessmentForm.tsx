@@ -11,8 +11,17 @@ export const ServiceAssessmentForm = ({ onNext, onBack }: Props) => {
     const { t } = useTranslation();
     const { verified, updateFormData } = useFeedback();
     const services = verified?.services ?? [];
-    const ticketService = verified?.selectedService ?? "";
-    const isLocked = services.some((s) => s.code === ticketService);
+
+    const selectedService = Array.isArray(verified?.selectedService)
+        ? verified.selectedService
+        : verified?.selectedService
+            ? [verified.selectedService]
+            : [];
+
+    const ticketService = selectedService[0] ?? "";
+
+    const isLocked = selectedService.length > 0;
+
     const [selected, setSelected] = useState<string>(
         isLocked ? ticketService : ""
     );
@@ -24,6 +33,7 @@ export const ServiceAssessmentForm = ({ onNext, onBack }: Props) => {
     };
 
     console.log(services)
+    console.log(selectedService)
 
     return (
         <CsfFormUI>
@@ -45,17 +55,23 @@ export const ServiceAssessmentForm = ({ onNext, onBack }: Props) => {
                                 .map((s) => (
                                  <label key={s.code} className={`flex items-center gap-3 ${isLocked ? "cursor-default" : "cursor-pointer"}`}>
                                     <Input
-                                    type="radio"
-                                    name="service"
-                                    value={s.code}
-                                    checked={selected === s.code}
-                                    disabled={isLocked}
-                                    onChange={(e) => setSelected(e.target.value)}
-                                    className="h-4 w-4"
+                                        type="checkbox"
+                                        name="service"
+                                        value={s.code}
+                                        checked={
+                                            isLocked
+                                                ? selectedService.includes(s.code)
+                                                : selected === s.code
+                                        }
+                                        disabled={isLocked}
+                                        onChange={(e) => setSelected(e.target.value)}
+                                        className="h-4 w-4"
                                     />
                                     <span className="text-[var(--theme-text)]">{s.name}</span>
-                                    {isLocked && selected === s.code && (
-                                        <span className="text-sm italic opacity-70 tracking-wider text-[var(--theme-text)]">(Selected)</span>
+                                    {isLocked && selectedService.includes(s.code) && (
+                                        <span className="text-sm italic opacity-70 tracking-wider text-[var(--theme-text)]">
+                                            (Selected)
+                                        </span>
                                     )}
                                 </label>
                                 ))}
