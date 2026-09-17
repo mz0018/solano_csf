@@ -36,8 +36,6 @@ class UserService {
             })
         }
 
-        console.log(clientId)
-
         return true
     }
 
