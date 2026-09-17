@@ -5,6 +5,7 @@ import { useGenerateTicket } from "../../hooks/useGenerateTicket"
 import { useGetServices } from "../../hooks/useGetServices"
 import type { Service } from "../../hooks/useGetServices"
 import { Select } from "../../ui/form/Select"
+import { ErrorText } from "../../ui/form/ErrorText"
 
 type GenerateTicketModalProps = {
   isModalOpen: boolean
@@ -18,9 +19,23 @@ export const GenerateTicketModal = ({ isModalOpen, setIsModalOpen }: GenerateTic
   const [ticketCount, setTicketCount] = useState<number>(2)
   const [isMultipleMode, setIsMultipleMode] = useState<boolean>(false)
   const [services, setServices] = useState<Service[]>([])
-  const [selectedService, setSelectedService] = useState<string>("");
+  const [selectedService, setSelectedService] = useState<string>("")
+  const [serviceError, setServiceError] = useState<string>("")
+
+  const sortedServices = [
+    ...services.filter((service) => service.name !== "Other Service"),
+    ...services.filter((service) => service.name === "Other Service"),
+  ]
 
   const handleGenerateTicket = () => {
+
+    if (!selectedService) {
+      setServiceError('Service is required')
+      return
+    }
+
+    setServiceError("")
+
     createNewTicket(isMultipleMode ? ticketCount : 1, selectedService)
   }
 
@@ -35,7 +50,7 @@ export const GenerateTicketModal = ({ isModalOpen, setIsModalOpen }: GenerateTic
     }
 
     fetchServices()
-  }, [isModalOpen])
+  }, [isModalOpen, getOfficeService])
 
   return (
     <ModalUI
@@ -71,15 +86,19 @@ export const GenerateTicketModal = ({ isModalOpen, setIsModalOpen }: GenerateTic
               id="services"
               variant="admin"
               onChange={(e) => setSelectedService(e.target.value)}
+              error={serviceError}
             >
               <option value="">Please select a service</option>
 
-              {services.map((service) => (
+              {sortedServices.map((service) => (
                 <option key={service.code} value={service.code}>
                   {service.name}
                 </option>
               ))}
             </Select>
+            {serviceError && (
+              <ErrorText message={serviceError} />
+            )}
           </div>
         </div>
 
