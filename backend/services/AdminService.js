@@ -21,36 +21,27 @@ const calculateRatingAverage = (ratings = {}) => {
 
 class AdminService {
 
-    async generateTicket(userId, count, selectedService) {
+    async generateTicket(userId, selectedService) {
         if (!selectedService) throw new ErrorController('No service found', 400)
-        if (count < 1 || count > 100) throw new ErrorController('Ticket count must be between 1 and 100', 400) 
 
         const user = await User.findById(userId)
-
         if (!user) throw new ErrorController('User not found', 401)
-
         const officeCode = user.officeCode
-        
         if (!officeCode) throw new ErrorController('No office assigned', 400)
 
         const year = String(new Date().getFullYear()).slice(-2)
-        const tickets = []
-
-        for (let i = 0; i < count; i++) {
-            const ticket = await Queue.create({
-                selectedService: `${selectedService}`,
-                officeCode: `${officeCode}`,
-                code: `${officeCode}${year}-${generateCode()}`,
-                generatedBy: userId
-            })
-            tickets.push(ticket)
-        }
+        const ticket = await Queue.create({
+            selectedService: `${selectedService}`,
+            officeCode: `${officeCode}`,
+            code: `${officeCode}${year}-${generateCode()}`,
+            generatedBy: userId
+        })
 
         if (global.io) {
-            global.io.to(`office:${officeCode}`).emit('ticket:created', { tickets, officeCode })
+            global.io.to(`office:${officeCode}`).emit('ticket:created', { tickets: [ticket], officeCode })
         }
 
-        return tickets         
+        return [ticket]
     }
 
     async getActiveQueueByDateService(
