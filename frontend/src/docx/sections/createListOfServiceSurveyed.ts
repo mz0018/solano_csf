@@ -9,7 +9,10 @@ export interface ServiceSurveyed {
 export const createListOfServiceSurveyed = ({ feedback, selectedOfficeName }: ServiceSurveyed) => {
 
     const serviceCounts = feedback.reduce<Record<string, number>>((acc, item) => {
-        acc[item.service] = (acc[item.service] ?? 0) + 1;
+        const codes: string[] = Array.isArray((item as any).service) ? (item as any).service : [(item as any).service]
+        codes.forEach(c => {
+            acc[c] = (acc[c] ?? 0) + 1;
+        })
         return acc;
     }, {});
 

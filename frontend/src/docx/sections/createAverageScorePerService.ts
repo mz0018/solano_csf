@@ -6,8 +6,11 @@ export interface ServiceSurveyed {
 export const createAverageScorePerService = ({ feedback }: ServiceSurveyed) => {
   const serviceGroups: Record<string, FeedbackItem[]> = {};
   feedback.forEach((item) => {
-    serviceGroups[item.service] ??= [];
-    serviceGroups[item.service].push(item);
+    const codes: string[] = Array.isArray((item as any).service) ? (item as any).service : [(item as any).service]
+    codes.forEach(c => {
+      serviceGroups[c] ??= [];
+      serviceGroups[c].push(item);
+    })
   });
   const table = new Table({
     rows: [

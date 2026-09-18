@@ -152,15 +152,21 @@ class AdminService {
         })
         .select('client.name client.gender client.employmentStatus client.address service comments ratings')
 
-        let serviceName = feedback?.service || null
+        if (!feedback) throw new ErrorController('Feedback not found', 404)
 
-        if (feedback?.service && queue.officeCode) {
-            const serviceDoc = await Service.findOne({
+        const rawService = feedback.service
+        const codes = Array.isArray(rawService) ? rawService : rawService ? [rawService] : []
+        let serviceName = codes.join(", ")
+
+        if (codes.length > 0 && queue.officeCode) {
+            const serviceDocs = await Service.find({
                 officeCode: queue.officeCode,
-                code: feedback.service
-            }).select('name')
+                code: { $in: codes }
+            }).select('name code')
 
-            serviceName = serviceDoc?.name || feedback.service
+            const nameMap = Object.fromEntries(serviceDocs.map(s => [s.code, s.name]))
+            const names = codes.map(c => nameMap[c] || c)
+            serviceName = names.join(", ")
         }
 
         return { 
@@ -235,16 +241,21 @@ class AdminService {
         const serviceNameMap = Object.fromEntries(
             serviceDocs.map(s => [s.code, s.name])
         );
-        const feedbacksWithNames = feedbacks.map(f => ({
-            ...f,
-            service: serviceNameMap[f.service] || f.service,
-        }));
+        // Expand feedbacks with multiple services so each service is counted separately
+        const feedbacksWithNames = feedbacks.flatMap(f => {
+            const codes = Array.isArray(f.service) ? f.service : f.service ? [f.service] : []
+            if (codes.length === 0) return [{ ...f, service: '' }]
+            return codes.map(code => ({
+                ...f,
+                service: serviceNameMap[code] || code,
+            }))
+        });
 
         return {
             office,
             dateFrom,
             dateTo,
-            totalFeedbacks: feedbacksWithNames.length,
+            totalFeedbacks: feedbacks.length,
             feedbacks: feedbacksWithNames,
         };
     }

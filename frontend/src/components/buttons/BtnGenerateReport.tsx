@@ -16,7 +16,7 @@ type Ratings = {
 
 export interface FeedbackItem {
   _id: string;
-  service: string;
+  service: string | string[];
   comments: string;
   client: {
     address: string;
