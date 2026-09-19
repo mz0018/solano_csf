@@ -6,6 +6,11 @@ const queueSchema = new mongoose.Schema(
       type: [String],
       required: true
     },
+    otherServiceDetail: {
+      type: String,
+      default: null,
+      trim: true
+    },
     officeCode: {
       type: String,
       required: true

@@ -5,6 +5,7 @@ const feedbackSchema = new mongoose.Schema({
     queueNumber: { type: String, required: true, index: true },
 
     service: { type: [String], required: true, index: true },
+    otherServiceDetail: { type: String, default: null },
 
     client: {
         name: { type: String, default: 'NA' },

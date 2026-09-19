@@ -21,6 +21,7 @@ class QueueService {
     }
 
     const selectedService = queue.selectedService
+    const otherServiceDetail = queue.otherServiceDetail || null
 
     const officeCode = code.match(/^(.+?)\d{2}-[A-Z2-9]{6}$/)?.[1]
     if (!officeCode) {
@@ -28,7 +29,7 @@ class QueueService {
     }
 
     const services = await Service.find({ officeCode }).select('code name')
-    return { exists: true, officeCode, services, selectedService }
+    return { exists: true, officeCode, services, selectedService, otherServiceDetail }
   }
 
   async saveFeedback(formData, queueNumber) {
@@ -65,6 +66,7 @@ class QueueService {
       officeCode: extractedOfficeCode,
       queueNumber,
       service: formData.service,
+      otherServiceDetail: isExist.otherServiceDetail || null,
       client: {
         name: formData.clientName?.trim() || "NA",
         contactNumber: formData.contactNumber?.trim() || "NA",

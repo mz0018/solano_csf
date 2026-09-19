@@ -44,10 +44,17 @@ class AdminService {
             throw new ErrorController('No service found', 400)
         }
 
+        const hasOther = services.includes('OTHER_SERVICE')
+        if (hasOther && !otherServiceDetail?.trim()) {
+            throw new ErrorController('Other service detail is required', 400)
+        }
+        const normalizedOtherDetail = hasOther ? otherServiceDetail.trim().slice(0, 200) : null
+
         const year = String(new Date().getFullYear()).slice(-2)
 
         const ticket = await Queue.create({
             selectedService: services,
+            otherServiceDetail: normalizedOtherDetail,
             officeCode: `${officeCode}`,
             code: `${officeCode}${year}-${generateCode()}`,
             generatedBy: userId
@@ -95,7 +102,7 @@ class AdminService {
 
         const [queue, total, statusCounts] = await Promise.all([
             Queue.find(filter)
-                .select('_id code status')
+                .select('_id code status otherServiceDetail selectedService')
                 .sort({ createdAt: -1 })
                 .skip((page - 1) * limit)
                 .limit(limit),
@@ -145,13 +152,13 @@ class AdminService {
     }
 
     async getDetailedFeedbackByCode(code) {
-        const queue = await Queue.findOne({ code }).select('code officeCode')
+        const queue = await Queue.findOne({ code }).select('code officeCode otherServiceDetail')
 
         if (!queue) throw new ErrorController('Queue ticket not found', 404)
         const feedback = await Feedback.findOne({
             queueNumber: code
         })
-        .select('client.name client.gender client.employmentStatus client.address service comments ratings')
+        .select('client.name client.gender client.employmentStatus client.address service otherServiceDetail comments ratings')
 
         if (!feedback) throw new ErrorController('Feedback not found', 404)
 
@@ -166,12 +173,17 @@ class AdminService {
             }).select('name code')
 
             const nameMap = Object.fromEntries(serviceDocs.map(s => [s.code, s.name]))
+            // Prefer feedback's otherServiceDetail, fallback to queue's for legacy feedbacks
+            const otherDetail = feedback.otherServiceDetail || queue.otherServiceDetail
+            if (otherDetail) {
+                nameMap['OTHER_SERVICE'] = `Other Service: ${otherDetail}`
+            }
             const names = codes.map(c => nameMap[c] || c)
             serviceName = names.join(", ")
         }
 
         return { 
-            queue: { code: queue.code },
+            queue: { code: queue.code, otherServiceDetail: queue.otherServiceDetail },
             feedback : {
                 ...feedback.toObject(),
                 service: serviceName
@@ -234,7 +246,7 @@ class AdminService {
                 createdAt: { $gte: startDate, $lte: endDate }
             })
             .lean()
-            .select('service client.gender client.affiliation client.ageGroup client.employmentStatus client.address ratings comments createdAt'),
+            .select('service otherServiceDetail client.gender client.affiliation client.ageGroup client.employmentStatus client.address ratings comments createdAt'),
             Service.find({ officeCode })
                 .select('code name')
                 .lean()
@@ -247,7 +259,12 @@ class AdminService {
         // service-specific docx sections expand internally per service
         const feedbacksWithNames = feedbacks.map(f => {
             const codes = Array.isArray(f.service) ? f.service : f.service ? [f.service] : []
-            const names = codes.map(code => serviceNameMap[code] || code)
+            const names = codes.map(code => {
+                if (code === 'OTHER_SERVICE' && f.otherServiceDetail) {
+                    return `Other Service: ${f.otherServiceDetail}`
+                }
+                return serviceNameMap[code] || code
+            })
             return { ...f, service: names }
         });
 

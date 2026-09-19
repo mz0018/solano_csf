@@ -1,4 +1,4 @@
-import{t as e}from"./jsx-runtime-UyaNSxZQ.js";import{t}from"./chevron-down-UQucmoT-.js";var n=e(),r=({className:e=``,error:r,children:i,variant:a=`default`,...o})=>{let s=a===`admin`;return(0,n.jsxs)(`div`,{className:`relative`,children:[(0,n.jsx)(`select`,{...o,className:s?`w-96 px-3 py-2 pr-10 rounded-lg focus:outline-none border appearance-none
+import{t as e}from"./jsx-runtime-UyaNSxZQ.js";import{t}from"./chevron-down-BgUz11EY.js";var n=e(),r=({className:e=``,error:r,children:i,variant:a=`default`,...o})=>{let s=a===`admin`;return(0,n.jsxs)(`div`,{className:`relative`,children:[(0,n.jsx)(`select`,{...o,className:s?`w-96 px-3 py-2 pr-10 rounded-lg focus:outline-none border appearance-none
                             ${r?`border-red-500 text-red-500`:`border-gray-300 text-gray-900 text-sm bg-white focus:ring-1 focus:ring-blue-500 focus:border-blue-500`}
                             ${e}`:`w-full p-4 pr-10 rounded-sm focus:outline-none border appearance-none bg-transparent
                             ${r?`border-red-500 text-red-500`:`border-gray-300 text-gray-500`}
