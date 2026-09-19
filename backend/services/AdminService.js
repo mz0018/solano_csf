@@ -241,14 +241,13 @@ class AdminService {
         const serviceNameMap = Object.fromEntries(
             serviceDocs.map(s => [s.code, s.name])
         );
-        // Expand feedbacks with multiple services so each service is counted separately
-        const feedbacksWithNames = feedbacks.flatMap(f => {
+        // Keep one object per feedback (per person) – service stays as array of names
+        // so Gender/Age/Affiliation/Quality counts stay 1 per person, while
+        // service-specific docx sections expand internally per service
+        const feedbacksWithNames = feedbacks.map(f => {
             const codes = Array.isArray(f.service) ? f.service : f.service ? [f.service] : []
-            if (codes.length === 0) return [{ ...f, service: '' }]
-            return codes.map(code => ({
-                ...f,
-                service: serviceNameMap[code] || code,
-            }))
+            const names = codes.map(code => serviceNameMap[code] || code)
+            return { ...f, service: names }
         });
 
         return {

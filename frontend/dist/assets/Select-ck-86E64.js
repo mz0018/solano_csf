@@ -1,5 +1,0 @@
-import{t as e}from"./jsx-runtime-UyaNSxZQ.js";import{t}from"./chevron-down-DC36jfOV.js";var n=e(),r=({className:e=``,error:r,children:i,variant:a=`default`,...o})=>{let s=a===`admin`;return(0,n.jsxs)(`div`,{className:`relative`,children:[(0,n.jsx)(`select`,{...o,className:s?`w-96 px-3 py-2 pr-10 rounded-lg focus:outline-none border appearance-none
-                            ${r?`border-red-500 text-red-500`:`border-gray-300 text-gray-900 text-sm bg-white focus:ring-1 focus:ring-blue-500 focus:border-blue-500`}
-                            ${e}`:`w-full p-4 pr-10 rounded-sm focus:outline-none border appearance-none bg-transparent
-                            ${r?`border-red-500 text-red-500`:`border-gray-300 text-gray-500`}
-                            ${e}`,children:i}),(0,n.jsx)(t,{size:16,className:`absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400`})]})};export{r as t};
