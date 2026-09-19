@@ -21,7 +21,8 @@ const calculateRatingAverage = (ratings = {}) => {
 
 class AdminService {
 
-    async generateTicket(userId, selectedService) {
+    async generateTicket(userId, selectedService, otherServiceDetail) {
+        console.log('[AdminService] otherServiceDetail:', otherServiceDetail)
         if (!selectedService) {
             throw new ErrorController('No service found', 400)
         }

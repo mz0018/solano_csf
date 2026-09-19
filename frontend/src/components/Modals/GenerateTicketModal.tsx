@@ -1,35 +1,65 @@
 import { useEffect, useState } from "react"
+
 import { ModalUI } from "../../ui/form/ModalUI"
 import { Button } from "../../ui/form/Buttons"
 import { useGenerateTicket } from "../../hooks/useGenerateTicket"
 import { useGetServices } from "../../hooks/useGetServices"
 import type { Service } from "../../hooks/useGetServices"
 import { ErrorText } from "../../ui/form/ErrorText"
+import { Input } from "../../ui/form/Input"
 
 type GenerateTicketModalProps = {
   isModalOpen: boolean
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const GenerateTicketModal = ({ isModalOpen, setIsModalOpen }: GenerateTicketModalProps) => {
+export const GenerateTicketModal = ({
+  isModalOpen,
+  setIsModalOpen,
+}: GenerateTicketModalProps) => {
+  const { createNewTicket, isGeneratingTicket } = useGenerateTicket(
+    () => setIsModalOpen(false)
+  )
 
-  const { createNewTicket, isGeneratingTicket } = useGenerateTicket(() => setIsModalOpen(false))
   const { getOfficeService } = useGetServices()
+
   const [services, setServices] = useState<Service[]>([])
   const [selectedService, setSelectedService] = useState<string[]>([])
   const [serviceError, setServiceError] = useState<string>("")
+  const [otherText, setOtherText] = useState<string>("")
+  const [otherError, setOtherError] = useState<string>("")
 
   const sortedServices = [
     ...services.filter((service) => service.name !== "Other Service"),
     ...services.filter((service) => service.name === "Other Service"),
   ]
 
+  const otherService = services.find(
+    (s) => s.name === "Other Service"
+  )
+
+  const isOtherSelected = otherService
+    ? selectedService.includes(otherService.code)
+    : false
+
   const handleServiceChange = (serviceCode: string) => {
-    setSelectedService((prev) =>
-      prev.includes(serviceCode)
+    setSelectedService((prev) => {
+      const isCurrentlySelected = prev.includes(serviceCode)
+
+      // If Other Service is being deselected, clear its text and error.
+      if (
+        otherService &&
+        serviceCode === otherService.code &&
+        isCurrentlySelected
+      ) {
+        setOtherText("")
+        setOtherError("")
+      }
+
+      return isCurrentlySelected
         ? prev.filter((code) => code !== serviceCode)
         : [...prev, serviceCode]
-    )
+    })
 
     setServiceError("")
   }
@@ -40,25 +70,45 @@ export const GenerateTicketModal = ({ isModalOpen, setIsModalOpen }: GenerateTic
       return
     }
 
+    if (isOtherSelected && !otherText.trim()) {
+      setOtherError("Please specify other service")
+      return
+    }
+
     setServiceError("")
-    createNewTicket(selectedService)
+    setOtherError("")
+
+    createNewTicket(selectedService, otherText.trim())
   }
 
   useEffect(() => {
-    if (!isModalOpen) return
+    if (!isModalOpen) {
+      return
+    }
 
     const fetchServices = async () => {
       const data = await getOfficeService()
-      if (data) setServices(data)
+
+      if (data) {
+        setServices(data)
+      }
     }
 
     fetchServices()
   }, [isModalOpen, getOfficeService])
 
+  const handleClose = () => {
+    setSelectedService([])
+    setOtherText("")
+    setServiceError("")
+    setOtherError("")
+    setIsModalOpen(false)
+  }
+
   return (
     <ModalUI
       isOpen={isModalOpen}
-      onClose={() => setIsModalOpen(false)}
+      onClose={handleClose}
       title="Generate Ticket"
       footer={
         <Button
@@ -100,7 +150,35 @@ export const GenerateTicketModal = ({ isModalOpen, setIsModalOpen }: GenerateTic
               </label>
             ))}
 
-            {serviceError && <ErrorText message={serviceError} />}
+            {isOtherSelected && (
+              <div className="pt-2">
+                <Input
+                  type="text"
+                  placeholder="Please specify other service"
+                  value={otherText}
+                  onChange={(e) => {
+                    setOtherText(e.target.value)
+
+                    if (otherError) {
+                      setOtherError("")
+                    }
+                  }}
+                  error={otherError}
+                  className="w-full p-3 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black"
+                  autoFocus
+                />
+
+                {otherError && (
+                  <p className="mt-1 text-xs text-red-500">
+                    {otherError}
+                  </p>
+                )}
+              </div>
+            )}
+
+            {serviceError && (
+              <ErrorText message={serviceError} />
+            )}
           </div>
         </div>
       </div>
