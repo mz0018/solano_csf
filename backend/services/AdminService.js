@@ -56,7 +56,7 @@ class AdminService {
             selectedService: services,
             otherServiceDetail: normalizedOtherDetail,
             officeCode: `${officeCode}`,
-            code: `${officeCode}${year}-${generateCode()}`,
+            code: generateCode(),
             generatedBy: userId
         })
 

@@ -33,6 +33,6 @@ const queueSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-queueSchema.index({ code: 1 }, { unique: true });
+queueSchema.index({ officeCode: 1, code: 1 }, { unique: true })
 
 export default mongoose.model('Queue', queueSchema);

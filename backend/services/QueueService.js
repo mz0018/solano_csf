@@ -23,11 +23,10 @@ class QueueService {
     const selectedService = queue.selectedService
     const otherServiceDetail = queue.otherServiceDetail || null
 
-    const officeCode = code.match(/^(.+?)\d{2}-[A-Z2-9]{6}$/)?.[1]
+    const officeCode = queue.officeCode
     if (!officeCode) {
-      throw new ErrorController('Invalid Queue Ticket', 401)
+        throw new ErrorController('Invalid Queue Ticket', 401)
     }
-
     const services = await Service.find({ officeCode }).select('code name')
     return { exists: true, officeCode, services, selectedService, otherServiceDetail }
   }
@@ -94,7 +93,8 @@ class QueueService {
     await feedback.save();
     await Queue.updateOne({ code: queueNumber }, { status: "used" });
 
-    const officeCode = queueNumber.match(/^(.+?)\d{2}-[A-Z2-9]{6}$/)?.[1]
+    const officeCode = isExist.officeCode
+
     if (global.io && officeCode) {
       global.io.to(`office:${officeCode}`).emit('ticket:used', { queueNumber, officeCode })
     }
