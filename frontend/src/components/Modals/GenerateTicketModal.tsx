@@ -101,6 +101,14 @@ export const GenerateTicketModal = ({
 
   }
 
+  const resetModal = () => {
+    setSelectedService([])
+    setOtherText("")
+    setServiceError("")
+    setOtherError("")
+    setActiveQr(null)
+  }
+
   useEffect(() => {
     if (!isModalOpen) {
       return
@@ -118,10 +126,7 @@ export const GenerateTicketModal = ({
   }, [isModalOpen, getOfficeService])
 
   const handleClose = () => {
-    setSelectedService([])
-    setOtherText("")
-    setServiceError("")
-    setOtherError("")
+    resetModal()
     setIsModalOpen(false)
   }
 
@@ -133,7 +138,10 @@ export const GenerateTicketModal = ({
       footer={
         activeQr ? (
           <Button
-            onClick={() => printQr(activeQr.qrCode, activeQr.ticket.code)}
+            onClick={() => {
+              printQr(activeQr.qrCode, activeQr.ticket.code)
+              handleClose()
+            }}
             className="w-full bg-blue-500 text-white p-4 rounded-sm cursor-pointer hover:bg-blue-600 transition-colors"
           >
             Print QR

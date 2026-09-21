@@ -1,5 +1,5 @@
 export const printQr = (qrCode: string, ticketCode: string) => {
-  const printWindow = window.open("", "_blank", "width=500,height=600")
+  const printWindow = window.open("", "_blank", "width=500,height=300")
 
   if (!printWindow) return
 
@@ -7,42 +7,51 @@ export const printQr = (qrCode: string, ticketCode: string) => {
     <html>
       <head>
         <title>Ticket ${ticketCode}</title>
-        <style>
-          body {
-            margin: 0;
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-family: Arial, sans-serif;
-          }
 
-          .ticket-code {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
-          }
-
-          img {
-            width: 256px;
-            height: 256px;
-          }
-
-          @media print {
-            body {
-              padding: 0;
-            }
-          }
-        </style>
+        <script src="https://cdn.tailwindcss.com"></script>
       </head>
 
-      <body>
-        <div class="ticket-code">
-          ${ticketCode}
-        </div>
+      <body class="m-0 bg-white p-5 font-sans">
 
-        <img src="${qrCode}" alt="Ticket QR Code" />
+        <div class="flex w-full items-center gap-5">
+
+          <!-- QR CODE -->
+          <div class="flex h-[150px] w-[150px] shrink-0 items-center justify-center">
+            <img
+              src="${qrCode}"
+              alt="Ticket QR Code"
+              class="h-[150px] w-[150px] object-contain"
+            />
+          </div>
+
+          <!-- TICKET INFORMATION -->
+          <div class="flex flex-col justify-center gap-6">
+
+            <!-- Ticket Name -->
+            <div class="flex flex-col gap-1">
+              <span class="text-sm font-normal text-gray-800">
+                Ticket Name
+              </span>
+
+              <span class="text-base font-bold text-gray-900">
+                ${ticketCode}
+              </span>
+            </div>
+
+            <!-- Customer Name -->
+            <div class="flex flex-col gap-1">
+              <span class="text-sm font-normal text-gray-800">
+                Customer Name
+              </span>
+
+              <span class="text-base font-bold text-gray-900">
+                ${ticketCode}
+              </span>
+            </div>
+
+          </div>
+
+        </div>
 
         <script>
           window.onload = function () {
@@ -53,6 +62,7 @@ export const printQr = (qrCode: string, ticketCode: string) => {
             }
           }
         </script>
+
       </body>
     </html>
   `)
