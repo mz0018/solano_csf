@@ -7,6 +7,7 @@ import { useGetServices } from "../../hooks/useGetServices"
 import type { Service } from "../../hooks/useGetServices"
 import { ErrorText } from "../../ui/form/ErrorText"
 import { Input } from "../../ui/form/Input"
+import { printQr } from "../../utils/printQr"
 
 type GeneratedQrCode = {
   ticket: {
@@ -132,7 +133,7 @@ export const GenerateTicketModal = ({
       footer={
         activeQr ? (
           <Button
-            onClick={() => console.log("Printing qr")}
+            onClick={() => printQr(activeQr.qrCode, activeQr.ticket.code)}
             className="w-full bg-blue-500 text-white p-4 rounded-sm cursor-pointer hover:bg-blue-600 transition-colors"
           >
             Print QR
