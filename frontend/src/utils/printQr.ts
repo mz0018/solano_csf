@@ -1,4 +1,8 @@
-export const printQr = (qrCode: string, ticketCode: string) => {
+export const printQr = (
+  qrCode: string,
+  ticketCode: string,
+  officeCode: string
+) => {
   const printWindow = window.open("", "_blank", "width=500,height=300")
 
   if (!printWindow) return
@@ -7,48 +11,73 @@ export const printQr = (qrCode: string, ticketCode: string) => {
     <html>
       <head>
         <title>Ticket ${ticketCode}</title>
-
         <script src="https://cdn.tailwindcss.com"></script>
       </head>
 
-      <body class="m-0 bg-white p-5 font-sans">
+      <body class="m-0 bg-gray-100 p-4 font-sans">
 
-        <div class="flex w-full items-center gap-5">
+        <!-- QUEUE TICKET -->
+        <div class="mx-auto w-full max-w-[460px] overflow-hidden rounded-xl bg-white shadow-md">
 
-          <!-- QR CODE -->
-          <div class="flex h-[150px] w-[150px] shrink-0 items-center justify-center">
-            <img
-              src="${qrCode}"
-              alt="Ticket QR Code"
-              class="h-[150px] w-[150px] object-contain"
-            />
+          <!-- HEADER -->
+          <div class="border-b-2 border-dashed border-gray-300 px-6 py-4 text-center">
+            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">
+              Queue Ticket
+            </p>
+
+            <p class="mt-1 text-sm font-medium text-gray-700">
+              Please use this ticket to provide your feedback.
+            </p>
           </div>
 
-          <!-- TICKET INFORMATION -->
-          <div class="flex flex-col justify-center gap-6">
+          <!-- MAIN CONTENT -->
+          <div class="flex items-center gap-6 px-6 py-6">
 
-            <!-- Ticket Name -->
-            <div class="flex flex-col gap-1">
-              <span class="text-sm font-normal text-gray-800">
-                Ticket Name
-              </span>
-
-              <span class="text-base font-bold text-gray-900">
-                ${ticketCode}
-              </span>
+            <!-- QR CODE -->
+            <div class="flex h-[140px] w-[140px] shrink-0 items-center justify-center rounded-lg border border-gray-200 bg-white p-2">
+              <img
+                src="${qrCode}"
+                alt="Ticket QR Code"
+                class="h-full w-full object-contain"
+              />
             </div>
 
-            <!-- Customer Name -->
-            <div class="flex flex-col gap-1">
-              <span class="text-sm font-normal text-gray-800">
-                Customer Name
-              </span>
+            <!-- TICKET INFORMATION -->
+            <div class="min-w-0 flex-1 text-center">
 
-              <span class="text-base font-bold text-gray-900">
-                ${ticketCode}
-              </span>
+              <!-- TICKET CODE -->
+              <div class="mb-2">
+                <p class="text-xs font-semibold uppercase tracking-widest text-gray-500">
+                  Ticket Number
+                </p>
+
+                <p class="mt-1 break-words text-lg font-black tracking-[0.15em] text-gray-900">
+                  ${ticketCode}
+                </p>
+              </div>
+
+              <!-- DIVIDER -->
+              <div class="mx-auto mb-2 h-px w-16 bg-gray-300"></div>
+
+              <!-- OFFICE -->
+              <div>
+                <p class="text-xs font-semibold uppercase tracking-widest text-gray-500">
+                  Office
+                </p>
+
+                <p class="mt-1 break-words text-base font-bold text-gray-900">
+                  ${officeCode}
+                </p>
+              </div>
+
             </div>
+          </div>
 
+          <!-- FOOTER -->
+          <div class="border-t-2 border-dashed border-gray-300 px-6 py-3 text-center">
+            <p class="text-xs font-medium text-gray-500">
+              Thank you for using our service. Please use this ticket to provide your feedback.
+            </p>
           </div>
 
         </div>
@@ -69,3 +98,4 @@ export const printQr = (qrCode: string, ticketCode: string) => {
 
   printWindow.document.close()
 }
+

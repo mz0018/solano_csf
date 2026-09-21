@@ -24,7 +24,6 @@ type GeneratedQrCode = {
   qrCode: string
 }
 
-
 type GenerateTicketModalProps = {
   isModalOpen: boolean
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -139,7 +138,7 @@ export const GenerateTicketModal = ({
         activeQr ? (
           <Button
             onClick={() => {
-              printQr(activeQr.qrCode, activeQr.ticket.code)
+              printQr(activeQr.qrCode, activeQr.ticket.code, activeQr.ticket.officeCode)
               handleClose()
             }}
             className="w-full bg-blue-500 text-white p-4 rounded-sm cursor-pointer hover:bg-blue-600 transition-colors"
