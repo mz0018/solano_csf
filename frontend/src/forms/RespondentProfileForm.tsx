@@ -13,10 +13,10 @@ const TEL_MAX = 15;
 
 export const RespondentProfileForm = ({ onNext, onBack }: Props) => {
     const { t } = useTranslation();
-    const { updateFormData } = useFeedback();
-    const [clientName, setClientName] = useState<string>("");
-    const [contactNumber, setContactNumber] = useState<string>("");
-    const [gender, setGender] = useState<string>("");
+    const { updateFormData, formData } = useFeedback();
+    const [clientName, setClientName] = useState<string>(formData.clientName || "");
+    const [contactNumber, setContactNumber] = useState<string>(formData.contactNumber || "");
+    const [gender, setGender] = useState<string>(formData.gender || "");
 
     const nameError = clientName.length > NAME_MAX;
     const contactError = contactNumber.length > TEL_MAX;

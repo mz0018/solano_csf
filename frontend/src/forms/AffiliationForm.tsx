@@ -9,8 +9,8 @@ type Props = { onNext: () => void; onBack: () => void; };
 
 export const AffiliationForm = ({ onNext, onBack }: Props) => {
     const { t } = useTranslation();
-    const { updateFormData } = useFeedback();
-    const [selected, setSelected] = useState<string>("");
+    const { updateFormData, formData } = useFeedback();
+    const [selected, setSelected] = useState(formData.affiliation || "");
 
     const handleNext = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

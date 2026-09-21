@@ -1,7 +1,10 @@
 import { useState } from 'react'
+import { useFeedback } from '../context/FeedbackContext'
 
 export const useVerifyQueue = () => {
-  const [code, setCode] = useState('')
+  const { formData } = useFeedback();
+
+  const [code, setCode] = useState(formData.queueNumber || "");
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isRateLimited, setIsRateLimited] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)

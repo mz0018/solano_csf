@@ -12,10 +12,10 @@ type Props = { onNext: () => void; onBack: () => void; };
 
 export const AddressForm = ({ onNext, onBack }: Props) => {
     const { t } = useTranslation();
-    const { updateFormData } = useFeedback();
-    const [selected, setSelected] = useState<string>("");
-    const [barangay, setBarangay] = useState<string>("");
-    const [addressDetail, setAddressDetail] = useState<string>("");
+    const { updateFormData, formData } = useFeedback();
+    const [selected, setSelected] = useState(formData.address || "");
+    const [barangay, setBarangay] = useState(formData.barangay || "");
+    const [addressDetail, setAddressDetail] = useState(formData.addressDetail || "");
 
     const canProceed =
         selected === "Within Solano" ? Boolean(barangay) :

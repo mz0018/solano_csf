@@ -18,8 +18,8 @@ const AGE_GROUPS = [
 
 export const AgeGroupForm = ({ onNext, onBack }: Props) => {
     const { t } = useTranslation();
-    const { updateFormData } = useFeedback();
-    const [selected, setSelected] = useState<string>("");
+    const { updateFormData, formData } = useFeedback();
+    const [selected, setSelected] = useState(formData.ageGroup || "");
 
     const handleNext = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

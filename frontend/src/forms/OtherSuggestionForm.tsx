@@ -15,8 +15,8 @@ const COMMENTS_MAX = 100;
 
 export const OtherSuggestionForm = ({ onBack, isLoading, onSubmit }: Props) => {
     const { t } = useTranslation();
-    const { updateFormData } = useFeedback();
-    const [comments, setComments] = useState<string>("");
+    const { updateFormData, formData } = useFeedback();
+    const [comments, setComments] = useState(formData.comments || "");
 
     const commentsError = comments.length > COMMENTS_MAX;
     const hasError = commentsError;

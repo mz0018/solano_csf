@@ -23,7 +23,7 @@ type RatingScale = {
 
 export const ServiceRatingForm = ({ onNext, onBack }: Props) => {
     const { t } = useTranslation();
-    const { updateFormData } = useFeedback();
+    const { updateFormData, formData } = useFeedback();
 
     const ratings: Rating[] = [
         {
@@ -68,7 +68,11 @@ export const ServiceRatingForm = ({ onNext, onBack }: Props) => {
         { value: 5, emoji: "😁", labelKey: "stronglyAgree" },
     ];
 
-    const [answers, setAnswers] = useState<Record<string, number>>({});
+    const [answers, setAnswers] = useState<Record<string, number>>(() => {
+    const initial = {} as Record<string, number>;
+        ratings.forEach(r => { initial[r.labelKey] = (formData as any)[r.labelKey] || 0; });
+        return initial;
+    });
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const currentRating = ratings[currentIndex];

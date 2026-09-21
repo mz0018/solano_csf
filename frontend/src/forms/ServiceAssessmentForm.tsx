@@ -9,7 +9,7 @@ type Props = { onNext: () => void; onBack: () => void; };
 
 export const ServiceAssessmentForm = ({ onNext, onBack }: Props) => {
     const { t } = useTranslation();
-    const { verified, updateFormData } = useFeedback();
+    const { verified, updateFormData, formData } = useFeedback();
     const services = verified?.services ?? [];
 
     const selectedService = Array.isArray(verified?.selectedService)
@@ -23,7 +23,7 @@ export const ServiceAssessmentForm = ({ onNext, onBack }: Props) => {
     const isLocked = selectedService.length > 0;
 
     const [selected, setSelected] = useState<string>(
-        isLocked ? ticketService : ""
+        isLocked ? ticketService : (formData.service || "")
     );
 
     const handleNext = (e: React.FormEvent<HTMLFormElement>) => {
