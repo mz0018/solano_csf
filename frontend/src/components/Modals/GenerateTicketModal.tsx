@@ -8,6 +8,22 @@ import type { Service } from "../../hooks/useGetServices"
 import { ErrorText } from "../../ui/form/ErrorText"
 import { Input } from "../../ui/form/Input"
 
+type GeneratedQrCode = {
+  ticket: {
+    code: string
+    createdAt: string
+    generatedBy: string
+    officeCode: string
+    selectedService: string[]
+    status: string
+    updatedAt: string
+    _id: string
+    otherServiceDetail?: string | null
+  }
+  qrCode: string
+}
+
+
 type GenerateTicketModalProps = {
   isModalOpen: boolean
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -17,9 +33,7 @@ export const GenerateTicketModal = ({
   isModalOpen,
   setIsModalOpen,
 }: GenerateTicketModalProps) => {
-  const { createNewTicket, isGeneratingTicket } = useGenerateTicket(
-    () => setIsModalOpen(false)
-  )
+  const { createNewTicket, isGeneratingTicket } = useGenerateTicket()
 
   const { getOfficeService } = useGetServices()
 
@@ -28,6 +42,8 @@ export const GenerateTicketModal = ({
   const [serviceError, setServiceError] = useState<string>("")
   const [otherText, setOtherText] = useState<string>("")
   const [otherError, setOtherError] = useState<string>("")
+  const [activeQr, setActiveQr] = useState<GeneratedQrCode | null>(null)
+
 
   const sortedServices = [
     ...services.filter((service) => service.name !== "Other Service"),
@@ -46,7 +62,6 @@ export const GenerateTicketModal = ({
     setSelectedService((prev) => {
       const isCurrentlySelected = prev.includes(serviceCode)
 
-      // If Other Service is being deselected, clear its text and error.
       if (
         otherService &&
         serviceCode === otherService.code &&
@@ -64,7 +79,7 @@ export const GenerateTicketModal = ({
     setServiceError("")
   }
 
-  const handleGenerateTicket = () => {
+  const handleGenerateTicket = async () => {
     if (selectedService.length === 0) {
       setServiceError("Service is required")
       return
@@ -78,7 +93,11 @@ export const GenerateTicketModal = ({
     setServiceError("")
     setOtherError("")
 
-    createNewTicket(selectedService, otherText.trim())
+    const qrCodes = await createNewTicket(selectedService, otherText.trim())
+    if (qrCodes?.length) {
+      setActiveQr(qrCodes[0])
+    }
+
   }
 
   useEffect(() => {
@@ -173,6 +192,20 @@ export const GenerateTicketModal = ({
                     {otherError}
                   </p>
                 )}
+              </div>
+            )}
+
+            {activeQr && (
+              <div className="flex flex-col items-center gap-4">
+                <p className="text-xl font-bold">
+                  {activeQr.ticket.code}
+                </p>
+
+                <img
+                  src={activeQr.qrCode}
+                  alt="Ticket QR Code"
+                  className="w-64 h-64"
+                />
               </div>
             )}
 

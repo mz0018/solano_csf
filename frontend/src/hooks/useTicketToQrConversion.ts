@@ -5,13 +5,15 @@ type Ticket = {
   createdAt: string;
   generatedBy: string;
   officeCode: string;
-  selectedService: string;
+  selectedService: string[];
   status: string;
   updatedAt: string;
   _id: string;
+  otherServiceDetail?: string | null;
 };
 
-type TicketResponse = {
+export type TicketResponse = {
+  qrCode: string
   ticket: Ticket[];
 };
 
