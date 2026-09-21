@@ -130,90 +130,94 @@ export const GenerateTicketModal = ({
       onClose={handleClose}
       title="Generate Ticket"
       footer={
-        <Button
-          disabled={isGeneratingTicket}
-          onClick={handleGenerateTicket}
-          className="w-full bg-blue-500 text-white p-4 rounded-sm cursor-pointer hover:bg-blue-600 transition-colors"
-        >
-          {isGeneratingTicket ? "Loading..." : "Generate"}
-        </Button>
+        !activeQr && (
+          <Button
+            disabled={isGeneratingTicket}
+            onClick={handleGenerateTicket}
+            className="w-full bg-blue-500 text-white p-4 rounded-sm cursor-pointer hover:bg-blue-600 transition-colors"
+          >
+            {isGeneratingTicket ? "Loading..." : "Generate"}
+          </Button>
+        )
       }
     >
       <div className="space-y-4">
-        <p className="text-sm text-gray-500">
-          Generate a new queue ticket?
-        </p>
+        {!activeQr ? (
+          <>
+            <p className="text-sm text-gray-500">
+              Generate a new queue ticket?
+            </p>
 
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700">
-            Services
-          </label>
-
-          <div className="w-96 space-y-2">
-            {sortedServices.map((service) => (
-              <label
-                key={service.code}
-                className="flex items-center gap-3 p-3 border border-gray-200 rounded-md cursor-pointer hover:bg-gray-50 transition-colors"
-              >
-                <input
-                  type="checkbox"
-                  value={service.code}
-                  checked={selectedService.includes(service.code)}
-                  onChange={() => handleServiceChange(service.code)}
-                  className="h-4 w-4 rounded text-blue-500 focus:ring-blue-500"
-                />
-
-                <span className="text-sm text-gray-700">
-                  {service.name}
-                </span>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">
+                Services
               </label>
-            ))}
 
-            {isOtherSelected && (
-              <div className="pt-2">
-                <Input
-                  type="text"
-                  placeholder="Please specify other service"
-                  value={otherText}
-                  onChange={(e) => {
-                    setOtherText(e.target.value)
+              <div className="w-96 space-y-2">
+                {sortedServices.map((service) => (
+                  <label
+                    key={service.code}
+                    className="flex items-center gap-3 p-3 border border-gray-200 rounded-md cursor-pointer hover:bg-gray-50 transition-colors"
+                  >
+                    <input
+                      type="checkbox"
+                      value={service.code}
+                      checked={selectedService.includes(service.code)}
+                      onChange={() => handleServiceChange(service.code)}
+                      className="h-4 w-4 rounded text-blue-500 focus:ring-blue-500"
+                    />
 
-                    if (otherError) {
-                      setOtherError("")
-                    }
-                  }}
-                  error={otherError}
-                  className="w-full p-3 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black"
-                  autoFocus
-                />
+                    <span className="text-sm text-gray-700">
+                      {service.name}
+                    </span>
+                  </label>
+                ))}
 
-                {otherError && (
-                  <p className="mt-1 text-xs text-red-500">
-                    {otherError}
-                  </p>
+                {isOtherSelected && (
+                  <div className="pt-2">
+                    <Input
+                      type="text"
+                      placeholder="Please specify other service"
+                      value={otherText}
+                      onChange={(e) => {
+                        setOtherText(e.target.value)
+
+                        if (otherError) {
+                          setOtherError("")
+                        }
+                      }}
+                      error={otherError}
+                      className="w-full p-3 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black"
+                      autoFocus
+                    />
+
+                    {otherError && (
+                      <p className="mt-1 text-xs text-red-500">
+                        {otherError}
+                      </p>
+                    )}
+                  </div>
+                )}
+
+                {serviceError && (
+                  <ErrorText message={serviceError} />
                 )}
               </div>
-            )}
+            </div>
+          </>
+        ) : (
+          <div className="flex flex-col items-center gap-4">
+            <p className="text-xl font-bold">
+              {activeQr.ticket.code}
+            </p>
 
-            {activeQr && (
-              <div className="flex flex-col items-center gap-4">
-                <p className="text-xl font-bold">
-                  {activeQr.ticket.code}
-                </p>
-
-                <img
-                  src={activeQr.qrCode}
-                  alt="Ticket QR Code"
-                  className="w-64 h-64"
-                />
-              </div>
-            )}
-
-            {serviceError && (
-              <ErrorText message={serviceError} />
-            )}
+            <img
+              src={activeQr.qrCode}
+              alt="Ticket QR Code"
+              className="w-64 h-64"
+            />
           </div>
-        </div>
+        )}
       </div>
     </ModalUI>
   )
