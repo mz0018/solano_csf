@@ -43,7 +43,7 @@ export const printQr = (
             </div>
 
             <!-- TICKET INFORMATION -->
-            <div class="min-w-0 flex-1 text-center">
+            <div class="min-w-0 flex-1 text-start">
 
               <!-- TICKET CODE -->
               <div class="mb-2">
@@ -51,13 +51,10 @@ export const printQr = (
                   Ticket Number
                 </p>
 
-                <p class="mt-1 break-words text-lg font-black tracking-[0.15em] text-gray-900">
+                <p class="mt-1 break-words text-base font-black tracking-wide text-gray-900">
                   ${ticketCode}
                 </p>
               </div>
-
-              <!-- DIVIDER -->
-              <div class="mx-auto mb-2 h-px w-16 bg-gray-300"></div>
 
               <!-- OFFICE -->
               <div>
