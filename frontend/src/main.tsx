@@ -98,7 +98,7 @@ createRoot(document.getElementById('root')!).render(
         <Suspense fallback={<Loader />}>
           <RouterProvider router={router} />
         </Suspense>
-        <Toaster position='top-right' duration={10000} expand richColors closeButton />
+        <Toaster position='top-right' duration={3000} expand richColors closeButton />
       </AuthProvider>
     </QueryClientProvider>
   </StrictMode>
