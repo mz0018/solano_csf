@@ -5,6 +5,8 @@ import { useVerifyQueue } from "../hooks/useVerifyQueue";
 import { ErrorText } from "../ui/form/ErrorText";
 import { Input } from "../ui/form/Input";
 import { useFeedback } from "../context/FeedbackContext";
+import { useSearchParams } from "react-router-dom";
+import { useEffect } from "react";
 
 type Props = { onNext: () => void; onBack: () => void };
 
@@ -12,6 +14,8 @@ export const VerifyQueueForm = ({ onNext, onBack }: Props) => {
   const { t } = useTranslation();
   const { setVerified, updateFormData } = useFeedback();
   const { code, setCode, isLoading, error, verify, isRateLimited } = useVerifyQueue();
+  const [searchParams] = useSearchParams()
+  const urlCode = searchParams.get('code')
 
   const handleNext = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,6 +26,10 @@ export const VerifyQueueForm = ({ onNext, onBack }: Props) => {
       onNext();
     }
   };
+
+  useEffect(() => {
+    if (urlCode) setCode(urlCode)
+  }, [urlCode])
 
   return (
     <CsfFormUI>

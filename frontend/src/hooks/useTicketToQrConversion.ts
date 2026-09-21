@@ -23,9 +23,10 @@ export const useTicketToQrConversion = () => {
     try {
         const qrCodes = await Promise.all(
             data.ticket.map(async (ticket) => {
-            const ticketData = JSON.stringify(ticket);
-
-            const qrCode = await QRCode.toDataURL(ticketData);
+              
+            const websiteUrl = import.meta.env.VITE_WEBSITE_URL
+            const qrUrl = `${websiteUrl}/create-feedback?code=${ticket.code}`
+            const qrCode = await QRCode.toDataURL(qrUrl)
 
             return {
                 ticket,

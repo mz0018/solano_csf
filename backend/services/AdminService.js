@@ -50,7 +50,7 @@ class AdminService {
         }
         const normalizedOtherDetail = hasOther ? otherServiceDetail.trim().slice(0, 200) : null
 
-        const year = String(new Date().getFullYear()).slice(-2)
+        // const year = String(new Date().getFullYear()).slice(-2)
 
         const ticket = await Queue.create({
             selectedService: services,
