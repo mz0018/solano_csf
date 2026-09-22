@@ -289,7 +289,6 @@ class AdminService {
     }
 
     async getRenderedService(userOfficeCode, dateFrom, dateTo) {
-
         if (!userOfficeCode) {
             throw new ErrorController('Office code is required', 400)
         }
@@ -302,7 +301,7 @@ class AdminService {
         const endDate = new Date(dateTo)
 
         endDate.setDate(endDate.getDate() + 1)
-        
+
         const queue = await Queue.find({
             officeCode: userOfficeCode,
             createdAt: {
@@ -310,10 +309,37 @@ class AdminService {
                 $lt: endDate
             }
         })
+        .select('selectedService generatedBy')
+        .lean()
 
-        console.log(queue)
+        const generatedByIds = queue.map(q => q.generatedBy)
 
-        return queue;
+        const users = await User.find({
+            _id: { $in: generatedByIds }
+        })
+        .select('firstName middleName lastName')
+        .lean()
+
+        const userMap = new Map(
+            users.map(user => [
+                user._id.toString(),
+                user
+            ])
+        )
+
+        const result = queue.map(q => {
+            const user = userMap.get(q.generatedBy.toString())
+
+            return {
+                ...q,
+                generatedByName: user
+                    ? `${user.firstName} ${user.middleName ?? ''} ${user.lastName}`.replace(/\s+/g, ' ').trim()
+                    : null
+            }
+        })
+
+        console.log(result)
+        return result
     }
 
 }
