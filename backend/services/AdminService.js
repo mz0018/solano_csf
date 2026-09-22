@@ -309,7 +309,7 @@ class AdminService {
                 $lt: endDate
             }
         })
-            .select('selectedService generatedBy')
+            .select('selectedService generatedBy createdAt')
             .lean()
 
         const generatedByIds = queue.map(q => q.generatedBy)

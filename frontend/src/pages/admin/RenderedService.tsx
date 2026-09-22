@@ -8,6 +8,7 @@ _id: string;
 generatedBy: string;
 generatedByName: string;
 selectedService: string[];
+createdAt: string;
 };
 
 type RenderedServiceResponse = {
@@ -48,12 +49,25 @@ useEffect(() => {
 ]);
 
 const data = renderedServices?.data ?? [];
+const serviceCounts = renderedServices?.serviceCounts ?? {};
+
+const formatDateTime = (date: string) => {
+    return new Date(date).toLocaleString("en-PH", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true,
+    });
+};
 
 return (
     <AdminResponsiveContainer>
         <div className="space-y-6">
             <h1 className="text-xl font-semibold">
-                Total Rendered Service
+                Rendered Services
             </h1>
 
             {/* Date Filters */}
@@ -97,9 +111,9 @@ return (
                 </div>
             </div>
 
-            {/* Table */}
+            {/* Rendered Services Table */}
             {data.length > 0 && (
-                <div className="overflow-hidden rounded-lg border border-gray-200">
+                <>
                     <TableUI className="w-full text-left text-sm">
                         <thead className="bg-gray-100">
                             <tr>
@@ -111,8 +125,8 @@ return (
                                     Service
                                 </th>
 
-                                <th className="px-4 py-3 text-center font-semibold">
-                                    Count
+                                <th className="px-4 py-3 font-semibold">
+                                    Date & Time Rendered
                                 </th>
                             </tr>
                         </thead>
@@ -133,8 +147,10 @@ return (
                                                 {service}
                                             </td>
 
-                                            <td className="px-4 py-3 text-center font-medium">
-                                                1
+                                            <td className="px-4 py-3">
+                                                {formatDateTime(
+                                                    item.createdAt
+                                                )}
                                             </td>
                                         </tr>
                                     )
@@ -142,6 +158,50 @@ return (
                             )}
                         </tbody>
                     </TableUI>
+                </>
+            )}
+
+            {/* Service Counts */}
+            {Object.keys(serviceCounts).length > 0 && (
+                <div className="space-y-3">
+                    <h2 className="text-lg font-semibold">
+                        Service Summary
+                    </h2>
+
+                    <>
+                        <TableUI className="w-full text-left text-sm">
+                            <thead className="bg-gray-100">
+                                <tr>
+                                    <th className="px-4 py-3 font-semibold">
+                                        Service
+                                    </th>
+
+                                    <th className="px-4 py-3 text-center font-semibold">
+                                        Total
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {Object.entries(serviceCounts).map(
+                                    ([service, count]) => (
+                                        <tr
+                                            key={service}
+                                            className="border-t border-gray-200"
+                                        >
+                                            <td className="px-4 py-3">
+                                                {service}
+                                            </td>
+
+                                            <td className="px-4 py-3 text-center font-semibold">
+                                                {count}
+                                            </td>
+                                        </tr>
+                                    )
+                                )}
+                            </tbody>
+                        </TableUI>
+                    </>
                 </div>
             )}
 
