@@ -7,7 +7,7 @@ export type RegisterClientForm = {
   userName: string
   password: string
   officeCode: string
-  role: 'office_admin' | 'hr_admin' | 'super_admin'
+  role: 'office_admin' | 'hr_admin' | 'super_admin' | 'head_office_admin'
 }
 
 type Office = {
@@ -15,7 +15,7 @@ type Office = {
   name: string
 }
 
-const VALID_ROLES = ['office_admin', 'hr_admin', 'super_admin'] as const
+const VALID_ROLES = ['office_admin', 'hr_admin', 'super_admin', 'head_office_admin'] as const
 
 const initialForm: RegisterClientForm = {
   firstName: '',

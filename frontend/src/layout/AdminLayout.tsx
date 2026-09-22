@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import { SidebarUI } from '../ui/SidebarUI'
 import { MainLayoutUI } from '../ui/MainLayoutUI'
-import { Radio, Settings2, Files, BrickWallShield } from 'lucide-react'
+import { Radio, Settings2, Files, BrickWallShield, HandCoins } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { AdminNavbar } from '../components/Navbar/AdminNavbar'
 
@@ -11,8 +11,9 @@ const AdminLayout = () => {
 
   const navLinks = [
     { name: 'Overview', path: '/admin/overview', icon: <Radio size={20} />, roles: ['super_admin'] },
-    { name: 'Dashboard', path: '/admin/queue/dashboard', icon: <BrickWallShield size={20} />, roles: ['office_admin', 'hr_admin'] },
-    { name: 'Live Monitoring', path: '/admin/queue/monitor', icon: <Radio size={20} />, roles: ['office_admin', 'hr_admin'] },
+    { name: 'Dashboard', path: '/admin/queue/dashboard', icon: <BrickWallShield size={20} />, roles: ['office_admin', 'hr_admin', 'head_office_admin'] },
+    { name: 'Live Monitoring', path: '/admin/queue/monitor', icon: <Radio size={20} />, roles: ['office_admin', 'hr_admin', 'head_office_admin'] },
+    { name: 'Total Service Rendered', path: '/admin/queue/service/rendered', icon: <HandCoins size={20} />, roles: ['head_office_admin'] },
     {
       name: 'Reports',
       icon: <Files size={20} />,
@@ -22,7 +23,7 @@ const AdminLayout = () => {
         { name: 'Review Office Feedback', path: '/admin/queue/offices/feedbacks', roles: ['hr_admin', 'super_admin'] },
       ]
     },
-    { name: 'Settings', path: '/admin/settings', icon: <Settings2 size={20} />, roles: ['office_admin', 'hr_admin', 'super_admin'] }
+    { name: 'Settings', path: '/admin/settings', icon: <Settings2 size={20} />, roles: ['office_admin', 'hr_admin', 'super_admin', 'head_office_admin'] }
   ]
 
   const filteredNavLinks = navLinks.filter((link) =>

@@ -11,6 +11,8 @@ export const getRoleBasedNavigationPath = (role: string): string => {
       return '/admin/queue/monitor'
     case 'office_admin':
       return '/admin/queue/monitor'
+    case 'head_office_admin':
+      return '/admin/queue/monitor'
     default:
       // Safe fallback for unknown roles
       return '/admin/queue/monitor'

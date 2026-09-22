@@ -10,21 +10,21 @@ const router = express.Router()
 router.post(
     '/generate-ticket',
     authorizeViaCookie,
-    authorizeViaRole('office_admin', 'hr_admin', 'super_admin'),
+    authorizeViaRole('office_admin', 'hr_admin', 'super_admin', 'head_office_admin'),
     AdminController.generateTicket
 )
 
 router.get(
     '/active-queue',
     authorizeViaCookie,
-    authorizeViaRole('office_admin', 'hr_admin', 'super_admin'),
+    authorizeViaRole('office_admin', 'hr_admin', 'super_admin', 'head_office_admin'),
     AdminController.getActiveQueueByDate
 )
 
 router.get(
     '/feedback/:code',
     authorizeViaCookie,
-    authorizeViaRole('office_admin', 'hr_admin', 'super_admin'),
+    authorizeViaRole('office_admin', 'hr_admin', 'super_admin', 'head_office_admin'),
     AdminController.getDetailedFeedback
 )
 
@@ -45,14 +45,14 @@ router.get(
 router.get(
     '/report-statistics',
     authorizeViaCookie,
-    authorizeViaRole('hr_admin', 'super_admin', 'office_admin'),
+    authorizeViaRole('hr_admin', 'super_admin', 'office_admin', 'head_office_admin'),
     AdminController.getReportStatistics
 )
 
 router.get(
     '/services',
     authorizeViaCookie,
-    authorizeViaRole('hr_admin', 'office_admin'),
+    authorizeViaRole('hr_admin', 'office_admin', 'head_office_admin'),
     AdminController.getOfficeService
 )
 

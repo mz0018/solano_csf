@@ -27,7 +27,7 @@ class UserService {
         }
 
         // Validate that the role is one of the allowed roles
-        const validRoles = ['office_admin', 'hr_admin', 'super_admin']
+        const validRoles = ['office_admin', 'hr_admin', 'super_admin', 'head_office_admin']
         if (!validRoles.includes(userData.role)) {
             throw new ErrorController('Invalid role', 400)
         }
