@@ -289,9 +289,22 @@ class AdminService {
     }
 
     async getRenderedService(userOfficeCode, dateFrom, dateTo) {
-        console.log(userOfficeCode, dateFrom, dateTo)
 
-        return "200";
+        if (!userOfficeCode) {
+            throw new ErrorController('Office code is required', 400)
+        }
+
+        if (!dateFrom || !dateTo) {
+            throw new ErrorController('Date range is required', 400)
+        }
+        
+        const services = await Service.find({
+            officeCode: userOfficeCode
+        })
+
+        console.log(services)
+
+        return services;
     }
 
 }
