@@ -297,14 +297,23 @@ class AdminService {
         if (!dateFrom || !dateTo) {
             throw new ErrorController('Date range is required', 400)
         }
+
+        const startDate = new Date(dateFrom)
+        const endDate = new Date(dateTo)
+
+        endDate.setDate(endDate.getDate() + 1)
         
-        const services = await Service.find({
-            officeCode: userOfficeCode
+        const queue = await Queue.find({
+            officeCode: userOfficeCode,
+            createdAt: {
+                $gte: startDate,
+                $lt: endDate
+            }
         })
 
-        console.log(services)
+        console.log(queue)
 
-        return services;
+        return queue;
     }
 
 }
