@@ -1,59 +1,164 @@
 import { AdminResponsiveContainer } from "../../ui/form/AdminResponsiveContainer";
 import { useRenderedServices } from "../../hooks/useRenderedServices";
 import { useEffect, useState } from "react";
+import { TableUI } from "../../ui/form/TableUI";
+
+type RenderedServiceData = {
+_id: string;
+generatedBy: string;
+generatedByName: string;
+selectedService: string[];
+};
+
+type RenderedServiceResponse = {
+data: RenderedServiceData[];
+serviceCounts: Record<string, number>;
+};
 
 const RenderedService = () => {
-    const [selectedDateFrom, setSelectedDateFrom] = useState("");
-    const [selectedDateTo, setSelectedDateTo] = useState("");
+const [selectedDateFrom, setSelectedDateFrom] = useState("");
+const [selectedDateTo, setSelectedDateTo] = useState("");
 
-    const { handleGetRenderedServiceByDate } = useRenderedServices();
+const [renderedServices, setRenderedServices] =
+    useState<RenderedServiceResponse | null>(null);
 
-    useEffect(() => {
-        if (!selectedDateFrom || !selectedDateTo) return;
+const { handleGetRenderedServiceByDate } = useRenderedServices();
 
-        handleGetRenderedServiceByDate({ selectedDateFrom, selectedDateTo });
+useEffect(() => {
+    if (!selectedDateFrom || !selectedDateTo) {
+        return;
+    }
 
-    }, [selectedDateFrom, selectedDateTo]);
+    const fetchRenderedServices = async () => {
+        const result = await handleGetRenderedServiceByDate({
+            selectedDateFrom,
+            selectedDateTo,
+        });
 
-    return (
-        <AdminResponsiveContainer>
-            Total rendered service
+        if (result) {
+            setRenderedServices(result);
+        }
+    };
 
-            <div>
-                <label
-                    htmlFor="selectedDateFrom"
-                    className="mb-1 block text-sm font-medium"
-                >
-                    Start Date
-                </label>
+    fetchRenderedServices();
+}, [
+    selectedDateFrom,
+    selectedDateTo,
+    handleGetRenderedServiceByDate,
+]);
 
-                <input
-                    id="selectedDateFrom"
-                    type="date"
-                    value={selectedDateFrom}
-                    onChange={(e) => setSelectedDateFrom(e.target.value)}
-                    className="w-96 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                />
+const data = renderedServices?.data ?? [];
+
+return (
+    <AdminResponsiveContainer>
+        <div className="space-y-6">
+            <h1 className="text-xl font-semibold">
+                Total Rendered Service
+            </h1>
+
+            {/* Date Filters */}
+            <div className="flex gap-4">
+                <div>
+                    <label
+                        htmlFor="selectedDateFrom"
+                        className="mb-1 block text-sm font-medium"
+                    >
+                        Start Date
+                    </label>
+
+                    <input
+                        id="selectedDateFrom"
+                        type="date"
+                        value={selectedDateFrom}
+                        onChange={(e) =>
+                            setSelectedDateFrom(e.target.value)
+                        }
+                        className="w-96 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    />
+                </div>
+
+                <div>
+                    <label
+                        htmlFor="selectedDateTo"
+                        className="mb-1 block text-sm font-medium"
+                    >
+                        End Date
+                    </label>
+
+                    <input
+                        id="selectedDateTo"
+                        type="date"
+                        value={selectedDateTo}
+                        onChange={(e) =>
+                            setSelectedDateTo(e.target.value)
+                        }
+                        className="w-96 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    />
+                </div>
             </div>
 
-            <div>
-                <label
-                    htmlFor="selectedDateTo"
-                    className="mb-1 block text-sm font-medium"
-                >
-                    End Date
-                </label>
+            {/* Table */}
+            {data.length > 0 && (
+                <div className="overflow-hidden rounded-lg border border-gray-200">
+                    <TableUI className="w-full text-left text-sm">
+                        <thead className="bg-gray-100">
+                            <tr>
+                                <th className="px-4 py-3 font-semibold">
+                                    Generated By
+                                </th>
 
-                <input
-                    id="selectedDateTo"
-                    type="date"
-                    value={selectedDateTo}
-                    onChange={(e) => setSelectedDateTo(e.target.value)}
-                    className="w-96 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                />
-            </div>
-        </AdminResponsiveContainer>
-    );
+                                <th className="px-4 py-3 font-semibold">
+                                    Service
+                                </th>
+
+                                <th className="px-4 py-3 text-center font-semibold">
+                                    Count
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {data.map((item) =>
+                                item.selectedService.map(
+                                    (service) => (
+                                        <tr
+                                            key={`${item._id}-${service}`}
+                                            className="border-t border-gray-200"
+                                        >
+                                            <td className="px-4 py-3">
+                                                {item.generatedByName}
+                                            </td>
+
+                                            <td className="px-4 py-3">
+                                                {service}
+                                            </td>
+
+                                            <td className="px-4 py-3 text-center font-medium">
+                                                1
+                                            </td>
+                                        </tr>
+                                    )
+                                )
+                            )}
+                        </tbody>
+                    </TableUI>
+                </div>
+            )}
+
+            {/* No Data */}
+            {selectedDateFrom &&
+                selectedDateTo &&
+                data.length === 0 && (
+                    <p className="text-sm text-gray-500">
+                        No rendered services found for the selected
+                        date range.
+                    </p>
+                )}
+        </div>
+    </AdminResponsiveContainer>
+);
+
+
 };
 
 export default RenderedService;
