@@ -56,4 +56,11 @@ router.get(
     AdminController.getOfficeService
 )
 
+router.get(
+    '/rendered/service',
+    authorizeViaCookie,
+    authorizeViaRole('head_office_admin'),
+    AdminController.getRenderedService
+)
+
 export default router

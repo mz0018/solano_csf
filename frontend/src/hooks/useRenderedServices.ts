@@ -1,17 +1,30 @@
-type useRenderedServicesProps = {
-    selectedDateFrom: string
-    selectedDateTo: string
-}
+type UseRenderedServicesProps = {
+    selectedDateFrom: string;
+    selectedDateTo: string;
+};
 
 export const useRenderedServices = () => {
-
-    const handleGetRenderedServiceByDate = async ({ selectedDateFrom, selectedDateTo }: useRenderedServicesProps) => {
+    const handleGetRenderedServiceByDate = async ({
+        selectedDateFrom,
+        selectedDateTo,
+    }: UseRenderedServicesProps) => {
         try {
-            console.log(`Hello there ${selectedDateFrom} - ${selectedDateTo}`)
-        } catch (err) {
-            console.log('Something went wrong: ', err)
-        } 
-    }
+            const res = await fetch(
+                `${import.meta.env.VITE_API_URL}/api/admin/rendered/service?dateFrom=${selectedDateFrom}&dateTo=${selectedDateTo}`,
+                {
+                    credentials: "include",
+                }
+            );
 
-    return { handleGetRenderedServiceByDate }
-}
+            if (!res.ok) {
+                throw new Error("Failed to fetch rendered services");
+            }
+
+            return await res.json();
+        } catch (err) {
+            console.error("Something went wrong:", err);
+        }
+    };
+
+    return { handleGetRenderedServiceByDate };
+};

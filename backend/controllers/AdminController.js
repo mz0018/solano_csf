@@ -3,8 +3,6 @@ import AdminService from '../services/AdminService.js'
 class AdminController {
     async generateTicket(req, res, next) {
         try {
-            console.log('[GenerateTicket] selectedService:', req.body.selectedService)
-            console.log('[GenerateTicket] otherServiceDetail:', req.body.otherServiceDetail)
             const ticket = await AdminService.generateTicket(req.user_id, req.body.selectedService, req.body.otherServiceDetail)
             res.status(201).json({ ticket })
         } catch (error) { next(error) }
@@ -76,6 +74,16 @@ class AdminController {
         try {
             const userOfficeCode = req.user.officeCode;
             const result = await AdminService.getOfficeService(userOfficeCode);
+            res.status(200).json(result);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async getRenderedService(req, res, next) {
+        try {
+            const userOfficeCode = req.user.officeCode;
+            const result = await AdminService.getRenderedService(userOfficeCode, req.query.dateFrom, req.query.dateTo);
             res.status(200).json(result);
         } catch (error) {
             next(error);
