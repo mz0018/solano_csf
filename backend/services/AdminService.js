@@ -309,16 +309,16 @@ class AdminService {
                 $lt: endDate
             }
         })
-        .select('selectedService generatedBy')
-        .lean()
+            .select('selectedService generatedBy')
+            .lean()
 
         const generatedByIds = queue.map(q => q.generatedBy)
 
         const users = await User.find({
             _id: { $in: generatedByIds }
         })
-        .select('firstName middleName lastName')
-        .lean()
+            .select('firstName middleName lastName')
+            .lean()
 
         const userMap = new Map(
             users.map(user => [
@@ -333,13 +333,37 @@ class AdminService {
             return {
                 ...q,
                 generatedByName: user
-                    ? `${user.firstName} ${user.middleName ?? ''} ${user.lastName}`.replace(/\s+/g, ' ').trim()
+                    ? `${user.firstName} ${user.middleName ?? ''} ${user.lastName}`
+                        .replace(/\s+/g, ' ')
+                        .trim()
                     : null
             }
         })
 
-        console.log(result)
-        return result
+        // Count each service
+        const serviceCounts = {}
+
+        queue.forEach(q => {
+            if (!Array.isArray(q.selectedService)) {
+                return
+            }
+
+            q.selectedService.forEach(service => {
+                if (!serviceCounts[service]) {
+                    serviceCounts[service] = 0
+                }
+
+                serviceCounts[service]++
+            })
+        })
+
+        console.log('Rendered Services:', result)
+        console.log('Service Counts:', serviceCounts)
+
+        return {
+            data: result,
+            serviceCounts
+        }
     }
 
 }
