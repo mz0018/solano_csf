@@ -32,6 +32,14 @@ class UserController {
 
             const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
+            const room = global.io?.sockets.adapter.rooms.get(`user:${decoded.id}`)
+            if (room && room.size > 0 && global.io) {
+                global.io.to(`user:${decoded.id}`).emit('duplicate-login', {
+                    message: 'Someone is trying to log in with your account from another device.'
+                })
+                return res.status(409).json({ message: "You're already logged in on another device." })
+            }
+
             res.cookie('authToken', token, {
                 httpOnly: false, // Set to true in production with HTTPS
                 secure: false,

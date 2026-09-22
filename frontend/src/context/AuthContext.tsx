@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, useRef } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
+import { useSocket } from '../hooks/useSocket'
 import type { ReactNode } from 'react'
 
 interface AuthUser {
@@ -19,6 +20,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null)
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const { socketRef } = useSocket()
   const [user, setUser] = useState<AuthUser | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const queryClient = useQueryClient()
@@ -56,6 +58,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [])
 
   const logoutAlerted = useRef(false)
+
+  useEffect(() => {
+    if (!socketRef.current) return
+    const socket = socketRef.current
+    
+    socket.on('duplicate-login', (data) => {
+        alert(data.message || 'Someone is trying to log in with your account.')
+    })
+    
+    return () => {
+        socket.off('duplicate-login')
+    }
+  }, [socketRef])
   
   useEffect(() => {
     if (!user) return

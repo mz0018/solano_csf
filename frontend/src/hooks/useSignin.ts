@@ -61,6 +61,8 @@ export const useSignin = () => {
                     setStatus({ rateLimit: true })
                 } else if (res.status === 423) {
                     setHasError({ general: "Your account has been disabled. Please contact your administrator." })
+                } else if (res.status === 409) {
+                    setHasError({ general: "You're already logged in on another device." })
                 } else {
                     setHasError({ general: "An error occurred during sign-in. Please try again later." })
                 }
