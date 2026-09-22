@@ -23,9 +23,11 @@ const ProfileSettings = () => {
       ? "Human Resource Management"
       : user?.role === "office_admin"
         ? "Office Administrator"
-        : user?.role === "super_admin"
-          ? "Super Administrator"
-          : "-";
+        : user?.role === "head_office_admin"
+          ? "Head Office Administrator"
+          : user?.role === "super_admin"
+            ? "Super Administrator"
+            : "-";
 
   return (
     <div className="w-full max-w-3xl space-y-6">
