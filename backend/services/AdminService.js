@@ -294,7 +294,6 @@ class AdminService {
 
         const startDate = new Date(dateFrom)
         const endDate = new Date(dateTo)
-
         endDate.setDate(endDate.getDate() + 1)
 
         const filter = {
@@ -305,7 +304,7 @@ class AdminService {
             }
         }
 
-        const [queue, total, serviceCountResult] = await Promise.all([
+        const [queue, total, serviceCountResult, allOfficeServices] = await Promise.all([
             Queue.find(filter)
                 .select('selectedService generatedBy createdAt')
                 .lean()
@@ -323,12 +322,16 @@ class AdminService {
                         count: { $sum: 1 }
                     }
                 }
-            ])
+            ]),
+
+            Service.find({ officeCode: userOfficeCode }).select('code').lean()
         ])
 
-        // Count services for the ENTIRE date range
+        // Initialize ALL office services with 0
         const serviceCounts = {}
+        allOfficeServices.forEach(s => { serviceCounts[s.code] = 0 })
 
+        // Override with actual counts from rendered services
         serviceCountResult.forEach(item => {
             serviceCounts[item._id] = item.count
         })
@@ -377,8 +380,6 @@ class AdminService {
             totalPages: Math.ceil(total / limit)
         }
     }
-
-
 
 }
 

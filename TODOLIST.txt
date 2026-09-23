@@ -1,5 +1,3 @@
--Add pagination on total service renderered table
--the default data of rendered service table should be the active date
 -fix the bug on avoid multiple logged in (
     -Computer 1 - user1 logged in 200
 
