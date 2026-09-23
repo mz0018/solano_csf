@@ -305,23 +305,32 @@ class AdminService {
             }
         }
 
-        const [queue, total] = await Promise.all([
+        const [queue, total, serviceCountResult] = await Promise.all([
             Queue.find(filter)
                 .select('selectedService generatedBy createdAt')
                 .lean()
                 .skip((page - 1) * limit)
                 .limit(limit),
 
-            Queue.countDocuments(filter)
+            Queue.countDocuments(filter),
+
+            Queue.aggregate([
+                { $match: filter },
+                { $unwind: '$selectedService' },
+                {
+                    $group: {
+                        _id: '$selectedService',
+                        count: { $sum: 1 }
+                    }
+                }
+            ])
         ])
 
-        // Count services
+        // Count services for the ENTIRE date range
         const serviceCounts = {}
 
-        queue.forEach(q => {
-            q.selectedService.forEach(service => {
-                serviceCounts[service] = (serviceCounts[service] || 0) + 1
-            })
+        serviceCountResult.forEach(item => {
+            serviceCounts[item._id] = item.count
         })
 
         // Get unique generatedBy IDs
@@ -368,6 +377,7 @@ class AdminService {
             totalPages: Math.ceil(total / limit)
         }
     }
+
 
 
 }
