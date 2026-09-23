@@ -28,6 +28,7 @@ export const useRenderedServices = () => {
                 },
                 staleTime: 1000 * 60 * 5,
             });
+            console.log(renderedServices)
             return renderedServices;
         } catch (err) {
             console.error("Something went wrong:", err);

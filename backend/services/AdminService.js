@@ -291,17 +291,61 @@ class AdminService {
     async getRenderedService(userOfficeCode, dateFrom, dateTo, page = 1, limit = 10) {
         if (!userOfficeCode) throw ErrorController('Office code is required', 400)
         if (!dateFrom || !dateTo) throw ErrorController('Date range is required', 400)
+
         const startDate = new Date(dateFrom)
         const endDate = new Date(dateTo)
+
         endDate.setDate(endDate.getDate() + 1)
-        const filter = { officeCode: userOfficeCode, createdAt: { $gte: startDate, $lt: endDate } }
+
+        const filter = {
+            officeCode: userOfficeCode,
+            createdAt: {
+                $gte: startDate,
+                $lt: endDate
+            }
+        }
+
         const [queue, total] = await Promise.all([
-            Queue.find(filter).select('selectedService generatedBy createdAt').lean().skip((page - 1) * limit).limit(limit),
+            Queue.find(filter)
+                .select('selectedService generatedBy createdAt')
+                .lean()
+                .skip((page - 1) * limit)
+                .limit(limit),
+
             Queue.countDocuments(filter)
         ])
+
         const serviceCounts = {}
-        queue.forEach(q => q.selectedService.forEach(s => { serviceCounts[s] = (serviceCounts[s] || 0) + 1 }))
-        return { data: queue, serviceCounts, total, page, limit, totalPages: Math.ceil(total / limit) }
+
+        queue.forEach(q =>
+            q.selectedService.forEach(s => {
+                serviceCounts[s] = (serviceCounts[s] || 0) + 1
+            })
+        )
+
+        // Get unique generatedBy IDs
+        const generatedBy = [
+            ...new Set(queue.map(q => q.generatedBy.toString()))
+        ]
+
+        // Get users
+        const getNames = await User.find({
+            _id: { $in: generatedBy }
+        })
+            .select('firstName lastName')
+            .lean()
+
+        console.log(generatedBy)
+        console.log(getNames)
+
+        return {
+            data: queue,
+            serviceCounts,
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit)
+        }
     }
 
 }
