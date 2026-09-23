@@ -1,138 +1,123 @@
-import { AdminResponsiveContainer } from "../../ui/form/AdminResponsiveContainer";
-import { useRenderedServices } from "../../hooks/useRenderedServices";
 import { useEffect, useState } from "react";
-import { TableUI } from "../../ui/form/TableUI";
+import { AdminResponsiveContainer } from "../../ui/form/AdminResponsiveContainer";
 import { PaginationUI } from "../../ui/form/PaginationUI";
+import { TableUI } from "../../ui/form/TableUI";
+import { useRenderedServices } from "../../hooks/useRenderedServices";
 
-type RenderedServiceData = {
-_id: string;
-generatedBy: string;
-selectedService: string[];
-createdAt: string;
+type RenderedService = {
+    _id: string;
+    generatedBy: string;
+    generatedByUser: {
+        firstName: string;
+        lastName: string;
+    } | null;
+    selectedService: string[];
+    createdAt: string;
 };
 
 type RenderedServiceResponse = {
-data: RenderedServiceData[];
-serviceCounts: Record<string, number>;
-total: number;
-page: number;
-limit: number;
-totalPages: number;
+    data: RenderedService[];
+    serviceCounts: Record<string, number>;
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
 };
 
 const RenderedService = () => {
-const [selectedDateFrom, setSelectedDateFrom] = useState("");
-const [selectedDateTo, setSelectedDateTo] = useState("");
-const [page, setPage] = useState(1);
-const [limit] = useState(10);
+    const [dateFrom, setDateFrom] = useState("");
+    const [dateTo, setDateTo] = useState("");
+    const [page, setPage] = useState(1);
+    const [renderedServices, setRenderedServices] =
+        useState<RenderedServiceResponse | null>(null);
 
-const [renderedServices, setRenderedServices] =
-    useState<RenderedServiceResponse | null>(null);
+    const { handleGetRenderedServiceByDate } = useRenderedServices();
 
-const { handleGetRenderedServiceByDate } = useRenderedServices();
+    useEffect(() => {
+        if (!dateFrom || !dateTo) return;
 
-useEffect(() => {
-    if (!selectedDateFrom || !selectedDateTo) {
-        return;
-    }
-    const fetchRenderedServices = async () => {
-        const result = await handleGetRenderedServiceByDate({
-            selectedDateFrom,
-            selectedDateTo,
-            page,
-            limit,
+        const fetchData = async () => {
+            const result = await handleGetRenderedServiceByDate({
+                selectedDateFrom: dateFrom,
+                selectedDateTo: dateTo,
+                page,
+                limit: 10,
+            });
+
+            if (result) setRenderedServices(result);
+        };
+
+        fetchData();
+    }, [dateFrom, dateTo, page, handleGetRenderedServiceByDate]);
+
+    const data = renderedServices?.data || [];
+    const serviceCounts = renderedServices?.serviceCounts || {};
+
+    const formatDate = (date: string) =>
+        new Date(date).toLocaleString("en-PH", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "numeric",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: true,
         });
-        if (result) {
-            setRenderedServices(result);
-        }
-    };
-    fetchRenderedServices();
-}, [
-    selectedDateFrom,
-    selectedDateTo,
-    page,
-    limit,
-    handleGetRenderedServiceByDate,
-]);
 
-const data = renderedServices?.data ?? [];
-const serviceCounts = renderedServices?.serviceCounts ?? {};
+    return (
+        <AdminResponsiveContainer>
+            <div className="space-y-6">
+                <h1 className="text-xl font-semibold">
+                    Rendered Services
+                </h1>
 
-const formatDateTime = (date: string) => {
-    return new Date(date).toLocaleString("en-PH", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "numeric",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: true,
-    });
-};
+                {/* Date Filter */}
+                <div className="flex gap-4">
+                    <div>
+                        <label className="mb-1 block text-sm font-medium">
+                            Start Date
+                        </label>
 
-return (
-    <AdminResponsiveContainer>
-        <div className="space-y-6">
-            <h1 className="text-xl font-semibold">
-                Rendered Services
-            </h1>
+                        <input
+                            type="date"
+                            value={dateFrom}
+                            onChange={(e) => {
+                                setDateFrom(e.target.value);
+                                setPage(1);
+                            }}
+                            className="w-96 rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                        />
+                    </div>
 
-            {/* Date Filters */}
-            <div className="flex gap-4">
-                <div>
-                    <label
-                        htmlFor="selectedDateFrom"
-                        className="mb-1 block text-sm font-medium"
-                    >
-                        Start Date
-                    </label>
+                    <div>
+                        <label className="mb-1 block text-sm font-medium">
+                            End Date
+                        </label>
 
-                    <input
-                        id="selectedDateFrom"
-                        type="date"
-                        value={selectedDateFrom}
-                        onChange={(e) =>
-                            setSelectedDateFrom(e.target.value)
-                        }
-                        className="w-96 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    />
+                        <input
+                            type="date"
+                            value={dateTo}
+                            onChange={(e) => {
+                                setDateTo(e.target.value);
+                                setPage(1);
+                            }}
+                            className="w-96 rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                        />
+                    </div>
                 </div>
 
-                <div>
-                    <label
-                        htmlFor="selectedDateTo"
-                        className="mb-1 block text-sm font-medium"
-                    >
-                        End Date
-                    </label>
-
-                    <input
-                        id="selectedDateTo"
-                        type="date"
-                        value={selectedDateTo}
-                        onChange={(e) =>
-                            setSelectedDateTo(e.target.value)
-                        }
-                        className="w-96 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    />
-                </div>
-            </div>
-
-            {/* Rendered Services Table */}
-            {data.length > 0 && (
-                <>
+                {/* Rendered Services */}
+                {data.length > 0 && (
                     <TableUI className="w-full text-left text-sm">
                         <thead className="bg-gray-100">
                             <tr>
-                                <th className="px-4 py-3 font-semibold">
+                                <th className="px-4 py-3">
                                     Generated By
                                 </th>
-
-                                <th className="px-4 py-3 font-semibold">
+                                <th className="px-4 py-3">
                                     Service
                                 </th>
-
-                                <th className="px-4 py-3 font-semibold">
+                                <th className="px-4 py-3">
                                     Date & Time Rendered
                                 </th>
                             </tr>
@@ -140,47 +125,45 @@ return (
 
                         <tbody>
                             {data.map((item) =>
-                                item.selectedService.map(
-                                    (service) => (
-                                        <tr
-                                            key={`${item._id}-${service}`}
-                                            className="border-t border-gray-200"
-                                        >
+                                item.selectedService.map((service) => (
+                                    <tr
+                                        key={`${item._id}-${service}`}
+                                        className="border-t"
+                                    >
+                                        <td className="px-4 py-3 capitalize">
+                                            {item.generatedByUser
+                                                ? `${item.generatedByUser.firstName} ${item.generatedByUser.lastName}`.replaceAll("_", " ")
+                                                : "Unknown"}
+                                        </td>
 
-                                            <td className="px-4 py-3">
-                                                {service}
-                                            </td>
+                                        <td className="px-4 py-3">
+                                            {service.replaceAll("_", " ")}
+                                        </td>
 
-                                            <td className="px-4 py-3">
-                                                {formatDateTime(
-                                                    item.createdAt
-                                                )}
-                                            </td>
-                                        </tr>
-                                    )
-                                )
+                                        <td className="px-4 py-3">
+                                            {formatDate(item.createdAt)}
+                                        </td>
+                                    </tr>
+                                ))
                             )}
                         </tbody>
                     </TableUI>
-                </>
-            )}
+                )}
 
-            {/* Service Counts */}
-            {Object.keys(serviceCounts).length > 0 && (
-                <div className="space-y-3">
-                    <h2 className="text-lg font-semibold">
-                        Service Summary
-                    </h2>
+                {/* Service Summary */}
+                {Object.keys(serviceCounts).length > 0 && (
+                    <div>
+                        <h2 className="mb-3 text-lg font-semibold">
+                            Service Summary
+                        </h2>
 
-                    <>
                         <TableUI className="w-full text-left text-sm">
                             <thead className="bg-gray-100">
                                 <tr>
-                                    <th className="px-4 py-3 font-semibold">
+                                    <th className="px-4 py-3">
                                         Service
                                     </th>
-
-                                    <th className="px-4 py-3 text-center font-semibold">
+                                    <th className="px-4 py-3 text-center">
                                         Total
                                     </th>
                                 </tr>
@@ -191,12 +174,11 @@ return (
                                     ([service, count]) => (
                                         <tr
                                             key={service}
-                                            className="border-t border-gray-200"
+                                            className="border-t"
                                         >
                                             <td className="px-4 py-3">
                                                 {service}
                                             </td>
-
                                             <td className="px-4 py-3 text-center font-semibold">
                                                 {count}
                                             </td>
@@ -205,31 +187,29 @@ return (
                                 )}
                             </tbody>
                         </TableUI>
-                    </>
-                </div>
-            )}
+                    </div>
+                )}
 
-            {/* Pagination */}
-            {renderedServices && renderedServices.totalPages > 1 && (
-                <PaginationUI
-                    currentPage={renderedServices.page}
-                    totalPages={renderedServices.totalPages}
-                    onPageChange={setPage}
-                />
-            )}
+                {/* Pagination */}
+                {renderedServices &&
+                    renderedServices.totalPages > 1 && (
+                        <PaginationUI
+                            currentPage={renderedServices.page}
+                            totalPages={renderedServices.totalPages}
+                            onPageChange={setPage}
+                        />
+                    )}
 
-            {/* No Data */}
-            {selectedDateFrom &&
-                selectedDateTo &&
-                data.length === 0 && (
+                {/* No Data */}
+                {dateFrom && dateTo && data.length === 0 && (
                     <p className="text-sm text-gray-500">
                         No rendered services found for the selected
                         date range.
                     </p>
                 )}
-        </div>
-    </AdminResponsiveContainer>
-);
+            </div>
+        </AdminResponsiveContainer>
+    );
 };
 
 export default RenderedService;

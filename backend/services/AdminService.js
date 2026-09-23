@@ -315,31 +315,52 @@ class AdminService {
             Queue.countDocuments(filter)
         ])
 
+        // Count services
         const serviceCounts = {}
 
-        queue.forEach(q =>
-            q.selectedService.forEach(s => {
-                serviceCounts[s] = (serviceCounts[s] || 0) + 1
+        queue.forEach(q => {
+            q.selectedService.forEach(service => {
+                serviceCounts[service] = (serviceCounts[service] || 0) + 1
             })
-        )
+        })
 
         // Get unique generatedBy IDs
-        const generatedBy = [
-            ...new Set(queue.map(q => q.generatedBy.toString()))
+        const generatedByIds = [
+            ...new Set(
+                queue
+                    .filter(q => q.generatedBy)
+                    .map(q => q.generatedBy.toString())
+            )
         ]
 
         // Get users
-        const getNames = await User.find({
-            _id: { $in: generatedBy }
+        const users = await User.find({
+            _id: { $in: generatedByIds }
         })
             .select('firstName lastName')
             .lean()
 
-        console.log(generatedBy)
-        console.log(getNames)
+        // Create user lookup
+        const userMap = new Map(
+            users.map(user => [
+                user._id.toString(),
+                {
+                    firstName: user.firstName,
+                    lastName: user.lastName
+                }
+            ])
+        )
+
+        // Attach user information to each ticket
+        const data = queue.map(q => ({
+            ...q,
+            generatedByUser: q.generatedBy
+                ? userMap.get(q.generatedBy.toString()) || null
+                : null
+        }))
 
         return {
-            data: queue,
+            data,
             serviceCounts,
             total,
             page,
@@ -347,6 +368,7 @@ class AdminService {
             totalPages: Math.ceil(total / limit)
         }
     }
+
 
 }
 
