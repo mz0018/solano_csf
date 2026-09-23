@@ -25,8 +25,8 @@ type RenderedServiceResponse = {
 };
 
 const RenderedService = () => {
-    const [dateFrom, setDateFrom] = useState("");
-    const [dateTo, setDateTo] = useState("");
+    const [dateFrom, setDateFrom] = useState(() => new Date().toISOString().split('T')[0]);
+    const [dateTo, setDateTo] = useState(() => new Date().toISOString().split('T')[0]);
     const [page, setPage] = useState(1);
     const [renderedServices, setRenderedServices] =
         useState<RenderedServiceResponse | null>(null);
@@ -66,46 +66,46 @@ const RenderedService = () => {
 
     return (
         <AdminResponsiveContainer>
-            <div className="space-y-6">
-                <h1 className="text-xl font-semibold">
+            
+                <div className="flex w-full flex-col leading-none">
+                <div className="border-b border-gray-300 py-3">
+                    <h1 className="text-xl font-semibold text-gray-900">
                     Rendered Services
-                </h1>
+                    
+                    </h1>
+
+                        <p className="mt-1 text-sm text-gray-500">
+                            Overview of services currently rendered, including their total counts.
+                        </p>
+
+                    </div>
+                </div>
 
                 {/* Service Summary */}
                 {Object.keys(serviceCounts).length > 0 && (
-                    <div>
-                        <h2 className="mb-3 text-lg font-semibold">
-                            Service Summary
-                        </h2>
-
-                        <TableUI>
-                            <thead className="bg-gray-100">
-                                <tr>
-                                    <th className="px-4 py-3">
-                                        Service
-                                    </th>
-                                    <th className="px-4 py-3 text-center">
-                                        Total
-                                    </th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                {Object.entries(serviceCounts).map(
-                                    ([service, count]) => (
-                                        <tr key={service}>
-                                            <td className="px-4 py-3">
+                    <section>
+                        
+                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                            {Object.entries(serviceCounts).map(([service, count]) => (
+                                <div
+                                    key={service}
+                                    className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition hover:border-gray-300 hover:shadow"
+                                >
+                                    <div className="flex items-start justify-between gap-4">
+                                        <div className="min-w-0">
+                                            <p className="truncate text-sm font-medium capitalize text-gray-600">
                                                 {service.replaceAll("_", " ")}
-                                            </td>
-                                            <td className="px-4 py-3 text-center font-semibold">
-                                                {count}
-                                            </td>
-                                        </tr>
-                                    )
-                                )}
-                            </tbody>
-                        </TableUI>
-                    </div>
+                                            </p>
+                                        </div>
+
+                                        <span className="text-2xl font-bold text-gray-900">
+                                            {count}
+                                        </span>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
                 )}
 
                 {/* Date Filter */}
@@ -204,7 +204,7 @@ const RenderedService = () => {
                         date range.
                     </p>
                 )}
-            </div>
+            
         </AdminResponsiveContainer>
     );
 };
