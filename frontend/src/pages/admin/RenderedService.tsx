@@ -2,11 +2,11 @@ import { AdminResponsiveContainer } from "../../ui/form/AdminResponsiveContainer
 import { useRenderedServices } from "../../hooks/useRenderedServices";
 import { useEffect, useState } from "react";
 import { TableUI } from "../../ui/form/TableUI";
+import { PaginationUI } from "../../ui/form/PaginationUI";
 
 type RenderedServiceData = {
 _id: string;
 generatedBy: string;
-generatedByName: string;
 selectedService: string[];
 createdAt: string;
 };
@@ -14,11 +14,17 @@ createdAt: string;
 type RenderedServiceResponse = {
 data: RenderedServiceData[];
 serviceCounts: Record<string, number>;
+total: number;
+page: number;
+limit: number;
+totalPages: number;
 };
 
 const RenderedService = () => {
 const [selectedDateFrom, setSelectedDateFrom] = useState("");
 const [selectedDateTo, setSelectedDateTo] = useState("");
+const [page, setPage] = useState(1);
+const [limit] = useState(10);
 
 const [renderedServices, setRenderedServices] =
     useState<RenderedServiceResponse | null>(null);
@@ -29,22 +35,23 @@ useEffect(() => {
     if (!selectedDateFrom || !selectedDateTo) {
         return;
     }
-
     const fetchRenderedServices = async () => {
         const result = await handleGetRenderedServiceByDate({
             selectedDateFrom,
             selectedDateTo,
+            page,
+            limit,
         });
-
         if (result) {
             setRenderedServices(result);
         }
     };
-
     fetchRenderedServices();
 }, [
     selectedDateFrom,
     selectedDateTo,
+    page,
+    limit,
     handleGetRenderedServiceByDate,
 ]);
 
@@ -139,9 +146,6 @@ return (
                                             key={`${item._id}-${service}`}
                                             className="border-t border-gray-200"
                                         >
-                                            <td className="px-4 py-3">
-                                                {item.generatedByName}
-                                            </td>
 
                                             <td className="px-4 py-3">
                                                 {service}
@@ -205,6 +209,15 @@ return (
                 </div>
             )}
 
+            {/* Pagination */}
+            {renderedServices && renderedServices.totalPages > 1 && (
+                <PaginationUI
+                    currentPage={renderedServices.page}
+                    totalPages={renderedServices.totalPages}
+                    onPageChange={setPage}
+                />
+            )}
+
             {/* No Data */}
             {selectedDateFrom &&
                 selectedDateTo &&
@@ -217,8 +230,6 @@ return (
         </div>
     </AdminResponsiveContainer>
 );
-
-
 };
 
 export default RenderedService;

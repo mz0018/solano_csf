@@ -288,82 +288,20 @@ class AdminService {
         return services
     }
 
-    async getRenderedService(userOfficeCode, dateFrom, dateTo) {
-        if (!userOfficeCode) {
-            throw new ErrorController('Office code is required', 400)
-        }
-
-        if (!dateFrom || !dateTo) {
-            throw new ErrorController('Date range is required', 400)
-        }
-
+    async getRenderedService(userOfficeCode, dateFrom, dateTo, page = 1, limit = 10) {
+        if (!userOfficeCode) throw ErrorController('Office code is required', 400)
+        if (!dateFrom || !dateTo) throw ErrorController('Date range is required', 400)
         const startDate = new Date(dateFrom)
         const endDate = new Date(dateTo)
-
         endDate.setDate(endDate.getDate() + 1)
-
-        const queue = await Queue.find({
-            officeCode: userOfficeCode,
-            createdAt: {
-                $gte: startDate,
-                $lt: endDate
-            }
-        })
-            .select('selectedService generatedBy createdAt')
-            .lean()
-
-        const generatedByIds = queue.map(q => q.generatedBy)
-
-        const users = await User.find({
-            _id: { $in: generatedByIds }
-        })
-            .select('firstName middleName lastName')
-            .lean()
-
-        const userMap = new Map(
-            users.map(user => [
-                user._id.toString(),
-                user
-            ])
-        )
-
-        const result = queue.map(q => {
-            const user = userMap.get(q.generatedBy.toString())
-
-            return {
-                ...q,
-                generatedByName: user
-                    ? `${user.firstName} ${user.middleName ?? ''} ${user.lastName}`
-                        .replace(/\s+/g, ' ')
-                        .trim()
-                    : null
-            }
-        })
-
-        // Count each service
+        const filter = { officeCode: userOfficeCode, createdAt: { $gte: startDate, $lt: endDate } }
+        const [queue, total] = await Promise.all([
+            Queue.find(filter).select('selectedService generatedBy createdAt').lean().skip((page - 1) * limit).limit(limit),
+            Queue.countDocuments(filter)
+        ])
         const serviceCounts = {}
-
-        queue.forEach(q => {
-            if (!Array.isArray(q.selectedService)) {
-                return
-            }
-
-            q.selectedService.forEach(service => {
-                if (!serviceCounts[service]) {
-                    serviceCounts[service] = 0
-                }
-
-                serviceCounts[service]++
-            })
-        })
-
-        console.log('Rendered Services:', result)
-        console.log('Service Counts:', serviceCounts)
-
-        return {
-            data: result,
-            serviceCounts
-        }
+        queue.forEach(q => q.selectedService.forEach(s => { serviceCounts[s] = (serviceCounts[s] || 0) + 1 }))
+        return { data: queue, serviceCounts, total, page, limit, totalPages: Math.ceil(total / limit) }
     }
 
 }

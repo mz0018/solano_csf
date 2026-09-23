@@ -82,12 +82,12 @@ class AdminController {
 
     async getRenderedService(req, res, next) {
         try {
-            const userOfficeCode = req.user.officeCode;
-            const result = await AdminService.getRenderedService(userOfficeCode, req.query.dateFrom, req.query.dateTo);
-            res.status(200).json(result);
-        } catch (error) {
-            next(error);
-        }
+            const userOfficeCode = req.user.officeCode
+            const page = parseInt(req.query.page) || 1
+            const limit = parseInt(req.query.limit) || 10
+            const result = await AdminService.getRenderedService(userOfficeCode, req.query.dateFrom, req.query.dateTo, page, limit)
+            res.status(200).json(result)
+        } catch (error) { next(error) }
     }
 }
 
