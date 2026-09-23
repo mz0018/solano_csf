@@ -58,19 +58,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [])
 
   const logoutAlerted = useRef(false)
-
-  useEffect(() => {
-    if (!socketRef.current) return
-    const socket = socketRef.current
-    
-    socket.on('duplicate-login', (data) => {
-        alert(data.message || 'Someone is trying to log in with your account.')
-    })
-    
-    return () => {
-        socket.off('duplicate-login')
-    }
-  }, [socketRef])
   
   useEffect(() => {
     if (!user) return
