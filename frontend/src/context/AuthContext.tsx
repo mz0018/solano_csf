@@ -1,6 +1,5 @@
 import { createContext, useContext, useState, useEffect, useRef } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { useSocket } from '../hooks/useSocket'
 import type { ReactNode } from 'react'
 
 interface AuthUser {
@@ -20,7 +19,6 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null)
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const { socketRef } = useSocket()
   const [user, setUser] = useState<AuthUser | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const queryClient = useQueryClient()
