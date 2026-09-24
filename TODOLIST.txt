@@ -1,11 +1,1 @@
-How it works:
-1. Add tokenVersion: { type: Number, default: 0 } to user.model.js
-2. On signin: increment user.tokenVersion, save, include it in the JWT payload
-3. On every authenticated request: verify decoded.tokenVersion === user.tokenVersion in the database — if not, return 401 (token was invalidated by a newer login)
-4. At signin time: if user.tokenVersion > 0, throw 409 (someone already has an active session)
-Why this works:
-- When user1 logs in on Computer 1 → tokenVersion becomes 1, JWT includes tokenVersion: 1
-- When user1 tries to sign in on Computer 2 → tokenVersion is already 1 → 409
-- New signin increments to tokenVersion: 2, saving the old session (Computer 1)
-- Every request from Computer 1's old token (with tokenVersion: 1) fails verification against user.tokenVersion === 2 → 401
-- When user1 signs out, tokenVersion could be incremented to invalidate the token, OR just leave it (next signin increments anyway)
+0
