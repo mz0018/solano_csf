@@ -55,6 +55,7 @@ class UserController {
 
     signoutUser = async (req, res, next) => {
         try {
+            await UserService.signoutUser(req)
             res.clearCookie('authToken', { path: '/' })
             res.status(200).json({ message: 'Logout successful' })
         } catch (error) {

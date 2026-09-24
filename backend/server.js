@@ -23,10 +23,13 @@ const io = new Server(httpServer, {
     cors: { origin: ['http://localhost:5173', 'https://csf.proaws.online', 'https://www.csf.proaws.online'], credentials: true }
 })
 
-io.use((socket, next) => {
+io.use(async (socket, next) => {
   const token = socket.handshake.auth.token || socket.handshake.headers.cookie?.split('authToken=')[1]?.split(';')[0]
+  if (!token) {
+    return next(new Error('Authentication failed'))
+  }
   try {
-    const decoded = verifyToken(token)
+    const decoded = await verifyToken(token)
     socket.user = decoded
     next()
   } catch (err) {

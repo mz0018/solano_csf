@@ -98,7 +98,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [user])
 
   const signOut = async () => {
-    await fetch(`${import.meta.env.VITE_API_URL}/api/users/signout`, { method: 'POST' })
+    await fetch(`${import.meta.env.VITE_API_URL}/api/users/signout`, { 
+        method: 'POST', 
+        credentials: 'include' 
+    })
+
     queryClient.clear()
     setUser(null)
   }

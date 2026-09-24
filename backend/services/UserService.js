@@ -60,7 +60,6 @@ class UserService {
         if (user.status === 'inactive') {
             recordFailedSigninAttempt(credentials.req)
             await this.recordLogin(user, credentials.req, false)
-
             throw new ErrorController('Invalid username or password', 423)
         }
 
@@ -72,15 +71,52 @@ class UserService {
             throw new ErrorController('Invalid username or password', 401)
         }
 
+        if (user.tokenVersion > 0) {
+            throw new ErrorController('You are already logged in on another device', 409)
+        }
+
+        user.tokenVersion += 1
+        await user.save()
+
         await this.recordLogin(user, credentials.req, true)
 
         const token = jwt.sign(
-            { id: user._id, firstName: user.firstName, lastName: user.lastName, userName: user.userName, role: user.role, officeCode: user.officeCode },
+            { 
+                id: user._id, 
+                firstName: user.firstName, 
+                lastName: user.lastName, 
+                userName: user.userName, 
+                role: user.role, 
+                officeCode: user.officeCode, 
+                tokenVersion: user.tokenVersion 
+            },
             process.env.JWT_SECRET,
             { expiresIn: '30m' }
         )
 
         return token
+    }
+
+    async signoutUser(req) {
+        const token = req.cookies.authToken
+
+        if (!token) {
+            console.log('Token not found')
+            return
+        }
+
+        try {
+            const decoded = jwt.decode(token)
+            if (!decoded || !decoded.id) return
+            const user = await User.findById(decoded.id)
+            if (user) {
+                // console.log("Token version: ", user.tokenVersion)
+                user.tokenVersion = 0
+                await user.save()
+            }
+        } catch (err) {
+            // ignore
+        }
     }
 
     async recordLogin(user, req, success) {
@@ -117,7 +153,7 @@ class UserService {
         const hashedPassword = await argon2.hash(newPassword)
         user.password = hashedPassword
         user.passwordChangedAt = new Date()
-        
+        user.tokenVersion += 1
         user.loginHistory = []
         
         await user.save()
