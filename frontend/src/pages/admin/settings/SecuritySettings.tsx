@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ShieldCheck } from "lucide-react";
 
 import { ChangePassword } from "./ChangePassword";
 import { LoginHistory } from "./LoginHistory";
@@ -18,14 +18,22 @@ const SecuritySettings = () => {
     <div className="w-full max-w-3xl space-y-4">
 
       {/* Page Header */}
-      <div className="mb-4 border-b border-gray-300 py-3">
-        <h1 className="text-xl font-semibold text-gray-900">
-          Security Settings
-        </h1>
+      <div className="mb-4 flex items-center gap-3 border-b border-gray-300 py-3">
+        <ShieldCheck
+          size={22}
+          strokeWidth={2}
+          className="shrink-0 text-[#628dec]"
+        />
 
-        <p className="mt-1 text-sm text-gray-500">
-          Manage your password and review recent account activity.
-        </p>
+        <div>
+          <h1 className="text-xl font-semibold text-[#628dec]">
+            Security Settings
+          </h1>
+
+          <p className="mt-1 text-sm text-gray-900">
+            Manage your password and review recent account activity.
+          </p>
+        </div>
       </div>
 
       {/* Change Password */}

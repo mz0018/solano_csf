@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ListOrdered } from "lucide-react";
 import { Select } from "../../ui/form/Select";
 import { AdminResponsiveContainer } from "../../ui/form/AdminResponsiveContainer";
 import { GenerateTicketModal } from "../../components/Modals/GenerateTicketModal";
@@ -13,23 +14,30 @@ const ActiveQueueTicket = () => {
     <>
       <AdminResponsiveContainer>
         <div className="flex w-full flex-col leading-none">
-          <div className="border-b border-gray-300 py-3">
-              <h1 className="text-xl font-semibold text-gray-900">
-              View Active Queue{" "}
-              {activeDate
-                ? `- ${activeDate.toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                    year: "numeric",
-                  })}`
-                : "Today"}
-            </h1>
+          <div className="flex items-center gap-3 border-b border-gray-300 py-3">
+            <ListOrdered
+              size={22}
+              strokeWidth={2}
+              className="shrink-0 text-[#628dec]"
+            />
 
-                <p className="mt-1 text-sm text-gray-500">
-                    Get an overview of the current queues, pending requests,
-                    and completed services.
-                </p>
+            <div>
+              <h1 className="text-xl font-semibold text-[#628dec]">
+                View Active Queue{" "}
+                {activeDate
+                  ? `- ${activeDate.toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })}`
+                  : "Today"}
+              </h1>
+
+              <p className="mt-1 text-sm text-gray-900">
+                Get an overview of the current queues, pending requests, and completed services.
+              </p>
             </div>
+          </div>
         </div>
 
         <div className="flex w-full items-end gap-4">

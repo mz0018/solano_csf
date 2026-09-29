@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BarChart3, LineChart } from "lucide-react";
+import { BarChart3, LineChart, ChartNoAxesCombined } from "lucide-react";
 import { useAuth } from "../../../context/AuthContext";
 import { RenderReportStatistics } from "./RenderStatistics";
 import { RenderReportStatisticsTable } from "./RenderReportStatisticsTable";
@@ -112,14 +112,22 @@ export const ReadReportStatistics = () => {
     return (
         <div className="w-full">
             <div className="mb-5 flex items-center justify-between border-b border-gray-300">
-                <div className="mb-4">
-                    <h1 className="text-xl font-semibold text-gray-900">
-                        Report Statistics
-                    </h1>
+                <div className="mb-4 flex items-center gap-3">
+                    <ChartNoAxesCombined
+                        size={22}
+                        strokeWidth={2}
+                        className="shrink-0 text-[#628dec]"
+                    />
 
-                    <p className="mt-0.5 text-sm text-gray-500">
+                    <div>
+                        <h1 className="text-xl font-semibold text-[#628dec]">
+                        Report Statistics
+                        </h1>
+
+                        <p className="mt-0.5 text-sm text-gray-900">
                         View and compare client feedback statistics.
-                    </p>
+                        </p>
+                    </div>
                 </div>
 
                 {/* Chart Type Switch */}
