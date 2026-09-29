@@ -66,7 +66,7 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
         border-r border-[#cbd5e1]
       `}
     >
-      <div className="p-4 flex justify-between items-center border-b border-[#cbd5e1]">
+      <div className="p-4 flex justify-between items-center">
         <div className="flex items-center gap-3 min-w-0">
           {/* User Initial Avatar */}
           <div
@@ -94,7 +94,11 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
               }
             `}
           >
-            {user?.userName?.charAt(0) || 'U'}
+            <img
+              src={ '/img/logo.png'}
+              alt={user?.userName || 'User'}
+              className="w-full h-full object-cover"
+            />
           </div>
 
           {/* User Information */}
@@ -111,13 +115,14 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
               }
             `}
           >
-            <h1 className="text-xl font-semibold text-gray-900">
-              {user?.role === "hr_admin"
-                    ? 'Human Resource'
-                    : user?.role === 'super_admin'
-                    ? 'Super Admin'
-                    : 'Office Admin'}
-            </h1>
+            <div className="flex flex-col leading-tight">
+              <h1 className="text-md font-semibold text-[#628dec]">
+                Client Satisfactory
+              </h1>
+              <span className="text-sm text-gray-500">
+                Feedback System
+              </span>
+            </div>
           </div>
         </div>
 

@@ -92,3 +92,37 @@
 #respect-theme .text-blue-100 {
   color: var(--theme-muted);
 }
+
+
+.admin-halftone::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(59, 130, 246, 0.12) 1px,
+      transparent 1.5px
+    ),
+    linear-gradient(
+      to bottom,
+      transparent 45%,
+      rgba(59, 130, 246, 0.04) 70%,
+      rgba(59, 130, 246, 0.12) 100%
+    );
+
+  background-size:
+    12px 12px,
+    100% 100%;
+
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 35%,
+    black 100%
+  );
+}
+

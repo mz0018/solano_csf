@@ -1,4 +1,4 @@
-import { CircleCheck, Clock3, List } from "lucide-react";
+import { CircleCheck, Clock3, List, LayoutDashboard } from "lucide-react";
 import { useGetActiveQueue } from "../../../hooks/useGetActiveQueue";
 
 export const MonitorTotalQueue = () => {
@@ -13,15 +13,22 @@ export const MonitorTotalQueue = () => {
 
     return (
         <div className="w-full">
-            <div className="mb-4 border-b border-gray-300 py-3">
-                <h1 className="text-xl font-semibold text-gray-900">
-                    Dashboard
-                </h1>
+            <div className="mb-4 flex items-center gap-3 border-b border-gray-300 py-3">
+                <LayoutDashboard
+                    size={22}
+                    strokeWidth={2}
+                    className="shrink-0 text-[#628dec]"
+                />
 
-                <p className="mt-1 text-sm text-gray-500">
-                    Get an overview of the current queues, pending requests,
-                    and completed services.
-                </p>
+                <div>
+                    <h1 className="text-xl font-semibold text-[#628dec]">
+                    Dashboard
+                    </h1>
+
+                    <p className="mt-1 text-sm text-gray-900">
+                    Get an overview of the current queues, pending requests, and completed services.
+                    </p>
+                </div>
             </div>
 
             <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-3">

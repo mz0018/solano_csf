@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Bell } from "lucide-react";
+import { Bell, BellRing } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { useSocket } from "../../../hooks/useSocket";
@@ -46,14 +46,22 @@ const NotificationSettings = () => {
     <div className="w-full max-w-3xl space-y-6">
 
       {/* Page Header */}
-      <div className="mb-4 border-b border-gray-300 py-3">
-        <h1 className="text-xl font-semibold text-gray-900">
-          Notification Settings
-        </h1>
+      <div className="mb-4 flex items-center gap-3 border-b border-gray-300 py-3">
+        <BellRing
+          size={22}
+          strokeWidth={2}
+          className="shrink-0 text-[#628dec]"
+        />
 
-        <p className="mt-1 text-sm text-gray-500">
-          View your recent account notifications and activity updates.
-        </p>
+        <div>
+          <h1 className="text-xl font-semibold text-[#628dec]">
+            Notification Settings
+          </h1>
+
+          <p className="mt-1 text-sm text-gray-900">
+            View your recent account notifications and activity updates.
+          </p>
+        </div>
       </div>
 
       {/* Notifications */}

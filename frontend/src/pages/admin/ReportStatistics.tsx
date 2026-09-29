@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ChartNoAxesCombined } from "lucide-react";
 import { Select } from "../../ui/form/Select";
 import { useGetOffices } from "../../hooks/useGetOffices";
 import { useGetReportStatistics } from "../../hooks/useGetReportStatistics";
@@ -14,15 +15,23 @@ const ReportStatistics = () => {
 
     return (
         <AdminResponsiveContainer>
-            <div className="flex w-full flex-col leading-none">
-                <div className="border-b border-gray-300 py-3">
-                    <h1 className="text-xl font-semibold text-gray-900">
-                    Report Statistics
+            <div className="flex w-full flex-col">
+                <div className="flex items-center gap-3 border-b border-gray-300 py-3">
+                    <ChartNoAxesCombined
+                    size={22}
+                    strokeWidth={2}
+                    className="shrink-0 text-[#628dec]"
+                    />
+
+                    <div>
+                    <h1 className="text-xl font-semibold text-[#628dec]">
+                        Report Statistics
                     </h1>
 
-                    <p className="mt-1 text-sm text-gray-500">
+                    <p className="mt-1 text-sm text-gray-900">
                         View queue statistics and feedback reports by office
                     </p>
+                    </div>
                 </div>
             </div>
             <div className="flex gap-4">
