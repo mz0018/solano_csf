@@ -4,7 +4,6 @@ import {
   UserRound,
   Bell,
   ChevronDown,
-  Minus,
   UserCheck
 } from "lucide-react";
 
