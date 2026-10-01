@@ -59,7 +59,7 @@ export const createGenderTable = ({ feedback }: ServiceSurveyed) => {
 
   return [
     new Paragraph({
-      text: "Gender",
+      text: "Sex",
     }),
     table,
   ];

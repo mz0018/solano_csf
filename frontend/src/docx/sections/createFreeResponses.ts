@@ -23,20 +23,34 @@ export const createFreeResponses = ({ feedback }: ServiceSurveyed) => {
     }
   });
 
-  const children: (Paragraph | Table)[] = [];
+const children: (Paragraph | Table)[] = [
+    new Paragraph({
+      children: [new TextRun({ text: "Free Responses", bold: true })],
+    }),
+  ];
 
-  Object.entries(monthGroups).forEach(([month, comments]) => {
+  if (Object.keys(monthGroups).length === 0) {
     children.push(
-      new Paragraph({
-        children: [
-          new TextRun({
-            text: "Free Responses",
-            bold: true,
+      new Table({
+        rows: [
+          new TableRow({
+            children: [
+              new TableCell({ children: [new Paragraph("Comments")] }),
+            ],
+          }),
+          new TableRow({
+            children: [
+              new TableCell({ children: [new Paragraph("No Response")] }),
+            ],
           }),
         ],
       })
     );
 
+    return children;
+  }
+
+  Object.entries(monthGroups).forEach(([month, comments]) => {
     children.push(
       new Table({
         rows: [
