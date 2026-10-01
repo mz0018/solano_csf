@@ -54,7 +54,7 @@ export const ReportCharts = ({ feedback, selectedOfficeName, selectedDateFrom, s
         { title: "Affiliation", data: createChartData("affiliation") },
         { title: "Age Group", data: createChartData("ageGroup") },
         { title: "Employment", data: createChartData("employmentStatus") },
-        { title: "Gender", data: createChartData("gender") },
+        { title: "Sex", data: createChartData("gender") },
     ];
 
     return (
