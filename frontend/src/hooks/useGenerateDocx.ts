@@ -50,7 +50,7 @@ export const useGenerateDocx = () => {
     { chartImages, feedback, selectedOfficeName, selectedDateFrom, selectedDateTo }: DocxInput, filename = "report.docx") => {
       
     // Build the document
-    const doc = buildDocument({
+    const doc = await buildDocument({
       chartImages,
       feedback,
       selectedOfficeName,

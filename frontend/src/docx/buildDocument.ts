@@ -12,16 +12,16 @@ import { createFreeResponses } from "./sections/createFreeResponses";
 import type { DocxInput } from "../hooks/useGenerateDocx";
 import { createEmploymentStatusTable } from "./sections/createEmploymentStatusTable";
 
-export const buildDocument = ({ chartImages, feedback, selectedOfficeName, selectedDateFrom, selectedDateTo }: DocxInput) => {
+export const buildDocument = async ({ chartImages, feedback, selectedOfficeName, selectedDateFrom, selectedDateTo }: DocxInput) => {
 
   return new Document({
     sections: [
       {
         children: [
-          ...createCoverPage({
+          ...await createCoverPage({
             selectedOfficeName,
             selectedDateFrom,
-            selectedDateTo
+            selectedDateTo,
           }),
           ...createPieCharts(chartImages),
           ...createListOfServiceSurveyed({ feedback, selectedOfficeName }),
