@@ -3,6 +3,7 @@ import { PieChart, Pie, Cell } from "recharts";
 import { CustomLegend } from "../../utils/CustomLegend";
 import { useCaptureChart } from "../../hooks/useCaptureChart";
 import { BtnGenerateReport, type FeedbackItem } from "../buttons/BtnGenerateReport";
+import { ScreenshotFeedbackTable } from "../Tables/ScreenshotFeedbackTable";
 
 type Client = {
     address: string;
@@ -12,7 +13,7 @@ type Client = {
     gender: string;
 };
 
-type ReportChartsProps = {
+export type ReportChartsProps = {
     feedback: FeedbackItem[];
     selectedOfficeName: string;
     selectedDateFrom: string;
@@ -162,6 +163,13 @@ export const ReportCharts = ({ feedback, selectedOfficeName, selectedDateFrom, s
                 </div>
             ))}
         </div>
+
+        <ScreenshotFeedbackTable 
+            feedback={feedback} 
+            selectedOfficeName={selectedOfficeName} 
+            selectedDateFrom={selectedDateFrom} 
+            selectedDateTo={selectedDateTo} 
+        />
         </>
     );
 };
