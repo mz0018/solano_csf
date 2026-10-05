@@ -1,10 +1,4 @@
-import {
-  Paragraph,
-  HeadingLevel,
-  ImageRun,
-  PageBreak,
-  AlignmentType
-} from "docx";
+import { Paragraph, HeadingLevel, ImageRun, PageBreak, AlignmentType } from "docx";
 
 export interface CoverPageInput {
   selectedOfficeName?: string;
@@ -12,11 +6,8 @@ export interface CoverPageInput {
   selectedDateTo?: string;
 }
 
-export const createCoverPage = async ({
-  selectedOfficeName,
-  selectedDateFrom,
-  selectedDateTo,
-}: CoverPageInput) => {
+export const createCoverPage = async ({ selectedOfficeName, selectedDateFrom, selectedDateTo }: CoverPageInput) => {
+  
   const response = await fetch("/img/logo.png");
   const buffer = await response.arrayBuffer();
   const convertedLogo = new Uint8Array(buffer);
