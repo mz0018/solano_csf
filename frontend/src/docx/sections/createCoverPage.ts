@@ -1,4 +1,10 @@
-import { Paragraph, HeadingLevel, ImageRun } from "docx";
+import {
+  Paragraph,
+  HeadingLevel,
+  ImageRun,
+  PageBreak,
+  AlignmentType
+} from "docx";
 
 export interface CoverPageInput {
   selectedOfficeName?: string;
@@ -17,6 +23,10 @@ export const createCoverPage = async ({
 
   return [
     new Paragraph({
+      alignment: AlignmentType.CENTER,
+      spacing: {
+        after: 500,
+      },
       children: [
         new ImageRun({
           type: "png",
@@ -30,17 +40,25 @@ export const createCoverPage = async ({
     }),
 
     new Paragraph({
-      text: "Citizen Satisfaction Report",
+      alignment: AlignmentType.CENTER,
+      text: "Local Government Unit of Solano",
       heading: HeadingLevel.TITLE,
     }),
 
     new Paragraph({
-      text: selectedOfficeName
-        ? `Selected Office: ${selectedOfficeName}`
-        : "Office: All Offices",
+      alignment: AlignmentType.CENTER,
+      text: "Client Satisfaction Measurement Report",
+      heading: HeadingLevel.TITLE,
     }),
 
     new Paragraph({
+      alignment: AlignmentType.CENTER,
+      text: `${selectedOfficeName}`,
+      heading: HeadingLevel.TITLE,
+    }),
+
+    new Paragraph({
+      alignment: AlignmentType.CENTER,
       text:
         selectedDateFrom && selectedDateTo
           ? `Selected Date Range: ${selectedDateFrom} to ${selectedDateTo}`
@@ -48,7 +66,7 @@ export const createCoverPage = async ({
     }),
 
     new Paragraph({
-      text: "",
+      children: [new PageBreak()],
     }),
   ];
 };
