@@ -51,7 +51,7 @@ export const BtnGenerateReport = ({ isCapturing, handleCapture, chartRefs, feedb
       selectedOfficeName,
       selectedDateFrom,
       selectedDateTo
-    }, "feedback-report.docx")
+    }, `CSF-${selectedOfficeName}-${selectedDateFrom}-${selectedDateTo}-report.docx`)
   }
 
   return (
