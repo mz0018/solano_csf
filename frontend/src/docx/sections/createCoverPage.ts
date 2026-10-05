@@ -1,4 +1,10 @@
-import { Paragraph, HeadingLevel, ImageRun, PageBreak, AlignmentType } from "docx";
+import {
+  Paragraph,
+  ImageRun,
+  PageBreak,
+  AlignmentType,
+  TextRun,
+} from "docx";
 
 export interface CoverPageInput {
   selectedOfficeName?: string;
@@ -6,8 +12,11 @@ export interface CoverPageInput {
   selectedDateTo?: string;
 }
 
-export const createCoverPage = async ({ selectedOfficeName, selectedDateFrom, selectedDateTo }: CoverPageInput) => {
-  
+export const createCoverPage = async ({
+  selectedOfficeName,
+  selectedDateFrom,
+  selectedDateTo,
+}: CoverPageInput) => {
   const response = await fetch("/img/logo.png");
   const buffer = await response.arrayBuffer();
   const convertedLogo = new Uint8Array(buffer);
@@ -32,28 +41,51 @@ export const createCoverPage = async ({ selectedOfficeName, selectedDateFrom, se
 
     new Paragraph({
       alignment: AlignmentType.CENTER,
-      text: "Local Government Unit of Solano",
-      heading: HeadingLevel.TITLE,
+      spacing: {
+        after: 300,
+      },
+      children: [
+        new TextRun({
+          text: "LOCAL GOVERNMENT UNIT OF SOLANO",
+          bold: true,
+          font: "Baskerville Old Face",
+          size: 40,
+          characterSpacing: 20,
+        }),
+      ],
     }),
 
     new Paragraph({
       alignment: AlignmentType.CENTER,
-      text: "Client Satisfaction Measurement Report",
-      heading: HeadingLevel.TITLE,
-    }),
+      spacing: {
+        before: 8000,
+        after: 500,
+      },
+      children: [
+        new TextRun({
+          text: "Client Satisfaction Measurement Report",
+          bold: true,
+          size: 40,
+          characterSpacing: 15,
+        }),
 
-    new Paragraph({
-      alignment: AlignmentType.CENTER,
-      text: `${selectedOfficeName}`,
-      heading: HeadingLevel.TITLE,
-    }),
+        new TextRun({
+          text: selectedOfficeName ?? "",
 
-    new Paragraph({
-      alignment: AlignmentType.CENTER,
-      text:
-        selectedDateFrom && selectedDateTo
-          ? `Selected Date Range: ${selectedDateFrom} to ${selectedDateTo}`
-          : "Date Range: All Time",
+          size: 38,
+          characterSpacing: 10,
+          break: 1,
+        }),
+
+        new TextRun({
+          text:
+            selectedDateFrom && selectedDateTo
+              ? `${selectedDateFrom} to ${selectedDateTo}`
+              : "Date Range: All Time",
+          size: 32,
+          break: 1,
+        }),
+      ],
     }),
 
     new Paragraph({

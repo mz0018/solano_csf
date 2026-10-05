@@ -13,16 +13,49 @@ import { createEmploymentStatusTable } from "./sections/createEmploymentStatusTa
 
 import type { DocxInput } from "../hooks/useGenerateDocx";
 
-export const buildDocument = async ({ chartImages, feedback, selectedOfficeName, selectedDateFrom, selectedDateTo }: DocxInput) => {
+export const buildDocument = async ({ 
+  chartImages, 
+  feedback, 
+  selectedOfficeName, 
+  selectedDateFrom, 
+  selectedDateTo 
+}: DocxInput) => {
   
-  const response = await fetch("/img/logo.png");
-  const buffer = await response.arrayBuffer();
-  const convertedLogo = new Uint8Array(buffer);
+  const logoResponse = await fetch("/img/logo.png");
+  if (!logoResponse.ok) {
+    throw new Error(`Failed to load logo: ${logoResponse.status}`);
+  }
+  const logoBuffer = await logoResponse.arrayBuffer();
+  const convertedLogo = new Uint8Array(logoBuffer);
+
+  const fontResponse = await fetch("/fonts/Aptos.ttf");
+  if (!fontResponse.ok) {
+    throw new Error(`Failed to load Aptos font: ${fontResponse.status}`);
+  }
+  const aptosFontArrayBuffer = await fontResponse.arrayBuffer();
+  const aptosFontBuffer = new Uint8Array(aptosFontArrayBuffer) as unknown as Buffer;
 
   return new Document({
+
+    fonts: [{
+      name: "Aptos",
+      data: aptosFontBuffer,
+    }],
+
+    styles: {
+      default: {
+        document: {
+          run: {
+            font: "Aptos",
+            size: 24, 
+          },
+        },
+      },
+    },
+
     sections: [
       {
-        headers: { //HEADER
+        headers: {
           default: new Header({
             children: [
               new Paragraph({
@@ -48,14 +81,10 @@ export const buildDocument = async ({ chartImages, feedback, selectedOfficeName,
               new Paragraph({
                 alignment: AlignmentType.CENTER,
                 children: [
-                  new TextRun("Page "),
-                  new TextRun({
-                    children: [PageNumber.CURRENT],
-                  }),
-                  new TextRun(" of "),
-                  new TextRun({
-                    children: [PageNumber.TOTAL_PAGES],
-                  }),
+                  new TextRun({ text: "Page ", font: "Aptos", size: 18 }),
+                  new TextRun({ children: [PageNumber.CURRENT], font: "Aptos", size: 18 }),
+                  new TextRun({ text: " of ", font: "Aptos", size: 18 }),
+                  new TextRun({ children: [PageNumber.TOTAL_PAGES], font: "Aptos", size: 18 }),
                 ],
               }),
             ],
