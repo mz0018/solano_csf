@@ -80,11 +80,31 @@ export const buildDocument = async ({
             children: [
               new Paragraph({
                 alignment: AlignmentType.CENTER,
+                spacing: {
+                  before: 0,
+                  after: 0,
+                },
                 children: [
-                  new TextRun({ text: "Page ", font: "Aptos", size: 18 }),
-                  new TextRun({ children: [PageNumber.CURRENT], font: "Aptos", size: 18 }),
-                  new TextRun({ text: " of ", font: "Aptos", size: 18 }),
-                  new TextRun({ children: [PageNumber.TOTAL_PAGES], font: "Aptos", size: 18 }),
+                  new TextRun({
+                    text: "Page ",
+                    font: "Aptos",
+                    size: 18,
+                  }),
+                  new TextRun({
+                    children: [PageNumber.CURRENT],
+                    font: "Aptos",
+                    size: 18,
+                  }),
+                  new TextRun({
+                    text: " of ",
+                    font: "Aptos",
+                    size: 18,
+                  }),
+                  new TextRun({
+                    children: [PageNumber.TOTAL_PAGES],
+                    font: "Aptos",
+                    size: 18,
+                  }),
                 ],
               }),
             ],

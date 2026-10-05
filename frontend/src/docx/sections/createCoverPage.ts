@@ -21,11 +21,21 @@ export const createCoverPage = async ({
   const buffer = await response.arrayBuffer();
   const convertedLogo = new Uint8Array(buffer);
 
+  const formatDate = (date?: string) => {
+    if (!date) return "";
+
+    return new Date(`${date}T00:00:00`).toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
+  };
+
   return [
     new Paragraph({
       alignment: AlignmentType.CENTER,
       spacing: {
-        after: 500,
+        before: 3000,
       },
       children: [
         new ImageRun({
@@ -42,6 +52,7 @@ export const createCoverPage = async ({
     new Paragraph({
       alignment: AlignmentType.CENTER,
       spacing: {
+        before: 500,
         after: 300,
       },
       children: [
@@ -58,7 +69,7 @@ export const createCoverPage = async ({
     new Paragraph({
       alignment: AlignmentType.CENTER,
       spacing: {
-        before: 8000,
+        before: 5500,
         after: 500,
       },
       children: [
@@ -73,16 +84,17 @@ export const createCoverPage = async ({
           text: selectedOfficeName ?? "",
 
           size: 38,
-          characterSpacing: 10,
+          characterSpacing: 15,
           break: 1,
         }),
 
         new TextRun({
           text:
             selectedDateFrom && selectedDateTo
-              ? `${selectedDateFrom} to ${selectedDateTo}`
+              ? `${formatDate(selectedDateFrom)} to ${formatDate(selectedDateTo)}`
               : "Date Range: All Time",
-          size: 32,
+          size: 28,
+          characterSpacing: 15,
           break: 1,
         }),
       ],
