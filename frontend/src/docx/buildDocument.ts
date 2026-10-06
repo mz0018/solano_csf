@@ -3,6 +3,7 @@ import { Document, Header, Footer, Paragraph, ImageRun, AlignmentType, TextRun, 
 import { createCoverPage } from "./sections/createCoverPage";
 import { createTableOfContents } from "./sections/createTableOfContents";
 import { createAgencyProfile } from "./sections/createAgencyProfile";
+import { createOverview } from "./sections/createOverview";
 import { createPieCharts } from "./sections/createPieCharts";
 import { createListOfServiceSurveyed } from "./sections/createListOfServiceSurveyed";
 import { createAffiliationTable } from "./sections/createAffiliationTable";
@@ -121,6 +122,9 @@ export const buildDocument = async ({ chartImages, feedback, selectedOfficeName,
 
           new Paragraph({ pageBreakBefore: true, children: [] }),
           ...createAgencyProfile(),
+
+          new Paragraph({ pageBreakBefore: true, children: [] }),
+          ...createOverview(),
 
           new Paragraph({ pageBreakBefore: true, children: [] }),
           ...createPieCharts(chartImages),
