@@ -112,8 +112,6 @@ export const buildDocument = async ({ chartImages, feedback, selectedOfficeName,
         },
         //------------------------------------------------
 
-
-
         children: [
           ...await createCoverPage({ selectedOfficeName, selectedDateFrom, selectedDateTo }),
 
@@ -127,10 +125,12 @@ export const buildDocument = async ({ chartImages, feedback, selectedOfficeName,
           ...createOverview(),
 
           new Paragraph({ pageBreakBefore: true, children: [] }),
+          ...createListOfServiceSurveyed({ feedback, selectedOfficeName, selectedDateFrom, selectedDateTo }),
+
+          new Paragraph({ pageBreakBefore: true, children: [] }),
           ...createPieCharts(chartImages),
 
           new Paragraph({ pageBreakBefore: true, children: [] }),
-          ...createListOfServiceSurveyed({ feedback, selectedOfficeName }),
           ...createAffiliationTable({ feedback }),
           ...createGenderTable({ feedback }),
           ...createAgeGroupTable({ feedback }),
