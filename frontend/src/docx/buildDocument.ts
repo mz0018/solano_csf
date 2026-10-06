@@ -1,6 +1,7 @@
 import { Document, Header, Footer, Paragraph, ImageRun, AlignmentType, TextRun, PageNumber } from "docx";
 
 import { createCoverPage } from "./sections/createCoverPage";
+import { createTableOfContents } from "./sections/createTableOfContents";
 import { createPieCharts } from "./sections/createPieCharts";
 import { createListOfServiceSurveyed } from "./sections/createListOfServiceSurveyed";
 import { createAffiliationTable } from "./sections/createAffiliationTable";
@@ -13,13 +14,7 @@ import { createEmploymentStatusTable } from "./sections/createEmploymentStatusTa
 
 import type { DocxInput } from "../hooks/useGenerateDocx";
 
-export const buildDocument = async ({ 
-  chartImages, 
-  feedback, 
-  selectedOfficeName, 
-  selectedDateFrom, 
-  selectedDateTo 
-}: DocxInput) => {
+export const buildDocument = async ({ chartImages, feedback, selectedOfficeName, selectedDateFrom, selectedDateTo }: DocxInput) => {
   
   const logoResponse = await fetch("/img/logo.png");
   if (!logoResponse.ok) {
@@ -37,6 +32,7 @@ export const buildDocument = async ({
 
   return new Document({
 
+    //Global font settings for the document
     fonts: [{
       name: "Aptos",
       data: aptosFontBuffer,
@@ -52,9 +48,11 @@ export const buildDocument = async ({
         },
       },
     },
+    //------------------------------------------------
 
     sections: [
       {
+        //Header and Footer for the document
         headers: {
           default: new Header({
             children: [
@@ -110,13 +108,17 @@ export const buildDocument = async ({
             ],
           }),
         },
+        //------------------------------------------------
+
+
 
         children: [
-          ...await createCoverPage({
-            selectedOfficeName,
-            selectedDateFrom,
-            selectedDateTo,
-          }),
+          ...await createCoverPage({ selectedOfficeName, selectedDateFrom, selectedDateTo }),
+
+          new Paragraph({ pageBreakBefore: true, children: [] }), //means start the next section on a new page
+          ...createTableOfContents({ selectedDateFrom, selectedDateTo }),
+
+          new Paragraph({ pageBreakBefore: true, children: [] }),
           ...createPieCharts(chartImages),
           ...createListOfServiceSurveyed({ feedback, selectedOfficeName }),
           ...createAffiliationTable({ feedback }),
