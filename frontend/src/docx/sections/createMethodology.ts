@@ -491,6 +491,30 @@ export const createMethodology = () => {
         },
     ];
 
+    //Interpretation result object data
+    const interpretationResultData = [
+        {
+            rating: "1.00-1.49",
+            description: "Poor",
+        },
+        {
+            rating: "1.50-2.49",
+            description: "Fair",
+        },
+        {
+            rating: "2.50-3.49",
+            description: "Satisfactory",
+        },
+        {
+            rating: "3.50-4.49",
+            description: "Very Satisfactory",
+        },
+        {
+            rating: "4.50-5.00",
+            description: "Outstanding",
+        },
+    ];
+
     //Scoring System Table
     const scoringSystemTable = new Table({
         indent: { size: 1800, type: "dxa" },
@@ -540,6 +564,81 @@ export const createMethodology = () => {
 
             // Dynamic rows
             ...scoringData.map((data) =>
+                new TableRow({
+                    children: [
+                        new TableCell({
+                            margins: { top: 20, bottom: 20, left: 50, right: 50 },
+                            children: [
+                                new Paragraph({ 
+                                    alignment: AlignmentType.CENTER,
+                                    children: [
+                                        new TextRun({ text: data.rating })
+                                    ],
+                                }),
+                            ],
+                        }),
+
+                        new TableCell({
+                            margins: { top: 20, bottom: 20, left: 50, right: 50 },
+                            children: [
+                                new Paragraph(data.description),
+                            ],
+                        }),
+                    ],
+                })
+            ),
+        ],
+    });
+
+    //Interpretation Result Table
+    const interpretationResultsTable = new Table({
+        indent: { size: 1800, type: "dxa" },
+        width: { size: 5000, type: WidthType.DXA },
+        layout: "fixed",
+        columnWidths: [2500, 2500],
+
+        rows: [
+            // Header
+            new TableRow({
+                children: [
+                    new TableCell({
+                        margins: { top: 20, bottom: 20, left: 50, right: 50 },
+                        shading: { fill: "1E90FF" },
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.CENTER,
+                                children: [
+                                    new TextRun({
+                                        text: "Percentage",
+                                        color: "FCF55F",
+                                        bold: true,
+                                    }),
+                                ],
+                            }),
+                        ],
+                    }),
+
+                    new TableCell({
+                        margins: { top: 20, bottom: 20, left: 50, right: 50 },
+                        shading: { fill: "1E90FF" },
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.CENTER,
+                                children: [
+                                    new TextRun({
+                                        text: "Rating",
+                                        color: "FCF55F",
+                                        bold: true,
+                                    }),
+                                ],
+                            }),
+                        ],
+                    }),
+                ],
+            }),
+
+            // Dynamic rows
+            ...interpretationResultData.map((data) =>
                 new TableRow({
                     children: [
                         new TableCell({
@@ -702,8 +801,43 @@ export const createMethodology = () => {
                 }),
             ],
         }),
-
         scoringSystemTable,
+
+        //gap
+        new Paragraph({
+            spacing: { after: 300 },
+        }),
         
+        //How numerical results
+        new Paragraph({
+            alignment: AlignmentType.JUSTIFIED,
+            indent: { left: 720 },
+            spacing: { after: 300 },
+            children: [
+                new TextRun({
+                    text: "d.   ",
+                    bold: true,
+                }),
+                new TextRun({
+                    text: "How numerical results will be interpreted",
+                    bold: true,
+                }),
+            ],
+        }),
+
+        new Paragraph({
+            alignment: AlignmentType.JUSTIFIED,
+            indent: { left: 1080 },
+            spacing: { after: 300 },
+            children: [
+                new TextRun({
+                    text: "The interpretation of the results are as follows:",
+                    bold: true,
+                }),
+            ],
+        }),
+
+        interpretationResultsTable,
+
     ]
 }
