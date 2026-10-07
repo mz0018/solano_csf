@@ -18,6 +18,17 @@ import { createEmploymentStatusTable } from "./sections/createEmploymentStatusTa
 import type { DocxInput } from "../hooks/useGenerateDocx";
 
 export const buildDocument = async ({ chartImages, feedback, selectedOfficeName, selectedDateFrom, selectedDateTo }: DocxInput) => {
+
+  const [addressChart, affiliationChart, ageGroupChart, employmentChart, genderChart] = chartImages;
+
+  const chart = (dataUrl?: string) =>
+    dataUrl
+      ? [new Paragraph({ children: [new ImageRun({
+          data: dataUrl.split(",")[1],
+          type: "png",
+          transformation: { width: 400, height: 350 },
+        })] })]
+      : [];
   
   const logoResponse = await fetch("/img/logo.png");
   if (!logoResponse.ok) {
@@ -162,16 +173,21 @@ export const buildDocument = async ({ chartImages, feedback, selectedOfficeName,
 
           new Paragraph({ pageBreakBefore: true, children: [] }),
           ...createAffiliationTable({ feedback }),
-
-          new Paragraph({ pageBreakBefore: true, children: [] }),
-          ...createPieCharts(chartImages),
+          ...chart(affiliationChart),
 
           ...createGenderTable({ feedback }),
+          ...chart(genderChart),
           ...createAgeGroupTable({ feedback }),
+          ...chart(ageGroupChart),
           ...createEmploymentStatusTable({ feedback }),
+          ...chart(employmentChart),
+
           ...createCountServiceQuality({ feedback }),
           ...createAverageScorePerService({ feedback }),
           ...createFreeResponses({ feedback }),
+
+          ...createPieCharts([addressChart]), 
+
         ],
       },
     ],
