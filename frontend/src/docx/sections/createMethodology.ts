@@ -275,6 +275,297 @@ export const createMethodology = () => {
         ],
     });
 
+    //Contact object data
+    const contactData = [
+        {
+            office: "Municipal Mayor’s Office",
+            address: "Solano, Nueva Vizcaya",
+            contact: "0917-595-1931",
+        },
+        {
+            office: "Human Resource Management Section",
+            address: "Solano, Nueva Vizcaya",
+            contact: "0905-416-9123",
+        },
+        {
+            office: "Business Permits and Licensing Section",
+            address: "Solano, Nueva Vizcaya",
+            contact: "0997-423-2079",
+        },
+        {
+            office: "Sangguniang Bayan Office",
+            address: "Solano, Nueva Vizcaya",
+            contact: "0919-091-9974",
+        },
+        {
+            office: "Municipal Planning and Development Office",
+            address: "Solano, Nueva Vizcaya",
+            contact: "0965-377-2450",
+        },
+        {
+            office: "Municipal Civil Registrar’s Office",
+            address: "Solano, Nueva Vizcaya",
+            contact: "0917-568-0286",
+        },
+        {
+            office: "Municipal General Services Office",
+            address: "Solano, Nueva Vizcaya",
+            contact: "(078) 392-1082",
+        },
+        {
+            office: "Municipal Budget Office",
+            address: "Solano, Nueva Vizcaya",
+            contact: "(075) 392-0825",
+        },
+        {
+            office: "Municipal Accounting Office",
+            address: "Solano, Nueva Vizcaya",
+            contact: "0916-333-6115",
+        },
+        {
+            office: "Municipal Treasurer’s Office",
+            address: "Solano, Nueva Vizcaya",
+            contact: "0955-920-8671",
+        },
+        {
+            office: "Municipal Assessor’s Office",
+            address: "Solano, Nueva Vizcaya",
+            contact: "0995-912-5472",
+        },
+        {
+            office: "Municipal Health Office",
+            address: "Solano, Nueva Vizcaya",
+            contact: "0967-910-3054",
+        },
+        {
+            office: "Municipal Social Welfare and Development Office",
+            address: "Solano, Nueva Vizcaya",
+            contact: "0953-372-8687",
+        },
+        {
+            office: "Municipal Agriculture Office",
+            address: "Solano, Nueva Vizcaya",
+            contact: "0915-485-6010",
+        },
+        {
+            office: "Municipal Engineering Office",
+            address: "Solano, Nueva Vizcaya",
+            contact: "0926-274-8598",
+        },
+        {
+            office: "Solano Economic Enterprise and Development Office",
+            address: "Solano, Nueva Vizcaya",
+            contact: "0953-752-6267",
+        },
+        {
+            office: "Municipal Disaster Risk Reduction and Management Office",
+            address: "Solano, Nueva Vizcaya",
+            contact: "0926-383-3744",
+        },
+    ];
+
+    //Contact Table
+    const contactTable = new Table({
+        indent: { size: 1070, type: "dxa" },
+        width: { size: 8290, type: WidthType.DXA },
+        layout: "fixed",
+        columnWidths: [3500, 2400, 2390],
+
+        rows: [
+            // Header
+            new TableRow({
+                children: [
+                    new TableCell({
+                        margins: { top: 20, bottom: 20, left: 50, right: 50 },
+                        shading: { fill: "1E90FF" },
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.CENTER,
+                                children: [
+                                    new TextRun({
+                                        text: "Office",
+                                        color: "FCF55F",
+                                        bold: true,
+                                    }),
+                                ],
+                            }),
+                        ],
+                    }),
+
+                    new TableCell({
+                        margins: { top: 20, bottom: 20, left: 50, right: 50 },
+                        shading: { fill: "1E90FF" },
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.CENTER,
+                                children: [
+                                    new TextRun({
+                                        text: "Address",
+                                        color: "FCF55F",
+                                        bold: true,
+                                    }),
+                                ],
+                            }),
+                        ],
+                    }),
+
+                    new TableCell({
+                        margins: { top: 20, bottom: 20, left: 50, right: 50 },
+                        shading: { fill: "1E90FF" },
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.CENTER,
+                                children: [
+                                    new TextRun({
+                                        text: "Contact Information",
+                                        color: "FCF55F",
+                                        bold: true,
+                                    }),
+                                ],
+                            }),
+                        ],
+                    }),
+                ],
+            }),
+
+            ...contactData.map((data) =>
+                new TableRow({
+                    children: [
+                        new TableCell({
+                            margins: { top: 20, bottom: 20, left: 50, right: 50 },
+                            children: [
+                                new Paragraph(data.office),
+                            ],
+                        }),
+
+                        new TableCell({
+                            margins: { top: 20, bottom: 20, left: 50, right: 50 },
+                            children: [
+                                new Paragraph({
+                                    alignment: AlignmentType.CENTER,
+                                    children: [
+                                        new TextRun(data.address),
+                                    ],
+                                }),
+                            ],
+                        }),
+
+                        new TableCell({
+                            margins: { top: 20, bottom: 20, left: 50, right: 50 },
+                            children: [
+                                new Paragraph({
+                                    alignment: AlignmentType.CENTER,
+                                    children: [
+                                        new TextRun(data.contact),
+                                    ],
+                                }),
+                            ],
+                        }),
+                    ],
+                })
+            ),
+        ],
+    });
+
+    //Scoring object data
+    const scoringData = [
+        {
+            rating: "5",
+            description: "Very Satisfied",
+        },
+        {
+            rating: "4",
+            description: "Satisfied",
+        },
+        {
+            rating: "3",
+            description: "Neutral",
+        },
+        {
+            rating: "2",
+            description: "Dissatisfied",
+        },
+        {
+            rating: "1",
+            description: "Very Dissatisfied",
+        },
+    ];
+
+    //Scoring System Table
+    const scoringSystemTable = new Table({
+        indent: { size: 1800, type: "dxa" },
+        width: { size: 5000, type: WidthType.DXA },
+        layout: "fixed",
+        columnWidths: [2500, 2500],
+
+        rows: [
+            // Header
+            new TableRow({
+                children: [
+                    new TableCell({
+                        margins: { top: 20, bottom: 20, left: 50, right: 50 },
+                        shading: { fill: "1E90FF" },
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.CENTER,
+                                children: [
+                                    new TextRun({
+                                        text: "Scale",
+                                        color: "FCF55F",
+                                        bold: true,
+                                    }),
+                                ],
+                            }),
+                        ],
+                    }),
+
+                    new TableCell({
+                        margins: { top: 20, bottom: 20, left: 50, right: 50 },
+                        shading: { fill: "1E90FF" },
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.CENTER,
+                                children: [
+                                    new TextRun({
+                                        text: "Rating",
+                                        color: "FCF55F",
+                                        bold: true,
+                                    }),
+                                ],
+                            }),
+                        ],
+                    }),
+                ],
+            }),
+
+            // Dynamic rows
+            ...scoringData.map((data) =>
+                new TableRow({
+                    children: [
+                        new TableCell({
+                            margins: { top: 20, bottom: 20, left: 50, right: 50 },
+                            children: [
+                                new Paragraph({ 
+                                    alignment: AlignmentType.CENTER,
+                                    children: [
+                                        new TextRun({ text: data.rating })
+                                    ],
+                                }),
+                            ],
+                        }),
+
+                        new TableCell({
+                            margins: { top: 20, bottom: 20, left: 50, right: 50 },
+                            children: [
+                                new Paragraph(data.description),
+                            ],
+                        }),
+                    ],
+                })
+            ),
+        ],
+    });
+
     return [
         new Paragraph({
             alignment: AlignmentType.LEFT,
@@ -365,5 +656,54 @@ export const createMethodology = () => {
 
         //Table Feedback and Collection Mechanism
         table,
+
+        //gap
+        new Paragraph({
+            spacing: { after: 300 },
+        }),
+
+        //Contact table
+        contactTable,
+
+        //gap
+        new Paragraph({
+            spacing: { after: 300 },
+        }),
+
+        //Scoring System
+        new Paragraph({
+            alignment: AlignmentType.JUSTIFIED,
+            indent: { left: 720 },
+            spacing: { after: 300 },
+            children: [
+                new TextRun({
+                    text: "c.   ",
+                    bold: true,
+                }),
+                new TextRun({
+                    text: "Scoring System",
+                    bold: true,
+                }),
+            ],
+        }),
+
+        new Paragraph({
+            alignment: AlignmentType.JUSTIFIED,
+            indent: { left: 1500 },
+            spacing: { after: 300 },
+            children: [
+                new TextRun({
+                    text: "i.   ",
+                    bold: true,
+                }),
+                new TextRun({
+                    text: "Table of the scale and its equivalent number",
+                    bold: true,
+                }),
+            ],
+        }),
+
+        scoringSystemTable,
+        
     ]
 }
