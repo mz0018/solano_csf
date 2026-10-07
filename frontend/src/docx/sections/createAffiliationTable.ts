@@ -1,4 +1,4 @@
-import { Paragraph, Table, TableRow, TableCell, TextRun } from "docx";
+import { Paragraph, Table, TableRow, TableCell, TextRun, AlignmentType } from "docx";
 import type { FeedbackItem } from "../../components/buttons/BtnGenerateReport";
 
 export interface ServiceSurveyed {
@@ -22,59 +22,134 @@ export const createAffiliationTable = ({ feedback }: ServiceSurveyed) => {
   });
 
   const table = new Table({
-    rows: [
-      new TableRow({
-        children: [
-          new TableCell({
-            children: [new Paragraph("Month")],
+      indent: { size: 1070, type: "dxa" },
+      // width: { size: 8290, type: WidthType.DXA },
+
+      rows: [
+          // Header
+          new TableRow({
+              children: [
+                  new TableCell({
+                      margins: {
+                          top: 20,
+                          bottom: 20,
+                          left: 50,
+                          right: 50,
+                      },
+                      shading: { fill: "1E90FF" },
+                      children: [
+                          new Paragraph({
+                              alignment: AlignmentType.CENTER,
+                              children: [
+                                  new TextRun({
+                                      text: "Month",
+                                      color: "FCF55F",
+                                      bold: true,
+                                  }),
+                              ],
+                          }),
+                      ],
+                  }),
+
+                  ...affiliations.map(
+                      (affiliation) =>
+                          new TableCell({
+                              margins: {
+                                  top: 20,
+                                  bottom: 20,
+                                  left: 50,
+                                  right: 50,
+                              },
+                              shading: { fill: "1E90FF" },
+                              children: [
+                                  new Paragraph({
+                                      alignment: AlignmentType.CENTER,
+                                      children: [
+                                          new TextRun({
+                                              text: affiliation,
+                                              color: "FCF55F",
+                                              bold: true,
+                                          }),
+                                      ],
+                                  }),
+                              ],
+                          })
+                  ),
+              ],
           }),
-          ...affiliations.map(
-            (affiliation) =>
-              new TableCell({
-                children: [new Paragraph(affiliation)],
+
+          // Data rows
+          ...Object.entries(monthData).map(([month, counts]) =>
+              new TableRow({
+                  children: [
+                      new TableCell({
+                          margins: {
+                              top: 20,
+                              bottom: 20,
+                              left: 50,
+                              right: 50,
+                          },
+                          children: [
+                              new Paragraph(month),
+                          ],
+                      }),
+
+                      ...affiliations.map(
+                          (affiliation) =>
+                              new TableCell({
+                                  margins: {
+                                      top: 20,
+                                      bottom: 20,
+                                      left: 50,
+                                      right: 50,
+                                  },
+                                  children: [
+                                      new Paragraph(
+                                          (counts[affiliation] ?? 0).toString()
+                                      ),
+                                  ],
+                              })
+                      ),
+                  ],
               })
           ),
-        ],
-      }),
-
-      ...Object.entries(monthData).map(([month, counts]) =>
-        new TableRow({
-          children: [
-            new TableCell({
-              children: [new Paragraph(month)],
-            }),
-            ...affiliations.map(
-              (affiliation) =>
-                new TableCell({
-                  children: [
-                    new Paragraph((counts[affiliation] ?? 0).toString()),
-                  ],
-                })
-            ),
-          ],
-        })
-      ),
-    ],
-  });
-  
-  const tableSpacing = new Paragraph({
-      text: "",
-      spacing: {
-          after: 200,
-      },
+      ],
   });
 
   return [
     new Paragraph({
+        alignment: AlignmentType.LEFT,
+        spacing: { after: 300 },
         children: [
             new TextRun({
-            text: "Affiliation",
-            bold: true,
+                text: "V.         ",
+                bold: true,
+            }),
+            new TextRun({
+                text: "Results of the harmonized CSM for 2023",
+                bold: true,
+            }),
+        ],
+    }),
+
+    new Paragraph({
+        indent: { left: 720 },
+        children: [
+            new TextRun({
+                text: "A.  Client Demography",
+            }),
+        ],
+    }),
+
+    new Paragraph({
+        indent: { left: 1060 },
+        children: [
+            new TextRun({
+                text: "Affiliation",
             }),
         ],
     }),
 
     table,
-    tableSpacing,
   ];
 };
