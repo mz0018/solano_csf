@@ -161,10 +161,11 @@ export const buildDocument = async ({ chartImages, feedback, selectedOfficeName,
           ...createMethodology(),
 
           new Paragraph({ pageBreakBefore: true, children: [] }),
-          ...createPieCharts(chartImages),
+          ...createAffiliationTable({ feedback }),
 
           new Paragraph({ pageBreakBefore: true, children: [] }),
-          ...createAffiliationTable({ feedback }),
+          ...createPieCharts(chartImages),
+
           ...createGenderTable({ feedback }),
           ...createAgeGroupTable({ feedback }),
           ...createEmploymentStatusTable({ feedback }),
