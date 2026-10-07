@@ -35,12 +35,12 @@ export const createMethodology = () => {
                 children: [
                     new TableCell({
                         children: [
-                            new Paragraph("Client Satisfaction Feedback Form"),
+                            new Paragraph("How to send feedback"),
                         ],
                     }),
                     new TableCell({
                         children: [
-                            new Paragraph("150"),
+                            new Paragraph("Fill out the client feedback form and drop it at the designated drop boxes located in conspicuous places in the building or boxes located outside the offices."),
                         ],
                     }),
                 ],
@@ -51,12 +51,12 @@ export const createMethodology = () => {
                 children: [
                     new TableCell({
                         children: [
-                            new Paragraph("Suggestion Box"),
+                            new Paragraph("How feedback is processed"),
                         ],
                     }),
                     new TableCell({
                         children: [
-                            new Paragraph("75"),
+                            new Paragraph("At the end of every month, the Human Resource Management Section staff, with a witness from the concerned office, open and collect feedback forms from drop boxes and from offices. These forms will be encoded in the Feedback System. Feedback that requires answer is transmitted to appropriate office for action."),
                         ],
                     }),
                 ],
@@ -64,19 +64,196 @@ export const createMethodology = () => {
 
             // Row 3
             new TableRow({
-                children: [
-                    new TableCell({
+            children: [
+                new TableCell({
+                    children: [
+                        new Paragraph("How to file a complaint"),
+                    ],
+                }),
+
+                new TableCell({
                         children: [
-                            new Paragraph("Online Feedback"),
-                        ],
-                    }),
-                    new TableCell({
-                        children: [
-                            new Paragraph("50"),
+                            new Paragraph(
+                                "Fill out the client feedback form and drop it at the designated drop boxes located in conspicuous places in the building or boxes in the offices. Complaints may also be filed through the contact information provided."
+                            ),
+
+                            new Paragraph({
+                                spacing: { before: 100, after: 100 },
+                                children: [
+                                    new TextRun({
+                                        text: "The following data are required:",
+                                    }),
+                                ],
+                            }),
+
+                            // Bullet 1
+                            new Paragraph({
+                                numbering: {
+                                    reference: "light-bullet",
+                                    level: 0,
+                                },
+                                indent: {
+                                    left: 720,
+                                    hanging: 360,
+                                },
+                                spacing: {
+                                    before: 0,
+                                    after: 0,
+                                    line: 1,
+                                },
+                                children: [
+                                    new TextRun({
+                                        text: "Name of person being complained",
+                                    }),
+                                ],
+                            }),
+
+                            // Bullet 2
+                            new Paragraph({
+                                numbering: {
+                                    reference: "light-bullet",
+                                    level: 0,
+                                },
+                                indent: {
+                                    left: 720,
+                                    hanging: 360,
+                                },
+                                spacing: {
+                                    before: 0,
+                                    after: 0,
+                                    line: 1,
+                                },
+                                children: [
+                                    new TextRun({
+                                        text: "Incident",
+                                    }),
+                                ],
+                            }),
+
+                            // Bullet 3
+                            new Paragraph({
+                                numbering: {
+                                    reference: "light-bullet",
+                                    level: 0,
+                                },
+                                indent: {
+                                    left: 720,
+                                    hanging: 360,
+                                },
+                                spacing: {
+                                    before: 0,
+                                    after: 0,
+                                    line: 1,
+                                },
+                                children: [
+                                    new TextRun({
+                                        text: "Evidence/Proof",
+                                    }),
+                                ],
+                            }),
                         ],
                     }),
                 ],
             }),
+
+            // Row 4
+            new TableRow({
+                children: [
+                    new TableCell({
+                        children: [
+                            new Paragraph("How to complaints are processed"),
+                        ],
+                    }),
+                    new TableCell({
+                        children: [
+                            new Paragraph(
+                                "The complaints are received through the HRMS. Upon evaluation, the Administrative Officer, or the duly authorized Complaints Officer, shall start the investigation and submit the report or appropriate action to the Head of Agency."
+                            ),
+
+                            new Paragraph(
+                                "The Complaints Officer shall give the feedback to the complainant."
+                            ),
+                        ],
+                    }),
+                ],
+            }),
+
+            // Row 5
+            new TableRow({
+                children: [
+                    new TableCell({
+                        children: [
+                            new Paragraph("Contact Information"),
+                        ],
+                    }),
+                    new TableCell({
+                        children: [
+                            new Paragraph({
+                                numbering: {
+                                    reference: "light-bullet",
+                                    level: 0,
+                                },
+                                indent: {
+                                    left: 720,
+                                    hanging: 360,
+                                },
+                                spacing: {
+                                    before: 0,
+                                    after: 0,
+                                    line: 1,
+                                },
+                                children: [
+                                    new TextRun({
+                                        text: "(078) 321-2440",
+                                    }),
+                                ],
+                            }),
+
+                            new Paragraph({
+                                numbering: {
+                                    reference: "light-bullet",
+                                    level: 0,
+                                },
+                                indent: {
+                                    left: 720,
+                                    hanging: 360,
+                                },
+                                spacing: {
+                                    before: 0,
+                                    after: 0,
+                                    line: 1,
+                                },
+                                children: [
+                                    new TextRun({
+                                        text: "0917-595-1931",
+                                    }),
+                                ],
+                            }),
+                            new Paragraph({
+                                numbering: {
+                                    reference: "light-bullet",
+                                    level: 0,
+                                },
+                                indent: {
+                                    left: 720,
+                                    hanging: 360,
+                                },
+                                spacing: {
+                                    before: 0,
+                                    after: 0,
+                                    line: 1,
+                                },
+                                children: [
+                                    new TextRun({
+                                        text: "hrms.lgusolano@gmail.com",
+                                    }),
+                                ],
+                            }),
+                        ],
+                    }),
+                ],
+            }),
+
         ],
     });
 

@@ -65,6 +65,19 @@ export const buildDocument = async ({ chartImages, feedback, selectedOfficeName,
                     },
                 ],
             },
+
+            {
+                reference: "light-bullet",
+                levels: [
+                    {
+                        level: 0,
+                        format: "bullet",
+                        text: "·",
+                        alignment: AlignmentType.LEFT,
+                        style: { run: { size: 48 } }
+                    },
+                ],
+            },
         ],
     },
     //------------------------------------------------
