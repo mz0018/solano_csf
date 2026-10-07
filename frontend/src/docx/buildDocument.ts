@@ -4,6 +4,7 @@ import { createCoverPage } from "./sections/createCoverPage";
 import { createTableOfContents } from "./sections/createTableOfContents";
 import { createAgencyProfile } from "./sections/createAgencyProfile";
 import { createOverview } from "./sections/createOverview";
+import { createMethodology } from "./sections/createMethodology";
 import { createPieCharts } from "./sections/createPieCharts";
 import { createListOfServiceSurveyed } from "./sections/createListOfServiceSurveyed";
 import { createAffiliationTable } from "./sections/createAffiliationTable";
@@ -49,6 +50,22 @@ export const buildDocument = async ({ chartImages, feedback, selectedOfficeName,
           },
         },
       },
+    },
+
+    numbering: {
+        config: [
+            {
+                reference: "roman-list",
+                levels: [
+                    {
+                        level: 0,
+                        format: "lowerRoman",
+                        text: "%1.",
+                        alignment: AlignmentType.LEFT,
+                    },
+                ],
+            },
+        ],
     },
     //------------------------------------------------
 
@@ -126,6 +143,9 @@ export const buildDocument = async ({ chartImages, feedback, selectedOfficeName,
 
           new Paragraph({ pageBreakBefore: true, children: [] }),
           ...createListOfServiceSurveyed({ feedback, selectedOfficeName, selectedDateFrom, selectedDateTo }),
+
+          new Paragraph({ pageBreakBefore: true, children: [] }),
+          ...createMethodology(),
 
           new Paragraph({ pageBreakBefore: true, children: [] }),
           ...createPieCharts(chartImages),
