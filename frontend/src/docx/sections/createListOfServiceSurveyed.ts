@@ -27,6 +27,7 @@ export const createListOfServiceSurveyed = ({ feedback, selectedOfficeName, sele
         new TableRow({
             children: [
                 new TableCell({
+                    margins: { top: 20, bottom: 20, left: 50, right: 50 },
                     shading: { fill: "1E90FF" },
                     children: [
                         new Paragraph({
@@ -41,6 +42,7 @@ export const createListOfServiceSurveyed = ({ feedback, selectedOfficeName, sele
                         ],
                     }),
                 new TableCell({
+                    margins: { top: 20, bottom: 20, left: 50, right: 50 },
                     shading: { fill: "1E90FF" },
                     children: [
                     new Paragraph({
@@ -62,9 +64,11 @@ export const createListOfServiceSurveyed = ({ feedback, selectedOfficeName, sele
             new TableRow({
                 children: [
                 new TableCell({
+                    margins: { top: 20, bottom: 20, left: 50, right: 50 },
                     children: [new Paragraph(service)],
                 }),
                 new TableCell({
+                    margins: { top: 20, bottom: 20, left: 50, right: 50 },
                     children: [new Paragraph(count.toString())],
                 }),
                 ],

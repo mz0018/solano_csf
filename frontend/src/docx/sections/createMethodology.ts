@@ -6,12 +6,15 @@ export const createMethodology = () => {
     const table = new Table({
         indent: { size: 1070, type: "dxa" },
         width: { size: 8290, type: WidthType.DXA },
+        layout: "fixed",
+        columnWidths: [4000, 4290],
 
         rows: [
             // Header spanning both columns
             new TableRow({
                 children: [
                     new TableCell({
+                        margins: { top: 20, bottom: 20, left: 50, right: 50 },
                         columnSpan: 2,
                         shading: { fill: "1E90FF" },
                         children: [
@@ -34,11 +37,13 @@ export const createMethodology = () => {
             new TableRow({
                 children: [
                     new TableCell({
+                        margins: { top: 20, bottom: 20, left: 50, right: 50 },
                         children: [
                             new Paragraph("How to send feedback"),
                         ],
                     }),
                     new TableCell({
+                        margins: { top: 20, bottom: 20, left: 50, right: 50 },
                         children: [
                             new Paragraph("Fill out the client feedback form and drop it at the designated drop boxes located in conspicuous places in the building or boxes located outside the offices."),
                         ],
@@ -50,11 +55,13 @@ export const createMethodology = () => {
             new TableRow({
                 children: [
                     new TableCell({
+                        margins: { top: 20, bottom: 20, left: 50, right: 50 },
                         children: [
                             new Paragraph("How feedback is processed"),
                         ],
                     }),
                     new TableCell({
+                        margins: { top: 20, bottom: 20, left: 50, right: 50 },
                         children: [
                             new Paragraph("At the end of every month, the Human Resource Management Section staff, with a witness from the concerned office, open and collect feedback forms from drop boxes and from offices. These forms will be encoded in the Feedback System. Feedback that requires answer is transmitted to appropriate office for action."),
                         ],
@@ -66,12 +73,14 @@ export const createMethodology = () => {
             new TableRow({
             children: [
                 new TableCell({
+                    margins: { top: 20, bottom: 20, left: 50, right: 50 },
                     children: [
                         new Paragraph("How to file a complaint"),
                     ],
                 }),
 
                 new TableCell({
+                        margins: { top: 20, bottom: 20, left: 50, right: 50 },
                         children: [
                             new Paragraph(
                                 "Fill out the client feedback form and drop it at the designated drop boxes located in conspicuous places in the building or boxes in the offices. Complaints may also be filed through the contact information provided."
@@ -98,7 +107,7 @@ export const createMethodology = () => {
                                 },
                                 spacing: {
                                     before: 0,
-                                    after: 0,
+                                    after: 50,
                                     line: 1,
                                 },
                                 children: [
@@ -120,7 +129,7 @@ export const createMethodology = () => {
                                 },
                                 spacing: {
                                     before: 0,
-                                    after: 0,
+                                    after: 50,
                                     line: 1,
                                 },
                                 children: [
@@ -142,7 +151,7 @@ export const createMethodology = () => {
                                 },
                                 spacing: {
                                     before: 0,
-                                    after: 0,
+                                    after: 50,
                                     line: 1,
                                 },
                                 children: [
@@ -160,19 +169,26 @@ export const createMethodology = () => {
             new TableRow({
                 children: [
                     new TableCell({
+                        margins: { top: 20, bottom: 20, left: 50, right: 50 },
                         children: [
                             new Paragraph("How to complaints are processed"),
                         ],
                     }),
                     new TableCell({
+                        margins: { top: 20, bottom: 20, left: 50, right: 50 },
                         children: [
                             new Paragraph(
                                 "The complaints are received through the HRMS. Upon evaluation, the Administrative Officer, or the duly authorized Complaints Officer, shall start the investigation and submit the report or appropriate action to the Head of Agency."
                             ),
 
-                            new Paragraph(
-                                "The Complaints Officer shall give the feedback to the complainant."
-                            ),
+                            new Paragraph({
+                                spacing: { before: 300 },
+                                children: [
+                                    new TextRun(
+                                        "The Complaints Officer shall give the feedback to the complainant."
+                                    ),
+                                ],
+                            }),
                         ],
                     }),
                 ],
@@ -182,11 +198,13 @@ export const createMethodology = () => {
             new TableRow({
                 children: [
                     new TableCell({
+                        margins: { top: 20, bottom: 20, left: 50, right: 50 },
                         children: [
                             new Paragraph("Contact Information"),
                         ],
                     }),
                     new TableCell({
+                        margins: { top: 20, bottom: 20, left: 50, right: 50 },
                         children: [
                             new Paragraph({
                                 numbering: {
@@ -199,7 +217,7 @@ export const createMethodology = () => {
                                 },
                                 spacing: {
                                     before: 0,
-                                    after: 0,
+                                    after: 50,
                                     line: 1,
                                 },
                                 children: [
@@ -220,7 +238,7 @@ export const createMethodology = () => {
                                 },
                                 spacing: {
                                     before: 0,
-                                    after: 0,
+                                    after: 50,
                                     line: 1,
                                 },
                                 children: [
@@ -240,7 +258,7 @@ export const createMethodology = () => {
                                 },
                                 spacing: {
                                     before: 0,
-                                    after: 0,
+                                    after: 50,
                                     line: 1,
                                 },
                                 children: [
