@@ -22,13 +22,17 @@ export const buildDocument = async ({ chartImages, feedback, selectedOfficeName,
   const [addressChart, affiliationChart, ageGroupChart, employmentChart, genderChart] = chartImages;
 
   const chart = (dataUrl?: string) =>
-    dataUrl
-      ? [new Paragraph({ children: [new ImageRun({
+  dataUrl
+    ? [new Paragraph({
+        alignment: AlignmentType.CENTER,
+        spacing: { before: 200, after: 200 },
+        children: [new ImageRun({
           data: dataUrl.split(",")[1],
           type: "png",
-          transformation: { width: 400, height: 350 },
-        })] })]
-      : [];
+          transformation: { width: 300, height: 250 },
+        })],
+      })]
+    : [];
   
   const logoResponse = await fetch("/img/logo.png");
   if (!logoResponse.ok) {

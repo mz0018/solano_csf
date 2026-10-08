@@ -1,4 +1,11 @@
-import { Paragraph, Table, TableRow, TableCell } from "docx";
+import {
+  Paragraph,
+  Table,
+  TableRow,
+  TableCell,
+  TextRun,
+  AlignmentType,
+} from "docx";
 import type { FeedbackItem } from "../../components/buttons/BtnGenerateReport";
 
 export interface ServiceSurveyed {
@@ -22,32 +29,90 @@ export const createGenderTable = ({ feedback }: ServiceSurveyed) => {
   });
 
   const table = new Table({
+    indent: { size: 1070, type: "dxa" },
+
     rows: [
+      // Header
       new TableRow({
         children: [
           new TableCell({
-            children: [new Paragraph("Month")],
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            shading: { fill: "1E90FF" },
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.CENTER,
+                children: [
+                  new TextRun({
+                    text: "Month",
+                    color: "FCF55F",
+                    bold: true,
+                  }),
+                ],
+              }),
+            ],
           }),
+
           ...genders.map(
             (gender) =>
               new TableCell({
-                children: [new Paragraph(gender)],
+                margins: {
+                  top: 20,
+                  bottom: 20,
+                  left: 50,
+                  right: 50,
+                },
+                shading: { fill: "1E90FF" },
+                children: [
+                  new Paragraph({
+                    alignment: AlignmentType.CENTER,
+                    children: [
+                      new TextRun({
+                        text: gender,
+                        color: "FCF55F",
+                        bold: true,
+                      }),
+                    ],
+                  }),
+                ],
               })
           ),
         ],
       }),
 
+      // Data rows
       ...Object.entries(monthData).map(([month, counts]) =>
         new TableRow({
           children: [
             new TableCell({
-              children: [new Paragraph(month)],
+              margins: {
+                top: 20,
+                bottom: 20,
+                left: 50,
+                right: 50,
+              },
+              children: [
+                new Paragraph(month),
+              ],
             }),
+
             ...genders.map(
               (gender) =>
                 new TableCell({
+                  margins: {
+                    top: 20,
+                    bottom: 20,
+                    left: 50,
+                    right: 50,
+                  },
                   children: [
-                    new Paragraph((counts[gender] ?? 0).toString()),
+                    new Paragraph(
+                      (counts[gender] ?? 0).toString()
+                    ),
                   ],
                 })
             ),
@@ -58,9 +123,16 @@ export const createGenderTable = ({ feedback }: ServiceSurveyed) => {
   });
 
   return [
+
     new Paragraph({
-      text: "Sex",
+      indent: { left: 1060 },
+      children: [
+        new TextRun({
+          text: "Sex",
+        }),
+      ],
     }),
+
     table,
   ];
 };

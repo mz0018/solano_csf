@@ -1,4 +1,11 @@
-import { Paragraph, Table, TableRow, TableCell, TextRun } from "docx";
+import {
+  Paragraph,
+  Table,
+  TableRow,
+  TableCell,
+  TextRun,
+  AlignmentType,
+} from "docx";
 import type { FeedbackItem } from "../../components/buttons/BtnGenerateReport";
 
 export interface ServiceSurveyed {
@@ -22,32 +29,90 @@ export const createAgeGroupTable = ({ feedback }: ServiceSurveyed) => {
   });
 
   const table = new Table({
+    indent: { size: 1070, type: "dxa" },
+
     rows: [
+      // Header
       new TableRow({
         children: [
           new TableCell({
-            children: [new Paragraph("Month")],
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            shading: { fill: "1E90FF" },
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.CENTER,
+                children: [
+                  new TextRun({
+                    text: "Month",
+                    color: "FCF55F",
+                    bold: true,
+                  }),
+                ],
+              }),
+            ],
           }),
+
           ...ageGroups.map(
             (ageGroup) =>
               new TableCell({
-                children: [new Paragraph(ageGroup)],
+                margins: {
+                  top: 20,
+                  bottom: 20,
+                  left: 50,
+                  right: 50,
+                },
+                shading: { fill: "1E90FF" },
+                children: [
+                  new Paragraph({
+                    alignment: AlignmentType.CENTER,
+                    children: [
+                      new TextRun({
+                        text: ageGroup,
+                        color: "FCF55F",
+                        bold: true,
+                      }),
+                    ],
+                  }),
+                ],
               })
           ),
         ],
       }),
 
+      // Data rows
       ...Object.entries(monthData).map(([month, counts]) =>
         new TableRow({
           children: [
             new TableCell({
-              children: [new Paragraph(month)],
+              margins: {
+                top: 20,
+                bottom: 20,
+                left: 50,
+                right: 50,
+              },
+              children: [
+                new Paragraph(month),
+              ],
             }),
+
             ...ageGroups.map(
               (ageGroup) =>
                 new TableCell({
+                  margins: {
+                    top: 20,
+                    bottom: 20,
+                    left: 50,
+                    right: 50,
+                  },
                   children: [
-                    new Paragraph((counts[ageGroup] ?? 0).toString()),
+                    new Paragraph(
+                      (counts[ageGroup] ?? 0).toString()
+                    ),
                   ],
                 })
             ),
@@ -57,23 +122,16 @@ export const createAgeGroupTable = ({ feedback }: ServiceSurveyed) => {
     ],
   });
 
-  const tableSpacing = new Paragraph({
-      text: "",
-      spacing: {
-          after: 200,
-      },
-  });
-
   return [
     new Paragraph({
-        children: [
-            new TextRun({
-            text: "Age Group",
-            bold: true,
-            }),
-        ],
+      indent: { left: 1060 },
+      children: [
+        new TextRun({
+          text: "Age Group",
+        }),
+      ],
     }),
+
     table,
-    tableSpacing,
   ];
 };
