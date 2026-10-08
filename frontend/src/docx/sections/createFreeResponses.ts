@@ -1,4 +1,12 @@
-import { Paragraph, Table, TableRow, TableCell, TextRun } from "docx";
+import {
+  Paragraph,
+  Table,
+  TableRow,
+  TableCell,
+  TextRun,
+  AlignmentType,
+} from "docx";
+
 import type { FeedbackItem } from "../../components/buttons/BtnGenerateReport";
 
 export interface ServiceSurveyed {
@@ -23,7 +31,7 @@ export const createFreeResponses = ({ feedback }: ServiceSurveyed) => {
     }
   });
 
-const children: (Paragraph | Table)[] = [
+  const children: (Paragraph | Table)[] = [
     new Paragraph({
       children: [new TextRun({ text: "Free Responses", bold: true })],
     }),
@@ -32,15 +40,50 @@ const children: (Paragraph | Table)[] = [
   if (Object.keys(monthGroups).length === 0) {
     children.push(
       new Table({
+        indent: { size: 1070, type: "dxa" },
+
         rows: [
+          // Header
           new TableRow({
             children: [
-              new TableCell({ children: [new Paragraph("Comments")] }),
+              new TableCell({
+                margins: {
+                  top: 20,
+                  bottom: 20,
+                  left: 50,
+                  right: 50,
+                },
+                shading: { fill: "1E90FF" },
+                children: [
+                  new Paragraph({
+                    alignment: AlignmentType.CENTER,
+                    children: [
+                      new TextRun({
+                        text: "Comments",
+                        color: "FCF55F",
+                        bold: true,
+                      }),
+                    ],
+                  }),
+                ],
+              }),
             ],
           }),
+
+          // No response
           new TableRow({
             children: [
-              new TableCell({ children: [new Paragraph("No Response")] }),
+              new TableCell({
+                margins: {
+                  top: 20,
+                  bottom: 20,
+                  left: 50,
+                  right: 50,
+                },
+                children: [
+                  new Paragraph("No Response"),
+                ],
+              }),
             ],
           }),
         ],
@@ -53,21 +96,51 @@ const children: (Paragraph | Table)[] = [
   Object.entries(monthGroups).forEach(([month, comments]) => {
     children.push(
       new Table({
+        indent: { size: 1070, type: "dxa" },
+
         rows: [
+          // Month header
           new TableRow({
             children: [
               new TableCell({
-                children: [new Paragraph(`${month}`)],
+                margins: {
+                  top: 20,
+                  bottom: 20,
+                  left: 50,
+                  right: 50,
+                },
+                shading: { fill: "1E90FF" },
+                children: [
+                  new Paragraph({
+                    alignment: AlignmentType.CENTER,
+                    children: [
+                      new TextRun({
+                        text: `${month}`,
+                        color: "FCF55F",
+                        bold: true,
+                      }),
+                    ],
+                  }),
+                ],
               }),
             ],
           }),
 
+          // Comments
           ...comments.map(
             (comment) =>
               new TableRow({
                 children: [
                   new TableCell({
-                    children: [new Paragraph(comment)],
+                    margins: {
+                      top: 20,
+                      bottom: 20,
+                      left: 50,
+                      right: 50,
+                    },
+                    children: [
+                      new Paragraph(comment),
+                    ],
                   }),
                 ],
               })
