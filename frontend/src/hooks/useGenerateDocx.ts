@@ -23,19 +23,20 @@ const lockAllTables = async (blob: Blob): Promise<Blob> => {
 
   let xml = await file.async("string");
 
-  xml = xml.replace(
-    /<w:tbl>[\s\S]*?<\/w:tbl>/g,
-    (table) => `
-      <w:sdt>
-        <w:sdtPr>
-          <w:lock w:val="sdtContentLocked"/>
-        </w:sdtPr>
-
-        <w:sdtContent>
-          ${table}
-        </w:sdtContent>
-      </w:sdt>
-    `
+  xml = xml.replace(/<w:tbl>[\s\S]*?<\/w:tbl>/g, (table) =>
+    table.replace(
+      /<w:p(?=[ >])[\s\S]*?<\/w:p>/g,
+      (paragraph) => `
+        <w:sdt>
+          <w:sdtPr>
+            <w:lock w:val="sdtContentLocked"/>
+          </w:sdtPr>
+          <w:sdtContent>
+            ${paragraph}
+          </w:sdtContent>
+        </w:sdt>
+      `
+    )
   );
 
   zip.file("word/document.xml", xml);

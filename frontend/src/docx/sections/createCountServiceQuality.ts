@@ -24,9 +24,38 @@ const SERVICE_QUALITY_DIMENSIONS = [
 ];
 
 export const createCountServiceQuality = ({ feedback }: ServiceSurveyed) => {
+  // Overall counts across all service quality dimensions
+  const overallCounts: Record<number, number> = {
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0,
+  };
+
+  // Overall rating calculation
+  let overallSum = 0;
+
+  feedback.forEach((item) => {
+    SERVICE_QUALITY_DIMENSIONS.forEach(({ key }) => {
+      const rating = item.ratings[key];
+
+      overallCounts[rating] = (overallCounts[rating] ?? 0) + 1;
+      overallSum += rating;
+    });
+  });
+
+  const overallRespondents =
+    feedback.length * SERVICE_QUALITY_DIMENSIONS.length;
+
+  const overallRating =
+    overallRespondents > 0
+      ? (overallSum / overallRespondents).toFixed(2)
+      : "0.00";
+
   const table = new Table({
     indent: { size: 1070, type: "dxa" },
-    
+
     rows: [
       // Header
       new TableRow({
@@ -225,6 +254,7 @@ export const createCountServiceQuality = ({ feedback }: ServiceSurveyed) => {
         });
 
         const respondents = feedback.length;
+
         const sum = feedback.reduce(
           (acc, item) => acc + item.ratings[key],
           0
@@ -317,25 +347,202 @@ export const createCountServiceQuality = ({ feedback }: ServiceSurveyed) => {
           ],
         });
       }),
+
+      // Overall row
+      new TableRow({
+        children: [
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            children: [
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    text: "Overall",
+                    bold: true,
+                  }),
+                ],
+              }),
+            ],
+          }),
+
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            shading: { fill: "FFF4B8" },
+            children: [
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    text: overallCounts[5].toString(),
+                    bold: true,
+                  }),
+                ],
+              }),
+            ],
+          }),
+
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            shading: { fill: "FFF4B8" },
+            children: [
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    text: overallCounts[4].toString(),
+                    bold: true,
+                  }),
+                ],
+              }),
+            ],
+          }),
+
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            shading: { fill: "FFF4B8" },
+            children: [
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    text: overallCounts[3].toString(),
+                    bold: true,
+                  }),
+                ],
+              }),
+            ],
+          }),
+
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            shading: { fill: "FFF4B8" },
+            children: [
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    text: overallCounts[2].toString(),
+                    bold: true,
+                  }),
+                ],
+              }),
+            ],
+          }),
+
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            shading: { fill: "FFF4B8" },
+            children: [
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    text: overallCounts[1].toString(),
+                    bold: true,
+                  }),
+                ],
+              }),
+            ],
+          }),
+
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            shading: { fill: "FFF4B8" },
+            children: [
+               new Paragraph({
+                children: [
+                  new TextRun({
+                    text: overallRespondents.toString(),
+                    bold: true,
+                  }),
+                ],
+              }),
+            ],
+          }),
+
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            shading: { fill: "FFF4B8" },
+            children: [
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    text: overallRating,
+                    bold: true,
+                  }),
+                ],
+              }),
+            ],
+          }),
+        ],
+      }),
     ],
   });
 
   // ---- accurate paragraph: everything computed from feedback ----
-  const dimensionAverages = SERVICE_QUALITY_DIMENSIONS.map(({ label, key }) => {
-    const avg =
-      feedback.length > 0
-        ? feedback.reduce((acc, item) => acc + item.ratings[key], 0) / feedback.length
-        : 0;
-    return { label, avg };
-  });
+  const dimensionAverages = SERVICE_QUALITY_DIMENSIONS.map(
+    ({ label, key }) => {
+      const avg =
+        feedback.length > 0
+          ? feedback.reduce(
+              (acc, item) => acc + item.ratings[key],
+              0
+            ) / feedback.length
+          : 0;
 
-  const sorted = [...dimensionAverages].sort((a, b) => b.avg - a.avg);
+      return { label, avg };
+    }
+  );
+
+  const sorted = [...dimensionAverages].sort(
+    (a, b) => b.avg - a.avg
+  );
+
   const highest = sorted[0];
   const second = sorted[1];
   const lowest = sorted[sorted.length - 1];
 
   const overallAvg =
-    dimensionAverages.reduce((acc, d) => acc + d.avg, 0) / dimensionAverages.length;
+    dimensionAverages.reduce(
+      (acc, d) => acc + d.avg,
+      0
+    ) / dimensionAverages.length;
+
   const fmt = (n: number) => n.toFixed(2);
 
   const analysisText =
@@ -346,13 +553,13 @@ export const createCountServiceQuality = ({ feedback }: ServiceSurveyed) => {
 
   return [
     new Paragraph({
-        indent: { left: 720 },
-        spacing: { after: 300 },
-        children: [
-            new TextRun({
-                text: "B.  Count of Citizen's Charter and Service Quality Dimension results",
-            }),
-        ],
+      indent: { left: 720 },
+      spacing: { after: 300 },
+      children: [
+        new TextRun({
+          text: "B.  Count of Citizen's Charter and Service Quality Dimension results",
+        }),
+      ],
     }),
 
     new Paragraph({
@@ -367,9 +574,9 @@ export const createCountServiceQuality = ({ feedback }: ServiceSurveyed) => {
 
     table,
 
-    //gap
+    // gap
     new Paragraph({
-        spacing: { after: 100 },
+      spacing: { after: 100 },
     }),
 
     new Paragraph({
