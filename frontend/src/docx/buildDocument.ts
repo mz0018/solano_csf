@@ -189,7 +189,7 @@ export const buildDocument = async ({ chartImages, feedback, selectedOfficeName,
 
           ...createCountServiceQuality({ feedback }),
           ...createAverageScorePerService({ feedback, selectedOfficeName }),
-          ...createFreeResponses({ feedback }),
+          ...createFreeResponses({ feedback, selectedDateFrom, selectedDateTo }),
 
           // ...createPieCharts([addressChart]), 
 
