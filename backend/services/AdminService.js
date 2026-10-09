@@ -280,12 +280,11 @@ class AdminService {
             return { ...f, service: names }
         });
 
-        console.log(serviceTransactions)
-
         return {
             office,
             dateFrom,
             dateTo,
+            serviceTransactions,
             totalFeedbacks: feedbacks.length,
             feedbacks: feedbacksWithNames,
         };

@@ -1,20 +1,24 @@
 import { useQuery } from "@tanstack/react-query";
 import type { FeedbackItem } from "../components/buttons/BtnGenerateReport";
 
+type ServiceTransaction = {
+    service: string;
+    totalTransactions: number;
+};
+
 type ReportStatistics = {
     totalFeedbacks: number;
     feedbacks: FeedbackItem[];
+    serviceTransactions: ServiceTransaction[];
     office: { code: string; name: string };
     dateFrom: string;
     dateTo: string;
 };
 
-const getReportStatistics = async (
-    officeCode: string,
-    dateFrom: string,
-    dateTo: string
-): Promise<ReportStatistics> => {
+const getReportStatistics = async (officeCode: string, dateFrom: string, dateTo: string): Promise<ReportStatistics> => {
+
     const params = new URLSearchParams({ officeCode, dateFrom, dateTo });
+
     const res = await fetch(
         `${import.meta.env.VITE_API_URL}/api/admin/report-statistics?${params}`,
         { credentials: "include" }
@@ -23,11 +27,8 @@ const getReportStatistics = async (
     if (!res.ok) throw new Error("Failed to fetch report statistics");
     return res.json();
 };
-export const useGetReportStatistics = (
-    officeCode: string,
-    dateFrom: string,
-    dateTo: string
-) => {
+export const useGetReportStatistics = (officeCode: string, dateFrom: string, dateTo: string) => {
+
     return useQuery({
         queryKey: ["report-statistics", officeCode, dateFrom, dateTo],
         queryFn: () => getReportStatistics(officeCode, dateFrom, dateTo),

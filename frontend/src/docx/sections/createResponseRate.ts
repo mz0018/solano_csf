@@ -4,11 +4,13 @@ import type { FeedbackItem } from "../../components/buttons/BtnGenerateReport";
 export interface ResponseRateProps {
   feedback: FeedbackItem[];
   selectedOfficeName?: string;
+  serviceTransactions: { service: string; totalTransactions: number }[];
 }
 
-export const createResponseRate = ({ feedback, selectedOfficeName }: ResponseRateProps) => {
+export const createResponseRate = ({ feedback, selectedOfficeName, serviceTransactions }: ResponseRateProps) => {
 
     console.log(feedback, selectedOfficeName)
+    console.log(serviceTransactions)
 
     return [
         new Paragraph({

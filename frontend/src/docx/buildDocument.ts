@@ -18,7 +18,7 @@ import { createResponseRate } from "./sections/createResponseRate";
 
 import type { DocxInput } from "../hooks/useGenerateDocx";
 
-export const buildDocument = async ({ chartImages, feedback, selectedOfficeName, selectedDateFrom, selectedDateTo }: DocxInput) => {
+export const buildDocument = async ({ chartImages, feedback, selectedOfficeName, selectedDateFrom, selectedDateTo, serviceTransactions }: DocxInput) => {
 
   // ORIGINAL: const [addressChart, affiliationChart, ageGroupChart, employmentChart, genderChart] = chartImages;
   const [affiliationChart, ageGroupChart, employmentChart, genderChart] = chartImages;
@@ -191,7 +191,7 @@ export const buildDocument = async ({ chartImages, feedback, selectedOfficeName,
           ...createCountServiceQuality({ feedback }),
           ...createAverageScorePerService({ feedback, selectedOfficeName }),
           ...createFreeResponses({ feedback, selectedDateFrom, selectedDateTo }),
-          ...createResponseRate({ feedback, selectedOfficeName })
+          ...createResponseRate({ feedback, selectedOfficeName, serviceTransactions })
 
           // ...createPieCharts([addressChart]), 
 

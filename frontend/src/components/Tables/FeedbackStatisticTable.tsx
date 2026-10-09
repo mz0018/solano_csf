@@ -7,6 +7,7 @@ import { Search } from "lucide-react";
 type ReportStatistics = {
     totalFeedbacks: number;
     feedbacks: FeedbackItem[];
+    serviceTransactions: { service: string; totalTransactions: number }[];
     office: { code: string; name: string };
     dateFrom: string;
     dateTo: string;
@@ -57,6 +58,7 @@ export const FeedbackStatisticTable = ({ stats, isLoading, error }: FeedbackStat
                     selectedOfficeName={stats.office?.name ?? ''}
                     selectedDateFrom={stats.dateFrom}
                     selectedDateTo={stats.dateTo}
+                    serviceTransactions={stats.serviceTransactions} 
                 />
             </div>
         </>
