@@ -11,10 +11,24 @@ import type { FeedbackItem } from "../../components/buttons/BtnGenerateReport";
 
 export interface ResponseRateProps {
   feedback: FeedbackItem[];
+  selectedOfficeName?: string;
   serviceTransactions: { service: string; totalTransactions: number }[];
 }
 
-export const createResponseRate = ({ feedback, serviceTransactions }: ResponseRateProps) => {
+export const calculateSampleSize = (N: number) => {
+    const z = 1.96;
+    const p = 0.50;
+    const e = 0.05;
+
+    const numerator = N * z * z * p * (1 - p);
+
+    const denominator =
+        e * e * (N - 1) + z * z * p * (1 - p);
+
+    return Math.ceil(numerator / denominator);
+}
+
+export const createResponseRate = ({ feedback, serviceTransactions, selectedOfficeName }: ResponseRateProps) => {
   const serviceGroups: Record<string, FeedbackItem[]> = {};
 
   feedback.forEach((item) => {
@@ -41,7 +55,7 @@ export const createResponseRate = ({ feedback, serviceTransactions }: ResponseRa
         ? ((responses / totalTransactions) * 100).toFixed(2)
         : "0.00";
 
-    return { service, responses, totalTransactions, rate };
+    return { service, responses, totalTransactions, rate, minSampleSize: calculateSampleSize(totalTransactions) };
   });
 
   const headerCell = (text: string) =>
@@ -67,19 +81,21 @@ export const createResponseRate = ({ feedback, serviceTransactions }: ResponseRa
     rows: [
       new TableRow({
         children: [
-          headerCell("Service"),
+          headerCell(`${selectedOfficeName}`),
           headerCell("Responses"),
           headerCell("Total Transactions"),
+          headerCell("Minimum Sample Size"),
           headerCell("Response Rate"),
         ],
       }),
       ...combined.map(
-        ({ service, responses, totalTransactions, rate }) =>
+        ({ service, responses, totalTransactions, rate, minSampleSize }) =>
           new TableRow({
             children: [
               dataCell(service),
               dataCell(responses.toString()),
               dataCell(totalTransactions.toString()),
+              dataCell(minSampleSize.toString()),
               dataCell(`${rate}%`),
             ],
           })
