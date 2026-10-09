@@ -239,7 +239,7 @@ class AdminService {
 
         const startDate = new Date(dateFrom);
         const endDate = new Date(dateTo + 'T23:59:59.999');
-        const [feedbacks, serviceDocs] = await Promise.all([
+        const [feedbacks, serviceDocs, queueServiceCounts] = await Promise.all([
             Feedback.find({
                 officeCode,
                 createdAt: { $gte: startDate, $lte: endDate }
@@ -248,14 +248,32 @@ class AdminService {
             .select('service otherServiceDetail client.gender client.affiliation client.ageGroup client.employmentStatus client.address ratings comments createdAt'),
             Service.find({ officeCode })
                 .select('code name')
-                .lean()
+                .lean(),
+            Queue.aggregate([                      
+                {
+                    $match: { officeCode, createdAt: { $gte: startDate, $lte: endDate } }
+                },
+                { $unwind: '$selectedService' },
+                {
+                    $group: {
+                        _id: { service: '$selectedService', status: '$status' },
+                        count: { $sum: 1 }
+                    }
+                }
+            ])
         ]);
+
         const serviceNameMap = Object.fromEntries(
             serviceDocs.map(s => [s.code, s.name])
         );
-        // Keep one object per feedback (per person) – service stays as array of names
-        // so Gender/Age/Affiliation/Quality counts stay 1 per person, while
-        // service-specific docx sections expand internally per service
+
+        const serviceTransactions = queueServiceCounts
+        .map(({ _id, count }) => ({
+            service: _id === 'OTHER_SERVICE' ? 'Other Service' : serviceNameMap[_id] || _id,
+            totalTransactions: count,
+        }))
+        .sort((a, b) => b.totalTransactions - a.totalTransactions);
+        
         const feedbacksWithNames = feedbacks.map(f => {
             const codes = Array.isArray(f.service) ? f.service : f.service ? [f.service] : []
             const names = codes.map(code => {
@@ -266,6 +284,8 @@ class AdminService {
             })
             return { ...f, service: names }
         });
+
+        console.log(serviceTransactions)
 
         return {
             office,
