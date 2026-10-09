@@ -79,13 +79,13 @@ export const createResponseRate = ({
     totalSampleSize
   );
 
-  const headerCell = (text: string) =>
+  const headerCell = (text: string, alignment: (typeof AlignmentType)[keyof typeof AlignmentType] = AlignmentType.LEFT) =>
     new TableCell({
       margins: { top: 20, bottom: 20, left: 50, right: 50 },
       shading: { fill: "#1E90FF" },
       children: [
         new Paragraph({
-          alignment: AlignmentType.CENTER,
+          alignment,
           children: [
             new TextRun({ text, color: "#FFEA00", bold: true }),
           ],
@@ -117,10 +117,10 @@ export const createResponseRate = ({
       new TableRow({
         children: [
           headerCell(`${selectedOfficeName}`),
-          headerCell("Responses"),
-          headerCell("Total Transactions"),
-          headerCell("Minimum Sample Size"),
-          headerCell("Response Rate"),
+          headerCell("Responses", AlignmentType.CENTER),
+          headerCell("Total Transactions", AlignmentType.CENTER),
+          headerCell("Minimum Sample Size", AlignmentType.CENTER),
+          headerCell("Response Rate", AlignmentType.CENTER),
         ],
       }),
 
