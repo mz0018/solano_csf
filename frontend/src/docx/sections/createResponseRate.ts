@@ -16,31 +16,38 @@ export interface ResponseRateProps {
 }
 
 export const calculateSampleSize = (N: number) => {
-    const z = 1.96;
-    const p = 0.50;
-    const e = 0.05;
+  const z = 1.96;
+  const p = 0.50;
+  const e = 0.05;
 
-    const numerator = N * z * z * p * (1 - p);
+  const numerator = N * z * z * p * (1 - p);
 
-    const denominator =
-        e * e * (N - 1) + z * z * p * (1 - p);
+  const denominator =
+    e * e * (N - 1) + z * z * p * (1 - p);
 
-    return Math.ceil(numerator / denominator);
-}
+  return Math.ceil(numerator / denominator);
+};
 
-export const calculateResponseRate = (responses: number, minimumSampleSize: number) => {
+export const calculateResponseRate = (
+  responses: number,
+  minimumSampleSize: number
+) => {
   if (minimumSampleSize <= 0) return "0.00";
   return ((responses / minimumSampleSize) * 100).toFixed(2);
 };
 
-export const createResponseRate = ({ feedback, serviceTransactions, selectedOfficeName }: ResponseRateProps) => {
+export const createResponseRate = ({
+  feedback,
+  serviceTransactions,
+  selectedOfficeName,
+}: ResponseRateProps) => {
   const serviceGroups: Record<string, FeedbackItem[]> = {};
 
   feedback.forEach((item) => {
     const codes: string[] = Array.isArray(item.service)
       ? item.service
       : [item.service];
- 
+
     codes.forEach((c) => {
       const key = c.startsWith("Other Service:") ? "Other Service" : c;
       serviceGroups[key] ??= [];
@@ -62,26 +69,46 @@ export const createResponseRate = ({ feedback, serviceTransactions, selectedOffi
   });
 
   const totalResponses = combined.reduce((sum, r) => sum + r.responses, 0);
-  const totalTransactions = combined.reduce((sum, r) => sum + r.totalTransactions, 0);
+  const totalTransactions = combined.reduce(
+    (sum, r) => sum + r.totalTransactions,
+    0
+  );
   const totalSampleSize = calculateSampleSize(totalTransactions);
-  const totalResponseRate = calculateResponseRate(totalResponses, totalSampleSize);
+  const totalResponseRate = calculateResponseRate(
+    totalResponses,
+    totalSampleSize
+  );
 
   const headerCell = (text: string) =>
     new TableCell({
       margins: { top: 20, bottom: 20, left: 50, right: 50 },
-      shading: { fill: "1E90FF" },
+      shading: { fill: "#1E90FF" },
       children: [
         new Paragraph({
           alignment: AlignmentType.CENTER,
-          children: [new TextRun({ text, color: "FCF55F", bold: true })],
+          children: [
+            new TextRun({ text, color: "#FFEA00", bold: true }),
+          ],
         }),
       ],
     });
 
-  const dataCell = (text: string) =>
+  const dataCell = (
+    text: string,
+    alignment: (typeof AlignmentType)[keyof typeof AlignmentType] = AlignmentType.LEFT,
+    bold = false,
+    fill?: string,
+    textFill?: string
+  ) =>
     new TableCell({
       margins: { top: 20, bottom: 20, left: 50, right: 50 },
-      children: [new Paragraph(text)],
+      ...(fill && { shading: { fill } }),
+      children: [
+        new Paragraph({
+          alignment,
+          children: [new TextRun({ text, bold, ...(textFill && { color: textFill }) })],
+        }),
+      ],
     });
 
   const table = new Table({
@@ -96,27 +123,27 @@ export const createResponseRate = ({ feedback, serviceTransactions, selectedOffi
           headerCell("Response Rate"),
         ],
       }),
-      
+
       ...combined.map(
         ({ service, responses, totalTransactions, rate, minSampleSize }) =>
           new TableRow({
             children: [
               dataCell(service),
-              dataCell(responses.toString()),
-              dataCell(totalTransactions.toString()),
-              dataCell(minSampleSize.toString()),
-              dataCell(`${rate}%`),
+              dataCell(responses.toString(), AlignmentType.CENTER),
+              dataCell(totalTransactions.toString(), AlignmentType.CENTER),
+              dataCell(minSampleSize.toString(), AlignmentType.CENTER),
+              dataCell(`${rate}%`, AlignmentType.CENTER),
             ],
           })
       ),
 
       new TableRow({
         children: [
-          dataCell("Total"),
-          dataCell(totalResponses.toString()),
-          dataCell(totalTransactions.toString()),
-          dataCell(totalSampleSize.toString()),
-          dataCell(totalResponseRate.toString()),
+          dataCell("Total", AlignmentType.END, true),
+          dataCell(totalResponses.toString(), AlignmentType.CENTER, true, "#FFEA00", "#1E90FF"),
+          dataCell(totalTransactions.toString(), AlignmentType.CENTER, true, "#FFEA00", "#1E90FF"),
+          dataCell(totalSampleSize.toString(), AlignmentType.CENTER, true, "#FFEA00", "#1E90FF"),
+          dataCell(totalResponseRate.toString(), AlignmentType.CENTER, true, "#FFEA00", "#1E90FF"),
         ],
       }),
     ],
