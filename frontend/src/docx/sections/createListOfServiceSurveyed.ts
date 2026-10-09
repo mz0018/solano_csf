@@ -14,7 +14,8 @@ export const createListOfServiceSurveyed = ({ feedback, selectedOfficeName, sele
     const serviceCounts = feedback.reduce<Record<string, number>>((acc, item) => {
         const codes: string[] = Array.isArray((item).service) ? (item).service : [(item).service]
         codes.forEach(c => {
-            acc[c] = (acc[c] ?? 0) + 1;
+            const key = c.startsWith("Other Service:") ? "Other Service" : c;
+            acc[key] = (acc[key] ?? 0) + 1;
         })
         return acc;
     }, {});

@@ -26,8 +26,9 @@ export const createAverageScorePerService = ({
       : [(item).service];
 
     codes.forEach((c) => {
-      serviceGroups[c] ??= [];
-      serviceGroups[c].push(item);
+      const key = c.startsWith("Other Service:") ? "Other Service" : c;
+      serviceGroups[key] ??= [];
+      serviceGroups[key].push(item);
     });
   });
 
