@@ -254,12 +254,7 @@ class AdminService {
                     $match: { officeCode, createdAt: { $gte: startDate, $lte: endDate } }
                 },
                 { $unwind: '$selectedService' },
-                {
-                    $group: {
-                        _id: { service: '$selectedService', status: '$status' },
-                        count: { $sum: 1 }
-                    }
-                }
+                { $group: { _id: '$selectedService', count: { $sum: 1 } } }
             ])
         ]);
 
