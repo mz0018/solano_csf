@@ -61,6 +61,11 @@ export const createResponseRate = ({ feedback, serviceTransactions, selectedOffi
     return { service, responses, totalTransactions, rate, minSampleSize };
   });
 
+  const totalResponses = combined.reduce((sum, r) => sum + r.responses, 0);
+  const totalTransactions = combined.reduce((sum, r) => sum + r.totalTransactions, 0);
+  const totalSampleSize = calculateSampleSize(totalTransactions);
+  const totalResponseRate = calculateResponseRate(totalResponses, totalSampleSize);
+
   const headerCell = (text: string) =>
     new TableCell({
       margins: { top: 20, bottom: 20, left: 50, right: 50 },
@@ -91,6 +96,7 @@ export const createResponseRate = ({ feedback, serviceTransactions, selectedOffi
           headerCell("Response Rate"),
         ],
       }),
+      
       ...combined.map(
         ({ service, responses, totalTransactions, rate, minSampleSize }) =>
           new TableRow({
@@ -103,6 +109,16 @@ export const createResponseRate = ({ feedback, serviceTransactions, selectedOffi
             ],
           })
       ),
+
+      new TableRow({
+        children: [
+          dataCell("Total"),
+          dataCell(totalResponses.toString()),
+          dataCell(totalTransactions.toString()),
+          dataCell(totalSampleSize.toString()),
+          dataCell(totalResponseRate.toString()),
+        ],
+      }),
     ],
   });
 
