@@ -28,6 +28,11 @@ export const calculateSampleSize = (N: number) => {
     return Math.ceil(numerator / denominator);
 }
 
+export const calculateResponseRate = (responses: number, minimumSampleSize: number) => {
+  if (minimumSampleSize <= 0) return "0.00";
+  return ((responses / minimumSampleSize) * 100).toFixed(2);
+};
+
 export const createResponseRate = ({ feedback, serviceTransactions, selectedOfficeName }: ResponseRateProps) => {
   const serviceGroups: Record<string, FeedbackItem[]> = {};
 
@@ -35,7 +40,7 @@ export const createResponseRate = ({ feedback, serviceTransactions, selectedOffi
     const codes: string[] = Array.isArray(item.service)
       ? item.service
       : [item.service];
-
+ 
     codes.forEach((c) => {
       const key = c.startsWith("Other Service:") ? "Other Service" : c;
       serviceGroups[key] ??= [];
@@ -50,12 +55,10 @@ export const createResponseRate = ({ feedback, serviceTransactions, selectedOffi
   const combined = Object.entries(serviceGroups).map(([service, items]) => {
     const responses = items.length;
     const totalTransactions = transactionsMap.get(service) ?? 0;
-    const rate =
-      totalTransactions > 0
-        ? ((responses / totalTransactions) * 100).toFixed(2)
-        : "0.00";
+    const minSampleSize = calculateSampleSize(totalTransactions);
+    const rate = calculateResponseRate(responses, minSampleSize);
 
-    return { service, responses, totalTransactions, rate, minSampleSize: calculateSampleSize(totalTransactions) };
+    return { service, responses, totalTransactions, rate, minSampleSize };
   });
 
   const headerCell = (text: string) =>
