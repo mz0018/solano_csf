@@ -15,6 +15,7 @@ import { createAverageScorePerService } from "./sections/createAverageScorePerSe
 import { createFreeResponses } from "./sections/createFreeResponses";
 import { createEmploymentStatusTable } from "./sections/createEmploymentStatusTable";
 import { createResponseRate } from "./sections/createResponseRate";
+import { createAgencyPlan } from "./sections/createAgencyPlan";
 
 import type { DocxInput } from "../hooks/useGenerateDocx";
 
@@ -191,8 +192,9 @@ export const buildDocument = async ({ chartImages, feedback, selectedOfficeName,
           ...createCountServiceQuality({ feedback }),
           ...createAverageScorePerService({ feedback, selectedOfficeName }),
           ...createFreeResponses({ feedback, selectedDateFrom, selectedDateTo }),
-          ...createResponseRate({ feedback, selectedOfficeName, serviceTransactions })
+          ...createResponseRate({ feedback, selectedOfficeName, serviceTransactions }),
 
+          ...createAgencyPlan()
           // ...createPieCharts([addressChart]), 
 
         ],
