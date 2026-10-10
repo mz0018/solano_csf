@@ -40,11 +40,32 @@ export const createListOfServiceSurveyed = ({
             ],
         });
 
-    const dataCell = (text: string) =>
+    const dataCell = (
+        text: string,
+        alignment: (typeof AlignmentType)[keyof typeof AlignmentType] = AlignmentType.LEFT,
+        bold = false,
+        fill?: string,
+        textFill?: string
+    ) =>
         new TableCell({
-            margins: { top: 20, bottom: 20, left: 50, right: 50 },
-            children: [new Paragraph(text)],
-        });
+        margins: { top: 20, bottom: 20, left: 50, right: 50 },
+        ...(fill && { shading: { fill } }),
+        children: [
+            new Paragraph({
+            alignment,
+            children: [new TextRun({ text, bold, ...(textFill && { color: textFill }) })],
+            }),
+        ],
+    });
+
+    const totalResponses = serviceTransactions.reduce(
+        (sum, t) => sum + (responsesPerService[getServiceKey(t.service)] ?? 0),
+        0
+    );
+    const totalTransactions = serviceTransactions.reduce(
+        (sum, t) => sum + t.totalTransactions,
+        0
+    );
 
     const table = new Table({
         indent: { size: 1070, type: "dxa" },
@@ -62,25 +83,17 @@ export const createListOfServiceSurveyed = ({
                 new TableRow({
                     children: [
                         dataCell(service),
-                        dataCell((responsesPerService[getServiceKey(service)] ?? 0).toString()),
-                        dataCell(totalTransactions.toString()),
+                        dataCell((responsesPerService[getServiceKey(service)] ?? 0).toString(), AlignmentType.CENTER),
+                        dataCell(totalTransactions.toString(), AlignmentType.CENTER),
                     ],
                 })
             ),
 
             new TableRow({
                 children: [
-                    headerCell("Total"),
-                    dataCell(
-                        serviceTransactions
-                            .reduce((sum, t) => sum + (responsesPerService[getServiceKey(t.service)] ?? 0), 0)
-                            .toString()
-                    ),
-                    dataCell(
-                        serviceTransactions
-                            .reduce((sum, t) => sum + t.totalTransactions, 0)
-                            .toString()
-                    ),
+                dataCell("Total", AlignmentType.END, true),
+                dataCell(totalResponses.toString(), AlignmentType.CENTER, true, "#FFEA00", "#1E90FF"),
+                dataCell(totalTransactions.toString(), AlignmentType.CENTER, true, "#FFEA00", "#1E90FF"),
                 ],
             }),
         ],
