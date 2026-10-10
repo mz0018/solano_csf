@@ -21,6 +21,13 @@ export const createAffiliationTable = ({ feedback }: ServiceSurveyed) => {
       (monthData[month][item.client.affiliation] ?? 0) + 1;
   });
 
+  const totalCounts = affiliations.map((affiliation) =>
+    Object.values(monthData).reduce(
+      (sum, counts) => sum + (counts[affiliation] ?? 0),
+      0
+    )
+  );
+
   const table = new Table({
       indent: { size: 1070, type: "dxa" },
       // width: { size: 8290, type: WidthType.DXA },
@@ -104,15 +111,70 @@ export const createAffiliationTable = ({ feedback }: ServiceSurveyed) => {
                                       right: 50,
                                   },
                                   children: [
-                                      new Paragraph(
-                                          (counts[affiliation] ?? 0).toString()
-                                      ),
+                                      new Paragraph({
+                                          alignment: AlignmentType.CENTER,
+                                          children: [
+                                            new TextRun({
+                                                text: (counts[affiliation] ?? 0).toString()
+                                            })
+                                          ]
+                                      }),
                                   ],
                               })
                       ),
                   ],
               })
           ),
+
+          // Total row
+          new TableRow({
+              children: [
+                  new TableCell({
+                      margins: {
+                          top: 20,
+                          bottom: 20,
+                          left: 50,
+                          right: 50,
+                      },
+                      children: [
+                          new Paragraph({
+                              alignment: AlignmentType.END,
+                              children: [
+                                  new TextRun({
+                                      text: "Total",
+                                      bold: true,
+                                  }),
+                              ],
+                          }),
+                      ],
+                  }),
+
+                  ...totalCounts.map(
+                      (count) =>
+                          new TableCell({
+                              margins: {
+                                  top: 20,
+                                  bottom: 20,
+                                  left: 50,
+                                  right: 50,
+                              },
+                              shading: { fill: "#FFEA00" },
+                              children: [
+                                  new Paragraph({
+                                      alignment: AlignmentType.CENTER,
+                                      children: [
+                                          new TextRun({
+                                              text: count.toString(),
+                                              bold: true,
+                                              color: "#1E90FF",
+                                          }),
+                                      ],
+                                  }),
+                              ],
+                          })
+                  ),
+              ],
+          }),
       ],
   });
 
