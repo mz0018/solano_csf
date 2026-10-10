@@ -149,6 +149,41 @@ export const createResponseRate = ({
     ],
   });
 
+  const analysisText =
+    combined.length === 0
+      ? "No response rate data was provided for analysis."
+      : (() => {
+          const rateOf = (r: string) => Number(r);
+
+          const byRate = [...combined].sort(
+            (a, b) => rateOf(b.rate) - rateOf(a.rate)
+          );
+          const highest = byRate[0];
+          const lowest = byRate[byRate.length - 1];
+
+          const perfect = combined.filter((c) => rateOf(c.rate) >= 100);
+          const belowAverage = combined.filter(
+            (c) => rateOf(c.rate) < rateOf(totalResponseRate)
+          );
+
+          const listNames = (names: string[]) =>
+            names.length === 1
+              ? `"${names[0]}"`
+              : `${names.slice(0, -1).map((n) => `"${n}"`).join(", ")} and "${names[names.length - 1]}"`;
+
+          const perfectSentence =
+            perfect.length > 0
+              ? ` Services such as ${listNames(perfect.map((c) => c.service))} achieved a 100% response rate, indicating prompt and comprehensive handling of these requests.`
+              : ` The highest response rate was recorded by "${highest.service}" at ${highest.rate}%.`;
+
+          const belowSentence =
+            belowAverage.length > 0
+              ? ` In contrast, services such as ${listNames(belowAverage.map((c) => c.service))} fell below the overall response rate of ${totalResponseRate}%, suggesting potential areas for improvement in responsiveness or procedural efficiency.`
+              : ` All services met or exceeded the overall response rate of ${totalResponseRate}%.`;
+
+          return `The data provided details of the response rates for various services offered by the ${selectedOfficeName}. Response rates are crucial indicators of engagement and efficiency in service delivery. Across ${combined.length} services, ${totalResponses} responses were recorded out of ${totalTransactions} total transactions, resulting in an overall response rate of ${totalResponseRate}%.${perfectSentence}${belowSentence} The lowest response rate was recorded by "${lowest.service}" at ${lowest.rate}%, pinpointing an area for targeted improvement. Overall, the data underscores both strengths and areas needing attention, crucial for optimizing service delivery and customer satisfaction within municipal operations.`;
+        })();
+
   return [
     new Paragraph({
       indent: { left: 720 },
@@ -156,8 +191,20 @@ export const createResponseRate = ({
       children: [new TextRun({ text: "E.  Response Rate" })],
     }),
 
+    new Paragraph({ spacing: { after: 300 } }),
+
     table,
 
     new Paragraph({ spacing: { after: 300 } }),
+
+    new Paragraph({
+      indent: { left: 1060 },
+      spacing: { after: 300 },
+      children: [
+        new TextRun({
+          text: analysisText,
+        }),
+      ],
+    }),
   ];
 };
