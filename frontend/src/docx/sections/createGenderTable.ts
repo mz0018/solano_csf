@@ -28,6 +28,13 @@ export const createGenderTable = ({ feedback }: ServiceSurveyed) => {
       (monthData[month][item.client.gender] ?? 0) + 1;
   });
 
+  const totalCounts = genders.map((gender) =>
+    Object.values(monthData).reduce(
+      (sum, counts) => sum + (counts[gender] ?? 0),
+      0
+    )
+  );
+
   const table = new Table({
     indent: { size: 1070, type: "dxa" },
 
@@ -110,15 +117,70 @@ export const createGenderTable = ({ feedback }: ServiceSurveyed) => {
                     right: 50,
                   },
                   children: [
-                    new Paragraph(
-                      (counts[gender] ?? 0).toString()
-                    ),
+                    new Paragraph({
+                      alignment: AlignmentType.CENTER,
+                      children: [
+                        new TextRun({
+                          text: (counts[gender] ?? 0).toString()
+                        })
+                      ]
+                    }),
                   ],
                 })
             ),
           ],
         })
       ),
+
+      // Total row
+      new TableRow({
+        children: [
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.END,
+                children: [
+                  new TextRun({
+                    text: "Total",
+                    bold: true,
+                  }),
+                ],
+              }),
+            ],
+          }),
+
+          ...totalCounts.map(
+            (count) =>
+              new TableCell({
+                margins: {
+                  top: 20,
+                  bottom: 20,
+                  left: 50,
+                  right: 50,
+                },
+                shading: { fill: "#FFEA00" },
+                children: [
+                  new Paragraph({
+                    alignment: AlignmentType.CENTER,
+                    children: [
+                      new TextRun({
+                        text: count.toString(),
+                        bold: true,
+                        color: "#1E90FF",
+                      }),
+                    ],
+                  }),
+                ],
+              })
+          ),
+        ],
+      }),
     ],
   });
 

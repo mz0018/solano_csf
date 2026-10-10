@@ -28,6 +28,13 @@ export const createAgeGroupTable = ({ feedback }: ServiceSurveyed) => {
       (monthData[month][item.client.ageGroup] ?? 0) + 1;
   });
 
+  const totalCounts = ageGroups.map((ageGroup) =>
+    Object.values(monthData).reduce(
+      (sum, counts) => sum + (counts[ageGroup] ?? 0),
+      0
+    )
+  );
+
   const table = new Table({
     indent: { size: 1070, type: "dxa" },
 
@@ -110,15 +117,70 @@ export const createAgeGroupTable = ({ feedback }: ServiceSurveyed) => {
                     right: 50,
                   },
                   children: [
-                    new Paragraph(
-                      (counts[ageGroup] ?? 0).toString()
-                    ),
+                    new Paragraph({
+                      alignment: AlignmentType.CENTER,
+                      children: [
+                        new TextRun({
+                          text: (counts[ageGroup] ?? 0).toString()
+                        })
+                      ]  
+                    }),
                   ],
                 })
             ),
           ],
         })
       ),
+
+      // Total row
+      new TableRow({
+        children: [
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.END,
+                children: [
+                  new TextRun({
+                    text: "Total",
+                    bold: true,
+                  }),
+                ],
+              }),
+            ],
+          }),
+
+          ...totalCounts.map(
+            (count) =>
+              new TableCell({
+                margins: {
+                  top: 20,
+                  bottom: 20,
+                  left: 50,
+                  right: 50,
+                },
+                shading: { fill: "#FFEA00" },
+                children: [
+                  new Paragraph({
+                    alignment: AlignmentType.CENTER,
+                    children: [
+                      new TextRun({
+                        text: count.toString(),
+                        bold: true,
+                        color: "#1E90FF",
+                      }),
+                    ],
+                  }),
+                ],
+              })
+          ),
+        ],
+      }),
     ],
   });
 
