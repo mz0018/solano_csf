@@ -15,7 +15,6 @@ export type DocxInput = {
 
 const lockAllTables = async (blob: Blob): Promise<Blob> => {
   const zip = await JSZip.loadAsync(blob);
-
   const file = zip.file("word/document.xml");
 
   if (!file) {
@@ -24,8 +23,18 @@ const lockAllTables = async (blob: Blob): Promise<Blob> => {
 
   let xml = await file.async("string");
 
-  xml = xml.replace(/<w:tbl>[\s\S]*?<\/w:tbl>/g, (table) =>
-    table.replace(
+  xml = xml.replace(/<w:tbl>[\s\S]*?<\/w:tbl>/g, (table) => {
+    // Skip linksTable
+    if (table.includes("Month/Year")) {
+      return table;
+    }
+
+    if (table.includes("Clause")) {
+      return table;
+    }
+
+    // Lock all other tables
+    return table.replace(
       /<w:p(?=[ >])[\s\S]*?<\/w:p>/g,
       (paragraph) => `
         <w:sdt>
@@ -37,14 +46,12 @@ const lockAllTables = async (blob: Blob): Promise<Blob> => {
           </w:sdtContent>
         </w:sdt>
       `
-    )
-  );
+    );
+  });
 
   zip.file("word/document.xml", xml);
 
-  return await zip.generateAsync({
-    type: "blob",
-  });
+  return await zip.generateAsync({ type: "blob" });
 };
 
 export const useGenerateDocx = () => {

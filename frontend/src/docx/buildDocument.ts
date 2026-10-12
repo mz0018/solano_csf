@@ -5,7 +5,7 @@ import { createTableOfContents } from "./sections/createTableOfContents";
 import { createAgencyProfile } from "./sections/createAgencyProfile";
 import { createOverview } from "./sections/createOverview";
 import { createMethodology } from "./sections/createMethodology";
-// import { createPieCharts } from "./sections/createPieCharts";
+import { createPieCharts } from "./sections/createPieCharts";
 import { createListOfServiceSurveyed } from "./sections/createListOfServiceSurveyed";
 import { createAffiliationTable } from "./sections/createAffiliationTable";
 import { createGenderTable } from "./sections/createGenderTable";
@@ -21,8 +21,8 @@ import type { DocxInput } from "../hooks/useGenerateDocx";
 
 export const buildDocument = async ({ chartImages, feedback, selectedOfficeName, selectedDateFrom, selectedDateTo, serviceTransactions }: DocxInput) => {
 
-  // ORIGINAL: const [addressChart, affiliationChart, ageGroupChart, employmentChart, genderChart] = chartImages;
-  const [affiliationChart, ageGroupChart, employmentChart, genderChart] = chartImages;
+  const [addressChart, affiliationChart, ageGroupChart, employmentChart, genderChart] = chartImages;
+  // const [affiliationChart, ageGroupChart, employmentChart, genderChart] = chartImages;
 
   const chart = (dataUrl?: string) =>
   dataUrl
@@ -194,8 +194,8 @@ export const buildDocument = async ({ chartImages, feedback, selectedOfficeName,
           ...createFreeResponses({ feedback, selectedDateFrom, selectedDateTo }),
           ...createResponseRate({ feedback, selectedOfficeName, serviceTransactions }),
 
-          ...createAgencyPlan()
-          // ...createPieCharts([addressChart]), 
+          ...createAgencyPlan(),
+          ...createPieCharts([addressChart]), 
 
         ],
       },
