@@ -46,14 +46,14 @@ export const createAverageScorePerService = ({
               left: 50,
               right: 50,
             },
-            shading: { fill: "1E90FF" },
+            shading: { fill: "4472C4" },
             children: [
               new Paragraph({
                 alignment: AlignmentType.CENTER,
                 children: [
                   new TextRun({
                     text: "Service",
-                    color: "FCF55F",
+                    color: "FFFF00",
                     bold: true,
                   }),
                 ],
@@ -68,14 +68,14 @@ export const createAverageScorePerService = ({
               left: 50,
               right: 50,
             },
-            shading: { fill: "1E90FF" },
+            shading: { fill: "4472C4" },
             children: [
               new Paragraph({
                 alignment: AlignmentType.CENTER,
                 children: [
                   new TextRun({
                     text: "Responses",
-                    color: "FCF55F",
+                    color: "FFFF00",
                     bold: true,
                   }),
                 ],
@@ -90,14 +90,14 @@ export const createAverageScorePerService = ({
               left: 50,
               right: 50,
             },
-            shading: { fill: "1E90FF" },
+            shading: { fill: "4472C4" },
             children: [
               new Paragraph({
                 alignment: AlignmentType.CENTER,
                 children: [
                   new TextRun({
                     text: "Average Score",
-                    color: "FCF55F",
+                    color: "FFFF00",
                     bold: true,
                   }),
                 ],

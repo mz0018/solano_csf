@@ -82,12 +82,12 @@ export const createResponseRate = ({
   const headerCell = (text: string, alignment: (typeof AlignmentType)[keyof typeof AlignmentType] = AlignmentType.LEFT) =>
     new TableCell({
       margins: { top: 20, bottom: 20, left: 50, right: 50 },
-      shading: { fill: "#1E90FF" },
+      shading: { fill: "#4472C4" },
       children: [
         new Paragraph({
           alignment,
           children: [
-            new TextRun({ text, color: "#FFEA00", bold: true }),
+            new TextRun({ text, color: "#FFFF00", bold: true }),
           ],
         }),
       ],
@@ -140,10 +140,10 @@ export const createResponseRate = ({
       new TableRow({
         children: [
           dataCell("Total", AlignmentType.END, true),
-          dataCell(totalResponses.toString(), AlignmentType.CENTER, true, "#FFEA00", "#1E90FF"),
-          dataCell(totalTransactions.toString(), AlignmentType.CENTER, true, "#FFEA00", "#1E90FF"),
-          dataCell(totalSampleSize.toString(), AlignmentType.CENTER, true, "#FFEA00", "#1E90FF"),
-          dataCell(totalResponseRate.toString(), AlignmentType.CENTER, true, "#FFEA00", "#1E90FF"),
+          dataCell(totalResponses.toString(), AlignmentType.CENTER, true, "#FFFF00", "#4472C4"),
+          dataCell(totalTransactions.toString(), AlignmentType.CENTER, true, "#FFFF00", "#4472C4"),
+          dataCell(totalSampleSize.toString(), AlignmentType.CENTER, true, "#FFFF00", "#4472C4"),
+          dataCell(totalResponseRate.toString(), AlignmentType.CENTER, true, "#FFFF00", "#4472C4"),
         ],
       }),
     ],

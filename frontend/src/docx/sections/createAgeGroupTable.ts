@@ -49,14 +49,14 @@ export const createAgeGroupTable = ({ feedback }: ServiceSurveyed) => {
               left: 50,
               right: 50,
             },
-            shading: { fill: "1E90FF" },
+            shading: { fill: "4472C4" },
             children: [
               new Paragraph({
                 alignment: AlignmentType.CENTER,
                 children: [
                   new TextRun({
                     text: "Month",
-                    color: "FCF55F",
+                    color: "FFFF00",
                     bold: true,
                   }),
                 ],
@@ -73,14 +73,14 @@ export const createAgeGroupTable = ({ feedback }: ServiceSurveyed) => {
                   left: 50,
                   right: 50,
                 },
-                shading: { fill: "1E90FF" },
+                shading: { fill: "4472C4" },
                 children: [
                   new Paragraph({
                     alignment: AlignmentType.CENTER,
                     children: [
                       new TextRun({
                         text: ageGroup,
-                        color: "FCF55F",
+                        color: "FFFF00",
                         bold: true,
                       }),
                     ],
@@ -164,7 +164,7 @@ export const createAgeGroupTable = ({ feedback }: ServiceSurveyed) => {
                   left: 50,
                   right: 50,
                 },
-                shading: { fill: "#FFEA00" },
+                shading: { fill: "FFFF00" },
                 children: [
                   new Paragraph({
                     alignment: AlignmentType.CENTER,
@@ -172,7 +172,7 @@ export const createAgeGroupTable = ({ feedback }: ServiceSurveyed) => {
                       new TextRun({
                         text: count.toString(),
                         bold: true,
-                        color: "#1E90FF",
+                        color: "4472C4",
                       }),
                     ],
                   }),

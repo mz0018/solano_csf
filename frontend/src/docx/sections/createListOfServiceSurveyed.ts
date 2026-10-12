@@ -32,10 +32,10 @@ export const createListOfServiceSurveyed = ({
     const headerCell = (text: string) =>
         new TableCell({
             margins: { top: 20, bottom: 20, left: 50, right: 50 },
-            shading: { fill: "1E90FF" },
+            shading: { fill: "4472C4" },
             children: [
                 new Paragraph({
-                    children: [new TextRun({ text, color: "FCF55F", bold: true })],
+                    children: [new TextRun({ text, color: "FFFF00", bold: true })],
                 }),
             ],
         });
@@ -92,8 +92,8 @@ export const createListOfServiceSurveyed = ({
             new TableRow({
                 children: [
                 dataCell("Total", AlignmentType.END, true),
-                dataCell(totalResponses.toString(), AlignmentType.CENTER, true, "#FFEA00", "#1E90FF"),
-                dataCell(totalTransactions.toString(), AlignmentType.CENTER, true, "#FFEA00", "#1E90FF"),
+                dataCell(totalResponses.toString(), AlignmentType.CENTER, true, "#FFFF00", "#4472C4"),
+                dataCell(totalTransactions.toString(), AlignmentType.CENTER, true, "#FFFF00", "#4472C4"),
                 ],
             }),
         ],

@@ -67,14 +67,14 @@ export const createCountServiceQuality = ({ feedback }: ServiceSurveyed) => {
               left: 50,
               right: 50,
             },
-            shading: { fill: "1E90FF" },
+            shading: { fill: "4472C4" },
             children: [
               new Paragraph({
                 alignment: AlignmentType.CENTER,
                 children: [
                   new TextRun({
                     text: "Service Quality",
-                    color: "FCF55F",
+                    color: "FFFF00",
                     bold: true,
                   }),
                 ],
@@ -89,14 +89,14 @@ export const createCountServiceQuality = ({ feedback }: ServiceSurveyed) => {
               left: 50,
               right: 50,
             },
-            shading: { fill: "1E90FF" },
+            shading: { fill: "4472C4" },
             children: [
               new Paragraph({
                 alignment: AlignmentType.CENTER,
                 children: [
                   new TextRun({
                     text: "Very Satisfied",
-                    color: "FCF55F",
+                    color: "FFFF00",
                     bold: true,
                   }),
                 ],
@@ -111,14 +111,14 @@ export const createCountServiceQuality = ({ feedback }: ServiceSurveyed) => {
               left: 50,
               right: 50,
             },
-            shading: { fill: "1E90FF" },
+            shading: { fill: "4472C4" },
             children: [
               new Paragraph({
                 alignment: AlignmentType.CENTER,
                 children: [
                   new TextRun({
                     text: "Satisfied",
-                    color: "FCF55F",
+                    color: "FFFF00",
                     bold: true,
                   }),
                 ],
@@ -133,14 +133,14 @@ export const createCountServiceQuality = ({ feedback }: ServiceSurveyed) => {
               left: 50,
               right: 50,
             },
-            shading: { fill: "1E90FF" },
+            shading: { fill: "4472C4" },
             children: [
               new Paragraph({
                 alignment: AlignmentType.CENTER,
                 children: [
                   new TextRun({
                     text: "Neutral",
-                    color: "FCF55F",
+                    color: "FFFF00",
                     bold: true,
                   }),
                 ],
@@ -155,14 +155,14 @@ export const createCountServiceQuality = ({ feedback }: ServiceSurveyed) => {
               left: 50,
               right: 50,
             },
-            shading: { fill: "1E90FF" },
+            shading: { fill: "4472C4" },
             children: [
               new Paragraph({
                 alignment: AlignmentType.CENTER,
                 children: [
                   new TextRun({
                     text: "Dissatisfied",
-                    color: "FCF55F",
+                    color: "FFFF00",
                     bold: true,
                   }),
                 ],
@@ -177,14 +177,14 @@ export const createCountServiceQuality = ({ feedback }: ServiceSurveyed) => {
               left: 50,
               right: 50,
             },
-            shading: { fill: "1E90FF" },
+            shading: { fill: "4472C4" },
             children: [
               new Paragraph({
                 alignment: AlignmentType.CENTER,
                 children: [
                   new TextRun({
                     text: "Very Dissatisfied",
-                    color: "FCF55F",
+                    color: "FFFF00",
                     bold: true,
                   }),
                 ],
@@ -199,14 +199,14 @@ export const createCountServiceQuality = ({ feedback }: ServiceSurveyed) => {
               left: 50,
               right: 50,
             },
-            shading: { fill: "1E90FF" },
+            shading: { fill: "4472C4" },
             children: [
               new Paragraph({
                 alignment: AlignmentType.CENTER,
                 children: [
                   new TextRun({
                     text: "Respondents",
-                    color: "FCF55F",
+                    color: "FFFF00",
                     bold: true,
                   }),
                 ],
@@ -221,14 +221,14 @@ export const createCountServiceQuality = ({ feedback }: ServiceSurveyed) => {
               left: 50,
               right: 50,
             },
-            shading: { fill: "1E90FF" },
+            shading: { fill: "4472C4" },
             children: [
               new Paragraph({
                 alignment: AlignmentType.CENTER,
                 children: [
                   new TextRun({
                     text: "Rating",
-                    color: "FCF55F",
+                    color: "FFFF00",
                     bold: true,
                   }),
                 ],
@@ -441,7 +441,7 @@ export const createCountServiceQuality = ({ feedback }: ServiceSurveyed) => {
               left: 50,
               right: 50,
             },
-            shading: { fill: "#FFEA00" },
+            shading: { fill: "FFFF00" },
             children: [
               new Paragraph({
                 alignment: AlignmentType.CENTER,
@@ -449,7 +449,7 @@ export const createCountServiceQuality = ({ feedback }: ServiceSurveyed) => {
                   new TextRun({
                     text: overallCounts[5].toString(),
                     bold: true,
-                    color: "#1E90FF",
+                    color: "4472C4",
                   }),
                 ],
               }),
@@ -463,7 +463,7 @@ export const createCountServiceQuality = ({ feedback }: ServiceSurveyed) => {
               left: 50,
               right: 50,
             },
-            shading: { fill: "#FFEA00" },
+            shading: { fill: "FFFF00" },
             children: [
               new Paragraph({
                 alignment: AlignmentType.CENTER,
@@ -471,7 +471,7 @@ export const createCountServiceQuality = ({ feedback }: ServiceSurveyed) => {
                   new TextRun({
                     text: overallCounts[4].toString(),
                     bold: true,
-                    color: "#1E90FF",
+                    color: "4472C4",
                   }),
                 ],
               }),
@@ -485,7 +485,7 @@ export const createCountServiceQuality = ({ feedback }: ServiceSurveyed) => {
               left: 50,
               right: 50,
             },
-            shading: { fill: "#FFEA00" },
+            shading: { fill: "FFFF00" },
             children: [
               new Paragraph({
                 alignment: AlignmentType.CENTER,
@@ -493,7 +493,7 @@ export const createCountServiceQuality = ({ feedback }: ServiceSurveyed) => {
                   new TextRun({
                     text: overallCounts[3].toString(),
                     bold: true,
-                    color: "#1E90FF",
+                    color: "4472C4",
                   }),
                 ],
               }),
@@ -507,7 +507,7 @@ export const createCountServiceQuality = ({ feedback }: ServiceSurveyed) => {
               left: 50,
               right: 50,
             },
-            shading: { fill: "#FFEA00" },
+            shading: { fill: "FFFF00" },
             children: [
               new Paragraph({
                 alignment: AlignmentType.CENTER,
@@ -515,7 +515,7 @@ export const createCountServiceQuality = ({ feedback }: ServiceSurveyed) => {
                   new TextRun({
                     text: overallCounts[2].toString(),
                     bold: true,
-                    color: "#1E90FF",
+                    color: "4472C4",
                   }),
                 ],
               }),
@@ -529,7 +529,7 @@ export const createCountServiceQuality = ({ feedback }: ServiceSurveyed) => {
               left: 50,
               right: 50,
             },
-            shading: { fill: "#FFEA00" },
+            shading: { fill: "FFFF00" },
             children: [
               new Paragraph({
                 alignment: AlignmentType.CENTER,
@@ -537,7 +537,7 @@ export const createCountServiceQuality = ({ feedback }: ServiceSurveyed) => {
                   new TextRun({
                     text: overallCounts[1].toString(),
                     bold: true,
-                    color: "#1E90FF",
+                    color: "4472C4",
                   }),
                 ],
               }),
@@ -551,7 +551,7 @@ export const createCountServiceQuality = ({ feedback }: ServiceSurveyed) => {
               left: 50,
               right: 50,
             },
-            shading: { fill: "#FFEA00" },
+            shading: { fill: "FFFF00" },
             children: [
               new Paragraph({
                 alignment: AlignmentType.CENTER,
@@ -559,7 +559,7 @@ export const createCountServiceQuality = ({ feedback }: ServiceSurveyed) => {
                   new TextRun({
                     text: overallRespondents.toString(),
                     bold: true,
-                    color: "#1E90FF",
+                    color: "4472C4",
                   }),
                 ],
               }),
@@ -573,7 +573,7 @@ export const createCountServiceQuality = ({ feedback }: ServiceSurveyed) => {
               left: 50,
               right: 50,
             },
-            shading: { fill: "#FFEA00" },
+            shading: { fill: "FFFF00" },
             children: [
               new Paragraph({
                 alignment: AlignmentType.CENTER,
@@ -581,7 +581,7 @@ export const createCountServiceQuality = ({ feedback }: ServiceSurveyed) => {
                   new TextRun({
                     text: overallRating,
                     bold: true,
-                    color: "#1E90FF",
+                    color: "4472C4",
                   }),
                 ],
               }),

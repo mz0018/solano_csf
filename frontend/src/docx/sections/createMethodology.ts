@@ -16,14 +16,14 @@ export const createMethodology = () => {
                     new TableCell({
                         margins: { top: 20, bottom: 20, left: 50, right: 50 },
                         columnSpan: 2,
-                        shading: { fill: "1E90FF" },
+                        shading: { fill: "#4472C4" },
                         children: [
                             new Paragraph({
                                 alignment: AlignmentType.CENTER,
                                 children: [
                                     new TextRun({
                                         text: "Feedback and Collection Mechanism",
-                                        color: "FCF55F",
+                                        color: "#FFFF00",
                                         bold: true,
                                     }),
                                 ],
@@ -377,14 +377,14 @@ export const createMethodology = () => {
                 children: [
                     new TableCell({
                         margins: { top: 20, bottom: 20, left: 50, right: 50 },
-                        shading: { fill: "1E90FF" },
+                        shading: { fill: "4472C4" },
                         children: [
                             new Paragraph({
                                 alignment: AlignmentType.CENTER,
                                 children: [
                                     new TextRun({
                                         text: "Office",
-                                        color: "FCF55F",
+                                        color: "#FFFF00",
                                         bold: true,
                                     }),
                                 ],
@@ -394,14 +394,14 @@ export const createMethodology = () => {
 
                     new TableCell({
                         margins: { top: 20, bottom: 20, left: 50, right: 50 },
-                        shading: { fill: "1E90FF" },
+                        shading: { fill: "4472C4" },
                         children: [
                             new Paragraph({
                                 alignment: AlignmentType.CENTER,
                                 children: [
                                     new TextRun({
                                         text: "Address",
-                                        color: "FCF55F",
+                                        color: "#FFFF00",
                                         bold: true,
                                     }),
                                 ],
@@ -411,14 +411,14 @@ export const createMethodology = () => {
 
                     new TableCell({
                         margins: { top: 20, bottom: 20, left: 50, right: 50 },
-                        shading: { fill: "1E90FF" },
+                        shading: { fill: "4472C4" },
                         children: [
                             new Paragraph({
                                 alignment: AlignmentType.CENTER,
                                 children: [
                                     new TextRun({
                                         text: "Contact Information",
-                                        color: "FCF55F",
+                                        color: "#FFFF00",
                                         bold: true,
                                     }),
                                 ],
@@ -528,14 +528,14 @@ export const createMethodology = () => {
                 children: [
                     new TableCell({
                         margins: { top: 20, bottom: 20, left: 50, right: 50 },
-                        shading: { fill: "1E90FF" },
+                        shading: { fill: "4472C4" },
                         children: [
                             new Paragraph({
                                 alignment: AlignmentType.CENTER,
                                 children: [
                                     new TextRun({
                                         text: "Scale",
-                                        color: "FCF55F",
+                                        color: "#FFFF00",
                                         bold: true,
                                     }),
                                 ],
@@ -545,14 +545,14 @@ export const createMethodology = () => {
 
                     new TableCell({
                         margins: { top: 20, bottom: 20, left: 50, right: 50 },
-                        shading: { fill: "1E90FF" },
+                        shading: { fill: "4472C4" },
                         children: [
                             new Paragraph({
                                 alignment: AlignmentType.CENTER,
                                 children: [
                                     new TextRun({
                                         text: "Rating",
-                                        color: "FCF55F",
+                                        color: "#FFFF00",
                                         bold: true,
                                     }),
                                 ],
@@ -603,14 +603,14 @@ export const createMethodology = () => {
                 children: [
                     new TableCell({
                         margins: { top: 20, bottom: 20, left: 50, right: 50 },
-                        shading: { fill: "1E90FF" },
+                        shading: { fill: "4472C4" },
                         children: [
                             new Paragraph({
                                 alignment: AlignmentType.CENTER,
                                 children: [
                                     new TextRun({
                                         text: "Percentage",
-                                        color: "FCF55F",
+                                        color: "#FFFF00",
                                         bold: true,
                                     }),
                                 ],
@@ -620,14 +620,14 @@ export const createMethodology = () => {
 
                     new TableCell({
                         margins: { top: 20, bottom: 20, left: 50, right: 50 },
-                        shading: { fill: "1E90FF" },
+                        shading: { fill: "4472C4" },
                         children: [
                             new Paragraph({
                                 alignment: AlignmentType.CENTER,
                                 children: [
                                     new TextRun({
                                         text: "Rating",
-                                        color: "FCF55F",
+                                        color: "#FFFF00",
                                         bold: true,
                                     }),
                                 ],
