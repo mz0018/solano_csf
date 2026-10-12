@@ -1,4 +1,4 @@
-import { Document, Header, Footer, Paragraph, ImageRun, AlignmentType, TextRun, PageNumber } from "docx";
+import { Document, Header, Footer, Paragraph, ImageRun, AlignmentType, TextRun, PageNumber, TabStopType } from "docx";
 
 import { createCoverPage } from "./sections/createCoverPage";
 import { createTableOfContents } from "./sections/createTableOfContents";
@@ -127,14 +127,23 @@ export const buildDocument = async ({ chartImages, feedback, selectedOfficeName,
           default: new Footer({
             children: [
               new Paragraph({
-                alignment: AlignmentType.CENTER,
+                tabStops: [
+                  {
+                    type: TabStopType.CENTER,
+                    position: 4680,
+                  },
+                  {
+                    type: TabStopType.RIGHT,
+                    position: 9360,
+                  },
+                ],
                 spacing: {
                   before: 0,
                   after: 0,
                 },
                 children: [
                   new TextRun({
-                    text: "Page ",
+                    text: "\tPage ",
                     font: "Aptos",
                     size: 18,
                   }),
@@ -150,6 +159,18 @@ export const buildDocument = async ({ chartImages, feedback, selectedOfficeName,
                   }),
                   new TextRun({
                     children: [PageNumber.TOTAL_PAGES],
+                    font: "Aptos",
+                    size: 18,
+                  }),
+                  new TextRun({
+                    text: `\tGenerated: ${new Date().toLocaleDateString(
+                      "en-US",
+                      {
+                        month: "short",
+                        day: "2-digit",
+                        year: "numeric",
+                      }
+                    )}`,
                     font: "Aptos",
                     size: 18,
                   }),
