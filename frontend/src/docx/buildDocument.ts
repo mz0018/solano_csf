@@ -170,7 +170,7 @@ export const buildDocument = async ({ chartImages, feedback, selectedOfficeName,
           ...createAgencyProfile(),
 
           new Paragraph({ pageBreakBefore: true, children: [] }),
-          ...createOverview(),
+          ...createOverview({ feedback, selectedOfficeName, selectedDateFrom, selectedDateTo }),
 
           new Paragraph({ pageBreakBefore: true, children: [] }),
           ...createListOfServiceSurveyed({ feedback, serviceTransactions, selectedOfficeName, selectedDateFrom, selectedDateTo }),
