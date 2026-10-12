@@ -178,11 +178,12 @@ const ResetPassword = () => {
                                         </td>
 
                                         <td className="p-4 text-gray-700 capitalize">
-                                        {client.role === 'office_admin'
-                                            ? 'Office Administrator'
-                                            : client.role === 'hr_admin'
-                                            ? 'Human Resource Administrator'
-                                            : ''}
+                                        {
+                                            client.role === 'office_admin' ? 'Office Administrator' :   
+                                            client.role === 'hr_admin' ? 'Human Resource Administrator' :
+                                            client.role === 'head_office_admin' ? 'Head Office Administrator' :
+                                            'Unknown Role'
+                                        }
                                         </td>
 
                                         <td className="p-4">
