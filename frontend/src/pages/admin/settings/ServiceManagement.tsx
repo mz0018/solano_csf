@@ -25,7 +25,6 @@ const ServiceManagementSettings = () => {
                 <TableUI className="w-full min-w-[36rem]">
                     <thead>
                         <tr>
-                            <th>Service Code</th>
                             <th>Service Name</th>
                             <th>Status</th>
                             <th>Actions</th>
@@ -41,7 +40,6 @@ const ServiceManagementSettings = () => {
                         ) : (
                             services.map((service) => (
                                 <tr key={service._id}>
-                                    <td className="font-mono">{service.code}</td>
                                     <td>{service.name}</td>
                                     <td className="capitalize">{service.status}</td>
                                     <td>
