@@ -1,9 +1,10 @@
 import { Outlet, NavLink } from 'react-router-dom'
-import { User, Shield, Bell } from 'lucide-react'
+import { User, Shield, Bell, HandCoins } from 'lucide-react'
 import { AdminResponsiveContainer } from '../ui/form/AdminResponsiveContainer'
 
 const tabs = [
   { name: 'Profile Information', path: 'profile', icon: User },
+  { name: 'Service Management', path: 'manage-services', icon: HandCoins },
   { name: 'Security', path: 'security', icon: Shield },
   { name: 'Notifications', path: 'notifications', icon: Bell },
 ]
