@@ -296,7 +296,7 @@ class AdminService {
         }
         
         const services = await Service.find({ officeCode: userOfficeCode })
-            .select('code name status')
+            .select('code name status type')
             .lean()
         
         return services

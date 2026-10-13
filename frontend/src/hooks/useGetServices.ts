@@ -5,6 +5,7 @@ export type Service = {
   code: string
   name: string
   status: string
+  type: string
 }
 
 const getOfficeServices = async (): Promise<Service[]> => {
