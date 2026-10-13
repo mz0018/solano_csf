@@ -3,6 +3,7 @@ export interface VerifiedQueue {
   officeCode?: string
   selectedService?: string[]
   services?: { code: string; name: string }[]
+  source?: "HRMO"
 }
 
 export interface FeedbackFormData {
