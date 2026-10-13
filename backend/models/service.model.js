@@ -5,6 +5,7 @@ const serviceSchema = new mongoose.Schema(
     officeCode: { type: String, required: true },
     code: { type: String, required: true },
     name: { type: String, required: true },
+    status: { type: String, enum: ['active', 'inactive'], default: 'active' },
   },
   { timestamps: true }
 );
