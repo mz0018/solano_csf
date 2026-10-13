@@ -1,6 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query"
 
 export type Service = {
+  _id: string
   code: string
   name: string
 }
