@@ -1,14 +1,35 @@
 import { useEffect, useState } from "react";
 import { useGetServices } from "../../../hooks/useGetServices";
+import { useUpdateNewService } from "../../../hooks/useUpdateNewService";
 import type { Service } from "../../../hooks/useGetServices";
 import { TableUI } from "../../../ui/form/TableUI";
 import { AdminResponsiveContainer } from "../../../ui/form/AdminResponsiveContainer";
 import { NewServiceModal } from "../../../components/Modals/NewServiceModal";
+import { CSFCustomToaster } from "../../../utils/Toaster";
 
 const ServiceManagementSettings = () => {
   const { getOfficeService } = useGetServices();
+  const { isLoading, updateServiceStatus } = useUpdateNewService();
   const [services, setServices] = useState<Service[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleServiceStatusChange = async (service: Service) => {
+    const status = service.status === "active" ? "inactive" : "active";
+
+    try {
+      const result = await updateServiceStatus(service._id, status);
+      setServices((currentServices) =>
+        currentServices.map((item) =>
+          item._id === service._id ? { ...item, status } : item
+        )
+      );
+      CSFCustomToaster.success(result.message);
+    } catch (error) {
+      CSFCustomToaster.error(
+        error instanceof Error ? error.message : "Unable to update the service."
+      );
+    }
+  };
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -60,7 +81,8 @@ const ServiceManagementSettings = () => {
                     <td>
                       <button
                         type="button"
-                        onClick={() => alert(service._id)}
+                        onClick={() => handleServiceStatusChange(service)}
+                        disabled={isLoading}
                         className="admin-blue-button"
                       >
                         {service.status === "active" ? "Deactivate" : "Activate"}

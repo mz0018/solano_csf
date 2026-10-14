@@ -70,4 +70,11 @@ router.post(
     AdminController.addNewService
 )
 
+router.patch(
+    '/services/:id/status',
+    authorizeViaCookie,
+    authorizeViaRole('hr_admin', 'head_office_admin'),
+    AdminController.updateServiceStatus
+)
+
 export default router

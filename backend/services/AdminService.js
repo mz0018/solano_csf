@@ -4,6 +4,7 @@ import Office from '../models/office.model.js'
 import Service from '../models/service.model.js'
 import Feedback from '../models/feedback.model.js'
 import ErrorController from '../controllers/ErrorController.js'
+import mongoose from 'mongoose'
 
 import { customAlphabet } from 'nanoid'
 
@@ -422,6 +423,25 @@ class AdminService {
 
         await newService.save()
         return newService
+    }
+
+    async updateServiceStatus(serviceId, status, user) {
+        if (!user?.officeCode) throw new ErrorController('Office code is required', 400)
+        if (!mongoose.Types.ObjectId.isValid(serviceId)) {
+            throw new ErrorController('Invalid service ID', 400)
+        }
+        if (!['active', 'inactive'].includes(status)) {
+            throw new ErrorController('Invalid service status', 400)
+        }
+
+        const service = await Service.findOneAndUpdate(
+            { _id: serviceId, officeCode: user.officeCode },
+            { status },
+            { new: true, runValidators: true }
+        ).select('code name status type').lean()
+
+        if (!service) throw new ErrorController('Service not found', 404)
+        return service
     }
 
 }
