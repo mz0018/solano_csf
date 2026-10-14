@@ -7,6 +7,7 @@ type ServiceChanges = Partial<Pick<Service, "name" | "type">>;
 export const useServicePartialUpdate = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [hasErrors, setHasErrors] = useState<string | null>(null);
+	const [isRateLimited, setIsRateLimited] = useState<boolean>(false);
 	const queryClient = useQueryClient();
 
 	const updateService = async (service: Service, edited: ServiceChanges) => {
@@ -28,6 +29,12 @@ export const useServicePartialUpdate = () => {
 			);
 			const result = await response.json();
 
+			if (response.status === 429) {
+				setIsRateLimited(true)
+				setHasErrors("Too many request. Please wait and try again later.");
+				return null;
+			}
+
 			if (!response.ok || !result.success) {
 				throw new Error(result.message || "Unable to update the service.");
 			}
@@ -39,5 +46,5 @@ export const useServicePartialUpdate = () => {
 		}
 	};
 
-	return { isLoading, updateService, hasErrors, setHasErrors };
+	return { isLoading, updateService, hasErrors, setHasErrors, isRateLimited };
 };

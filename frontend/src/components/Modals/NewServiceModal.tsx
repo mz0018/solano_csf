@@ -2,7 +2,6 @@ import { Select } from "../../ui/form/Select";
 import { ModalUI } from "../../ui/form/ModalUI";
 import { Button } from "../../ui/form/Buttons";
 import { ErrorText } from "../../ui/form/ErrorText";
-import { CSFCustomToaster } from "../../utils/Toaster";
 import { useSaveNewService, type ServiceType } from "../../hooks/useSaveNewService";
 
 type NewServiceModalProps = {
@@ -15,11 +14,10 @@ export const NewServiceModal = ({ isModalOpen, setIsModalOpen }: NewServiceModal
     const result = await handleSubmit({ serviceName, serviceType });
 
     if (result?.success) {
-      CSFCustomToaster.success(result.message)
       setIsModalOpen(false);
     }
   }
-  const { isLoading, hasError, handleSubmit, serviceName, serviceType, setServiceName, setServiceType } = useSaveNewService();
+  const { isLoading, hasError, handleSubmit, serviceName, serviceType, setServiceName, setServiceType, isRateLimited } = useSaveNewService();
 
   return (
     <ModalUI
@@ -30,7 +28,7 @@ export const NewServiceModal = ({ isModalOpen, setIsModalOpen }: NewServiceModal
         <Button
           type="button"
           onClick={saveService}
-          disabled={isLoading}
+          disabled={isLoading || isRateLimited}
           className="w-full bg-blue-500 text-white p-4 rounded-sm cursor-pointer hover:bg-blue-600 transition-colors"
         >
           {isLoading ? 'Loading...' : 'Save Service'}

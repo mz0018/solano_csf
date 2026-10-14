@@ -6,6 +6,7 @@ import { authorizeViaCookie } from '../middleware/authorizeViaCookie.js'
 import { authorizeViaRole } from '../middleware/authorizeViaRole.js'
 import { updateServicePartialLimiter } from '../middleware/updateServicePartialLimiter.js'
 import { updateServiceStatusLimiter } from '../middleware/updateServiceStatusLimiter.js'
+import { addNewServiceLimiter } from '../middleware/addNewServiceLimiter.js'
 
 const router = express.Router()
 
@@ -67,6 +68,7 @@ router.get(
 
 router.post(
     '/services',
+    addNewServiceLimiter,
     authorizeViaCookie,
     authorizeViaRole('hr_admin', 'head_office_admin'),
     AdminController.addNewService

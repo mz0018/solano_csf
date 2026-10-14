@@ -20,8 +20,8 @@ type ServiceDraft = {
 } | null
 
 export const ViewServiceModal = ({ service, onClose, onServiceUpdated }: ViewServiceModalProps) => {
-  const { isLoading, updateServiceStatus } = useUpdateNewService();
-  const { isLoading: isSaving, updateService, hasErrors, setHasErrors } = useServicePartialUpdate();
+  const { isLoading, updateServiceStatus, hasErrorsUpdate, setHasErrorsUpdate, isRateLimitedUpdate } = useUpdateNewService();
+  const { isLoading: isSaving, updateService, hasErrors, setHasErrors, isRateLimited } = useServicePartialUpdate();
   const [draft, setDraft] = useState<ServiceDraft>(null);
   
   const serviceName =
@@ -53,12 +53,11 @@ export const ViewServiceModal = ({ service, onClose, onServiceUpdated }: ViewSer
 
     try {
       const result = await updateServiceStatus(service._id, status);
+      if (!result) return;
       onServiceUpdated({ ...service, status });
       CSFCustomToaster.success(result.message);
     } catch (error) {
-      CSFCustomToaster.error(
-        error instanceof Error ? error.message : "Unable to update the service."
-      );
+      setHasErrorsUpdate(error instanceof Error ? error.message : "Unable to update the service.")
     }
   };
 
@@ -74,9 +73,7 @@ export const ViewServiceModal = ({ service, onClose, onServiceUpdated }: ViewSer
       onServiceUpdated({ ...service, ...result.updates });
       CSFCustomToaster.success(result.message);
     } catch (error) {
-      CSFCustomToaster.error(
-        error instanceof Error ? error.message : "Unable to update the service."
-      );
+      setHasErrors(error instanceof Error ? error.message : "Unable to update the service.")
     }
   }
 
@@ -90,7 +87,7 @@ export const ViewServiceModal = ({ service, onClose, onServiceUpdated }: ViewSer
           <button
             type="button"
             onClick={handleStatusChange}
-            disabled={isLoading}
+            disabled={isLoading || isRateLimitedUpdate}
             className={`w-full border ${service.status === 'active' ? 'border-red-400 text-red-400 hover:bg-red-100' : 'border-blue-400 text-blue-400 hover:bg-blue-100'}  p-4  font-semibold transition-colors  disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer rounded-sm`}
           >
             {isLoading
@@ -102,7 +99,7 @@ export const ViewServiceModal = ({ service, onClose, onServiceUpdated }: ViewSer
           <Button
             type="button"
             onClick={handlePartialUpdate}
-            disabled={isSaving || !hasChanges}
+            disabled={isSaving || !hasChanges || isRateLimited}
             className="w-full bg-blue-500 p-4 text-white transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isSaving ? "Saving..." : "Save"}
@@ -159,6 +156,7 @@ export const ViewServiceModal = ({ service, onClose, onServiceUpdated }: ViewSer
         </div>
         <div>
           {hasErrors && <ErrorText message={hasErrors} />}
+          {hasErrorsUpdate && <ErrorText message={hasErrorsUpdate as string} />}
         </div>
       </dl>
     </ModalUI>

@@ -11,7 +11,8 @@ export const useSaveNewService = () => {
   const [serviceName, setServiceName] = useState("");
   const [serviceType, setServiceType] = useState<ServiceType>("");
   const [isLoading, setIsLoading] = useState(false);
-  const [hasError, setHasError] = useState("");
+  const [hasError, setHasError] = useState<string>("");
+  const [isRateLimited, setIsRateLimited] = useState<boolean>(false)
 
   const clearInputs = () => {
     setServiceName("");
@@ -46,6 +47,12 @@ export const useSaveNewService = () => {
 
       const result = await response.json().catch(() => ({}));
 
+      if (response.status === 429) {
+        setIsRateLimited(true)
+        setHasError("Too many request. Please wait and try again later.");
+        return null;
+      }
+
       if (!response.ok || !result.success) {
         setHasError(result.message || "Unable to save the service.");
         return null;
@@ -62,6 +69,6 @@ export const useSaveNewService = () => {
     }
   };
 
-  return { isLoading, hasError, handleSubmit, serviceName, serviceType, setServiceName, setServiceType };
+  return { isLoading, hasError, handleSubmit, serviceName, serviceType, setServiceName, setServiceType, isRateLimited };
 };
 
