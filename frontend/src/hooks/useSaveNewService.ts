@@ -44,12 +44,15 @@ export const useSaveNewService = () => {
         }),
       });
 
-      if (!response.ok) {
-        const result = await response.json().catch(() => ({}));
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok || !result.success) {
         setHasError(result.message || "Unable to save the service.");
+        return null;
       }
 
       clearInputs();
+      return result;
       
     } catch (err) {
       console.error("Something went wrong:", err);
@@ -60,4 +63,8 @@ export const useSaveNewService = () => {
   };
 
   return { isLoading, hasError, handleSubmit, serviceName, serviceType, setServiceName, setServiceType };
+};
+
+export const updateService = () => {
+
 };

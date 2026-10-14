@@ -27,7 +27,7 @@ const ServiceManagementSettings = () => {
           <button
             type="button"
             onClick={() => setIsModalOpen(true)}
-            className="rounded-md bg-[#628dec] px-4 py-2 text-sm font-medium text-white hover:bg-[#4e7de0] transition-colors duration-150"
+            className="admin-blue-button"
           >
             Add New Service
           </button>
@@ -61,7 +61,7 @@ const ServiceManagementSettings = () => {
                       <button
                         type="button"
                         onClick={() => alert(service._id)}
-                        className="bg-blue-500 p-2 text-white"
+                        className="admin-blue-button"
                       >
                         {service.status === "active" ? "Deactivate" : "Activate"}
                       </button>
