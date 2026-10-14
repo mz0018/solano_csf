@@ -71,6 +71,19 @@ router.post(
 )
 
 router.patch(
+    '/services/update/:id',
+    authorizeViaCookie,
+    authorizeViaRole('hr_admin', 'head_office_admin'),
+    (req, res) => {
+        console.log('Service partial update:', {
+            serviceId: req.params.id,
+            updates: req.body
+        })
+        res.status(200).json({ success: true, message: 'Service update logged successfully' })
+    }
+)
+
+router.patch(
     '/services/:id/status',
     authorizeViaCookie,
     authorizeViaRole('hr_admin', 'head_office_admin'),

@@ -3,8 +3,8 @@ import { ModalUI } from "../../ui/form/ModalUI";
 import { Button } from "../../ui/form/Buttons";
 import type { Service } from "../../hooks/useGetServices";
 import { useUpdateNewService } from "../../hooks/useUpdateNewService";
+import { useServicePartialUpdate } from "../../hooks/useServicePartialUpdate";
 import { CSFCustomToaster } from "../../utils/Toaster";
-import { Pencil } from "lucide-react";
 
 type ViewServiceModalProps = {
   service: Service | null;
@@ -12,9 +12,26 @@ type ViewServiceModalProps = {
   onServiceUpdated: (service: Service) => void;
 };
 
+type ServiceDraft = {
+  serviceId: string;
+  name: string;
+  type: string;
+} | null
+
 export const ViewServiceModal = ({ service, onClose, onServiceUpdated }: ViewServiceModalProps) => {
   const { isLoading, updateServiceStatus } = useUpdateNewService();
-  const [editServiceName, setEditServiceName] = useState<boolean>(false);
+  const { isLoading: isSaving, updateService } = useServicePartialUpdate();
+  const [draft, setDraft] = useState<ServiceDraft>(null);
+  
+  const serviceName =
+    draft && draft.serviceId === service?._id
+      ? draft.name
+      : service?.name ?? "";
+
+  const serviceType =
+    draft && draft.serviceId === service?._id
+      ? draft.type
+      : service?.type ?? "";
 
   if (!service) {
     return null;
@@ -34,9 +51,17 @@ export const ViewServiceModal = ({ service, onClose, onServiceUpdated }: ViewSer
     }
   };
 
-  const handleInputChange = (type: string, id: string) => {
-    console.log(type)
-    console.log(id)
+  const handlePartialUpdate = async () => {
+    try {
+      const result = await updateService(service, { name: serviceName, type: serviceType });
+      if (!result) return;
+      onServiceUpdated({ ...service, ...result.updates });
+      CSFCustomToaster.success(result.message);
+    } catch (error) {
+      CSFCustomToaster.error(
+        error instanceof Error ? error.message : "Unable to update the service."
+      );
+    }
   }
 
   return (
@@ -45,51 +70,61 @@ export const ViewServiceModal = ({ service, onClose, onServiceUpdated }: ViewSer
       onClose={onClose}
       title="Service Details"
       footer={
-        <Button
-          type="button"
-          onClick={handleStatusChange}
-          disabled={isLoading}
-          className="w-full bg-blue-500 p-4 text-white transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          {isLoading
-            ? "Updating..."
-            : service.status === "active"
-              ? "Deactivate Service"
-              : "Activate Service"}
-        </Button>
+        <div className="flex w-full flex-col gap-2">
+          <Button
+            type="button"
+            onClick={handlePartialUpdate}
+            disabled={isSaving}
+            className="w-full bg-blue-500 p-4 text-white transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {isSaving ? "Saving..." : "Save Changes"}
+          </Button>
+          <Button
+            type="button"
+            onClick={handleStatusChange}
+            disabled={isLoading}
+            className="w-full bg-blue-500 p-4 text-white transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {isLoading
+              ? "Updating..."
+              : service.status === "active"
+                ? "Deactivate Service"
+                : "Activate Service"}
+          </Button>
+        </div>
       }
     >
       <dl className="space-y-4">
         {/**Service name */}
         <div>
           <dt className="text-sm font-medium text-gray-500">Service Name</dt>
-          <div className="flex items-center justify-between">
-            {editServiceName ? (
-              <input
-                type="text"
-                value={service.name}
-                className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-              />
-            ) : (
-              <dd className="text-gray-900">{service.name}</dd>
-            )}
-            <Pencil 
-              onClick={() => {
-                handleInputChange(service.name, service._id)
-                setEditServiceName(true)
-              }}
-              className="ml-2 h-4 w-4 cursor-pointer text-gray-500 hover:text-gray-900" 
-            />
-          </div>
+          <input
+            type="text"
+            value={serviceName}
+            onChange={(event) => setDraft({
+              serviceId: service._id,
+              name: event.target.value,
+              type: serviceType,
+            })}
+            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          />
         </div>
         
         {/**Service type */}
         <div>
           <dt className="text-sm font-medium text-gray-500">Service Type</dt>
-          <div className="flex items-center justify-between">
-            <dd className="capitalize text-gray-900">{service.type}</dd>
-            <Pencil onClick={() => handleInputChange(service.type, service._id)} className="h-4 w-4 cursor-pointer text-gray-500 hover:text-gray-900" />
-          </div>
+          <select
+            value={serviceType}
+            onChange={(event) => setDraft({
+              serviceId: service._id,
+              name: serviceName,
+              type: event.target.value,
+            })}
+            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
+          >
+            <option value="external">External</option>
+            <option value="internal">Internal</option>
+          </select>
         </div>
         <div>
           <dt className="text-sm font-medium text-gray-500">Status</dt>
