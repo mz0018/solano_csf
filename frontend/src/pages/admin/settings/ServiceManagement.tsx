@@ -100,7 +100,7 @@ const ServiceManagementSettings = () => {
                     .filter((service) => service.type?.toLowerCase() === "internal")
                     .map((service) => (
                       <tr key={service._id}>
-                        <td>
+                        <td>git 
                           <span className="inline-block pl-6">{service.name}</span>
                         </td>
                         <td className="capitalize">{service.status}</td>
