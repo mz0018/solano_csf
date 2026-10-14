@@ -444,6 +444,70 @@ class AdminService {
         return service
     }
 
+    async partialUpdateService(serviceId, changes, user) {
+        if (!user?.officeCode) {
+            throw new ErrorController('Office code is required', 400)
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(serviceId)) {
+            throw new ErrorController('Invalid service ID', 400)
+        }
+
+        if (!changes || typeof changes !== 'object' || Array.isArray(changes)) {
+            throw new ErrorController('Service changes are required', 400)
+        }
+
+        const allowedFields = ['name', 'type']
+        const changedFields = Object.keys(changes)
+
+        if (
+            changedFields.length === 0 ||
+            changedFields.some(field => !allowedFields.includes(field))
+        ) {
+            throw new ErrorController('Invalid service changes', 400)
+        }
+
+        const updates = {}
+
+        if (Object.hasOwn(changes, 'name')) {
+            if (typeof changes.name !== 'string' || !changes.name.trim()) {
+                throw new ErrorController('Service name is required', 400)
+            }
+
+            updates.name = changes.name.trim()
+        }
+
+        if (Object.hasOwn(changes, 'type')) {
+            if (!['external', 'internal'].includes(changes.type)) {
+                throw new ErrorController('Invalid service type', 400)
+            }
+
+            updates.type = changes.type
+        }
+
+        const service = await Service.findOneAndUpdate(
+            {
+                _id: serviceId,
+                officeCode: user.officeCode
+            },
+            {
+                $set: updates
+            },
+            {
+                returnDocument: 'after',
+                runValidators: true
+            }
+        )
+            .select('code name status type')
+            .lean()
+
+        if (!service) {
+            throw new ErrorController('Service not found', 404)
+        }
+
+        return service
+    }
+
 }
 
 export default new AdminService

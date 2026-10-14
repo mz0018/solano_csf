@@ -111,6 +111,13 @@ class AdminController {
             })
         } catch (error) { next(error) }
     }
+
+    async partialUpdateService(req, res, next) {
+        try {
+            await AdminService.partialUpdateService(req.params.id, req.body, req.user)
+            res.status(200).json({ success: true, message: 'Service partially updated successfully' })
+        } catch (error) { next(error) }
+    }
 }
 
 export default new AdminController()
