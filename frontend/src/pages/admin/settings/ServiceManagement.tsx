@@ -54,25 +54,69 @@ const ServiceManagementSettings = () => {
                   </td>
                 </tr>
               ) : (
-                services.map((service) => (
-                  <tr key={service._id}>
-                    <td>
-                      {service.name}
-                      <span className="block capitalize">{service.type}</span>
-                    </td>
-                    <td className="capitalize">{service.status}</td>
-                    <td>
-                      <button
-                        type="button"
-                        onClick={() => setSelectedService(service)}
-                        className="inline-flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-gray-100"
-                      >
-                        <Fullscreen size={16} />
-                        <span>Review</span>
-                      </button>
+                <>
+                  {/* External Services */}
+                  <tr>
+                    <td
+                      colSpan={3}
+                      className="py-3 font-semibold capitalize"
+                    >
+                      External Services
                     </td>
                   </tr>
-                ))
+
+                  {services
+                    .filter((service) => service.type?.toLowerCase() === "external")
+                    .map((service) => (
+                      <tr key={service._id}>
+                        <td>
+                          <span className="inline-block pl-6">{service.name}</span>
+                        </td>
+                        <td className="capitalize">{service.status}</td>
+                        <td>
+                          <button
+                            type="button"
+                            onClick={() => setSelectedService(service)}
+                            className="inline-flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-gray-100"
+                          >
+                            <Fullscreen size={16} />
+                            <span>Manage</span>
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+
+                  {/* Internal Services */}
+                  <tr>
+                    <td
+                      colSpan={3}
+                      className="py-3 font-semibold capitalize"
+                    >
+                      Internal Services
+                    </td>
+                  </tr>
+
+                  {services
+                    .filter((service) => service.type?.toLowerCase() === "internal")
+                    .map((service) => (
+                      <tr key={service._id}>
+                        <td>
+                          <span className="inline-block pl-6">{service.name}</span>
+                        </td>
+                        <td className="capitalize">{service.status}</td>
+                        <td>
+                          <button
+                            type="button"
+                            onClick={() => setSelectedService(service)}
+                            className="inline-flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-gray-100"
+                          >
+                            <Fullscreen size={16} />
+                            <span>Manage</span>
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                </>
               )}
             </tbody>
           </TableUI>
