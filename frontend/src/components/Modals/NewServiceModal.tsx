@@ -1,5 +1,8 @@
 import { useState } from "react";
+import { Select } from "../../ui/form/Select";
 import { ModalUI } from "../../ui/form/ModalUI";
+import { Button } from "../../ui/form/Buttons";
+import { useSaveNewService, type ServiceType } from "../../hooks/useSaveNewService";
 
 type NewServiceModalProps = {
   isModalOpen: boolean;
@@ -7,12 +10,13 @@ type NewServiceModalProps = {
 };
 
 export const NewServiceModal = ({ isModalOpen, setIsModalOpen }: NewServiceModalProps) => {
+  const { isLoading, hasError, handleSubmit } = useSaveNewService();
   const [serviceName, setServiceName] = useState("");
-  const [serviceType, setServiceType] = useState("office");
+  const [serviceType, setServiceType] = useState<ServiceType>("");
 
   const handleClose = () => {
     setServiceName("");
-    setServiceType("office");
+    setServiceType("");
     setIsModalOpen(false);
   };
 
@@ -22,13 +26,14 @@ export const NewServiceModal = ({ isModalOpen, setIsModalOpen }: NewServiceModal
       onClose={handleClose}
       title="Add New Service"
       footer={
-        <button
+        <Button
           type="button"
-          onClick={handleClose}
-          className="rounded-md bg-[#628dec] px-4 py-2 text-sm font-medium text-white hover:bg-[#4e7de0] transition-colors duration-150"
+          onClick={() => handleSubmit({ serviceName, serviceType })}
+          disabled={isLoading}
+          className="w-full bg-blue-500 text-white p-4 rounded-sm cursor-pointer hover:bg-blue-600 transition-colors"
         >
-          Save Service
-        </button>
+          {isLoading ? 'Loading...' : 'Save Service'}
+        </Button>
       }
     >
       <div className="space-y-4">
@@ -42,7 +47,7 @@ export const NewServiceModal = ({ isModalOpen, setIsModalOpen }: NewServiceModal
             value={serviceName}
             onChange={(e) => setServiceName(e.target.value)}
             placeholder="Enter service name"
-            className="w-full rounded-md border border-[#d1d5db] bg-white px-3 py-2 text-sm text-[#111827] outline-none transition focus:border-[#628dec]"
+            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
           />
         </div>
 
@@ -50,15 +55,25 @@ export const NewServiceModal = ({ isModalOpen, setIsModalOpen }: NewServiceModal
           <label htmlFor="service-type" className="mb-1 block text-sm font-medium text-[#374151]">
             Service Type
           </label>
-          <select
+          <Select
+            variant="admin"
             id="service-type"
             value={serviceType}
-            onChange={(e) => setServiceType(e.target.value)}
+            onChange={(e) => setServiceType(e.target.value as ServiceType)}
             className="w-full rounded-md border border-[#d1d5db] bg-white px-3 py-2 text-sm text-[#111827] outline-none transition focus:border-[#628dec]"
           >
+            <option value="">Select a service type</option>
             <option value="external">External</option>
             <option value="internal">Internal</option>
-          </select>
+          </Select>
+        </div>
+
+        <div>
+          {hasError && (
+            <p className="text-sm text-red-500" role="alert">
+              {hasError}
+            </p>
+          )}
         </div>
       </div>
     </ModalUI>
