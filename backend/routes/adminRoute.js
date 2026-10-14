@@ -1,9 +1,11 @@
 import express from 'express'
 import AdminController from '../controllers/AdminController.js'
-import { validate } from '../middleware/validate.js'
-import { cacheHeaders } from '../middleware/cacheHeaders.js'
+// import { validate } from '../middleware/validate.js'
+// import { cacheHeaders } from '../middleware/cacheHeaders.js'
 import { authorizeViaCookie } from '../middleware/authorizeViaCookie.js'
 import { authorizeViaRole } from '../middleware/authorizeViaRole.js'
+import { updateServicePartialLimiter } from '../middleware/updateServicePartialLimiter.js'
+import { updateServiceStatusLimiter } from '../middleware/updateServiceStatusLimiter.js'
 
 const router = express.Router()
 
@@ -72,14 +74,15 @@ router.post(
 
 router.patch(
     '/services/update/:id',
+    updateServicePartialLimiter,
     authorizeViaCookie,
-    //Add rate limiter damdama ditoy
     authorizeViaRole('hr_admin', 'head_office_admin'),
     AdminController.partialUpdateService
 )
 
 router.patch(
     '/services/:id/status',
+    updateServiceStatusLimiter,
     authorizeViaCookie,
     authorizeViaRole('hr_admin', 'head_office_admin'),
     AdminController.updateServiceStatus

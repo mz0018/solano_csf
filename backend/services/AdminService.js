@@ -427,9 +427,11 @@ class AdminService {
 
     async updateServiceStatus(serviceId, status, user) {
         if (!user?.officeCode) throw new ErrorController('Office code is required', 400)
+
         if (!mongoose.Types.ObjectId.isValid(serviceId)) {
             throw new ErrorController('Invalid service ID', 400)
         }
+
         if (!['active', 'inactive'].includes(status)) {
             throw new ErrorController('Invalid service status', 400)
         }
@@ -437,10 +439,11 @@ class AdminService {
         const service = await Service.findOneAndUpdate(
             { _id: serviceId, officeCode: user.officeCode },
             { status },
-            { new: true, runValidators: true }
+            { returnDocument: 'after', runValidators: true }
         ).select('code name status type').lean()
 
         if (!service) throw new ErrorController('Service not found', 404)
+
         return service
     }
 
