@@ -7,31 +7,34 @@ type ServiceData = {
   serviceType: ServiceType;
 };
 
+// Keep validation rules in one place so handleSubmit stays easy to read.
+const getValidationError = (data: ServiceData): string => {
+  if (!data.serviceName.trim()) return "Service name is required.";
+  if (!data.serviceType) return "Please select a service type.";
+  return "";
+};
+
 export const useSaveNewService = () => {
   const [serviceName, setServiceName] = useState("");
   const [serviceType, setServiceType] = useState<ServiceType>("");
   const [isLoading, setIsLoading] = useState(false);
-  const [hasError, setHasError] = useState<string>("");
-  const [isRateLimited, setIsRateLimited] = useState<boolean>(false)
+  const [hasError, setHasError] = useState("");
+  const [isRateLimited, setIsRateLimited] = useState(false);
 
-  const clearInputs = () => {
+  const resetInputs = () => {
     setServiceName("");
     setServiceType("");
   };
 
   const handleSubmit = async (data: ServiceData) => {
+    const validationError = getValidationError(data);
+
+    if (validationError) {
+      setHasError(validationError);
+      return null;
+    }
+
     setHasError("");
-
-    if (!data.serviceName.trim()) {
-      setHasError("Service name is required.");
-      return;
-    }
-
-    if (!data.serviceType) {
-      setHasError("Please select a service type.");
-      return;
-    }
-
     setIsLoading(true);
 
     try {
@@ -48,7 +51,7 @@ export const useSaveNewService = () => {
       const result = await response.json().catch(() => ({}));
 
       if (response.status === 429) {
-        setIsRateLimited(true)
+        setIsRateLimited(true);
         setHasError("Too many request. Please wait and try again later.");
         return null;
       }
@@ -58,17 +61,25 @@ export const useSaveNewService = () => {
         return null;
       }
 
-      clearInputs();
+      resetInputs();
       return result;
-      
-    } catch (err) {
-      console.error("Something went wrong:", err);
+    } catch (error) {
+      console.error("Something went wrong:", error);
       setHasError("Unable to save the service.");
+      return null;
     } finally {
       setIsLoading(false);
     }
   };
 
-  return { isLoading, hasError, handleSubmit, serviceName, serviceType, setServiceName, setServiceType, isRateLimited };
+  return {
+    isLoading,
+    hasError,
+    handleSubmit,
+    serviceName,
+    serviceType,
+    setServiceName,
+    setServiceType,
+    isRateLimited,
+  };
 };
-

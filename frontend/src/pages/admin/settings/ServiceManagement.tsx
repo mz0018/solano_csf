@@ -123,19 +123,22 @@ const ServiceManagementSettings = () => {
         </AdminResponsiveContainer>
       </section>
 
-      <NewServiceModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
-      <ViewServiceModal
-        service={selectedService}
-        onClose={() => setSelectedService(null)}
-        onServiceUpdated={(updatedService) => {
-          setServices((currentServices) =>
-            currentServices.map((service) =>
-              service._id === updatedService._id ? updatedService : service
-            )
-          );
-          setSelectedService(updatedService);
-        }}
-      />
+      {isModalOpen && <NewServiceModal onClose={() => setIsModalOpen(false)} />}
+
+      {selectedService && (
+        <ViewServiceModal
+          service={selectedService}
+          onClose={() => setSelectedService(null)}
+          onServiceUpdated={(updatedService) => {
+            setServices((currentServices) =>
+              currentServices.map((service) =>
+                service._id === updatedService._id ? updatedService : service
+              )
+            );
+            setSelectedService(updatedService);
+          }}
+        />
+      )}
     </>
   );
 };

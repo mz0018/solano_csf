@@ -3,35 +3,46 @@ import { ModalUI } from "../../ui/form/ModalUI";
 import { Button } from "../../ui/form/Buttons";
 import { ErrorText } from "../../ui/form/ErrorText";
 import { useSaveNewService, type ServiceType } from "../../hooks/useSaveNewService";
+import { CSFCustomToaster } from "../../utils/Toaster";
 
 type NewServiceModalProps = {
-  isModalOpen: boolean;
-  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onClose: () => void;
 };
 
-export const NewServiceModal = ({ isModalOpen, setIsModalOpen }: NewServiceModalProps) => {
-  const saveService = async () => {
+export const NewServiceModal = ({ onClose }: NewServiceModalProps) => {
+  const {
+    isLoading,
+    hasError,
+    handleSubmit,
+    serviceName,
+    serviceType,
+    setServiceName,
+    setServiceType,
+    isRateLimited,
+  } = useSaveNewService();
+
+  const handleSave = async () => {
     const result = await handleSubmit({ serviceName, serviceType });
 
     if (result?.success) {
-      setIsModalOpen(false);
+      CSFCustomToaster.success("Service Added");
+      onClose();
     }
-  }
-  const { isLoading, hasError, handleSubmit, serviceName, serviceType, setServiceName, setServiceType, isRateLimited } = useSaveNewService();
+  };
 
   return (
     <ModalUI
-      isOpen={isModalOpen}
-      onClose={() => setIsModalOpen(false)}
+      isOpen
+      onClose={onClose}
       title="Add New Service"
       footer={
         <Button
           type="button"
-          onClick={saveService}
+          onClick={handleSave}
           disabled={isLoading || isRateLimited}
           className="w-full bg-blue-500 text-white p-4 rounded-sm cursor-pointer hover:bg-blue-600 transition-colors"
         >
-          {isLoading ? 'Loading...' : 'Save Service'}
+          {isLoading ? "Loading..." : "Save Service"}
         </Button>
       }
     >
@@ -44,7 +55,7 @@ export const NewServiceModal = ({ isModalOpen, setIsModalOpen }: NewServiceModal
             id="service-name"
             type="text"
             value={serviceName}
-            onChange={(e) => setServiceName(e.target.value)}
+            onChange={(event) => setServiceName(event.target.value)}
             placeholder="Enter service name"
             className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
           />
@@ -58,7 +69,7 @@ export const NewServiceModal = ({ isModalOpen, setIsModalOpen }: NewServiceModal
             variant="admin"
             id="service-type"
             value={serviceType}
-            onChange={(e) => setServiceType(e.target.value as ServiceType)}
+            onChange={(event) => setServiceType(event.target.value as ServiceType)}
             className="w-full rounded-md border border-[#d1d5db] bg-white px-3 py-2 text-sm text-[#111827] outline-none transition focus:border-[#628dec]"
           >
             <option value="">Select a service type</option>
@@ -68,9 +79,7 @@ export const NewServiceModal = ({ isModalOpen, setIsModalOpen }: NewServiceModal
         </div>
 
         <div>
-          {hasError && (
-            <ErrorText message={hasError} />
-          )}
+          {hasError && <ErrorText message={hasError} />}
         </div>
       </div>
     </ModalUI>
