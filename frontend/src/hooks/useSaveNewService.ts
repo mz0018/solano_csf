@@ -65,6 +65,3 @@ export const useSaveNewService = () => {
   return { isLoading, hasError, handleSubmit, serviceName, serviceType, setServiceName, setServiceType };
 };
 
-export const updateService = () => {
-
-};

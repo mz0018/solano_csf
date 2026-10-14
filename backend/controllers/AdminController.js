@@ -96,6 +96,21 @@ class AdminController {
             res.status(200).json({ success: true, message: 'Service created successfully' })
         } catch (error) { next(error) }
     }
+
+    async updateServiceStatus(req, res, next) {
+        try {
+            const service = await AdminService.updateServiceStatus(
+                req.params.id,
+                req.body.status,
+                req.user
+            )
+            res.status(200).json({
+                success: true,
+                message: `Service ${req.body.status === 'active' ? 'activated' : 'deactivated'} successfully`,
+                service
+            })
+        } catch (error) { next(error) }
+    }
 }
 
 export default new AdminController()
