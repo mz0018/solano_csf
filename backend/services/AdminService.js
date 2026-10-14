@@ -395,6 +395,35 @@ class AdminService {
         }
     }
 
+    async saveNewService(data, user) {
+
+        if (!data) throw new ErrorController('New service data not found', 401)
+        if (!user) throw new ErrorController('User not found', 401)
+
+        const serviceName = data.serviceName.charAt(0).toUpperCase() + data.serviceName.slice(1).toLowerCase();
+        const serviceCode = serviceName.toUpperCase().replace(/\s+/g, '_')
+        const serviceOfficeCode = user.officeCode
+        const userName = `${user.firstName}, ${user.lastName}`
+        const userId = user.id
+        const serviceType = data.serviceType
+        const serviceStatus = 'active'
+
+        const newService = await Service({
+            officeCode: serviceOfficeCode,
+            code: serviceCode,
+            name: serviceName,
+            status: serviceStatus,
+            type: serviceType,
+            createdBy: {
+                user: userName,
+                userId: userId,
+            }
+        })
+
+        await newService.save()
+        return newService
+    }
+
 }
 
 export default new AdminService

@@ -7,6 +7,10 @@ const serviceSchema = new mongoose.Schema(
     name: { type: String, required: true },
     status: { type: String, enum: ['active', 'inactive'], default: 'active' },
     type: { type: String, enum: ['external', 'internal'], default: 'external'},
+    createdBy: {
+      user: { type: String, default: 'csf-system' },
+      userId: { type: mongoose.Schema.Types.ObjectId, default: null }
+    },
   },
   { timestamps: true }
 );

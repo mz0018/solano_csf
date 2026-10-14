@@ -89,6 +89,13 @@ class AdminController {
             res.status(200).json(result)
         } catch (error) { next(error) }
     }
+
+    async addNewService(req, res, next) {
+        try {
+            await AdminService.saveNewService(req.body, req.user)
+            res.status(200).json({ success: true, message: 'Service created successfully' })
+        } catch (error) { next(error) }
+    }
 }
 
 export default new AdminController()

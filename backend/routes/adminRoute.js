@@ -63,4 +63,11 @@ router.get(
     AdminController.getRenderedService
 )
 
+router.post(
+    '/services',
+    authorizeViaCookie,
+    authorizeViaRole('hr_admin', 'head_office_admin'),
+    AdminController.addNewService
+)
+
 export default router

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Select } from "../../ui/form/Select";
 import { ModalUI } from "../../ui/form/ModalUI";
 import { Button } from "../../ui/form/Buttons";
@@ -10,20 +9,12 @@ type NewServiceModalProps = {
 };
 
 export const NewServiceModal = ({ isModalOpen, setIsModalOpen }: NewServiceModalProps) => {
-  const { isLoading, hasError, handleSubmit } = useSaveNewService();
-  const [serviceName, setServiceName] = useState("");
-  const [serviceType, setServiceType] = useState<ServiceType>("");
-
-  const handleClose = () => {
-    setServiceName("");
-    setServiceType("");
-    setIsModalOpen(false);
-  };
+  const { isLoading, hasError, handleSubmit, serviceName, serviceType, setServiceName, setServiceType } = useSaveNewService();
 
   return (
     <ModalUI
       isOpen={isModalOpen}
-      onClose={handleClose}
+      onClose={() => setIsModalOpen(false)}
       title="Add New Service"
       footer={
         <Button
