@@ -201,3 +201,16 @@
   color: #e5e7eb;
   cursor: not-allowed;
 }
+
+.sidebar-link-child-border {
+  border-left: 2px solid transparent;
+  transition: border-color 300ms ease;
+}
+
+.sidebar-link-child-border:hover {
+  border-left-color: transparent;
+}
+
+.sidebar-link-child-border.active {
+  border-left-color: transparent;
+}

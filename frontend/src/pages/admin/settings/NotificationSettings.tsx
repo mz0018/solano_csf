@@ -6,6 +6,8 @@ import { useSocket } from "../../../hooks/useSocket";
 import { useGetNotifications } from "../../../hooks/useGetNotifications";
 import { CSFCustomToaster } from "../../../utils/Toaster";
 
+import { AdminResponsiveContainer } from "../../../ui/form/AdminResponsiveContainer";
+
 const NotificationSettings = () => {
   const { data, isLoading, isError } = useGetNotifications();
   const queryClient = useQueryClient();
@@ -43,10 +45,10 @@ const NotificationSettings = () => {
   const notifications = data?.notifications ?? [];
 
   return (
-    <div className="w-full max-w-3xl space-y-6">
+    <AdminResponsiveContainer>
 
       {/* Page Header */}
-      <div className="mb-4 flex items-center gap-3 border-b border-gray-300 py-3">
+      <div className="mb-4 flex w-full items-center gap-3 border-b border-gray-300 py-3">
         <BellRing
           size={22}
           strokeWidth={2}
@@ -65,7 +67,7 @@ const NotificationSettings = () => {
       </div>
 
       {/* Notifications */}
-      <div className="space-y-3">
+      <div className="w-full space-y-3">
         {notifications.map((notification) => (
           <div
             key={notification._id}
@@ -104,7 +106,7 @@ const NotificationSettings = () => {
           </div>
         )}
       </div>
-    </div>
+    </AdminResponsiveContainer>
   );
 };
 

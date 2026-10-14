@@ -4,6 +4,8 @@ import { ChevronDown, ShieldCheck } from "lucide-react";
 import { ChangePassword } from "./ChangePassword";
 import { LoginHistory } from "./LoginHistory";
 
+import { AdminResponsiveContainer } from "../../../ui/form/AdminResponsiveContainer";
+
 type SecuritySection = "change-password" | "login-history";
 
 const SecuritySettings = () => {
@@ -15,10 +17,10 @@ const SecuritySettings = () => {
   };
 
   return (
-    <div className="w-full max-w-3xl space-y-4">
+    <AdminResponsiveContainer>
 
       {/* Page Header */}
-      <div className="mb-4 flex items-center gap-3 border-b border-gray-300 py-3">
+      <div className="mb-4 flex w-full items-center gap-3 border-b border-gray-300 py-3">
         <ShieldCheck
           size={22}
           strokeWidth={2}
@@ -37,7 +39,7 @@ const SecuritySettings = () => {
       </div>
 
       {/* Change Password */}
-      <div>
+      <div className="w-full">
         <button
           type="button"
           onClick={() => toggleSection("change-password")}
@@ -64,7 +66,7 @@ const SecuritySettings = () => {
       </div>
 
       {/* Login History */}
-      <div>
+      <div className="w-full">
         <button
           type="button"
           onClick={() => toggleSection("login-history")}
@@ -89,7 +91,7 @@ const SecuritySettings = () => {
           </div>
         )}
       </div>
-    </div>
+    </AdminResponsiveContainer>
   );
 };
 
