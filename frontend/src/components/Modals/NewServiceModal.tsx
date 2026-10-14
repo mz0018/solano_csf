@@ -1,6 +1,7 @@
 import { Select } from "../../ui/form/Select";
 import { ModalUI } from "../../ui/form/ModalUI";
 import { Button } from "../../ui/form/Buttons";
+import { ErrorText } from "../../ui/form/ErrorText";
 import { CSFCustomToaster } from "../../utils/Toaster";
 import { useSaveNewService, type ServiceType } from "../../hooks/useSaveNewService";
 
@@ -70,9 +71,7 @@ export const NewServiceModal = ({ isModalOpen, setIsModalOpen }: NewServiceModal
 
         <div>
           {hasError && (
-            <p className="text-sm text-red-500" role="alert">
-              {hasError}
-            </p>
+            <ErrorText message={hasError} />
           )}
         </div>
       </div>

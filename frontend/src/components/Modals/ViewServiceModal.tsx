@@ -5,6 +5,7 @@ import type { Service } from "../../hooks/useGetServices";
 import { useUpdateNewService } from "../../hooks/useUpdateNewService";
 import { useServicePartialUpdate } from "../../hooks/useServicePartialUpdate";
 import { CSFCustomToaster } from "../../utils/Toaster";
+import { ErrorText } from "../../ui/form/ErrorText";
 
 type ViewServiceModalProps = {
   service: Service | null;
@@ -20,7 +21,7 @@ type ServiceDraft = {
 
 export const ViewServiceModal = ({ service, onClose, onServiceUpdated }: ViewServiceModalProps) => {
   const { isLoading, updateServiceStatus } = useUpdateNewService();
-  const { isLoading: isSaving, updateService } = useServicePartialUpdate();
+  const { isLoading: isSaving, updateService, hasErrors, setHasErrors } = useServicePartialUpdate();
   const [draft, setDraft] = useState<ServiceDraft>(null);
   
   const serviceName =
@@ -37,7 +38,17 @@ export const ViewServiceModal = ({ service, onClose, onServiceUpdated }: ViewSer
     return null;
   }
 
+  const hasChanges = serviceName !== service.name || serviceType !== service.type;
+
   const handleStatusChange = async () => {
+    if (service.status === "active") {
+      const confirmed = window.confirm(
+        "Are you sure you want to deactivate this service?"
+      );
+
+      if (!confirmed) return;
+    }
+
     const status = service.status === "active" ? "inactive" : "active";
 
     try {
@@ -52,6 +63,11 @@ export const ViewServiceModal = ({ service, onClose, onServiceUpdated }: ViewSer
   };
 
   const handlePartialUpdate = async () => {
+    setHasErrors(null);
+    if (!serviceName.trim()) {
+      setHasErrors("Service name is required.");
+      return;
+    }
     try {
       const result = await updateService(service, { name: serviceName, type: serviceType });
       if (!result) return;
@@ -68,30 +84,30 @@ export const ViewServiceModal = ({ service, onClose, onServiceUpdated }: ViewSer
     <ModalUI
       isOpen
       onClose={onClose}
-      title="Service Details"
+      title={`Service ${service.name}`}
       footer={
-        <div className="flex w-full flex-col gap-2">
-          <Button
-            type="button"
-            onClick={handlePartialUpdate}
-            disabled={isSaving}
-            className="w-full bg-blue-500 p-4 text-white transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {isSaving ? "Saving..." : "Save Changes"}
-          </Button>
-          <Button
+        <>
+          <button
             type="button"
             onClick={handleStatusChange}
             disabled={isLoading}
-            className="w-full bg-blue-500 p-4 text-white transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
+            className={`w-full border ${service.status === 'active' ? 'border-red-400 text-red-400 hover:bg-red-100' : 'border-blue-400 text-blue-400 hover:bg-blue-100'}  p-4  font-semibold transition-colors  disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer rounded-sm`}
           >
             {isLoading
               ? "Updating..."
               : service.status === "active"
-                ? "Deactivate Service"
-                : "Activate Service"}
+                ? "Deactivate"
+                : "Activate"}
+          </button>
+          <Button
+            type="button"
+            onClick={handlePartialUpdate}
+            disabled={isSaving || !hasChanges}
+            className="w-full bg-blue-500 p-4 text-white transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {isSaving ? "Saving..." : "Save"}
           </Button>
-        </div>
+        </>
       }
     >
       <dl className="space-y-4">
@@ -127,8 +143,22 @@ export const ViewServiceModal = ({ service, onClose, onServiceUpdated }: ViewSer
           </select>
         </div>
         <div>
-          <dt className="text-sm font-medium text-gray-500">Status</dt>
-          <dd className="capitalize text-gray-900">{service.status}</dd>
+          <dt className="flex items-center text-sm font-medium text-gray-500">
+            Status:
+            <span className="ml-2 flex items-center gap-2 capitalize font-light">
+              {service.status}
+              <span
+                className={`h-2 w-2 rounded-full ${
+                  service.status === "active"
+                    ? "bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.8)] animate-pulse"
+                    : "bg-red-500"
+                }`}
+              />
+            </span>
+          </dt>
+        </div>
+        <div>
+          {hasErrors && <ErrorText message={hasErrors} />}
         </div>
       </dl>
     </ModalUI>

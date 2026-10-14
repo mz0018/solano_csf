@@ -6,6 +6,7 @@ type ServiceChanges = Partial<Pick<Service, "name" | "type">>;
 
 export const useServicePartialUpdate = () => {
 	const [isLoading, setIsLoading] = useState(false);
+	const [hasErrors, setHasErrors] = useState<string | null>(null);
 	const queryClient = useQueryClient();
 
 	const updateService = async (service: Service, edited: ServiceChanges) => {
@@ -38,5 +39,5 @@ export const useServicePartialUpdate = () => {
 		}
 	};
 
-	return { isLoading, updateService };
+	return { isLoading, updateService, hasErrors, setHasErrors };
 };
