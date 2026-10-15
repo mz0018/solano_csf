@@ -2,6 +2,7 @@ import Queue from '../models/queue.model.js'
 import User from '../models/user.model.js'
 import Office from '../models/office.model.js'
 import Service from '../models/service.model.js'
+import ChildServices from '../models/services.child.model.js'
 import Feedback from '../models/feedback.model.js'
 import ErrorController from '../controllers/ErrorController.js'
 import mongoose from 'mongoose'
@@ -301,6 +302,18 @@ class AdminService {
             .lean()
         
         return services
+    }
+
+    async getChildServices(userOfficeCode) {
+        if (!userOfficeCode) {
+            throw new ErrorController('Office code is required', 400)
+        }
+
+        const childServices = await ChildServices.find({ officeCode: userOfficeCode })
+            .select('code name status type')
+            .lean()
+
+        return childServices
     }
 
     async getRenderedService(userOfficeCode, dateFrom, dateTo, page = 1, limit = 10) {

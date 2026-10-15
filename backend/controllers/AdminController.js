@@ -118,6 +118,16 @@ class AdminController {
             res.status(200).json({ success: true, message: 'Service partially updated successfully' })
         } catch (error) { next(error) }
     }
+
+    async getChildServices(req, res, next) {
+        try {
+            const userOfficeCode = req.user?.officeCode
+            const result = await AdminService.getChildServices(userOfficeCode)
+            res.status(200).json(result)
+        } catch (error) {
+            next(error)
+        }
+    }
 }
 
 export default new AdminController()

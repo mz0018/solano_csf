@@ -4,7 +4,9 @@ import { ModalUI } from "../../ui/form/ModalUI"
 import { Button } from "../../ui/form/Buttons"
 import { useGenerateTicket } from "../../hooks/useGenerateTicket"
 import { useGetServices } from "../../hooks/useGetServices"
+import { useGetChildServices } from "../../hooks/useGetChildServices"
 import type { Service } from "../../hooks/useGetServices"
+import type { ChildService } from "../../hooks/useGetChildServices"
 import { ErrorText } from "../../ui/form/ErrorText"
 import { Input } from "../../ui/form/Input"
 import { printQr } from "../../utils/printQr"
@@ -36,8 +38,10 @@ export const GenerateTicketModal = ({
   const { createNewTicket, isGeneratingTicket } = useGenerateTicket()
 
   const { getOfficeService } = useGetServices()
+  const { getChildServices } = useGetChildServices()
 
   const [services, setServices] = useState<Service[]>([])
+  const [childServices, setChildServices] = useState<ChildService[]>([])
   const [selectedService, setSelectedService] = useState<string[]>([])
   const [serviceError, setServiceError] = useState<string>("")
   const [otherText, setOtherText] = useState<string>("")
@@ -124,6 +128,22 @@ export const GenerateTicketModal = ({
     fetchServices()
   }, [isModalOpen, getOfficeService])
 
+  useEffect(() => {
+    if (!isModalOpen) return
+
+    const fetchChildServices = async () => {
+      const data = await getChildServices()
+
+      if (data) {
+        setChildServices(data)
+      } else {
+        setChildServices([])
+      }
+    }
+
+    fetchChildServices()
+  }, [isModalOpen, getChildServices])
+
   const handleClose = () => {
     resetModal()
     setIsModalOpen(false)
@@ -195,10 +215,12 @@ export const GenerateTicketModal = ({
                           <option value="" disabled>
                             Select leave type
                           </option>
-                          <option value="LEAVE_1">Leave 1</option>
-                          <option value="LEAVE_2">Leave 2</option>
-                          <option value="LEAVE_3">Leave 3</option>
-                          <option value="LEAVE_4">Leave 4</option>
+
+                          {childServices.map((cs) => (
+                            <option key={cs._id} value={cs.code}>
+                              {cs.name}
+                            </option>
+                          ))}
                         </Select>
                       )}
                   </div>

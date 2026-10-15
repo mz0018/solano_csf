@@ -74,6 +74,13 @@ router.post(
     AdminController.addNewService
 )
 
+router.get(
+    '/child-services',
+    authorizeViaCookie,
+    authorizeViaRole('hr_admin', 'head_office_admin'),
+    AdminController.getChildServices
+)
+
 router.patch(
     '/services/update/:id',
     updateServicePartialLimiter,
