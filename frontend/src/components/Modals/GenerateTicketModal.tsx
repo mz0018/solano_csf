@@ -170,22 +170,37 @@ export const GenerateTicketModal = ({
 
               <div className="w-96 space-y-2">
                 {sortedServices.map((service) => (
-                  <label
-                    key={service.code}
-                    className="flex items-center gap-3 p-3 border border-gray-200 rounded-md cursor-pointer hover:bg-gray-50 transition-colors"
-                  >
-                    <input
-                      type="checkbox"
-                      value={service.code}
-                      checked={selectedService.includes(service.code)}
-                      onChange={() => handleServiceChange(service.code)}
-                      className="h-4 w-4 rounded text-blue-500 focus:ring-blue-500"
-                    />
+                  <div key={service.code}>
+                    <label className="flex items-center gap-3 p-3 border border-gray-200 rounded-md cursor-pointer hover:bg-gray-50 transition-colors">
+                      <input
+                        type="checkbox"
+                        value={service.code}
+                        checked={selectedService.includes(service.code)}
+                        onChange={() => handleServiceChange(service.code)}
+                        className="h-4 w-4 rounded text-blue-500 focus:ring-blue-500"
+                      />
 
-                    <span className="text-sm text-gray-700">
-                      {service.name}
-                    </span>
-                  </label>
+                      <span className="text-sm text-gray-700">
+                        {service.name}
+                      </span>
+                    </label>
+
+                    {service.code === "APPLICATION_FOR_LEAVE" &&
+                      selectedService.includes("APPLICATION_FOR_LEAVE") && (
+                        <select
+                          className="w-full mt-2 p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                          defaultValue=""
+                        >
+                          <option value="" disabled>
+                            Select leave type
+                          </option>
+                          <option value="LEAVE_1">Leave 1</option>
+                          <option value="LEAVE_2">Leave 2</option>
+                          <option value="LEAVE_3">Leave 3</option>
+                          <option value="LEAVE_4">Leave 4</option>
+                        </select>
+                      )}
+                  </div>
                 ))}
 
                 {isOtherSelected && (
