@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-
+import { Select } from "../../ui/form/Select"
 import { ModalUI } from "../../ui/form/ModalUI"
 import { Button } from "../../ui/form/Buttons"
 import { useGenerateTicket } from "../../hooks/useGenerateTicket"
@@ -187,8 +187,9 @@ export const GenerateTicketModal = ({
 
                     {service.code === "APPLICATION_FOR_LEAVE" &&
                       selectedService.includes("APPLICATION_FOR_LEAVE") && (
-                        <select
-                          className="w-full mt-2 p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                        <Select
+                          variant="admin"
+                          className="mt-2"
                           defaultValue=""
                         >
                           <option value="" disabled>
@@ -198,7 +199,7 @@ export const GenerateTicketModal = ({
                           <option value="LEAVE_2">Leave 2</option>
                           <option value="LEAVE_3">Leave 3</option>
                           <option value="LEAVE_4">Leave 4</option>
-                        </select>
+                        </Select>
                       )}
                   </div>
                 ))}
