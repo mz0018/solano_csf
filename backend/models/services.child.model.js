@@ -18,4 +18,4 @@ const servicesChildSchema = new mongoose.Schema(
 
 servicesChildSchema.index({ officeCode: 1, code: 1 }, { unique: true });
 
-export default mongoose.model('Service', servicesChildSchema);
+export default mongoose.model('ChildServices', servicesChildSchema);

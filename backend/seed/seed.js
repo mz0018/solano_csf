@@ -2,8 +2,10 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import Office from '../models/office.model.js';
 import Service from '../models/service.model.js'
+import ChildService from '../models/services.child.model.js';
 import { offices } from './offices.seed.js';
 import { services } from './services/index.js';
+import { hrmoLeaveChildServices } from './services/hrmo.leave.services.js';
 
 dotenv.config();
 
@@ -29,9 +31,18 @@ const run = async () => {
     );
   }
 
+  for (const childService of hrmoLeaveChildServices) {
+    await ChildService.findOneAndUpdate(
+      { officeCode: childService.officeCode, code: childService.code },
+      { $set: childService },
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+  }
+
   const officeCount = await Office.countDocuments();
   const serviceCount = await Service.countDocuments();
-  console.log(`Seeded ${officeCount} offices, ${serviceCount} services`);
+  const childServiceCount = await ChildService.countDocuments();
+  console.log(`Seeded ${officeCount} offices, ${serviceCount} services, ${childServiceCount} child services`);
 
   await mongoose.disconnect();
 };
