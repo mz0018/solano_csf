@@ -20,7 +20,7 @@ const SecuritySettings = () => {
     <AdminResponsiveContainer>
 
       {/* Page Header */}
-      <div className="mb-4 flex w-full items-center gap-3 border-b border-gray-300 py-3">
+      <div className="flex w-full items-center gap-3 border-b border-gray-300 py-3">
         <ShieldCheck
           size={22}
           strokeWidth={2}
@@ -39,7 +39,7 @@ const SecuritySettings = () => {
       </div>
 
       {/* Change Password */}
-      <div className="w-full">
+      <div className="w-full px-5">
         <button
           type="button"
           onClick={() => toggleSection("change-password")}
@@ -66,7 +66,7 @@ const SecuritySettings = () => {
       </div>
 
       {/* Login History */}
-      <div className="w-full">
+      <div className="w-full px-5">
         <button
           type="button"
           onClick={() => toggleSection("login-history")}

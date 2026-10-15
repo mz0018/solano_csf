@@ -47,7 +47,7 @@ export const ChangePassword = () => {
     confirmPassword === newPassword;
   const isRateLimited = (changePasswordMutation.error as Error & { status?: number })?.status === 429;
   return (
-    <>
+    <div className="mx-9">
       <span className="text-sm text-gray-500 mb-4">
         To help protect your account, password changes are limited to once every 60 days.
       </span>
@@ -136,6 +136,6 @@ export const ChangePassword = () => {
           {changePasswordMutation.isPending ? "Changing..." : "Change Password"}
         </button>
       </form>
-    </>
+    </div>
   );
 };
