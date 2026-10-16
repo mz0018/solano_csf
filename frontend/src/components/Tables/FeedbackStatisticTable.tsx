@@ -8,9 +8,15 @@ type ReportStatistics = {
     totalFeedbacks: number;
     feedbacks: FeedbackItem[];
     serviceTransactions: { service: string; totalTransactions: number }[];
+    services: ReportService[];
     office: { code: string; name: string };
     dateFrom: string;
     dateTo: string;
+};
+
+type ReportService = {
+  service: string;
+  type: string;
 };
 
 type FeedbackStatisticTableProps = {
@@ -59,6 +65,7 @@ export const FeedbackStatisticTable = ({ stats, isLoading, error }: FeedbackStat
                     selectedDateFrom={stats.dateFrom}
                     selectedDateTo={stats.dateTo}
                     serviceTransactions={stats.serviceTransactions} 
+                    services={stats.services}
                 />
             </div>
         </>

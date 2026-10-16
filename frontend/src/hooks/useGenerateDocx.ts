@@ -11,6 +11,7 @@ export type DocxInput = {
   selectedDateFrom?: string;
   selectedDateTo?: string;
   serviceTransactions: { service: string; totalTransactions: number }[]; 
+  services: { service: string; type: string }[];
 };
 
 const lockAllTables = async (blob: Blob): Promise<Blob> => {
@@ -56,7 +57,7 @@ const lockAllTables = async (blob: Blob): Promise<Blob> => {
 
 export const useGenerateDocx = () => {
   const downloadDocx = async (
-    { chartImages, feedback, selectedOfficeName, selectedDateFrom, selectedDateTo, serviceTransactions }: DocxInput, filename = "report.docx") => {
+    { chartImages, feedback, selectedOfficeName, selectedDateFrom, selectedDateTo, serviceTransactions, services }: DocxInput, filename = "report.docx") => {
       
     // Build the document
     const doc = await buildDocument({
@@ -66,6 +67,7 @@ export const useGenerateDocx = () => {
       selectedDateFrom,
       selectedDateTo,
       serviceTransactions,
+      services,
     });
 
     // Convert the docx document into a Blob

@@ -18,6 +18,7 @@ export type ReportChartsProps = {
     selectedDateFrom: string;
     selectedDateTo: string;
     serviceTransactions: { service: string; totalTransactions: number }[];
+    services: { service: string; type: string }[];
 };
 
 const COLORS = [
@@ -31,7 +32,7 @@ const COLORS = [
     "#F97316",
 ];
 
-export const ReportCharts = ({ feedback, selectedOfficeName, selectedDateFrom, selectedDateTo, serviceTransactions }: ReportChartsProps) => {
+export const ReportCharts = ({ feedback, selectedOfficeName, selectedDateFrom, selectedDateTo, serviceTransactions, services }: ReportChartsProps) => {
     const chartRefs = useRef<(HTMLDivElement | null)[]>([]);
     const { handleCapture, isCapturing } = useCaptureChart()
 
@@ -69,6 +70,7 @@ export const ReportCharts = ({ feedback, selectedOfficeName, selectedDateFrom, s
             selectedDateFrom={selectedDateFrom}
             selectedDateTo={selectedDateTo}
             serviceTransactions={serviceTransactions}
+            services={services}
         />
 
         <div className="flex flex-wrap gap-6">

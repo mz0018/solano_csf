@@ -12,15 +12,20 @@ import type { FeedbackItem } from "../../components/buttons/BtnGenerateReport";
 export interface ServiceSurveyed {
   feedback: FeedbackItem[];
   selectedOfficeName?: string;
+  services: { service: string; type: string }[];
 }
 
 export const createAverageScorePerService = ({
   feedback,
-  selectedOfficeName
+  selectedOfficeName,
+  services,
 }: ServiceSurveyed) => {
   const serviceGroups: Record<string, FeedbackItem[]> = {};
+  const typeByService = new Map(
+    services.map(({ service, type }) => [service, type.toLowerCase()])
+  );
 
-  console.log(feedback)
+  console.log(services)
 
   feedback.forEach((item) => {
     const codes: string[] = Array.isArray((item).service)
@@ -28,6 +33,8 @@ export const createAverageScorePerService = ({
       : [(item).service];
 
     codes.forEach((c) => {
+      if (typeByService.get(c) !== "external") return;
+
       const key = c.startsWith("Other Service:") ? "Other Service" : c;
       serviceGroups[key] ??= [];
       serviceGroups[key].push(item);
@@ -201,13 +208,15 @@ export const createAverageScorePerService = ({
 
   const satWord = overallAvg >= 4.5 ? "high" : overallAvg >= 3.5 ? "moderate" : "low";
   const perfectSentence =
-    perfect.length > 0
+    serviceStats.length === 0
+      ? ""
+      : perfect.length > 0
       ? ` Services with perfect scores, such as ${listNames(perfect.map((s) => s.service))}, highlight exemplary performance and customer delight.`
       : ` The highest-scoring service, "${highest.service}", reached an average of ${fmt(highest.avg)}, highlighting exemplary performance.`;
 
   const analysisText =
-    feedback.length === 0 || serviceStats.length === 0
-      ? "No responses were provided for analysis."
+    serviceStats.length === 0
+      ? "No external service responses were provided for analysis."
       : `The external services offered by the ${selectedOfficeName ?? "office"} generally reflect ${satWord} levels of customer satisfaction, as indicated by average scores ranging from ${fmt(minAvg)} to ${fmt(maxAvg)}. ${perfectSentence} Response counts range from ${minResp} to ${maxResp} per service, with "${mostResponses.service}" recording the most at ${mostResponses.responses} responses. The lowest-scoring service, "${lowest.service}" recorded an average of ${fmt(lowest.avg)}, pinpointing an area for continued focus. Overall, continued focus on improving response coverage and maintaining high service standards will be essential for sustaining positive public perception and operational excellence.`;
   // ---------------------------------------------------------------
 

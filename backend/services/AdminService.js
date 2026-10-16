@@ -313,6 +313,7 @@ class AdminService {
             serviceTransactions,
             totalFeedbacks: feedbacks.length,
             feedbacks: feedbacksWithNames,
+            services,
         };
     }
 

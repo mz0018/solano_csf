@@ -38,9 +38,10 @@ interface BtnGenerateReportProps {
   selectedDateFrom: string
   selectedDateTo: string
   serviceTransactions: { service: string; totalTransactions: number }[]
+  services: { service: string; type: string }[]
 }
 
-export const BtnGenerateReport = ({ isCapturing, handleCapture, chartRefs, feedback, selectedOfficeName, selectedDateFrom, selectedDateTo, serviceTransactions }: BtnGenerateReportProps) => {
+export const BtnGenerateReport = ({ isCapturing, handleCapture, chartRefs, feedback, selectedOfficeName, selectedDateFrom, selectedDateTo, serviceTransactions, services }: BtnGenerateReportProps) => {
   const { downloadDocx } = useGenerateDocx()
 
   const onClick = async () => {
@@ -53,6 +54,7 @@ export const BtnGenerateReport = ({ isCapturing, handleCapture, chartRefs, feedb
       selectedDateFrom,
       selectedDateTo,
       serviceTransactions,
+      services,
     }, `CSF-${selectedOfficeName}-${selectedDateFrom}-${selectedDateTo}-report.docx`)
   }
 

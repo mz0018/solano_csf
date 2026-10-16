@@ -6,10 +6,16 @@ type ServiceTransaction = {
     totalTransactions: number;
 };
 
+export type ReportService = {
+  service: string;
+  type: string;
+};
+
 type ReportStatistics = {
     totalFeedbacks: number;
     feedbacks: FeedbackItem[];
     serviceTransactions: ServiceTransaction[];
+    services: ReportService[];
     office: { code: string; name: string };
     dateFrom: string;
     dateTo: string;

@@ -19,7 +19,7 @@ import { createAgencyPlan } from "./sections/createAgencyPlan";
 
 import type { DocxInput } from "../hooks/useGenerateDocx";
 
-export const buildDocument = async ({ chartImages, feedback, selectedOfficeName, selectedDateFrom, selectedDateTo, serviceTransactions }: DocxInput) => {
+export const buildDocument = async ({ chartImages, feedback, selectedOfficeName, selectedDateFrom, selectedDateTo, serviceTransactions, services }: DocxInput) => {
 
   const [addressChart, affiliationChart, ageGroupChart, employmentChart, genderChart] = chartImages;
   // const [affiliationChart, ageGroupChart, employmentChart, genderChart] = chartImages;
@@ -211,7 +211,7 @@ export const buildDocument = async ({ chartImages, feedback, selectedOfficeName,
           ...chart(employmentChart),
 
           ...createCountServiceQuality({ feedback }),
-          ...createAverageScorePerService({ feedback, selectedOfficeName }),
+          ...createAverageScorePerService({ feedback, selectedOfficeName, services }),
           ...createFreeResponses({ feedback, selectedDateFrom, selectedDateTo }),
           ...createResponseRate({ feedback, selectedOfficeName, serviceTransactions }),
 
