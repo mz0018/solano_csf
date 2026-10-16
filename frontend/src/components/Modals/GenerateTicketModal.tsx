@@ -45,6 +45,7 @@ export const GenerateTicketModal = ({
   const [selectedService, setSelectedService] = useState<string[]>([])
   const [selectedLeaveType, setSelectedLeaveType] = useState<string>("")
   const [serviceError, setServiceError] = useState<string>("")
+  const [childServiceError, setChildServiceError] = useState<string>("")
   const [otherText, setOtherText] = useState<string>("")
   const [otherError, setOtherError] = useState<string>("")
   const [activeQr, setActiveQr] = useState<GeneratedQrCode | null>(null)
@@ -85,6 +86,11 @@ export const GenerateTicketModal = ({
   }
 
   const handleGenerateTicket = async () => {
+    if (selectedService.includes("APPLICATION_FOR_LEAVE") && !selectedLeaveType) {
+      setChildServiceError("Please select a leave type")
+      return
+    }
+
     if (selectedService.length === 0) {
       setServiceError("Service is required")
       return
@@ -208,11 +214,16 @@ export const GenerateTicketModal = ({
 
                     {service.code === "APPLICATION_FOR_LEAVE" &&
                       selectedService.includes("APPLICATION_FOR_LEAVE") && (
+                        <>
                         <Select
                           variant="admin"
                           className="mt-2"
                           value={selectedLeaveType}
-                          onChange={(e) => setSelectedLeaveType(e.target.value)}
+                          onChange={(e) => {
+                            setSelectedLeaveType(e.target.value)
+                            setChildServiceError("")
+                          }}
+                          error={childServiceError}
                         >
                           <option value="" disabled>
                             Select leave type
@@ -224,6 +235,10 @@ export const GenerateTicketModal = ({
                             </option>
                           ))}
                         </Select>
+                        {childServiceError && (
+                          <ErrorText message={childServiceError} />
+                        )}
+                        </>
                       )}
                   </div>
                 ))}
@@ -247,9 +262,7 @@ export const GenerateTicketModal = ({
                     />
 
                     {otherError && (
-                      <p className="mt-1 text-xs text-red-500">
-                        {otherError}
-                      </p>
+                      <ErrorText message={otherError} />
                     )}
                   </div>
                 )}
