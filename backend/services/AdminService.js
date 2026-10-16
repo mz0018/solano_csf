@@ -23,15 +23,15 @@ const calculateRatingAverage = (ratings = {}) => {
 
 class AdminService {
 
-    async generateTicket(userId, selectedService, otherServiceDetail, selectedLeaveType) {
+    async generateTicket(userId, selectedService, otherServiceDetail, selectedChildServices) {
         console.log(selectedService)
-        console.log(selectedLeaveType)
+        console.log(selectedChildServices)
 
         if (!selectedService || (Array.isArray(selectedService) && selectedService.length === 0)) {
             throw new ErrorController('No service found', 400)
         }
 
-        if (selectedService.includes('APPLICATION_FOR_LEAVE') && !selectedLeaveType) {
+        if (selectedService.includes('APPLICATION_FOR_LEAVE') && !selectedChildServices) {
             throw new ErrorController('No selected type of leave found', 400)
         }
 
@@ -60,6 +60,7 @@ class AdminService {
 
         const ticket = await Queue.create({
             selectedService: services,
+            selectedChildService: selectedChildServices,
             otherServiceDetail: normalizedOtherDetail,
             officeCode: `${officeCode}`,
             code: generateCode(),

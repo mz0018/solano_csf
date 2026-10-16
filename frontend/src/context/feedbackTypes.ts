@@ -2,6 +2,7 @@ export interface VerifiedQueue {
   code?: string
   officeCode?: string
   selectedService?: string[]
+  selectedChildService?: string[]
   services?: { code: string; name: string }[]
   source?: "HRMO"
 }

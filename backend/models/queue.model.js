@@ -6,6 +6,10 @@ const queueSchema = new mongoose.Schema(
       type: [String],
       required: true
     },
+    selectedChildService: {
+      type: [String],
+      default: null,
+    },
     otherServiceDetail: {
       type: String,
       default: null,

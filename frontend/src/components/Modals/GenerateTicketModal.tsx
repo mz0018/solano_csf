@@ -43,7 +43,7 @@ export const GenerateTicketModal = ({
   const [services, setServices] = useState<Service[]>([])
   const [childServices, setChildServices] = useState<ChildService[]>([])
   const [selectedService, setSelectedService] = useState<string[]>([])
-  const [selectedLeaveType, setSelectedLeaveType] = useState<string>("")
+  const [selectedChildServices, setSelectedChildServices] = useState<string>("")
   const [serviceError, setServiceError] = useState<string>("")
   const [childServiceError, setChildServiceError] = useState<string>("")
   const [otherText, setOtherText] = useState<string>("")
@@ -86,7 +86,7 @@ export const GenerateTicketModal = ({
   }
 
   const handleGenerateTicket = async () => {
-    if (selectedService.includes("APPLICATION_FOR_LEAVE") && !selectedLeaveType) {
+    if (selectedService.includes("APPLICATION_FOR_LEAVE") && !selectedChildServices) {
       setChildServiceError("Please select a leave type")
       return
     }
@@ -104,7 +104,7 @@ export const GenerateTicketModal = ({
     setServiceError("")
     setOtherError("")
 
-    const qrCodes = await createNewTicket(selectedService, otherText.trim(), selectedLeaveType)
+    const qrCodes = await createNewTicket(selectedService, otherText.trim(), selectedChildServices)
     if (qrCodes?.length) {
       setActiveQr(qrCodes[0])
     }
@@ -218,9 +218,9 @@ export const GenerateTicketModal = ({
                         <Select
                           variant="admin"
                           className="mt-2"
-                          value={selectedLeaveType}
+                          value={selectedChildServices}
                           onChange={(e) => {
-                            setSelectedLeaveType(e.target.value)
+                            setSelectedChildServices(e.target.value)
                             setChildServiceError("")
                           }}
                           error={childServiceError}

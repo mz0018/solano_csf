@@ -18,6 +18,12 @@ export const ServiceAssessmentForm = ({ onNext, onBack }: Props) => {
             ? [verified.selectedService]
             : [];
 
+    const selectedChildService = Array.isArray(verified?.selectedChildService)
+        ? verified.selectedChildService
+        : verified?.selectedChildService
+            ? [verified.selectedChildService]
+            : [];
+
     const ticketService = selectedService[0] ?? "";
 
     const isLocked = selectedService.length > 0;
@@ -31,9 +37,6 @@ export const ServiceAssessmentForm = ({ onNext, onBack }: Props) => {
         updateFormData(Object.fromEntries(new FormData(e.currentTarget)));
         onNext();
     };
-
-    console.log(services)
-    console.log(selectedService)
 
     return (
         <CsfFormUI>
@@ -70,7 +73,11 @@ export const ServiceAssessmentForm = ({ onNext, onBack }: Props) => {
                                     <span className="text-[var(--theme-text)]">{s.name}</span>
                                     {isLocked && selectedService.includes(s.code) && (
                                         <span className="text-sm italic opacity-70 tracking-wider text-[var(--theme-text)]">
-                                            (Selected)
+                                            / {selectedChildService
+                                                .toString()
+                                                .toLowerCase()
+                                                .replace(/_/g, ' ')
+                                                .replace(/\b\w/g, char => char.toUpperCase())} (Selected)
                                         </span>
                                     )}
                                 </label>
