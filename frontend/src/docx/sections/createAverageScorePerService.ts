@@ -20,6 +20,8 @@ export const createAverageScorePerService = ({
 }: ServiceSurveyed) => {
   const serviceGroups: Record<string, FeedbackItem[]> = {};
 
+  console.log(feedback)
+
   feedback.forEach((item) => {
     const codes: string[] = Array.isArray((item).service)
       ? (item).service

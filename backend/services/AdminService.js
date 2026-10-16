@@ -255,7 +255,7 @@ class AdminService {
             .lean()
             .select('service otherServiceDetail client.gender client.affiliation client.ageGroup client.employmentStatus client.address ratings comments createdAt'),
             Service.find({ officeCode })
-                .select('code name')
+                .select('code name type')
                 .lean(),
             Queue.aggregate([                      
                 {
@@ -268,6 +268,9 @@ class AdminService {
 
         const serviceNameMap = Object.fromEntries(
             serviceDocs.map(s => [s.code, s.name])
+        );
+        const serviceTypeMap = Object.fromEntries(
+            serviceDocs.map(s => [s.code, s.type])
         );
 
         const serviceTransactions = queueServiceCounts
@@ -287,6 +290,21 @@ class AdminService {
             })
             return { ...f, service: names }
         });
+
+        const services = feedbacks.flatMap(item => {
+            const codes = Array.isArray(item.service)
+                ? item.service
+                : item.service ? [item.service] : [];
+
+            return codes.map(code => ({
+                service: code === 'OTHER_SERVICE' && item.otherServiceDetail
+                    ? `Other Service: ${item.otherServiceDetail}`
+                    : serviceNameMap[code] || code,
+                type: serviceTypeMap[code] || 'unknown'
+            }));
+        });
+
+        console.log(services)
 
         return {
             office,
