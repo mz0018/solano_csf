@@ -23,9 +23,16 @@ const calculateRatingAverage = (ratings = {}) => {
 
 class AdminService {
 
-    async generateTicket(userId, selectedService, otherServiceDetail) {
-        if (!selectedService) {
+    async generateTicket(userId, selectedService, otherServiceDetail, selectedLeaveType) {
+        console.log(selectedService)
+        console.log(selectedLeaveType)
+
+        if (!selectedService || (Array.isArray(selectedService) && selectedService.length === 0)) {
             throw new ErrorController('No service found', 400)
+        }
+
+        if (selectedService.includes('APPLICATION_FOR_LEAVE') && !selectedLeaveType) {
+            throw new ErrorController('No selected type of leave found', 400)
         }
 
         const user = await User.findById(userId)
