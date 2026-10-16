@@ -6,7 +6,7 @@ export const useGenerateTicket = () => {
   const [isGeneratingTicket, setIsGeneratingTicket] = useState<boolean>(false)
   const { convertToQuickResponseCode } = useTicketToQrConversion()
 
-  const createNewTicket = async (selectedService: string[], otherServiceDetail?: string) => {
+  const createNewTicket = async (selectedService: string[], otherServiceDetail?: string, selectedLeaveType?: string) => {
     setIsGeneratingTicket(true)
     try {
       const res = await fetch(
@@ -15,7 +15,7 @@ export const useGenerateTicket = () => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
-          body: JSON.stringify({ selectedService, otherServiceDetail: otherServiceDetail?.trim() || undefined })
+          body: JSON.stringify({ selectedService, otherServiceDetail: otherServiceDetail?.trim() || undefined, selectedLeaveType })
         }
       );
 

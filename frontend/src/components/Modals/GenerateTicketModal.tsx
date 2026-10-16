@@ -43,6 +43,7 @@ export const GenerateTicketModal = ({
   const [services, setServices] = useState<Service[]>([])
   const [childServices, setChildServices] = useState<ChildService[]>([])
   const [selectedService, setSelectedService] = useState<string[]>([])
+  const [selectedLeaveType, setSelectedLeaveType] = useState<string>("")
   const [serviceError, setServiceError] = useState<string>("")
   const [otherText, setOtherText] = useState<string>("")
   const [otherError, setOtherError] = useState<string>("")
@@ -97,7 +98,7 @@ export const GenerateTicketModal = ({
     setServiceError("")
     setOtherError("")
 
-    const qrCodes = await createNewTicket(selectedService, otherText.trim())
+    const qrCodes = await createNewTicket(selectedService, otherText.trim(), selectedLeaveType)
     if (qrCodes?.length) {
       setActiveQr(qrCodes[0])
     }
@@ -210,12 +211,13 @@ export const GenerateTicketModal = ({
                         <Select
                           variant="admin"
                           className="mt-2"
-                          defaultValue=""
+                          value={selectedLeaveType}
+                          onChange={(e) => setSelectedLeaveType(e.target.value)}
                         >
                           <option value="" disabled>
                             Select leave type
                           </option>
-
+                          
                           {childServices.map((cs) => (
                             <option key={cs._id} value={cs.code}>
                               {cs.name}

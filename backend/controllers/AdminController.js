@@ -3,6 +3,7 @@ import AdminService from '../services/AdminService.js'
 class AdminController {
     async generateTicket(req, res, next) {
         try {
+            console.log(req.body)
             const ticket = await AdminService.generateTicket(req.user_id, req.body.selectedService, req.body.otherServiceDetail)
             res.status(201).json({ ticket })
         } catch (error) { next(error) }
