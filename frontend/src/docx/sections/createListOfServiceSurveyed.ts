@@ -8,6 +8,7 @@ export interface ServiceSurveyed {
     selectedOfficeName?: string;
     selectedDateFrom?: string;
     selectedDateTo?: string;
+    services: { service: string; type: string }[];
 }
 
 export const createListOfServiceSurveyed = ({
@@ -16,9 +17,20 @@ export const createListOfServiceSurveyed = ({
     selectedOfficeName,
     selectedDateFrom,
     selectedDateTo,
+    services,
 }: ServiceSurveyed) => {
 
     const getServiceKey = (s: string) => (s.startsWith("Other Service:") ? "Other Service" : s);
+
+    const typeByService = new Map(
+        services.map(({ service, type }) => [service, type.toLowerCase()])
+    );
+
+    const getServiceType = (s: string) => {
+        const key = getServiceKey(s);
+        const type = typeByService.get(s) ?? typeByService.get(key);
+        return type ? type.toLowerCase() : "";
+    };
 
     const responsesPerService = feedback.reduce<Record<string, number>>((acc, item) => {
         const codes: string[] = Array.isArray(item.service) ? item.service : [item.service];
@@ -48,26 +60,43 @@ export const createListOfServiceSurveyed = ({
         textFill?: string
     ) =>
         new TableCell({
-        margins: { top: 20, bottom: 20, left: 50, right: 50 },
-        ...(fill && { shading: { fill } }),
-        children: [
-            new Paragraph({
-            alignment,
-            children: [new TextRun({ text, bold, ...(textFill && { color: textFill }) })],
-            }),
-        ],
-    });
+            margins: { top: 20, bottom: 20, left: 50, right: 50 },
+            ...(fill && { shading: { fill } }),
+            children: [
+                new Paragraph({
+                    alignment,
+                    children: [new TextRun({ text, bold, ...(textFill && { color: textFill }) })],
+                }),
+            ],
+        });
 
-    const totalResponses = serviceTransactions.reduce(
+    const externalServices = serviceTransactions.filter(
+        (t) => getServiceType(t.service) === "external"
+    );
+
+    const internalServices = serviceTransactions.filter(
+        (t) => getServiceType(t.service) === "internal"
+    );
+
+    const totalResponsesExternal = externalServices.reduce(
         (sum, t) => sum + (responsesPerService[getServiceKey(t.service)] ?? 0),
         0
     );
-    const totalTransactions = serviceTransactions.reduce(
+    const totalTransactionsExternal = externalServices.reduce(
         (sum, t) => sum + t.totalTransactions,
         0
     );
 
-    const table = new Table({
+    const totalResponsesInternal = internalServices.reduce(
+        (sum, t) => sum + (responsesPerService[getServiceKey(t.service)] ?? 0),
+        0
+    );
+    const totalTransactionsInternal = internalServices.reduce(
+        (sum, t) => sum + t.totalTransactions,
+        0
+    );
+
+    const externalTable = new Table({
         indent: { size: 1070, type: "dxa" },
         width: { size: 8290, type: WidthType.DXA },
         rows: [
@@ -79,7 +108,7 @@ export const createListOfServiceSurveyed = ({
                 ],
             }),
 
-            ...serviceTransactions.map(({ service, totalTransactions }) =>
+            ...externalServices.map(({ service, totalTransactions }) =>
                 new TableRow({
                     children: [
                         dataCell(service),
@@ -91,9 +120,41 @@ export const createListOfServiceSurveyed = ({
 
             new TableRow({
                 children: [
-                dataCell("Total", AlignmentType.END, true),
-                dataCell(totalResponses.toString(), AlignmentType.CENTER, true, "#FFFF00", "#4472C4"),
-                dataCell(totalTransactions.toString(), AlignmentType.CENTER, true, "#FFFF00", "#4472C4"),
+                    dataCell("Total", AlignmentType.END, true),
+                    dataCell(totalResponsesExternal.toString(), AlignmentType.CENTER, true, "#FFFF00", "#4472C4"),
+                    dataCell(totalTransactionsExternal.toString(), AlignmentType.CENTER, true, "#FFFF00", "#4472C4"),
+                ],
+            }),
+        ],
+    });
+
+    const internalTable = new Table({
+        indent: { size: 1070, type: "dxa" },
+        width: { size: 8290, type: WidthType.DXA },
+        rows: [
+            new TableRow({
+                children: [
+                    headerCell(`${selectedOfficeName}`),
+                    headerCell("Responses"),
+                    headerCell("Total Transactions"),
+                ],
+            }),
+
+            ...internalServices.map(({ service, totalTransactions }) =>
+                new TableRow({
+                    children: [
+                        dataCell(service),
+                        dataCell((responsesPerService[getServiceKey(service)] ?? 0).toString(), AlignmentType.CENTER),
+                        dataCell(totalTransactions.toString(), AlignmentType.CENTER),
+                    ],
+                })
+            ),
+
+            new TableRow({
+                children: [
+                    dataCell("Total", AlignmentType.END, true),
+                    dataCell(totalResponsesInternal.toString(), AlignmentType.CENTER, true, "#FFFF00", "#4472C4"),
+                    dataCell(totalTransactionsInternal.toString(), AlignmentType.CENTER, true, "#FFFF00", "#4472C4"),
                 ],
             }),
         ],
@@ -171,7 +232,19 @@ export const createListOfServiceSurveyed = ({
             ],
         }),
 
-        table,
+        externalTable,
+        tableSpacing,
+
+        new Paragraph({
+            alignment: AlignmentType.JUSTIFIED,
+            indent: { left: 1070 },
+            spacing: { before: 200 },
+            children: [
+                new TextRun({ text: "Internal Services" }),
+            ],
+        }),
+
+        internalTable,
         tableSpacing,
 
         new Paragraph({
