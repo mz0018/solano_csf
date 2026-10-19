@@ -62,7 +62,7 @@ router.get(
 router.get(
     '/rendered/service',
     authorizeViaCookie,
-    authorizeViaRole('head_office_admin'),
+    authorizeViaRole('hr_admin', 'head_office_admin'),
     AdminController.getRenderedService
 )
 
