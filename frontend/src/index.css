@@ -117,17 +117,7 @@
 .sidebar-surface {
   background-color:	#F4F5FA;
 }
-.sidebar-item {
-  width: 100%;
-  min-height: 2.5rem;
-  box-sizing: border-box;
-  font-size: 0.875rem;
-  font-weight: 500;
-  line-height: 1.25rem;
-}
-.sidebar-link-border {
-  border-left: 2px solid transparent;
-  transition: border-color 300ms ease;
+
 .admin-content {
   color: #1f2937;
   font-size: 0.875rem;
@@ -162,14 +152,6 @@
 .admin-content span {
   line-height: 1.25rem;
 }
-}
-.sidebar-link-border:hover {
-  border-left-color: #628dec;
-}
-/* Add this line: */
-.sidebar-link-border.active {
-  border-left-color: #628dec;
-}
 
 .admin-blue-button {
   background-color: #3b82f6; /* bg-blue-500 */
@@ -200,17 +182,4 @@
   background-color: #93c5fd;
   color: #e5e7eb;
   cursor: not-allowed;
-}
-
-.sidebar-link-child-border {
-  border-left: 2px solid transparent;
-  transition: border-color 300ms ease;
-}
-
-.sidebar-link-child-border:hover {
-  border-left-color: transparent;
-}
-
-.sidebar-link-child-border.active {
-  border-left-color: transparent;
 }
