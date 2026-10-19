@@ -53,13 +53,13 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
   }, [collapsed])
 
   return (
-    <aside className={`bg-gray-700 ${collapsed ? 'w-16' : 'w-80'}`}>
+    <aside className={`flex h-screen min-h-0 shrink-0 flex-col border-r border-slate-200 bg-white ${collapsed ? 'w-16' : 'w-64'}`}>
 
       <>
-        <div className='bg-red-500'>
+        <div className={`flex h-20 shrink-0 items-center border-b border-slate-100 px-3 ${collapsed ? 'justify-center' : 'gap-3'}`}>
           {/* User Initial Avatar */}
           <div
-            className={`${collapsed ? 'w-0 opacity-0 scale-75 -ml-3' : 'w-10 opacity-100 scale-100 ml-0'}`}>
+            className={`${collapsed ? 'hidden' : 'h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-blue-50'}`}>
             <img
               src={ '/img/logo.png'}
               alt={user?.userName || 'User'}
@@ -69,27 +69,29 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
 
           {/* User Information */}
           <div
-            className={`${collapsed ? 'w-0 max-w-0 opacity-0 -translate-x-2' : 'w-[180px] max-w-[180px] opacity-100 translate-x-0'}`}
+            className={`${collapsed ? 'hidden' : 'min-w-0 flex-1'}`}
           >
             <div>
-              <h1>
+              <h1 className="truncate text-sm font-semibold tracking-tight text-slate-800">
                 Client Satisfactory
               </h1>
-              <span>
+              <span className="mt-0.5 block text-xs text-slate-500">
                 Feedback System
               </span>
             </div>
           </div>
-        </div>
 
         <button
           onClick={() => setCollapsed(!collapsed)}
+          aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          className="ml-auto inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100 hover:text-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
         >
-          <PanelLeft size={20}/>
+          <PanelLeft size={18}/>
         </button>
+        </div>
       </>
 
-      <nav className="bg-blue-500 flex-1 p-2 space-y-2 overflow-hidden">
+      <nav className="flex-1 space-y-1 overflow-y-auto px-2 py-4">
         {navLinks.map((item) =>
           item.children ? (
             <DropdownHelper
@@ -102,19 +104,15 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
             <NavLink
               key={item.path}
               to={item.path || '#'}
-              className={({ isActive }) => `${collapsed? 'w-full justify-center px-0' : 'w-full px-4 gap-3'} ${isActive ? 'bg-[#dbeafe] text-[#1e3a5f] active' : 'text-[#476581] hover:bg-[#dbeafe] hover:text-[#1e3a5f] p-5'}`}>
+              title={collapsed ? item.name : undefined}
+              className={({ isActive }) => `flex min-h-10 items-center rounded-md text-sm font-medium ${collapsed ? 'justify-center px-0' : 'gap-3 px-3'} ${isActive ? 'bg-blue-50 text-blue-800' : 'text-slate-600 hover:bg-slate-50 hover:text-blue-700'}`}>
               {({ isActive }) => (
                 <>
-                  {/* Fixed icon container */}
-                  <span
-                    className={`${isActive ? 'text-[#1e3a5f]' : 'text-[#476581]'}`}
-                  >
+                  <span className={`shrink-0 ${isActive ? 'text-blue-700' : 'text-slate-400'}`}>
                     {item.icon}
                   </span>
 
-                  {/* Animated label */}
-                  <span
-                    className={`${collapsed ? 'w-0 max-w-0 opacity-0 -translate-x-2' : 'w-auto max-w-[200px] opacity-100 translate-x-0'}`}>
+                  <span className={`${collapsed ? 'hidden' : 'truncate'}`}>
                     {item.name}
                   </span>
                 </>

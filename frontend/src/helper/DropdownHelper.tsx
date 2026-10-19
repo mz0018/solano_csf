@@ -29,27 +29,30 @@ export const DropdownHelper = ({ item, collapsed, setCollapsed }: Props) => {
 
           setOpen(prev => !prev)
         }}
+        title={collapsed ? item.name : undefined}
+        aria-expanded={!collapsed && open}
+        className={`flex min-h-10 w-full items-center rounded-md text-left text-sm font-medium ${collapsed ? 'justify-center px-0' : 'gap-3 px-3'} ${open ? 'bg-slate-50 text-blue-800' : 'text-slate-600 hover:bg-slate-50 hover:text-blue-700'}`}
       >
-        <span>
+        <span className="shrink-0 text-slate-400">
           {item.icon}
         </span>
 
         {!collapsed && (
           <>
-            <span>
+            <span className="min-w-0 flex-1 truncate">
               {item.name}
             </span>
 
             <ChevronDown
-              size={18}
-              className={`${open ? 'rotate-180' : ''}`}
+              size={16}
+              className={`shrink-0 duration-150 ${open ? 'rotate-180' : ''}`}
             />
           </>
         )}
       </button>
 
       {!collapsed && open && (
-        <div>
+        <div className="ml-5 mt-1 space-y-1 border-l border-slate-200 pl-3">
           {item.children?.map((child) => (
             <NavLink
               key={child.path}
@@ -60,8 +63,8 @@ export const DropdownHelper = ({ item, collapsed, setCollapsed }: Props) => {
                   setCollapsed(true)
                 }
               }}
-              className={({ isActive }) => `${isActive ? 'bg-[#dbeafe] text-[#1e3a5f] active' : 'text-[#476581] hover:bg-[#dbeafe] hover:text-[#1e3a5f]'}`}>
-                <span>{child.name}</span>
+              className={({ isActive }) => `flex min-h-9 items-center rounded-md px-3 text-sm ${isActive ? 'bg-blue-50 font-medium text-blue-800' : 'text-slate-500 hover:bg-slate-50 hover:text-blue-700'}`}>
+                <span className="truncate">{child.name}</span>
               </NavLink>
           ))}
         </div>
