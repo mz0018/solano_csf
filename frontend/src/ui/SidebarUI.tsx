@@ -53,10 +53,10 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
   }, [collapsed])
 
   return (
-    <aside className={`${collapsed ? 'w-16' : 'w-80'}`}>
+    <aside className={`bg-gray-700 ${collapsed ? 'w-16' : 'w-80'}`}>
 
-      <div>
-        <div>
+      <>
+        <div className='bg-red-500'>
           {/* User Initial Avatar */}
           <div
             className={`${collapsed ? 'w-0 opacity-0 scale-75 -ml-3' : 'w-10 opacity-100 scale-100 ml-0'}`}>
@@ -87,9 +87,9 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
         >
           <PanelLeft size={20}/>
         </button>
-      </div>
+      </>
 
-      <nav className="flex-1 p-2 space-y-2 overflow-hidden">
+      <nav className="bg-blue-500 flex-1 p-2 space-y-2 overflow-hidden">
         {navLinks.map((item) =>
           item.children ? (
             <DropdownHelper
