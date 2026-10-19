@@ -22,6 +22,18 @@ export const authorizeViaCookie = async (req, res, next) => {
         }
 
         if (!user.sessionExpiresAt || user.sessionExpiresAt.getTime() <= Date.now()) {
+            try {
+                await User.updateOne(
+                    {
+                        _id: decoded.id,
+                        tokenVersion: decoded.tokenVersion,
+                        sessionExpiresAt: { $lte: new Date() }
+                    },
+                    { $set: { tokenVersion: 0, sessionExpiresAt: null } }
+                )
+            } catch {
+                // best-effort release; never fail the response
+            }
             return next(new ErrorController('Session expired', 401))
         }
 

@@ -77,15 +77,18 @@ class UserService {
             {
                 _id: user._id,
                 $or: [
+                    { tokenVersion: 0 },
                     { sessionExpiresAt: null },
                     { sessionExpiresAt: { $lte: now } }
                 ]
             },
             {
-                $inc: { tokenVersion: 1 },
-                $set: { sessionExpiresAt: new Date(now.getTime() + SESSION_TTL_MS) }
+                $set: {
+                    tokenVersion: Date.now(),
+                    sessionExpiresAt: new Date(now.getTime() + SESSION_TTL_MS)
+                }
             },
-            { new: true }
+            { returnDocument: 'after' }
         )
 
         if (!updated) {
@@ -114,7 +117,7 @@ class UserService {
     async signoutUser(userId) {
         await User.updateOne(
             { _id: userId },
-            { $inc: { tokenVersion: 1 }, $set: { sessionExpiresAt: null } }
+            { $set: { tokenVersion: 0, sessionExpiresAt: null } }
         )
     }
 
@@ -153,11 +156,11 @@ class UserService {
         await User.updateOne(
             { _id: user._id },
             {
-                $inc: { tokenVersion: 1 },
                 $set: {
                     password: hashedPassword,
                     passwordChangedAt: new Date(),
                     sessionExpiresAt: null,
+                    tokenVersion: 0,
                     loginHistory: []
                 }
             }
