@@ -53,13 +53,13 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
   }, [collapsed])
 
   return (
-    <aside className={`flex h-screen min-h-0 shrink-0 flex-col border-r border-slate-200 bg-white ${collapsed ? 'w-16' : 'w-64'}`}>
+    <aside className={`flex h-screen min-h-0 shrink-0 flex-col border-r border-slate-200 bg-white ${collapsed ? 'w-16' : 'w-80'}`}>
 
       <>
         <div className={`flex h-20 shrink-0 items-center border-b border-slate-100 px-3 ${collapsed ? 'justify-center' : 'gap-3'}`}>
           {/* User Initial Avatar */}
           <div
-            className={`${collapsed ? 'hidden' : 'h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-blue-50'}`}>
+            className={`${collapsed ? 'hidden' : 'h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-[#628dec] p-2'}`}>
             <img
               src={ '/img/logo.png'}
               alt={user?.userName || 'User'}
@@ -72,12 +72,9 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
             className={`${collapsed ? 'hidden' : 'min-w-0 flex-1'}`}
           >
             <div>
-              <h1 className="truncate text-sm font-semibold tracking-tight text-slate-800">
-                Client Satisfactory
+              <h1 className="truncate text-3xl font-bold font-sans tracking-tight text-[#628dec]">
+                CSF
               </h1>
-              <span className="mt-0.5 block text-xs text-slate-500">
-                Feedback System
-              </span>
             </div>
           </div>
 
