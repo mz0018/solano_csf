@@ -97,4 +97,11 @@ router.patch(
     AdminController.updateServiceStatus
 )
 
+router.get(
+    '/users/hr-employee',
+    authorizeViaCookie,
+    authorizeViaRole('hr_admin'),
+    AdminController.getHumanResourceEmployees
+)
+
 export default router

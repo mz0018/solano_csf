@@ -128,6 +128,16 @@ class AdminController {
             next(error)
         }
     }
+
+    async getHumanResourceEmployees(req, res, next) {
+        try {
+            const userOfficeCode = req.user?.officeCode
+            const result = await AdminService.getHumanResourceEmployees(userOfficeCode)
+            res.status(200).json(result)
+        } catch (error) {
+            next(error)
+        }
+    }
 }
 
 export default new AdminController()

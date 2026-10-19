@@ -549,6 +549,27 @@ class AdminService {
         return service
     }
 
+    async getHumanResourceEmployees(userOfficeCode) {
+        if (!userOfficeCode) {
+            throw new ErrorController('Office Code not found.', 400);
+        }
+
+        if (userOfficeCode !== "HRMO") {
+            throw new ErrorController('Invalid Office Code.', 400);
+        }
+
+        const users = await User.find({
+            officeCode: userOfficeCode,
+            role: {
+                $in: ["head_office_admin", "office_admin"]
+            }
+        })
+            .select("firstName lastName status role")
+            .sort({ firstName: 1 })
+            .lean();
+
+        return users;
+    }
 }
 
 export default new AdminService
