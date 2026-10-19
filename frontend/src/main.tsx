@@ -28,6 +28,7 @@ const ActiveQueueTicket = lazy(() => import('./pages/admin/ActiveQueueTicket.tsx
 const RenderedService = lazy(() => import('./pages/admin/RenderedService.tsx'))
 const ReportsStatistics = lazy(() => import('./pages/admin/ReportStatistics.tsx'))
 const OfficesFeedbacks = lazy(() => import('./pages/admin/OfficesFeedbacks.tsx'))
+const HrEmployeeServiceRendered = lazy(() => import('./pages/admin/HrEmployeeServiceRendered.tsx'))
 
 const Settings = lazy(() => import('./pages/admin/Settings.tsx'))
 const ProfileSettings = lazy(() => import('./pages/admin/settings/ProfileSettings.tsx'))
@@ -71,6 +72,7 @@ const router = createBrowserRouter([
           { path: "queue/statistics", element: <ReportsStatistics /> },
           { path: "queue/offices/feedbacks", element: <OfficesFeedbacks /> },
           { path: "queue/service/rendered", element: <RenderedService /> },
+          { path: "service/performance-review", element: <HrEmployeeServiceRendered /> }, 
           { path: "settings", element: <Settings />,
             children: [
               { index: true, element: <Navigate to="profile" replace /> },

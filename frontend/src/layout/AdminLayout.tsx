@@ -14,6 +14,7 @@ const AdminLayout = () => {
     { name: 'Dashboard', path: '/admin/queue/dashboard', icon: <BrickWallShield size={20} />, roles: ['office_admin', 'hr_admin', 'head_office_admin'] },
     { name: 'Live Monitoring', path: '/admin/queue/monitor', icon: <Radio size={20} />, roles: ['office_admin', 'hr_admin', 'head_office_admin'] },
     { name: 'Total Service Rendered', path: '/admin/queue/service/rendered', icon: <HandCoins size={20} />, roles: ['head_office_admin'] },
+    { name: 'Service Performance Review', path: '/admin/service/performance-review', icon: <HandCoins size={20} />, roles: ['hr_admin'] },
     {
       name: 'Reports',
       icon: <Files size={20} />,
