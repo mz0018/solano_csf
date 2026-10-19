@@ -13,7 +13,7 @@ const AdminLayout = () => {
     { name: 'Overview', path: '/admin/overview', icon: <Radio size={20} />, roles: ['super_admin'] },
     { name: 'Dashboard', path: '/admin/queue/dashboard', icon: <BrickWallShield size={20} />, roles: ['office_admin', 'hr_admin', 'head_office_admin'] },
     { name: 'Live Monitoring', path: '/admin/queue/monitor', icon: <Radio size={20} />, roles: ['office_admin', 'hr_admin', 'head_office_admin'] },
-    { name: 'Total Service Rendered', path: '/admin/queue/service/rendered', icon: <HandCoins size={20} />, roles: ['head_office_admin'] },
+    { name: 'Total Service Rendered', path: '/admin/queue/service/rendered', icon: <HandCoins size={20} />, roles: ['head_office_admin', 'hr_admin'] },
     {
       name: 'Reports',
       icon: <Files size={20} />,
