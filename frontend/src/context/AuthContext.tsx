@@ -25,11 +25,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const verifyAuth = async () => {
 
-    if (!document.cookie.includes('authToken=')) {
-      setLoading(false)
-      return
-    }
-
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/verify`, { credentials: 'include' })
 
@@ -60,16 +55,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (!user) return
     const interval = setInterval(async () => {
-      if (!document.cookie.includes('authToken=')) {
-        if (!logoutAlerted.current) {
-          logoutAlerted.current = true
-          alert("you've been logout")
-          queryClient.clear()
-          setUser(null)
-          window.location.href = '/signin'
-        }
-        return
-      }
+      
       try {
         const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/verify`, { credentials: 'include' })
         if (!res.ok && !logoutAlerted.current) {

@@ -14,7 +14,7 @@ const router = express.Router()
 router.get('/verify', authorizeViaCookie, UserController.verifyUser)
 router.post('/signup', authorizeViaCookie, authorizeViaRole('super_admin'), validate(signupSchema), signupRateLimiter, UserController.signupUser)
 router.post('/signin', signinRateLimiter, UserController.signinUser)
-router.post('/signout', UserController.signoutUser)
+router.post('/signout',authorizeViaCookie, UserController.signoutUser)
 router.post('/change-password', authorizeViaCookie, validate(changePasswordSchema), authorizeViaRole('office_admin', 'hr_admin', 'super_admin', 'head_office_admin'), changePasswordRateLimiter, UserController.changePassword)
 router.get('/login-history', authorizeViaCookie, authorizeViaRole('office_admin', 'hr_admin', 'super_admin', 'head_office_admin'), UserController.getLoginHistory)
 router.get(

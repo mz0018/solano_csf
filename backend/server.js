@@ -15,6 +15,7 @@ import { gzipCompression } from './middleware/compression.js'
 import { verifyToken } from './middleware/authorizeViaCookie.js'
 
 import requestLogger from './middleware/requestLogger.js'
+import User from './models/user.model.js'
 
 const app = express()
 const httpServer = createServer(app)
@@ -43,7 +44,18 @@ io.on('connection', (socket) => {
   }
   if (socket.user?.id) {        
     socket.join(`user:${socket.user.id}`)
-    console.log(socket.user.id)
+    const sweep = setInterval(async () => {
+    try {
+      const u = await User.findById(socket.user.id).select('tokenVersion sessionExpiresAt')
+        if (!u || u.tokenVersion !== socket.user.tokenVersion ||
+            !u.sessionExpiresAt || u.sessionExpiresAt.getTime() <= Date.now()) {
+          socket.disconnect(true)
+        }
+      } catch {
+        socket.disconnect(true)
+      }
+    }, 60_000)
+    socket.on('disconnect', () => clearInterval(sweep))
   }
 })
 

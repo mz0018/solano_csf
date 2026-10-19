@@ -12,7 +12,6 @@ export const useSocket = () => {
     const socket = io(SOCKET_URL, {
       withCredentials: true,
       transports: ['polling', 'websocket'],
-      auth: { token: document.cookie.split('authToken=')[1]?.split(';')[0] },
       reconnection: true,
       reconnectionAttempts: 10,
       reconnectionDelay: 1000,

@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken'
 import User from '../models/user.model.js'
 import ErrorController from '../controllers/ErrorController.js'
+import { SESSION_TTL_MS } from '../config/session.js'
 
 export const authorizeViaCookie = async (req, res, next) => {
     const token = req.cookies.authToken
@@ -19,6 +20,22 @@ export const authorizeViaCookie = async (req, res, next) => {
         if ((decoded.tokenVersion || 0) !== (user.tokenVersion || 0)) {
             return next(new ErrorController('Token invalidated by a newer login', 401))
         }
+
+        if (!user.sessionExpiresAt || user.sessionExpiresAt.getTime() <= Date.now()) {
+            return next(new ErrorController('Session expired', 401))
+        }
+
+        if (user.sessionExpiresAt.getTime() - Date.now() < SESSION_TTL_MS - 60_000) {
+            try {
+                await User.updateOne(
+                    { _id: decoded.id, tokenVersion: decoded.tokenVersion, sessionExpiresAt: { $gt: new Date() } },
+                    { $set: { sessionExpiresAt: new Date(Date.now() + SESSION_TTL_MS) } }
+                )
+            } catch {
+                // best-effort heartbeat; never fail the request
+            }
+        }
+
         const newToken = jwt.sign(
             { 
                 id: decoded.id, 
@@ -36,7 +53,7 @@ export const authorizeViaCookie = async (req, res, next) => {
             httpOnly: false,
             secure: false,
             sameSite: 'Lax',
-            maxAge: 15 * 60 * 1000,
+            maxAge: SESSION_TTL_MS,
             path: '/'
         })
         req.user = decoded
@@ -55,6 +72,9 @@ export const verifyToken = async (token) => {
     if (!user) throw new ErrorController('Token invalidated by a newer login', 401)
     if ((decoded.tokenVersion || 0) !== (user.tokenVersion || 0)) {
         throw new ErrorController('Token invalidated by a newer login', 401)
+    }
+    if (!user.sessionExpiresAt || user.sessionExpiresAt.getTime() <= Date.now()) {
+        throw new ErrorController('Session expired', 401)
     }
     return decoded
 }

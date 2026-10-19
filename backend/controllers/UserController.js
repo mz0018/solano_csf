@@ -1,5 +1,7 @@
 import jwt from 'jsonwebtoken'
 import UserService from '../services/UserService.js'
+import { SESSION_TTL_MS } from '../config/session.js'
+
 class UserController {
 
     verifyUser = async (req, res, next) => {
@@ -36,7 +38,7 @@ class UserController {
                 httpOnly: false, // Set to true in production with HTTPS
                 secure: false,
                 sameSite: 'Lax',
-                maxAge: 15 * 60 * 1000,
+                maxAge: SESSION_TTL_MS,
                 path: '/'
             })
 
@@ -55,7 +57,7 @@ class UserController {
 
     signoutUser = async (req, res, next) => {
         try {
-            await UserService.signoutUser(req)
+            await UserService.signoutUser(req.user.id)
             res.clearCookie('authToken', { path: '/' })
             res.status(200).json({ message: 'Logout successful' })
         } catch (error) {

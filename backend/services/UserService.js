@@ -4,6 +4,7 @@ import Notification from '../models/notification.model.js'
 import argon2 from 'argon2'
 import jwt from 'jsonwebtoken'
 import ErrorController from '../controllers/ErrorController.js'
+import { SESSION_TTL_MS } from '../config/session.js'
 import { recordFailedSigninAttempt } from '../middleware/signinRateLimiter.js'
 
 class UserService {
@@ -71,24 +72,37 @@ class UserService {
             throw new ErrorController('Invalid username or password', 401)
         }
 
-        if (user.tokenVersion > 0) {
+        const now = new Date()
+        const updated = await User.findOneAndUpdate(
+            {
+                _id: user._id,
+                $or: [
+                    { sessionExpiresAt: null },
+                    { sessionExpiresAt: { $lte: now } }
+                ]
+            },
+            {
+                $inc: { tokenVersion: 1 },
+                $set: { sessionExpiresAt: new Date(now.getTime() + SESSION_TTL_MS) }
+            },
+            { new: true }
+        )
+
+        if (!updated) {
             throw new ErrorController('You are already logged in on another device', 409)
         }
 
-        user.tokenVersion += 1
-        await user.save()
-
-        await this.recordLogin(user, credentials.req, true)
+        await this.recordLogin(updated, credentials.req, true)
 
         const token = jwt.sign(
-            { 
-                id: user._id, 
-                firstName: user.firstName, 
-                lastName: user.lastName, 
-                userName: user.userName, 
-                role: user.role, 
-                officeCode: user.officeCode, 
-                tokenVersion: user.tokenVersion 
+            {
+                id: updated._id,
+                firstName: updated.firstName,
+                lastName: updated.lastName,
+                userName: updated.userName,
+                role: updated.role,
+                officeCode: updated.officeCode,
+                tokenVersion: updated.tokenVersion
             },
             process.env.JWT_SECRET,
             { expiresIn: '30m' }
@@ -97,26 +111,11 @@ class UserService {
         return token
     }
 
-    async signoutUser(req) {
-        const token = req.cookies.authToken
-
-        if (!token) {
-            console.log('Token not found')
-            return
-        }
-
-        try {
-            const decoded = jwt.decode(token)
-            if (!decoded || !decoded.id) return
-            const user = await User.findById(decoded.id)
-            if (user) {
-                // console.log("Token version: ", user.tokenVersion)
-                user.tokenVersion = 0
-                await user.save()
-            }
-        } catch (err) {
-            // ignore
-        }
+    async signoutUser(userId) {
+        await User.updateOne(
+            { _id: userId },
+            { $inc: { tokenVersion: 1 }, $set: { sessionExpiresAt: null } }
+        )
     }
 
     async recordLogin(user, req, success) {
@@ -151,12 +150,19 @@ class UserService {
         if (!isValid) throw new ErrorController('Current password is incorrect', 401)
 
         const hashedPassword = await argon2.hash(newPassword)
-        user.password = hashedPassword
-        user.passwordChangedAt = new Date()
-        user.tokenVersion += 1
-        user.loginHistory = []
-        
-        await user.save()
+        await User.updateOne(
+            { _id: user._id },
+            {
+                $inc: { tokenVersion: 1 },
+                $set: {
+                    password: hashedPassword,
+                    passwordChangedAt: new Date(),
+                    sessionExpiresAt: null,
+                    loginHistory: []
+                }
+            }
+        )
+
         return { message: 'Password changed successfully. Please log in again.' }
     }
 
