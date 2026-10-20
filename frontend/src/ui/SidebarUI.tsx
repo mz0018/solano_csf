@@ -56,10 +56,10 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
     <aside className={`flex h-screen min-h-0 shrink-0 flex-col border-r border-slate-200 bg-white ${collapsed ? 'w-16' : 'w-80'}`}>
 
       <>
-        <div className={`flex h-20 shrink-0 items-center border-b border-slate-100 px-3 ${collapsed ? 'justify-center' : 'gap-3'}`}>
+        <div className={`flex h-24 shrink-0 items-center border-b border-slate-100 p-2 ${collapsed ? 'justify-center' : 'gap-3'}`}>
           {/* User Initial Avatar */}
           <div
-            className={`${collapsed ? 'hidden' : 'h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-[#628dec] p-2'}`}>
+            className={`${collapsed ? 'hidden' : 'h-18 w-18 shrink-0 overflow-hidden'}`}>
             <img
               src={ '/img/logo.png'}
               alt={user?.userName || 'User'}
@@ -71,17 +71,17 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
           <div
             className={`${collapsed ? 'hidden' : 'min-w-0 flex-1'}`}
           >
-            <div>
-              <h1 className="truncate text-3xl font-bold font-sans tracking-tight text-[#628dec]">
-                CSF
-              </h1>
-            </div>
+            <img
+              src={ '/img/test.png'}
+              alt={user?.userName || 'User'}
+              className="w-full h-full object-cover px-8"
+            />
           </div>
 
         <button
           onClick={() => setCollapsed(!collapsed)}
           aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          className="ml-auto inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100 hover:text-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+          className="ml-auto inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100 hover:text-[#628dec] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
         >
           <PanelLeft size={18}/>
         </button>
@@ -102,10 +102,10 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
               key={item.path}
               to={item.path || '#'}
               title={collapsed ? item.name : undefined}
-              className={({ isActive }) => `flex min-h-10 items-center rounded-md text-sm font-medium ${collapsed ? 'justify-center px-0' : 'gap-3 px-3'} ${isActive ? 'bg-blue-50 text-blue-800' : 'text-slate-600 hover:bg-slate-50 hover:text-blue-700'}`}>
+              className={({ isActive }) => `flex min-h-10 items-center rounded-md text-sm font-medium ${collapsed ? 'justify-center px-0' : 'gap-3 px-3'} ${isActive ? 'bg-[#628dec] text-white' : 'text-slate-600 hover:bg-slate-50 hover:text-[#628dec]'}`}>
               {({ isActive }) => (
                 <>
-                  <span className={`shrink-0 ${isActive ? 'text-blue-700' : 'text-slate-400'}`}>
+                  <span className={`shrink-0 ${isActive ? 'text-white' : 'text-slate-400'}`}>
                     {item.icon}
                   </span>
 
