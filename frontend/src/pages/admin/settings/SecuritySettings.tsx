@@ -1,10 +1,8 @@
 import { useState } from "react";
-import { ChevronDown, ShieldCheck } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 import { ChangePassword } from "./ChangePassword";
 import { LoginHistory } from "./LoginHistory";
-
-import { AdminResponsiveContainer } from "../../../ui/form/AdminResponsiveContainer";
 
 type SecuritySection = "change-password" | "login-history";
 
@@ -17,81 +15,74 @@ const SecuritySettings = () => {
   };
 
   return (
-    <AdminResponsiveContainer>
+    <>
+      <div className="w-full min-w-0">
+          {/* Page Header */}
+          <div className="mb-4 border-b border-gray-300 py-3 lg:hidden">
+              <h1 className="text-xl font-semibold text-[#628dec]">
+                  Security Settings
+              </h1>
 
-      {/* Page Header */}
-      <div className="flex w-full items-center gap-3 border-b border-gray-300 py-3">
-        <ShieldCheck
-          size={22}
-          strokeWidth={2}
-          className="shrink-0 text-[#628dec]"
-        />
-
-        <div>
-          <h1 className="text-xl font-semibold text-[#628dec]">
-            Security Settings
-          </h1>
-
-          <p className="mt-1 text-sm text-gray-900">
-            Manage your password and review recent account activity.
-          </p>
-        </div>
-      </div>
-
-      {/* Change Password */}
-      <div className="w-full px-5">
-        <button
-          type="button"
-          onClick={() => toggleSection("change-password")}
-          className="flex w-full items-center justify-between rounded-lg border border-gray-200 bg-white px-4 py-3 text-left transition hover:bg-gray-50"
-          aria-expanded={openSection === "change-password"}
-        >
-          <span className="text-sm font-semibold text-gray-800">
-            Change Password
-          </span>
-
-          <ChevronDown
-            size={18}
-            className={`text-gray-500 transition-transform duration-200 ${
-              openSection === "change-password" ? "rotate-180" : ""
-            }`}
-          />
-        </button>
-
-        {openSection === "change-password" && (
-          <div className="mt-3">
-            <ChangePassword />
+              <p className="mt-1 text-sm leading-relaxed text-gray-900">
+                  Manage your password and review recent account activity.
+              </p>
           </div>
-        )}
-      </div>
 
-      {/* Login History */}
-      <div className="w-full px-5">
-        <button
-          type="button"
-          onClick={() => toggleSection("login-history")}
-          className="flex w-full items-center justify-between rounded-lg border border-gray-200 bg-white px-4 py-3 text-left transition hover:bg-gray-50"
-          aria-expanded={openSection === "login-history"}
-        >
-          <span className="text-sm font-semibold text-gray-800">
-            Login History
-          </span>
+          {/* Change Password */}
+          <div className="mb-4 w-full px-0 sm:px-2 lg:px-5">
+              <button
+                  type="button"
+                  onClick={() => toggleSection("change-password")}
+                  className="flex w-full items-center justify-between gap-3 rounded-lg border border-gray-200 bg-white px-3 py-3 text-left transition hover:bg-gray-50 sm:px-4"
+                  aria-expanded={openSection === "change-password"}
+              >
+                  <span className="text-sm font-semibold text-gray-800">
+                      Change Password
+                  </span>
 
-          <ChevronDown
-            size={18}
-            className={`text-gray-500 transition-transform duration-200 ${
-              openSection === "login-history" ? "rotate-180" : ""
-            }`}
-          />
-        </button>
+                  <ChevronDown
+                      size={18}
+                      className={`shrink-0 text-gray-500 transition-transform duration-200 ${
+                          openSection === "change-password" ? "rotate-180" : ""
+                      }`}
+                  />
+              </button>
 
-        {openSection === "login-history" && (
-          <div className="mt-3">
-            <LoginHistory />
+              {openSection === "change-password" && (
+                  <div className="mt-3 w-full min-w-0">
+                      <ChangePassword />
+                  </div>
+              )}
           </div>
-        )}
+
+          {/* Login History */}
+          <div className="mb-4 w-full px-0 sm:px-2 lg:px-5">
+              <button
+                  type="button"
+                  onClick={() => toggleSection("login-history")}
+                  className="flex w-full items-center justify-between gap-3 rounded-lg border border-gray-200 bg-white px-3 py-3 text-left transition hover:bg-gray-50 sm:px-4"
+                  aria-expanded={openSection === "login-history"}
+              >
+                  <span className="text-sm font-semibold text-gray-800">
+                      Login History
+                  </span>
+
+                  <ChevronDown
+                      size={18}
+                      className={`shrink-0 text-gray-500 transition-transform duration-200 ${
+                          openSection === "login-history" ? "rotate-180" : ""
+                      }`}
+                  />
+              </button>
+
+              {openSection === "login-history" && (
+                  <div className="mt-3 w-full min-w-0">
+                      <LoginHistory />
+                  </div>
+              )}
+          </div>
       </div>
-    </AdminResponsiveContainer>
+    </>
   );
 };
 

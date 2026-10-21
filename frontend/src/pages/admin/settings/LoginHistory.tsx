@@ -3,7 +3,6 @@ import { useGetLoginHistory } from "../../../hooks/useGetLoginHistory";
 import { TableUI } from "../../../ui/form/TableUI";
 import { ErrorText } from "../../../ui/form/ErrorText";
 import { InlineLoader } from "../../../components/Loader";
-import { AdminResponsiveContainer } from "../../../ui/form/AdminResponsiveContainer";
 
 export const LoginHistory = () => {
   const [page, setPage] = useState<number>(1);
@@ -37,8 +36,8 @@ export const LoginHistory = () => {
     return <ErrorText message={(error as Error).message} />;
   }
   return (
-    <AdminResponsiveContainer>
-      <div className="flex w-full flex-col">
+    <>
+      <div className="w-full">
       <TableUI className="w-full min-w-[36rem]">
         <thead>
           <tr>
@@ -97,6 +96,6 @@ export const LoginHistory = () => {
         Next
       </button>
     </div>
-    </AdminResponsiveContainer>
+    </>
   );
 };
