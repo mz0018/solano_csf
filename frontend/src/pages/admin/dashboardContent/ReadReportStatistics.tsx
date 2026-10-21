@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BarChart3, LineChart, ChartNoAxesCombined } from "lucide-react";
+import { BarChart3, LineChart } from "lucide-react";
 import { useAuth } from "../../../context/AuthContext";
 import { RenderReportStatistics } from "./RenderStatistics";
 import { RenderReportStatisticsTable } from "./RenderReportStatisticsTable";
@@ -111,27 +111,20 @@ export const ReadReportStatistics = () => {
 
     return (
         <div className="w-full">
-            <div className="mb-5 flex items-center justify-between border-b border-gray-300">
-                <div className="mb-4 flex items-center gap-3">
-                    <ChartNoAxesCombined
-                        size={22}
-                        strokeWidth={2}
-                        className="shrink-0 text-[#628dec]"
-                    />
-
-                    <div>
-                        <h1 className="text-xl font-semibold text-[#628dec]">
+            {/* Mobile Header */}
+            <div className="mb-4 border-b border-gray-300 py-3 lg:hidden">
+                <div className="mb-4">
+                    <h1 className="text-lg font-semibold text-[#628dec]">
                         Report Statistics
-                        </h1>
+                    </h1>
 
-                        <p className="mt-0.5 text-sm text-gray-900">
+                    <p className="mt-1 text-sm text-gray-900">
                         View and compare client feedback statistics.
-                        </p>
-                    </div>
+                    </p>
                 </div>
 
-                {/* Chart Type Switch */}
-                <div className="flex items-center gap-3">
+                {/* Chart Type Switch - Below heading on mobile */}
+                <div className="flex flex-wrap items-center gap-3">
                     <span className="text-sm font-medium text-gray-600">
                         Chart type
                     </span>
@@ -142,11 +135,10 @@ export const ReadReportStatistics = () => {
                         aria-checked={isLineChart}
                         aria-label="Toggle chart type"
                         onClick={handleGraphToggle}
-                        className="group flex items-center gap-1 rounded-full border border-gray-200 bg-gray-100 p-1 shadow-sm transition-colors hover:bg-gray-200 cursor-pointer"
+                        className="group flex cursor-pointer items-center gap-1 rounded-sm border border-gray-200 bg-gray-100 p-1 shadow-sm transition-colors hover:bg-gray-200"
                     >
-                        {/* Line Chart */}
                         <span
-                            className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition-all ${
+                            className={`flex items-center gap-1.5 rounded-sm px-3 py-1.5 text-sm font-medium transition-all ${
                                 isLineChart
                                     ? "bg-white text-blue-600 shadow-sm"
                                     : "text-gray-500"
@@ -156,9 +148,8 @@ export const ReadReportStatistics = () => {
                             Line
                         </span>
 
-                        {/* Bar Chart */}
                         <span
-                            className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition-all ${
+                            className={`flex items-center gap-1.5 rounded-sm px-3 py-1.5 text-sm font-medium transition-all ${
                                 !isLineChart
                                     ? "bg-white text-blue-600 shadow-sm"
                                     : "text-gray-500"
@@ -171,15 +162,55 @@ export const ReadReportStatistics = () => {
                 </div>
             </div>
 
-            <div className="flex w-full gap-4">
-                <div className="w-2/3">
+            {/* Desktop Chart Type Switch - Original position */}
+            <div className="my-4 hidden items-center justify-end gap-3 lg:flex">
+                <h1 className="mr-auto truncate text-lg font-semibold text-[#628dec]">Statistics</h1>
+                <span className="text-sm font-medium text-gray-600">
+                    Chart type
+                </span>
+
+                <button
+                    type="button"
+                    role="switch"
+                    aria-checked={isLineChart}
+                    aria-label="Toggle chart type"
+                    onClick={handleGraphToggle}
+                    className="group flex cursor-pointer items-center gap-1 rounded-sm border border-gray-200 bg-gray-100 p-1 shadow-sm transition-colors hover:bg-gray-200"
+                >
+                    <span
+                        className={`flex items-center gap-1.5 rounded-sm px-3 py-1.5 text-sm font-medium transition-all ${
+                            isLineChart
+                                ? "bg-white text-blue-600 shadow-sm"
+                                : "text-gray-500"
+                        }`}
+                    >
+                        <LineChart className="h-4 w-4" />
+                        Line
+                    </span>
+
+                    <span
+                        className={`flex items-center gap-1.5 rounded-sm px-3 py-1.5 text-sm font-medium transition-all ${
+                            !isLineChart
+                                ? "bg-white text-blue-600 shadow-sm"
+                                : "text-gray-500"
+                        }`}
+                    >
+                        <BarChart3 className="h-4 w-4" />
+                        Bar
+                    </span>
+                </button>
+            </div>
+
+            {/* Chart and Date Picker */}
+            <div className="flex w-full flex-col gap-4 lg:flex-row">
+                <div className="w-full lg:w-2/3">
                     <RenderReportStatistics
                         currentGraph={currentGraph}
                         chartsDataArray={chartsDataArray}
                     />
                 </div>
 
-                <div className="min-w-0 flex-1">
+                <div className="min-w-0 w-full lg:flex-1">
                     <RenderReportStatisticsDatePicker
                         officeCode={officeCode}
                         month={month}

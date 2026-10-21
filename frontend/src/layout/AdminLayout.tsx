@@ -1,6 +1,5 @@
 import { Outlet } from 'react-router-dom'
 import { SidebarUI } from '../ui/SidebarUI'
-import { MainLayoutUI } from '../ui/MainLayoutUI'
 import { Radio, Settings2, Files, BrickWallShield, HandCoins } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { AdminNavbar } from '../components/Navbar/AdminNavbar'
@@ -44,10 +43,8 @@ const AdminLayout = () => {
         <div className="flex min-w-0 flex-1 flex-col">
           <AdminNavbar />
 
-          <main className="flex-1 overflow-y-auto p-6 admin-halftone">
-            <MainLayoutUI>
+          <main className="flex-1 overflow-y-auto p-6">
               <Outlet />
-            </MainLayoutUI>
           </main>
         </div>
       </div>
