@@ -1,10 +1,8 @@
 import { useState } from "react";
-import { ChartNoAxesCombined } from "lucide-react";
 import { Select } from "../../ui/form/Select";
 import { useGetOffices } from "../../hooks/useGetOffices";
 import { useGetReportStatistics } from "../../hooks/useGetReportStatistics";
 import { FeedbackStatisticTable } from "../../components/Tables/FeedbackStatisticTable";
-import { AdminResponsiveContainer } from "../../ui/form/AdminResponsiveContainer";
 
 const ReportStatistics = () => {
     const { data: offices, isLoading: officesLoading } = useGetOffices();
@@ -14,35 +12,43 @@ const ReportStatistics = () => {
     const { data: stats, isLoading, error } = useGetReportStatistics(officeCode, dateFrom, dateTo);
 
     return (
-        <AdminResponsiveContainer>
-            <div className="flex w-full flex-col">
-                <div className="flex items-center gap-3 border-b border-gray-300 py-3">
-                    <ChartNoAxesCombined
-                    size={22}
-                    strokeWidth={2}
-                    className="shrink-0 text-[#628dec]"
-                    />
-
-                    <div>
-                    <h1 className="text-xl font-semibold text-[#628dec]">
+        <>
+            {/* Mobile Header */}
+            <div className="w-full">
+                <div className="mb-4 border-b border-gray-300 py-3 lg:hidden">
+                    <h1 className="text-lg font-semibold text-[#628dec]">
                         Report Statistics
                     </h1>
 
-                    <p className="mt-1 text-sm text-gray-900">
+                    <p className="mt-1 text-sm leading-relaxed text-gray-900">
                         View queue statistics and feedback reports by office
                     </p>
-                    </div>
                 </div>
             </div>
-            <div className="flex gap-4">
-                <div>
-                    <label htmlFor="office" className="mb-1 block text-sm font-medium">
+
+            {/* Filters */}
+            <div className="mb-4 flex w-full flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end sm:gap-4">
+                {/* Municipality Office */}
+                <div className="w-full sm:w-96 sm:max-w-full">
+                    <label
+                        htmlFor="office"
+                        className="mb-1 block text-sm font-medium"
+                    >
                         Municipality Office
                     </label>
-                    <Select id="office" variant="admin" value={officeCode} onChange={(e) => setOfficeCode(e.target.value)}>
+
+                    <Select
+                        id="office"
+                        variant="admin"
+                        value={officeCode}
+                        onChange={(e) => setOfficeCode(e.target.value)}
+                    >
                         <option value="">
-                            {officesLoading ? "Loading offices..." : "Select an office"}
+                            {officesLoading
+                                ? "Loading offices..."
+                                : "Select an office"}
                         </option>
+
                         {offices?.map((office) => (
                             <option key={office.code} value={office.code}>
                                 {office.name}
@@ -50,44 +56,53 @@ const ReportStatistics = () => {
                         ))}
                     </Select>
                 </div>
-                <div>
+
+                {/* Start Date */}
+                <div className="w-full sm:w-96 sm:max-w-full">
                     <label
                         htmlFor="dateFrom"
                         className="mb-1 block text-sm font-medium"
                     >
                         Start Date
                     </label>
+
                     <input
                         id="dateFrom"
                         type="date"
                         value={dateFrom}
                         onChange={(e) => setDateFrom(e.target.value)}
-                        className="w-96 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        className="w-full min-w-0 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                     />
                 </div>
 
-                <div>
+                {/* End Date */}
+                <div className="w-full sm:w-96 sm:max-w-full">
                     <label
                         htmlFor="dateTo"
                         className="mb-1 block text-sm font-medium"
                     >
                         End Date
                     </label>
+
                     <input
                         id="dateTo"
                         type="date"
                         value={dateTo}
                         onChange={(e) => setDateTo(e.target.value)}
-                        className="w-96 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        className="w-full min-w-0 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                     />
                 </div>
             </div>
-            <FeedbackStatisticTable
-                isLoading={isLoading}
-                error={error}
-                stats={stats}
-            />
-        </AdminResponsiveContainer>
+
+            {/* Feedback Statistics Table */}
+            <div className="w-full min-w-0">
+                <FeedbackStatisticTable
+                    isLoading={isLoading}
+                    error={error}
+                    stats={stats}
+                />
+            </div>
+        </>
     );
 };
 export default ReportStatistics;
