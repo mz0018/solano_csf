@@ -59,9 +59,9 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
         <div className={`flex h-24 shrink-0 items-center border-b border-slate-100 py-3 ${collapsed ? 'justify-center' : 'justify-between gap-3'}`}>
           {/* User Initial Avatar */}
           <div
-            className={`${collapsed ? 'hidden' : 'h-18 w-full shrink-0 px-4 overflow-hidden'}`}>
+            className={`${collapsed ? 'hidden' : 'h-18 min-w-0 flex-1 px-4 overflow-hidden'}`}>
             <img
-              src={ '/img/solano-csf-logo.png'}
+              src={ '/img/csf-remove-light.png'}
               alt={user?.userName || 'User'}
               className="w-full h-full object-contain"
             />
@@ -70,7 +70,7 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
         <button
           onClick={() => setCollapsed(!collapsed)}
           aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          className="ml-auto inline-flex h-9 w-9 bg-red-500 shrink-0 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100 hover:text-[#628dec] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+          className="inline-flex m-2 h-9 w-9 shrink-0 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100 hover:text-[#628dec] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 cursor-pointer"
         >
           <PanelLeft size={18}/>
         </button>
