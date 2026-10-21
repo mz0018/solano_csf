@@ -4,18 +4,70 @@ import {
   UserRound,
   Bell,
   ChevronDown,
-  UserCheck
 } from "lucide-react";
 
-import { useAuth } from "../../context/AuthContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BtnSignout } from "../buttons/BtnSignout";
 
+const adminPageHeaders: Record<string, { title: string; description?: string }> = {
+  "/admin/queue/dashboard": {
+    title: "Dashboard",
+    description: "Get an overview of the current queues, pending requests, and completed services.",
+  },
+  "/admin/queue/monitor": {
+    title: "View Active Queue",
+    description: "Get an overview of the current queues, pending requests, and completed services.",
+  },
+  "/admin/queue/statistics": {
+    title: "Report Statistics",
+    description: "View queue statistics and feedback reports by office",
+  },
+  "/admin/queue/offices/feedbacks": {
+    title: "Select an office to view specific feedback",
+    description: "Filter and review feedback entries by office",
+  },
+  "/admin/queue/service/rendered": {
+    title: "Rendered Services",
+    description: "Overview of services currently rendered, including their total counts.",
+  },
+  "/admin/settings/profile": {
+    title: "Profile Information",
+    description: "View your account information and administrator details.",
+  },
+  "/admin/settings/manage-services": {
+    title: "Service Management",
+    description: "Create new services and manage existing service information and status.",
+  },
+  "/admin/settings/security": {
+    title: "Security Settings",
+    description: "Manage your password and review recent account activity.",
+  },
+  "/admin/settings/notifications": {
+    title: "Notification Settings",
+    description: "View your recent account notifications and activity updates.",
+  },
+  "/admin/overview/user-management/manage": {
+    title: "Account Management",
+    description: "Search for a client to manage their account access and password",
+  },
+  "/admin/overview/user-management/ticket-tracker": {
+    title: "Ticket Tracker",
+    description: "Search for a ticket to track its status and updates",
+  },
+  "/admin/overview/user-management/add-client": {
+    title: "Add Client Account",
+    description: "Create a new office or admin account.",
+  },
+  "/admin/overview/report/system": {
+    title: "System Report",
+  },
+};
+
 export const AdminNavbar = () => {
-  const { user } = useAuth();
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
+  const pageHeader = adminPageHeaders[pathname.replace(/\/+$/, "")];
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const isNotificationsActive = pathname.startsWith("/admin/settings/notifications");
@@ -52,27 +104,18 @@ export const AdminNavbar = () => {
 
       {/* Left */}
       <div className="flex min-w-0 flex-1 items-center">
-        <div className="hidden min-w-0 items-center gap-2 lg:flex">
-          <UserCheck
-            size={16}
-            strokeWidth={2}
-            className="shrink-0 text-gray-400"
-          />
-
-          <span className="truncate text-sm font-medium uppercase tracking-wide text-gray-700">
-            {user?.role?.replaceAll("_", " ")}:
-          </span>
-
-          <span className="truncate text-sm capitalize text-gray-500">
-            {user?.userName}
-          </span>
-
-          <span
-            className="h-2 w-2 shrink-0 rounded-full bg-emerald-500 ring-2 ring-emerald-100"
-            title="Active"
-            aria-label="Active"
-          />
-        </div>
+        {pageHeader && (
+          <div className="min-w-0">
+            <h1 className="truncate text-lg font-semibold text-[#628dec]">
+              {pageHeader.title}
+            </h1>
+            {pageHeader.description && (
+              <p className="truncate text-sm text-gray-500">
+                {pageHeader.description}
+              </p>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Right */}

@@ -56,7 +56,7 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
     <aside className={`flex h-screen min-h-0 shrink-0 flex-col border-r border-slate-200 bg-white ${collapsed ? 'w-16' : 'w-80'}`}>
 
       <>
-        <div className={`flex h-24 shrink-0 items-center border-b border-slate-100 py-3 ${collapsed ? 'justify-center' : 'justify-between gap-3'}`}>
+        <div className={`flex h-24 shrink-0 items-center py-3 ${collapsed ? 'justify-center' : 'justify-between gap-3'}`}>
           {/* User Initial Avatar */}
           <div
             className={`${collapsed ? 'hidden' : 'h-18 min-w-0 flex-1 px-4 overflow-hidden'}`}>
@@ -77,7 +77,7 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
         </div>
       </>
 
-      <nav className="flex-1 space-y-1 overflow-y-auto px-2 py-4">
+      <nav className="flex-1 space-y-5 overflow-y-auto px-2">
         {navLinks.map((item) =>
           item.children ? (
             <DropdownHelper
@@ -91,7 +91,7 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
               key={item.path}
               to={item.path || '#'}
               title={collapsed ? item.name : undefined}
-              className={({ isActive }) => `flex min-h-10 items-center rounded-md text-sm font-medium ${collapsed ? 'justify-center px-0' : 'gap-3 px-3'} ${isActive ? 'bg-[#628dec] text-white' : 'text-slate-600 hover:bg-slate-50 hover:text-[#628dec]'}`}>
+              className={({ isActive }) => `flex min-h-10 items-center rounded-md text-sm font-medium ${collapsed ? 'justify-center px-0' : 'gap-3 px-5'} ${isActive ? 'bg-[#628dec] text-white' : 'text-slate-600 hover:bg-slate-50 hover:text-[#628dec]'}`}>
               {({ isActive }) => (
                 <>
                   <span className={`shrink-0 ${isActive ? 'text-white' : 'text-slate-400'}`}>
