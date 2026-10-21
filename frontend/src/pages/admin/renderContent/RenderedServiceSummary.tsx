@@ -21,10 +21,10 @@ export const RenderedServiceSummary = ({
     }));
 
     return (
-        <div className="w-full grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="w-full grid grid-cols-1 lg:grid-cols-2">
             {/* Left column */}
             <div>
-                <h2 className="mb-4 text-sm font-semibold text-gray-900">
+                <h2 className="my-4 truncate text-lg font-semibold text-[#628dec]">
                     Services Chart
                 </h2>
 
@@ -65,10 +65,10 @@ export const RenderedServiceSummary = ({
             </div>
 
             {/* Right column — chart only */}
-            <div className="rounded-md border border-gray-200 bg-white p-4 shadow-xs">
+            <div className="rounded-md bg-white p-4">
                 {Object.keys(serviceCounts).length > 0 && (
                     <section>
-                        <div className="border-b border-gray-200 px-4 py-3">
+                        {/* <div className="border-b border-gray-200 px-4 py-3">
                             <h2 className="text-sm font-semibold text-gray-900">
                                 Service Summary
                             </h2>
@@ -76,7 +76,7 @@ export const RenderedServiceSummary = ({
                             <p className="mt-1 text-xs text-gray-500">
                                 Total rendered services for the selected date range.
                             </p>
-                        </div>
+                        </div> */}
 
                         <div className="divide-y divide-gray-100">
                             {Object.entries(serviceCounts).map(

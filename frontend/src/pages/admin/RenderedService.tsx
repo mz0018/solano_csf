@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { AdminResponsiveContainer } from "../../ui/form/AdminResponsiveContainer";
 import { PaginationUI } from "../../ui/form/PaginationUI";
 import { TableUI } from "../../ui/form/TableUI";
 import { useRenderedServices } from "../../hooks/useRenderedServices";
-import { Search, ClipboardList } from "lucide-react";
+import { Search } from "lucide-react";
 import { RenderedServiceSummary } from "./renderContent/RenderedServiceSummary";
 
 type RenderedService = {
@@ -67,30 +66,23 @@ const RenderedService = () => {
         });
 
     return (
-        <AdminResponsiveContainer>
-            <div className="flex w-full flex-col leading-none">
-                <div className="flex items-center gap-3 border-b border-gray-300 py-3">
-                    <ClipboardList
-                    size={22}
-                    strokeWidth={2}
-                    className="shrink-0 text-[#628dec]"
-                    />
-
-                    <div>
-                    <h1 className="text-xl font-semibold text-[#628dec]">
+        <>
+            {/* Mobile Header */}
+            <div className="w-full">
+                <div className="mb-4 border-b border-gray-300 py-3 lg:hidden">
+                    <h1 className="text-lg font-semibold text-[#628dec]">
                         Rendered Services
                     </h1>
 
-                    <p className="mt-1 text-sm text-gray-900">
+                    <p className="mt-1 text-sm leading-relaxed text-gray-900">
                         Overview of services currently rendered, including their total counts.
                     </p>
-                    </div>
                 </div>
             </div>
 
             {/* Date Filter */}
-            <div className="flex gap-4">
-                <div>
+            <div className="mb-2 flex w-full flex-col gap-3 sm:flex-row sm:gap-4">
+                <div className="w-full sm:w-96 sm:max-w-[calc(50%-0.5rem)]">
                     <label className="mb-1 block text-sm font-medium">
                         Start Date
                     </label>
@@ -102,11 +94,11 @@ const RenderedService = () => {
                             setDateFrom(e.target.value);
                             setPage(1);
                         }}
-                        className="w-96 rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                        className="w-full min-w-0 rounded-lg border border-gray-300 px-3 py-2 text-sm"
                     />
                 </div>
 
-                <div>
+                <div className="w-full sm:w-96 sm:max-w-[calc(50%-0.5rem)]">
                     <label className="mb-1 block text-sm font-medium">
                         End Date
                     </label>
@@ -118,14 +110,15 @@ const RenderedService = () => {
                             setDateTo(e.target.value);
                             setPage(1);
                         }}
-                        className="w-96 rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                        className="w-full min-w-0 rounded-lg border border-gray-300 px-3 py-2 text-sm"
                     />
                 </div>
             </div>
 
+            {/* Summary */}
             <RenderedServiceSummary serviceCounts={serviceCounts} />
 
-            {/* Rendered Services */}
+            {/* Rendered Services Table */}
             <TableUI>
                 <thead>
                     <tr>
@@ -136,7 +129,7 @@ const RenderedService = () => {
                             Service
                         </th>
                         <th className="px-4 py-3">
-                            Date & Time Rendered
+                            Date &amp; Time Rendered
                         </th>
                     </tr>
                 </thead>
@@ -152,9 +145,9 @@ const RenderedService = () => {
                                     <td className="capitalize">
                                         {item.generatedByUser
                                             ? `${item.generatedByUser.firstName} ${item.generatedByUser.lastName}`.replaceAll(
-                                                  "_",
-                                                  " "
-                                              )
+                                                "_",
+                                                " "
+                                            )
                                             : "Unknown"}
                                     </td>
 
@@ -194,15 +187,14 @@ const RenderedService = () => {
             </TableUI>
 
             {/* Pagination */}
-            {renderedServices &&
-                renderedServices.totalPages > 1 && (
-                    <PaginationUI
-                        currentPage={renderedServices.page}
-                        totalPages={renderedServices.totalPages}
-                        onPageChange={setPage}
-                    />
-                )}
-        </AdminResponsiveContainer>
+            {renderedServices && renderedServices.totalPages > 1 && (
+                <PaginationUI
+                    currentPage={renderedServices.page}
+                    totalPages={renderedServices.totalPages}
+                    onPageChange={setPage}
+                />
+            )}
+        </>
     );
 };
 
