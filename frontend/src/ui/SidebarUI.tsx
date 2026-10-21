@@ -61,9 +61,10 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
           <div
             className={`${collapsed ? 'hidden' : 'h-18 min-w-0 flex-1 px-4 overflow-hidden'}`}>
             <img
-              src={ '/img/csf-remove-light.png'}
+              // src={ '/img/csf-remove-light.png'}
+              src={ '/img/CSF-test.png'}
               alt={user?.userName || 'User'}
-              className="w-full h-full object-contain"
+              className="h-9 m-4 object-contain"
             />
           </div>
 

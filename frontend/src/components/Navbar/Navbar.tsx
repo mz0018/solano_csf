@@ -28,7 +28,7 @@ export const Navbar = ({ isScrolling, scrollTo, theme, onToggleTheme }: NavbarPr
       <div className="flex h-24 w-full items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <a href="/" className="flex items-center">
-          <img src="/img/logo.png" alt="Logo" className="h-14 md:h-16 w-auto" />
+          <img src="/img/csf-orig-optimized.png" alt="Logo" className="h-9 md:h-9 w-auto" />
         </a>
 
         {/* Desktop Navigation */}
