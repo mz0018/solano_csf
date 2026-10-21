@@ -8,14 +8,18 @@ import {
 } from "lucide-react";
 
 import { useAuth } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { BtnSignout } from "../buttons/BtnSignout";
 
 export const AdminNavbar = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+
+  const isNotificationsActive = pathname.startsWith("/admin/settings/notifications");
+  const isProfileActive = pathname.startsWith("/admin/settings/profile");
 
   const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -44,7 +48,7 @@ export const AdminNavbar = () => {
   };
 
   return (
-    <header className="sidebar-surface flex items-center justify-between border-b border-[#cbd5e1] px-4 py-3 text-[#1f2937] shadow-xs sm:px-6">
+    <header className="h-24 bg-white flex items-center justify-between border-b border-slate-200 px-4 py-3 text-[#1f2937] sm:px-6">
 
       {/* Left */}
       <div className="flex min-w-0 flex-1 items-center">
@@ -78,8 +82,13 @@ export const AdminNavbar = () => {
         <button
           type="button"
           onClick={() => navigate("/admin/settings/notifications")}
-          className="relative flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-white text-gray-500 transition hover:bg-gray-200 hover:text-gray-700"
+          className={`relative flex h-12 w-12 cursor-pointer items-center justify-center rounded-full transition hover:bg-slate-50 hover:text-[#628dec] ${
+            isNotificationsActive
+              ? "bg-[#628dec] text-white"
+              : "bg-white text-gray-500"
+          }`}
           aria-label="Notifications"
+          aria-current={isNotificationsActive ? "page" : undefined}
           title="Notifications"
         >
           <Bell size={17} strokeWidth={2} />
@@ -100,18 +109,27 @@ export const AdminNavbar = () => {
           <button
             type="button"
             onClick={() => navigate("/admin/settings/profile")}
-            className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-white text-gray-500 transition hover:bg-gray-200 hover:text-gray-700"
+            className={`flex h-12 w-12 cursor-pointer items-center justify-center rounded-full transition hover:bg-slate-50 hover:text-[#628dec] ${
+              isProfileActive
+                ? "bg-[#628dec] text-white"
+                : "bg-white text-gray-500"
+            }`}
             aria-label="Profile"
+            aria-current={isProfileActive ? "page" : undefined}
             title="Profile"
           >
-            <UserRound size={17} strokeWidth={2} />
+            <UserRound size={17} strokeWidth={3} />
           </button>
 
           {/* Profile Menu Toggle */}
           <button
             type="button"
             onClick={handleProfileToggle}
-            className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-white text-gray-500 transition hover:bg-gray-200 hover:text-gray-700"
+            className={`flex h-12 w-12 cursor-pointer items-center justify-center rounded-full transition hover:bg-slate-50 hover:text-[#628dec] ${
+              isProfileOpen
+                ? "bg-[#628dec] text-white"
+                : "bg-white text-gray-500"
+            }`}
             aria-label="Open profile menu"
             aria-expanded={isProfileOpen}
             aria-haspopup="menu"
@@ -119,7 +137,7 @@ export const AdminNavbar = () => {
           >
             <ChevronDown
               size={17}
-              strokeWidth={2}
+              strokeWidth={3}
               className={`transition-transform duration-200 ${
                 isProfileOpen ? "rotate-180" : ""
               }`}
