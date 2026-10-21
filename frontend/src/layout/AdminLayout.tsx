@@ -9,20 +9,21 @@ const AdminLayout = () => {
   const { user } = useAuth()
 
   const navLinks = [
-    { name: 'Overview', path: '/admin/overview', icon: <Radio size={20} />, roles: ['super_admin'] },
-    { name: 'Dashboard', path: '/admin/queue/dashboard', icon: <BrickWallShield size={20} />, roles: ['office_admin', 'hr_admin', 'head_office_admin'] },
-    { name: 'Live Monitoring', path: '/admin/queue/monitor', icon: <Radio size={20} />, roles: ['office_admin', 'hr_admin', 'head_office_admin'] },
-    { name: 'Total Service Rendered', path: '/admin/queue/service/rendered', icon: <HandCoins size={20} />, roles: ['head_office_admin', 'hr_admin'] },
+    { name: 'Overview', path: '/admin/overview', icon: <Radio size={20} />, roles: ['super_admin'], section: 'General' },
+    { name: 'Dashboard', path: '/admin/queue/dashboard', icon: <BrickWallShield size={20} />, roles: ['office_admin', 'hr_admin', 'head_office_admin'], section: 'General' },
+    { name: 'Live Monitoring', path: '/admin/queue/monitor', icon: <Radio size={20} />, roles: ['office_admin', 'hr_admin', 'head_office_admin'], section: 'General' },
+    { name: 'Total Service Rendered', path: '/admin/queue/service/rendered', icon: <HandCoins size={20} />, roles: ['head_office_admin', 'hr_admin'], section: 'Reports' },
     {
       name: 'Reports',
       icon: <Files size={20} />,
       roles: ['hr_admin', 'super_admin'],
+      section: 'Reports',
       children: [
         { name: 'Queue Statistics', path: '/admin/queue/statistics', roles: ['hr_admin', 'super_admin'] },
         { name: 'Review Office Feedback', path: '/admin/queue/offices/feedbacks', roles: ['hr_admin', 'super_admin'] },
       ]
     },
-    { name: 'Settings', path: '/admin/settings', icon: <Settings2 size={20} />, roles: ['office_admin', 'hr_admin', 'super_admin', 'head_office_admin'] }
+    { name: 'Settings', path: '/admin/settings', icon: <Settings2 size={20} />, roles: ['office_admin', 'hr_admin', 'super_admin', 'head_office_admin'], section: 'Others' }
   ]
 
   const filteredNavLinks = navLinks.filter((link) =>

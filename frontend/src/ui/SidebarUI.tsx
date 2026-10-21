@@ -15,6 +15,7 @@ type NavItem = {
   children?: NavItem[]
   icon?: React.ReactNode
   roles: string[]
+  section?: string
 }
 
 type SidebarUIProps = {
@@ -78,35 +79,40 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
         </div>
       </>
 
-      <nav className="flex-1 space-y-5 overflow-y-auto px-2">
-        {navLinks.map((item) =>
-          item.children ? (
-            <DropdownHelper
-              key={item.name}
-              item={item}
-              collapsed={collapsed}
-              setCollapsed={setCollapsed}
-            />
-          ) : (
-            <NavLink
-              key={item.path}
-              to={item.path || '#'}
-              title={collapsed ? item.name : undefined}
-              className={({ isActive }) => `flex min-h-10 items-center rounded-md text-sm font-medium ${collapsed ? 'justify-center px-0' : 'gap-3 px-5'} ${isActive ? 'bg-[#628dec] text-white' : 'text-slate-600 hover:bg-slate-50 hover:text-[#628dec]'}`}>
-              {({ isActive }) => (
-                <>
-                  <span className={`shrink-0 ${isActive ? 'text-white' : 'text-slate-400'}`}>
-                    {item.icon}
-                  </span>
+      <nav className="flex-1 space-y-1 overflow-y-auto px-5 py-2">
+        {navLinks.map((item, index) => (
+          <div key={item.path ?? item.name}>
+            {!collapsed && item.section && item.section !== navLinks[index - 1]?.section && (
+              <h2 className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-slate-400">
+                {item.section}
+              </h2>
+            )}
+            {item.children ? (
+              <DropdownHelper
+                item={item}
+                collapsed={collapsed}
+                setCollapsed={setCollapsed}
+              />
+            ) : (
+              <NavLink
+                to={item.path || '#'}
+                title={collapsed ? item.name : undefined}
+                className={({ isActive }) => `flex min-h-10 p-5 items-center rounded-md text-sm font-medium ${collapsed ? 'justify-center px-0' : 'gap-3'} ${isActive ? 'bg-[#628dec] text-white' : 'text-slate-600 hover:bg-slate-50 hover:text-[#628dec]'}`}>
+                {({ isActive }) => (
+                  <>
+                    <span className={`shrink-0 ${isActive ? 'text-white' : 'text-slate-400'}`}>
+                      {item.icon}
+                    </span>
 
-                  <span className={`${collapsed ? 'hidden' : 'truncate'}`}>
-                    {item.name}
-                  </span>
-                </>
-              )}
-            </NavLink>
-          )
-        )}
+                    <span className={`${collapsed ? 'hidden' : 'truncate'}`}>
+                      {item.name}
+                    </span>
+                  </>
+                )}
+              </NavLink>
+            )}
+          </div>
+        ))}
       </nav>
     </aside>
   )
