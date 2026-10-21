@@ -1,7 +1,5 @@
 import { useState } from "react";
-import { ListOrdered } from "lucide-react";
 import { Select } from "../../ui/form/Select";
-import { AdminResponsiveContainer } from "../../ui/form/AdminResponsiveContainer";
 import { GenerateTicketModal } from "../../components/Modals/GenerateTicketModal";
 import { ActiveQueueDateTable } from "../../components/Tables/ActiveQueueDateTable";
 
@@ -12,76 +10,74 @@ const ActiveQueueTicket = () => {
 
   return (
     <>
-      <AdminResponsiveContainer>
-        <div className="flex w-full flex-col leading-none">
-          <div className="flex items-center gap-3 border-b border-gray-300 py-3">
-            <ListOrdered
-              size={22}
-              strokeWidth={2}
-              className="shrink-0 text-[#628dec]"
-            />
-
-            <div>
-              <h1 className="text-xl font-semibold text-[#628dec]">
-                View Active Queue{" "}
-                {activeDate
-                  ? `- ${activeDate.toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                    })}`
-                  : "Today"}
-              </h1>
-
-              <p className="mt-1 text-sm text-gray-900">
-                Get an overview of the current queues, pending requests, and completed services.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex w-full items-end gap-4">
-          {/* Left */}
+      <div className="w-full">
+        <div className="block mb-4 flex items-center gap-3 border-b border-gray-300 py-3 lg:hidden">
           <div>
-            <label
-              htmlFor="status"
-              className="mb-1 block text-sm font-medium capitalize tracking-wider"
-            >
-              filter by
-            </label>
+            <h1 className="text-lg font-semibold text-[#628dec]">
+              View Active Queue{" "}
+              {activeDate
+                ? `- ${activeDate.toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  })}`
+                : "Today"}
+            </h1>
 
-            <Select
-              id="status"
-              variant="admin"
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-            >
-              <option value="">All Status</option>
-              <option value="used">Used</option>
-              <option value="pending">Pending</option>
-              {/* <option value="expired">Expired</option> */}
-            </Select>
+            <p className="mt-1 text-sm leading-relaxed text-gray-900">
+              Get an overview of the current queues, pending requests, and
+              completed services.
+            </p>
           </div>
+        </div>
+      
 
-          {/* Right */}
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="admin-blue-button ml-auto"
+      {/* Filter and Generate Ticket */}
+      <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-end sm:gap-4">
+        {/* Filter */}
+        <div className="w-full sm:w-auto">
+          <label
+            htmlFor="status"
+            className="mb-1 block text-sm font-medium capitalize tracking-wider"
           >
-            Generate Ticket
-          </button>
+            Filter by
+          </label>
+
+          <Select
+            id="status"
+            variant="admin"
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+          >
+            <option value="">All Status</option>
+            <option value="used">Used</option>
+            <option value="pending">Pending</option>
+          </Select>
         </div>
 
+        {/* Generate Ticket */}
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="admin-blue-button w-full sm:ml-auto sm:w-auto"
+        >
+          Generate Ticket
+        </button>
+      </div>
+
+      {/* Active Queue Table */}
+      <div className="mt-4 w-full">
         <ActiveQueueDateTable
           onDateChange={setActiveDate}
           statusFilter={statusFilter}
         />
-      </AdminResponsiveContainer>
+      </div>
 
+      {/* Generate Ticket Modal */}
       <GenerateTicketModal
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
       />
+      </div>
     </>
   );
 };

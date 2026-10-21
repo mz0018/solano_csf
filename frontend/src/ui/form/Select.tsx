@@ -16,19 +16,19 @@ export const Select = ({
     const isAdmin = variant === 'admin'
 
     return (
-        <div className="relative">
+        <div className={isAdmin ? 'relative w-full sm:w-96 max-w-full' : 'relative w-full'}>
             <select
                 {...props}
                 className={
                     isAdmin
-                        ? `w-96 px-3 py-2 pr-10 rounded-lg focus:outline-none border appearance-none
+                        ? `w-full min-w-0 px-3 py-2 pr-10 rounded-lg focus:outline-none border appearance-none text-sm
                             ${
                                 error
                                     ? 'border-red-500 text-red-500'
-                                    : 'border-gray-300 text-gray-900 text-sm bg-white focus:ring-1 focus:ring-blue-500 focus:border-blue-500'
+                                    : 'border-gray-300 text-gray-900 bg-white focus:ring-1 focus:ring-blue-500 focus:border-blue-500'
                             }
                             ${className}`
-                        : `w-full p-4 pr-10 rounded-sm focus:outline-none border appearance-none bg-transparent
+                        : `w-full min-w-0 p-4 pr-10 rounded-sm focus:outline-none border appearance-none bg-transparent
                             ${
                                 error
                                     ? 'border-red-500 text-red-500'
