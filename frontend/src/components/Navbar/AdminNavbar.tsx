@@ -100,10 +100,10 @@ export const AdminNavbar = () => {
   };
 
   return (
-    <header className="h-24 bg-white flex items-center justify-between border-b border-slate-200 px-4 py-3 text-[#1f2937] sm:px-6">
+    <header className="flex h-24 w-full items-center justify-between border-b border-slate-200 bg-white px-4 py-3 text-[#1f2937] sm:px-6">
 
       {/* Left */}
-      <div className="flex min-w-0 flex-1 items-center">
+      <div className="hidden min-w-0 flex-1 items-center lg:flex">
         {pageHeader && (
           <div className="min-w-0">
             <h1 className="truncate text-lg font-semibold text-[#628dec]">
@@ -119,7 +119,7 @@ export const AdminNavbar = () => {
       </div>
 
       {/* Right */}
-      <div className="flex shrink-0 items-center gap-2">
+      <div className="ml-auto flex shrink-0 items-center gap-2">
 
         {/* Notifications */}
         <button

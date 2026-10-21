@@ -13,7 +13,7 @@ export const MonitorTotalQueue = () => {
 
     return (
         <div className="w-full">
-            <div className="mb-4 flex items-center gap-3 border-b border-gray-300 py-3">
+            <div className="mb-4 flex items-center gap-3 border-b border-gray-300 py-3 bg-red-500">
                 <LayoutDashboard
                     size={22}
                     strokeWidth={2}
