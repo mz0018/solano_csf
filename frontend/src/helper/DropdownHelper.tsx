@@ -6,7 +6,7 @@ type NavItem = {
   name: string
   path?: string
   children?: NavItem[]
-  icon?: React.ReactNode
+  icon?: string
 }
 
 type Props = {
@@ -33,9 +33,13 @@ export const DropdownHelper = ({ item, collapsed, setCollapsed }: Props) => {
         aria-expanded={!collapsed && open}
         className={`flex min-h-10 w-full items-center py-5 pl-5 rounded-md text-left text-sm font-medium ${collapsed ? 'justify-center px-0' : 'gap-3'} ${open ? 'bg-slate-50 text-[#628dec]' : 'text-slate-600 hover:bg-slate-50 hover:text-[#628dec]'}`}
       >
-        <span className="shrink-0 text-slate-400">
-          {item.icon}
-        </span>
+        {item.icon && (
+          <img
+            src={item.icon}
+            alt=""
+            className={`h-5 w-5 shrink-0 ${open ? 'brightness-0 invert' : ''}`}
+          />
+        )}
 
         {!collapsed && (
           <>

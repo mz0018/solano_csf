@@ -13,7 +13,7 @@ type NavItem = {
   name: string
   path?: string
   children?: NavItem[]
-  icon?: React.ReactNode
+  icon?: string
   roles: string[]
   section?: string
 }
@@ -54,7 +54,7 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
   }, [collapsed])
 
   return (
-    <aside className={`flex h-screen min-h-0 shrink-0 flex-col border-r border-slate-200 bg-white ${collapsed ? 'w-16' : 'w-80'}`}>
+    <aside className={`flex h-screen min-h-0 shrink-0 flex-col border-r border-slate-200 ${collapsed ? 'w-16' : 'w-80'}`}>
 
       <>
         <div className={`flex h-24 shrink-0 items-center py-3 ${collapsed ? 'justify-center' : 'justify-between gap-3'}`}>
@@ -63,7 +63,7 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
             className={`${collapsed ? 'hidden' : 'h-18 min-w-0 flex-1 px-4 overflow-hidden'}`}>
             <img
               // src={ '/img/csf-remove-light.png'}
-              src={ '/img/CSF-test.png'}
+              src={ '/img/csf-orig-optimized.png'}
               alt={user?.userName || 'User'}
               className="h-9 m-4 object-contain"
             />
@@ -100,9 +100,13 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
                 className={({ isActive }) => `flex min-h-10 p-5 items-center rounded-md text-sm font-medium ${collapsed ? 'justify-center px-0' : 'gap-3'} ${isActive ? 'bg-[#628dec] text-white' : 'text-slate-600 hover:bg-slate-50 hover:text-[#628dec]'}`}>
                 {({ isActive }) => (
                   <>
-                    <span className={`shrink-0 ${isActive ? 'text-white' : 'text-slate-400'}`}>
-                      {item.icon}
-                    </span>
+                    {item.icon && (
+                      <img
+                        src={item.icon}
+                        alt=""
+                        className={`h-5 w-5 shrink-0 ${isActive ? 'brightness-0 invert' : ''}`}
+                      />
+                    )}
 
                     <span className={`${collapsed ? 'hidden' : 'truncate'}`}>
                       {item.name}
