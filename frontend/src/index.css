@@ -142,8 +142,7 @@
   font-weight: 600;
   line-height: 1.25rem;
 }
-.admin-content label,
-.admin-content th {
+.admin-content label {
   font-size: 0.875rem;
   font-weight: 500;
   line-height: 1.25rem;
