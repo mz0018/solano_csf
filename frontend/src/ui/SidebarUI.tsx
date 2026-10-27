@@ -79,7 +79,7 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
         </div>
       </>
 
-      <nav className="flex-1 space-y-1 overflow-y-auto px-5 py-2">
+      <nav className={`flex-1 space-y-1 overflow-y-auto py-2 ${collapsed ? 'px-2' : 'px-5'}`}>
         {navLinks.map((item, index) => (
           <div key={item.path ?? item.name}>
             {!collapsed && item.section && item.section !== navLinks[index - 1]?.section && (
@@ -97,14 +97,14 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
               <NavLink
                 to={item.path || '#'}
                 title={collapsed ? item.name : undefined}
-                className={({ isActive }) => `flex min-h-10 p-5 items-center rounded-md text-sm font-medium ${collapsed ? 'justify-center px-0' : 'gap-3'} ${isActive ? 'bg-[#628dec] text-white' : 'text-slate-600 hover:bg-slate-50 hover:text-[#628dec]'}`}>
+                className={({ isActive }) => `flex min-h-10 items-center rounded-md text-sm font-medium ${collapsed ? 'h-10 justify-center p-0' : 'gap-3 p-5'} ${isActive ? collapsed ? 'text-[#628dec]' : 'bg-[#628dec] text-white' : 'text-slate-600 hover:bg-slate-50 hover:text-[#628dec]'}`}>
                 {({ isActive }) => (
                   <>
                     {item.icon && (
                       <img
                         src={item.icon}
                         alt=""
-                        className={`h-5 w-5 shrink-0 ${isActive ? 'brightness-0 invert' : ''}`}
+                        className={`h-5 w-5 shrink-0 ${isActive && !collapsed ? 'brightness-0 invert' : ''}`}
                       />
                     )}
 
