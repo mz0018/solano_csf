@@ -106,11 +106,11 @@ export const AdminNavbar = () => {
       <div className="hidden min-w-0 flex-1 items-center lg:flex">
         {pageHeader && (
           <div className="min-w-0">
-            <h1 className="truncate text-lg font-semibold text-[#628dec]">
+            <h1 className="truncate text-xl font-semibold text-[#628dec]">
               {pageHeader.title}
             </h1>
             {pageHeader.description && (
-              <p className="truncate text-sm text-gray-500">
+              <p className="truncate tracking-wider text-sm text-gray-500">
                 {pageHeader.description}
               </p>
             )}
