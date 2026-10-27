@@ -122,7 +122,7 @@ export const ReadReportStatistics = () => {
                 onClick={() => {
                     if (!isLineChart) handleGraphToggle();
                 }}
-                className={`flex items-center gap-2 border-b-2 px-4 py-3 text-xl font-medium transition-colors ${
+                className={`flex items-center gap-2 border-b-2 px-4 py-3 text-md sm:text-lg lg:text-xl font-medium transition-colors ${
                     isLineChart
                         ? "border-[#628dec] text-[#628dec]"
                         : "border-transparent text-slate-500 hover:text-slate-700"
@@ -138,7 +138,7 @@ export const ReadReportStatistics = () => {
                 onClick={() => {
                     if (isLineChart) handleGraphToggle();
                 }}
-                className={`flex items-center gap-2 border-b-2 px-4 py-3 text-xl font-medium transition-colors ${
+                className={`flex items-center gap-2 border-b-2 px-4 py-3 text-md sm:text-lg lg:text-xl font-medium transition-colors ${
                     !isLineChart
                         ? "border-[#628dec] text-[#628dec]"
                         : "border-transparent text-slate-500 hover:text-slate-700"
@@ -169,7 +169,7 @@ export const ReadReportStatistics = () => {
             <div className="flex w-full flex-col gap-4 lg:flex-row">
                 {/* Chart with attached navigation tabs */}
                 <div className="w-full lg:w-2/3">
-                    <div className="overflow-hidden min-w-0 rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md">
+                    <div className="overflow-hidden min-w-0 rounded-xl border border-gray-200 bg-white py-4 shadow-sm transition-shadow hover:shadow-md">
                         {/* Navigation Tabs */}
                         <div className=" border-slate-200 px-4">
                             {chartTypeTabs}
