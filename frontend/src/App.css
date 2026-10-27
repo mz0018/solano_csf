@@ -94,7 +94,7 @@
 }
 
 
-/* .admin-halftone::after {
+.admin-halftone::after {
   content: "";
   position: fixed;
   inset: 0;
@@ -102,10 +102,15 @@
   pointer-events: none;
 
   background:
-    radial-gradient(
-      circle,
+    linear-gradient(
+      to right,
       rgba(59, 130, 246, 0.12) 1px,
-      transparent 1.5px
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(59, 130, 246, 0.12) 1px,
+      transparent 1px
     ),
     linear-gradient(
       to bottom,
@@ -115,7 +120,8 @@
     );
 
   background-size:
-    12px 12px,
+    24px 24px,
+    24px 24px,
     100% 100%;
 
   mask-image: linear-gradient(
@@ -124,5 +130,4 @@
     black 35%,
     black 100%
   );
-} */
-
+}

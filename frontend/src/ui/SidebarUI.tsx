@@ -54,7 +54,7 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
   }, [collapsed])
 
   return (
-    <aside className={`flex h-screen min-h-0 shrink-0 flex-col border-r border-slate-200 ${collapsed ? 'w-16' : 'w-80'}`}>
+    <aside className={`flex h-screen min-h-0 shrink-0 flex-col border-r border-slate-200 bg-white ${collapsed ? 'w-16' : 'w-80'}`}>
 
       <>
         <div className={`flex h-24 shrink-0 items-center py-3 ${collapsed ? 'justify-center' : 'justify-between gap-3'}`}>
