@@ -50,11 +50,11 @@ export const ReadReportStatistics = () => {
 
     const officeCode = user?.officeCode ?? "";
 
-    const { data: stats, isLoading, error } = useGetReportStatistics(
-        officeCode,
-        startDate,
-        endDate
-    );
+    const {
+        data: stats,
+        isLoading,
+        error,
+    } = useGetReportStatistics(officeCode, startDate, endDate);
 
     if (isLoading) return <>Loading....</>;
     if (error) return <>Something error</>;
@@ -109,6 +109,47 @@ export const ReadReportStatistics = () => {
         setCurrentGraph((prev) => (prev === 0 ? 1 : 0));
     };
 
+    // Line / Bar navigation tabs
+    const chartTypeTabs = (
+        <div
+            className="flex items-center gap-1"
+            role="group"
+            aria-label="Chart type"
+        >
+            <button
+                type="button"
+                aria-pressed={isLineChart}
+                onClick={() => {
+                    if (!isLineChart) handleGraphToggle();
+                }}
+                className={`flex items-center gap-2 border-b-2 px-4 py-3 text-xl font-medium transition-colors ${
+                    isLineChart
+                        ? "border-[#628dec] text-[#628dec]"
+                        : "border-transparent text-slate-500 hover:text-slate-700"
+                }`}
+            >
+                <LineChart className="h-4 w-4" />
+                Line
+            </button>
+
+            <button
+                type="button"
+                aria-pressed={!isLineChart}
+                onClick={() => {
+                    if (isLineChart) handleGraphToggle();
+                }}
+                className={`flex items-center gap-2 border-b-2 px-4 py-3 text-xl font-medium transition-colors ${
+                    !isLineChart
+                        ? "border-[#628dec] text-[#628dec]"
+                        : "border-transparent text-slate-500 hover:text-slate-700"
+                }`}
+            >
+                <BarChart3 className="h-4 w-4" />
+                Bar
+            </button>
+        </div>
+    );
+
     return (
         <div className="w-full">
             {/* Mobile Header */}
@@ -122,94 +163,29 @@ export const ReadReportStatistics = () => {
                         View and compare client feedback statistics.
                     </p>
                 </div>
-
-                {/* Chart Type Switch - Below heading on mobile */}
-                <div className="flex flex-wrap items-center gap-3">
-                    <span className="text-sm font-medium text-gray-600">
-                        Chart type
-                    </span>
-
-                    <button
-                        type="button"
-                        role="switch"
-                        aria-checked={isLineChart}
-                        aria-label="Toggle chart type"
-                        onClick={handleGraphToggle}
-                        className="group flex cursor-pointer items-center gap-1 rounded-sm border border-gray-200 bg-gray-100 p-1 shadow-sm transition-colors hover:bg-gray-200"
-                    >
-                        <span
-                            className={`flex items-center gap-1.5 rounded-sm px-3 py-1.5 text-sm font-medium transition-all ${
-                                isLineChart
-                                    ? "bg-white text-blue-600 shadow-sm"
-                                    : "text-gray-500"
-                            }`}
-                        >
-                            <LineChart className="h-4 w-4" />
-                            Line
-                        </span>
-
-                        <span
-                            className={`flex items-center gap-1.5 rounded-sm px-3 py-1.5 text-sm font-medium transition-all ${
-                                !isLineChart
-                                    ? "bg-white text-blue-600 shadow-sm"
-                                    : "text-gray-500"
-                            }`}
-                        >
-                            <BarChart3 className="h-4 w-4" />
-                            Bar
-                        </span>
-                    </button>
-                </div>
-            </div>
-
-            {/* Desktop Chart Type Switch - Original position */}
-            <div className="my-4 hidden items-center justify-end gap-3 lg:flex">
-                <h1 className="mr-auto truncate text-lg font-semibold text-[#628dec]">Statistics</h1>
-                <span className="text-sm font-medium text-gray-600">
-                    Chart type
-                </span>
-
-                <button
-                    type="button"
-                    role="switch"
-                    aria-checked={isLineChart}
-                    aria-label="Toggle chart type"
-                    onClick={handleGraphToggle}
-                    className="group flex cursor-pointer items-center gap-1 rounded-sm border border-gray-200 bg-gray-100 p-1 shadow-sm transition-colors hover:bg-gray-200"
-                >
-                    <span
-                        className={`flex items-center gap-1.5 rounded-sm px-3 py-1.5 text-sm font-medium transition-all ${
-                            isLineChart
-                                ? "bg-white text-blue-600 shadow-sm"
-                                : "text-gray-500"
-                        }`}
-                    >
-                        <LineChart className="h-4 w-4" />
-                        Line
-                    </span>
-
-                    <span
-                        className={`flex items-center gap-1.5 rounded-sm px-3 py-1.5 text-sm font-medium transition-all ${
-                            !isLineChart
-                                ? "bg-white text-blue-600 shadow-sm"
-                                : "text-gray-500"
-                        }`}
-                    >
-                        <BarChart3 className="h-4 w-4" />
-                        Bar
-                    </span>
-                </button>
             </div>
 
             {/* Chart and Date Picker */}
             <div className="flex w-full flex-col gap-4 lg:flex-row">
+                {/* Chart with attached navigation tabs */}
                 <div className="w-full lg:w-2/3">
-                    <RenderReportStatistics
-                        currentGraph={currentGraph}
-                        chartsDataArray={chartsDataArray}
-                    />
+                    <div className="overflow-hidden min-w-0 rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md">
+                        {/* Navigation Tabs */}
+                        <div className=" border-slate-200 px-4">
+                            {chartTypeTabs}
+                        </div>
+
+                        {/* Chart Content */}
+                        <div className="p-4">
+                            <RenderReportStatistics
+                                currentGraph={currentGraph}
+                                chartsDataArray={chartsDataArray}
+                            />
+                        </div>
+                    </div>
                 </div>
 
+                {/* Date Picker */}
                 <div className="min-w-0 w-full lg:flex-1">
                     <RenderReportStatisticsDatePicker
                         officeCode={officeCode}
@@ -221,6 +197,7 @@ export const ReadReportStatistics = () => {
                 </div>
             </div>
 
+            {/* Statistics Table */}
             <RenderReportStatisticsTable
                 chartsDataArray={chartsDataArray}
             />
