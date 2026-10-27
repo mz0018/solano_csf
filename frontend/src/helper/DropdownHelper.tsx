@@ -31,13 +31,13 @@ export const DropdownHelper = ({ item, collapsed, setCollapsed }: Props) => {
         }}
         title={collapsed ? item.name : undefined}
         aria-expanded={!collapsed && open}
-        className={`flex min-h-10 w-full items-center py-5 pl-5 rounded-md text-left text-sm font-medium ${collapsed ? 'justify-center px-0' : 'gap-3'} ${open ? 'bg-slate-50 text-[#628dec]' : 'text-slate-600 hover:bg-slate-50 hover:text-[#628dec]'}`}
+        className={`flex min-h-10 w-full items-center py-5 pl-5 rounded-md text-left text-sm font-medium ${collapsed ? 'justify-center px-0' : 'gap-3 pr-5'} ${open ? 'bg-slate-50 text-[#628dec]' : 'text-slate-600 hover:bg-slate-50 hover:text-[#628dec]'}`}
       >
         {item.icon && (
           <img
             src={item.icon}
             alt=""
-            className={`h-5 w-5 shrink-0 ${open ? 'brightness-0 invert' : ''}`}
+            className={`h-5 w-5 shrink-0 ${open ? '' : ''}`}
           />
         )}
 
