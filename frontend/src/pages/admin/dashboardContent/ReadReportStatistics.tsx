@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { BarChart3, LineChart } from "lucide-react";
 import { useAuth } from "../../../context/AuthContext";
 import { RenderReportStatistics } from "./RenderStatistics";
 import { RenderReportStatisticsTable } from "./RenderReportStatisticsTable";
@@ -104,48 +103,74 @@ export const ReadReportStatistics = () => {
     ];
 
     const isLineChart = currentGraph === 0;
+    const isBarChart = currentGraph === 1;
+    const isTable = currentGraph === 2;
 
-    const handleGraphToggle = () => {
-        setCurrentGraph((prev) => (prev === 0 ? 1 : 0));
-    };
-
-    // Line / Bar navigation tabs
+    // Line / Bar / Table navigation tabs
     const chartTypeTabs = (
         <div
-            className="flex items-center gap-1"
+            className="flex flex-wrap items-center gap-1"
             role="group"
-            aria-label="Chart type"
+            aria-label="Statistics view"
         >
             <button
                 type="button"
                 aria-pressed={isLineChart}
-                onClick={() => {
-                    if (!isLineChart) handleGraphToggle();
-                }}
+                onClick={() => setCurrentGraph(0)}
                 className={`flex items-center gap-2 border-b-2 px-4 py-3 text-md sm:text-lg lg:text-xl font-medium transition-colors ${
                     isLineChart
                         ? "border-[#628dec] text-[#628dec]"
                         : "border-transparent text-slate-500 hover:text-slate-700"
                 }`}
             >
-                <LineChart className="h-4 w-4" />
+                <img
+                    src="/icons/line-graph.svg"
+                    alt=""
+                    className={`h-5 w-5 object-contain ${
+                        isLineChart ? "" : "opacity-60"
+                    }`}
+                />
                 Line
             </button>
 
             <button
                 type="button"
-                aria-pressed={!isLineChart}
-                onClick={() => {
-                    if (isLineChart) handleGraphToggle();
-                }}
+                aria-pressed={isBarChart}
+                onClick={() => setCurrentGraph(1)}
                 className={`flex items-center gap-2 border-b-2 px-4 py-3 text-md sm:text-lg lg:text-xl font-medium transition-colors ${
-                    !isLineChart
+                    isBarChart
                         ? "border-[#628dec] text-[#628dec]"
                         : "border-transparent text-slate-500 hover:text-slate-700"
                 }`}
             >
-                <BarChart3 className="h-4 w-4" />
+                <img
+                    src="/icons/bar-graph.svg"
+                    alt=""
+                    className={`h-5 w-5 object-contain ${
+                        isBarChart ? "" : "opacity-60"
+                    }`}
+                />
                 Bar
+            </button>
+
+            <button
+                type="button"
+                aria-pressed={isTable}
+                onClick={() => setCurrentGraph(2)}
+                className={`flex items-center gap-2 border-b-2 px-4 py-3 text-md sm:text-lg lg:text-xl font-medium transition-colors ${
+                    isTable
+                        ? "border-[#628dec] text-[#628dec]"
+                        : "border-transparent text-slate-500 hover:text-slate-700"
+                }`}
+            >
+                <img
+                    src="/icons/table-graph.svg"
+                    alt=""
+                    className={`h-5 w-5 object-contain ${
+                        isTable ? "" : "opacity-60"
+                    }`}
+                />
+                Table
             </button>
         </div>
     );
@@ -177,10 +202,16 @@ export const ReadReportStatistics = () => {
 
                         {/* Chart Content */}
                         <div className="p-4">
-                            <RenderReportStatistics
-                                currentGraph={currentGraph}
-                                chartsDataArray={chartsDataArray}
-                            />
+                            {isTable ? (
+                                <RenderReportStatisticsTable
+                                    chartsDataArray={chartsDataArray}
+                                />
+                            ) : (
+                                <RenderReportStatistics
+                                    currentGraph={currentGraph}
+                                    chartsDataArray={chartsDataArray}
+                                />
+                            )}
                         </div>
                     </div>
                 </div>
@@ -196,11 +227,6 @@ export const ReadReportStatistics = () => {
                     />
                 </div>
             </div>
-
-            {/* Statistics Table */}
-            <RenderReportStatisticsTable
-                chartsDataArray={chartsDataArray}
-            />
         </div>
     );
 };

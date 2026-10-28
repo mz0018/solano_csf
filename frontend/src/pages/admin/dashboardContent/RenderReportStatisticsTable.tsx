@@ -8,14 +8,14 @@ export const RenderReportStatisticsTable = ({
         <div className="mt-6 flex flex-col gap-6">
             {chartsDataArray.map((chart) => (
                 <div key={chart.title}>
-                    <h2 className="mb-3 text-base font-semibold text-slate-800">
+                    <h2 className="mb-3 text-xl font-semibold text-slate-500">
                         {chart.title} Statistics
                     </h2>
 
                     <TableUI>
                         <thead>
                             <tr>
-                                <th>Category</th>
+                                <th>{chart.title}</th>
                                 <th>Total Responses</th>
                             </tr>
                         </thead>

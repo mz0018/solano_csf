@@ -97,7 +97,7 @@ const AdminLayout = () => {
         <div className="flex min-w-0 flex-1 flex-col">
           <AdminNavbar />
 
-          <main className="flex-1 overflow-y-auto p-6 admin-halftone">
+          <main className="flex-1 overflow-y-auto p-6 bg-slate-100">
             <Outlet />
           </main>
         </div>

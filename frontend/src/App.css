@@ -94,7 +94,7 @@
 }
 
 
-.admin-halftone::after {
+/* .admin-halftone::after {
   content: "";
   position: fixed;
   inset: 0;
@@ -130,4 +130,4 @@
     black 35%,
     black 100%
   );
-}
+} */
