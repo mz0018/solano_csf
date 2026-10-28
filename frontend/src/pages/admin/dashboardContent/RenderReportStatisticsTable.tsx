@@ -15,7 +15,7 @@ export const RenderReportStatisticsTable = ({
                     <TableUI>
                         <thead>
                             <tr>
-                                <th>{chart.title}</th>
+                                <th></th>
                                 <th>Total Responses</th>
                             </tr>
                         </thead>
