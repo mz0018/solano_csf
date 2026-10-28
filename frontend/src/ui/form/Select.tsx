@@ -21,7 +21,7 @@ export const Select = ({
                 {...props}
                 className={
                     isAdmin
-                        ? `w-full min-w-0 px-3 py-2 pr-10 rounded-lg focus:outline-none border appearance-none text-sm
+                        ? `w-full min-w-0 px-3 py-4 pr-10 rounded-lg focus:outline-none border appearance-none text-sm
                             ${
                                 error
                                     ? 'border-red-500 text-red-500'

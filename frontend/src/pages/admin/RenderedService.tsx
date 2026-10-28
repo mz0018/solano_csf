@@ -94,7 +94,7 @@ const RenderedService = () => {
                             setDateFrom(e.target.value);
                             setPage(1);
                         }}
-                        className="w-full min-w-0 rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                        className="w-full min-w-0 rounded-lg border border-gray-300 bg-white px-3 py-4 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                     />
                 </div>
 
@@ -110,7 +110,7 @@ const RenderedService = () => {
                             setDateTo(e.target.value);
                             setPage(1);
                         }}
-                        className="w-full min-w-0 rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                        className="w-full min-w-0 rounded-lg border border-gray-300 bg-white px-3 py-4 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                     />
                 </div>
             </div>
