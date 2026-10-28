@@ -1,6 +1,7 @@
 import { Maximize2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useGetActiveQueue } from "../../../hooks/useGetActiveQueue";
+import { ErrorText } from "../../../ui/form/ErrorText";
 import type { RenderReportStatisticsDatePickerProps } from "./ReadReportStatistics";
 
 export const RenderReportStatisticsDatePicker = ({
@@ -73,12 +74,8 @@ export const RenderReportStatisticsDatePicker = ({
             <div className="mt-3 w-full rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
                 <div className="mb-4 flex items-center justify-between border-b border-slate-200 pb-4">
                     <div>
-                        <p className="text-base font-semibold text-slate-800">
+                        <p className="text-base font-semibold text-slate-500 sm:text-lg lg:text-xl">
                             {officeCode} Live Tickets
-                        </p>
-
-                        <p className="mt-1 text-sm text-slate-500">
-                            Active tickets
                         </p>
                     </div>
 
@@ -101,9 +98,7 @@ export const RenderReportStatisticsDatePicker = ({
                 )}
 
                 {queueError && (
-                    <p className="py-3 text-sm text-red-500">
-                        Failed to load active tickets.
-                    </p>
+                    <ErrorText message="Failed to load active tickets." />
                 )}
 
                 {!queueLoading &&
@@ -125,7 +120,7 @@ export const RenderReportStatisticsDatePicker = ({
                                     className="flex items-center justify-between py-3"
                                 >
                                     <div>
-                                        <p className="text-sm font-semibold text-slate-800">
+                                        <p className="text-md sm:text-lg lg:text-xl font-semibold text-slate-500">
                                             {ticket.code}
                                         </p>
 
@@ -134,9 +129,9 @@ export const RenderReportStatisticsDatePicker = ({
                                         </p>
                                     </div>
 
-                                    <span className="rounded-full bg-amber-50 px-2.5 py-1 text-xs font-medium capitalize text-amber-600">
+                                    <small className="rounded-md bg-blue-50 px-2.5 py-1 text-xs font-medium capitalize text-slate-500">
                                         {ticket.status}
-                                    </span>
+                                    </small>
                                 </div>
                             ))}
                         </div>
