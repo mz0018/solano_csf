@@ -21,7 +21,7 @@ export const TableUI = ({
                     [&_th]:px-3
                     [&_th]:py-4
                     [&_th]:text-start
-                    [&_th]:text-xs
+                    [&_th]:text-md
                     [&_th]:font-semibold
                     [&_th]:uppercase
                     [&_th]:tracking-wider

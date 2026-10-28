@@ -7,6 +7,7 @@ import { PaginationUI } from "../../ui/form/PaginationUI";
 import { Search } from "lucide-react";
 import { InlineLoader } from "../Loader";
 import { AdminButton } from "../../ui/form/AdminButton";
+import { CSFCustomToaster } from "../../utils/Toaster";
 
 export interface ActiveQueueDateTableProps {
   onDateChange?: (date: Date) => void;
@@ -52,14 +53,23 @@ export const ActiveQueueDateTable = ({
       ] ?? 0
     : data?.total ?? 0;
 
+  const handleCopyTicket = async (ticketCode: string) => {
+    try {
+      await navigator.clipboard.writeText(ticketCode);
+      CSFCustomToaster.success(`Ticket ${ticketCode} copied`);
+    } catch {
+      CSFCustomToaster.error("Unable to copy ticket");
+    }
+  };
+
   return (
     <>
       <TableUI>
         <thead>
           <tr>
-            <th>Ticket</th>
-            <th>Status</th>
-            <th>Actions</th>
+            <th>ticket</th>
+            <th>status</th>
+            <th>actions</th>
           </tr>
         </thead>
 
@@ -79,7 +89,25 @@ export const ActiveQueueDateTable = ({
           ) : data?.queue && data.queue.length > 0 ? (
               data.queue.map((queue) => (
               <tr key={queue._id}>
-                <td>{queue.code}</td>
+                <td>
+                  <span className="inline-flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => handleCopyTicket(queue.code)}
+                      aria-label={`Copy ticket ${queue.code}`}
+                      title={`Copy ticket ${queue.code}`}
+                      className="cursor-pointer rounded p-1 transition-colors hover:bg-[#628dec]/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#628dec]"
+                    >
+                      <img
+                        src="/icons/copy-ticket.svg"
+                        alt=""
+                        aria-hidden="true"
+                        className="h-5 w-5"
+                      />
+                    </button>
+                    <span>{queue.code}</span>
+                  </span>
+                </td>
 
                 <td className="capitalize">
                   <span className="inline-flex items-center gap-2">
