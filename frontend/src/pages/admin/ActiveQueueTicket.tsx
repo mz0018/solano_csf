@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Select } from "../../ui/form/Select";
+import { AdminButton } from "../../ui/form/AdminButton";
 import { GenerateTicketModal } from "../../components/Modals/GenerateTicketModal";
 import { ActiveQueueDateTable } from "../../components/Tables/ActiveQueueDateTable";
 
@@ -38,7 +39,7 @@ const ActiveQueueTicket = () => {
         <div className="w-full sm:w-auto">
           <label
             htmlFor="status"
-            className="mb-1 block text-sm font-medium capitalize tracking-wider"
+            className="mb-2 block text-base font-semibold text-slate-500 sm:text-lg lg:text-xl"
           >
             Filter by
           </label>
@@ -56,12 +57,14 @@ const ActiveQueueTicket = () => {
         </div>
 
         {/* Generate Ticket */}
-        <button
+        <AdminButton
+          icon="/icons/generate.svg"
+          iconAlt="Ticket"
           onClick={() => setIsModalOpen(true)}
-          className="admin-blue-button w-full sm:ml-auto sm:w-auto"
+          className="bg-[#628dec] text-white hover:bg-[#628dec]/90 transition-colors font-semibold sm:ml-auto sm:w-auto whitespace-nowrap"
         >
           Generate Ticket
-        </button>
+        </AdminButton>
       </div>
 
       {/* Active Queue Table */}

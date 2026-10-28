@@ -4,8 +4,9 @@ import { ErrorText } from "../../ui/form/ErrorText";
 import { useGetActiveQueue } from "../../hooks/useGetActiveQueue";
 import { ViewFeedbackModal } from "../Modals/ViewFeedbackModal";
 import { PaginationUI } from "../../ui/form/PaginationUI";
-import { Fullscreen, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { InlineLoader } from "../Loader";
+import { AdminButton } from "../../ui/form/AdminButton";
 
 export interface ActiveQueueDateTableProps {
   onDateChange?: (date: Date) => void;
@@ -81,23 +82,37 @@ export const ActiveQueueDateTable = ({
                 <td>{queue.code}</td>
 
                 <td className="capitalize">
-                  {queue.status}
+                  <span className="inline-flex items-center gap-2">
+                  <img
+                    src={
+                      queue.status === "pending"
+                        ? "/icons/pending.svg"
+                        : "/icons/done.svg"
+                    }
+                    alt=""
+                    aria-hidden="true"
+                    title={queue.status}
+                    className="h-6 w-6"
+                  />
+                    <span>{queue.status}</span>
+                  </span>
                 </td>
 
                 <td>
                   {queue.status === "pending" ? (
                     <>- -</>
                   ) : (
-                    <button
+                    <AdminButton
+                      icon="/icons/open.svg"
+                      iconAlt="Review Ticket"
                       onClick={() => {
                         setFeedbackModalOpen(true);
                         setSelectedFeedback(queue.code);
                       }}
-                      className="inline-flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-gray-100"
+                      className="border border-[#628dec] text-[#628dec] hover:bg-[#628dec]/10 transition-colors font-semibold"
                     >
-                      <Fullscreen size={16} />
-                      <span>Review</span>
-                    </button>
+                      Review
+                    </AdminButton>
                   )}
                 </td>
               </tr>
@@ -125,7 +140,7 @@ export const ActiveQueueDateTable = ({
       </TableUI>
 
       {/* Total */}
-      <p className="mx-2 text-sm text-gray-500 capitalize tracking-wider">
+      <p className="mx-2 my-2 text-xs lg:text-sm text-slate-500 capitalize border-b border-slate-200 py-4">
         Total {statusLabel.toLowerCase()}: {total} ticket{total === 1 ? "" : "s"}
       </p>
 

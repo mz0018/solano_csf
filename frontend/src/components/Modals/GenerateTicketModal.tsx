@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { Select } from "../../ui/form/Select"
 import { ModalUI } from "../../ui/form/ModalUI"
 import { Button } from "../../ui/form/Buttons"
+import { AdminButton } from "../../ui/form/AdminButton"
 import { useGenerateTicket } from "../../hooks/useGenerateTicket"
 import { useGetServices } from "../../hooks/useGetServices"
 import { useGetChildServices } from "../../hooks/useGetChildServices"
@@ -173,13 +174,15 @@ export const GenerateTicketModal = ({
             Print QR
           </Button>
         ) : (
-          <Button
+          <AdminButton
+            icon="/icons/submit.svg"
+            iconAlt="Submit"
             disabled={isGeneratingTicket}
             onClick={handleGenerateTicket}
-            className="w-full bg-blue-500 text-white p-4 rounded-sm cursor-pointer hover:bg-blue-600 transition-colors"
+            className="w-full bg-[#628dec] text-white hover:bg-[#628dec]/90 transition-colors font-semibold"
           >
-            {isGeneratingTicket ? "Loading..." : "Generate"}
-          </Button>
+            {isGeneratingTicket ? "Loading..." : "Proceed"}
+          </AdminButton>
         )
       }
     >
