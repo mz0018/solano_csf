@@ -11,6 +11,21 @@ export const RenderReportStatisticsDatePicker = ({
     endDate,
 }: RenderReportStatisticsDatePickerProps) => {
     const navigate = useNavigate();
+    const formatDate = (date: string) =>
+        new Date(`${date}T00:00:00`).toLocaleDateString("en-US", {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+        });
+    const formattedStartDate = formatDate(startDate);
+    const formattedEndDate = formatDate(endDate);
+    const formattedMonth = new Date(year, month - 1).toLocaleDateString(
+        "en-US",
+        {
+            month: "long",
+            year: "numeric",
+        }
+    );
 
     const {
         data: queueData,
@@ -22,47 +37,36 @@ export const RenderReportStatisticsDatePicker = ({
         <>
             {/* Report Period */}
             <div className="w-full rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
-                <div className="mb-5 border-b border-slate-200 pb-4">
-                    <p className="text-base font-semibold text-slate-800">
-                        Report Period
+                <div className="">
+                    <p className="text-base font-semibold text-slate-500 sm:text-lg lg:text-xl">
+                        {officeCode} Report Period
                     </p>
 
-                    <p className="mt-1 text-sm text-slate-500">
-                        {month}/{year}
+                     <small className="mt-3 inline-flex max-w-full items-center rounded-full border border-slate-200 px-3 py-1.5 text-xs font-light text-[#628dec] sm:text-sm">
+                        {formattedMonth}
+                     </small>
+                </div>
+     
+                <div className="mt-4 rounded-md bg-blue-50 p-4">
+                    <p className="text-sm leading-relaxed tracking-wide text-slate-600">
+                        This report covers the entire calendar month of{" "}
+                        <span className="font-medium text-slate-800">
+                            {formattedMonth}
+                        </span>
+                        , automatically including all dates from{" "}
+                        <span className="font-medium text-slate-800">
+                            {formattedStartDate}
+                        </span>{" "}
+                        through{" "}
+                        <span className="font-medium text-slate-800">
+                            {formattedEndDate}
+                        </span>
+                        . The reporting period is automatically set by default to
+                        cover the full calendar month, providing a complete overview
+                        of office statistics and performance.
                     </p>
                 </div>
 
-                <div className="mb-5">
-                    <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
-                        Office
-                    </p>
-
-                    <p className="mt-1 text-sm font-medium text-slate-700">
-                        {officeCode}
-                    </p>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                    <div>
-                        <p className="mb-1 text-xs font-medium text-slate-500">
-                            Start Date
-                        </p>
-
-                        <div className="rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700">
-                            {startDate}
-                        </div>
-                    </div>
-
-                    <div>
-                        <p className="mb-1 text-xs font-medium text-slate-500">
-                            End Date
-                        </p>
-
-                        <div className="rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700">
-                            {endDate}
-                        </div>
-                    </div>
-                </div>
             </div>
 
             {/* Live Tickets */}

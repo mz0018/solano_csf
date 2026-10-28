@@ -21,12 +21,14 @@ export const MonitorTotalQueue = () => {
             value: pendingQueues,
             description: "Waiting to be served",
             icon: "/icons/pending.svg",
+            dotColor: "bg-amber-500",
         },
         {
             title: "Served Queues",
             value: usedQueues,
             description: "Queues already served",
             icon: "/icons/done.svg",
+            dotColor: "bg-indigo-500",
         },
     ];
 
@@ -54,7 +56,7 @@ export const MonitorTotalQueue = () => {
                             {/* Card Header */}
                             <div className="flex items-start justify-between gap-3">
                                 <div className="min-w-0 flex-1">
-                                    <p className="mb-3 text-base font-semibold text-[#628dec] sm:text-lg lg:text-xl">
+                                    <p className="mb-3 text-base font-semibold text-slate-500 sm:text-lg lg:text-xl">
                                         {card.title}
                                     </p>
 
