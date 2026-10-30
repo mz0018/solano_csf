@@ -123,7 +123,7 @@ const RenderedService = () => {
             />
 
             {/* Rendered Services Table */}
-            <TableUI>
+            <TableUI className="min-w-[52rem]">
                 <thead>
                     <tr>
                         <th className="px-4 py-3">
@@ -147,20 +147,50 @@ const RenderedService = () => {
                                     className="border-t"
                                 >
                                     <td className="capitalize">
-                                        {item.generatedByUser
-                                            ? `${item.generatedByUser.firstName} ${item.generatedByUser.lastName}`.replaceAll(
-                                                "_",
-                                                " "
-                                            )
-                                            : "Unknown"}
+                                        <div className="flex items-center gap-2">
+                                            <img
+                                                src="/icons/user.svg"
+                                                alt=""
+                                                aria-hidden="true"
+                                                className="h-5 w-5 shrink-0"
+                                            />
+                                            <span>
+                                                {item.generatedByUser
+                                                    ? `${item.generatedByUser.firstName} ${item.generatedByUser.lastName}`.replaceAll(
+                                                        "_",
+                                                        " "
+                                                    )
+                                                    : "Unknown"}
+                                            </span>
+                                        </div>
+                                    </td>
+
+                                    <td className="capitalize">
+                                        <div className="flex items-center gap-2">
+                                            <img
+                                                src="/icons/provide-service.svg"
+                                                alt=""
+                                                aria-hidden="true"
+                                                className="h-5 w-5 shrink-0"
+                                            />
+                                            <span>
+                                                {service.replaceAll("_", " ").toLowerCase()}
+                                            </span>
+                                        </div>
                                     </td>
 
                                     <td>
-                                        {service.replaceAll("_", " ")}
-                                    </td>
-
-                                    <td>
-                                        {formatDate(item.createdAt)}
+                                        <div className="flex items-center gap-2">
+                                            <img
+                                                src="/icons/date-time.svg"
+                                                alt=""
+                                                aria-hidden="true"
+                                                className="h-5 w-5 shrink-0"
+                                            />
+                                            <span>
+                                                {formatDate(item.createdAt)}
+                                            </span>
+                                        </div>
                                     </td>
                                 </tr>
                             ))
@@ -189,6 +219,8 @@ const RenderedService = () => {
                     )}
                 </tbody>
             </TableUI>
+
+            <div className="mx-2 my-2 text-xs lg:text-sm text-slate-500 capitalize border-b border-slate-200 py-4"/>
 
             {/* Pagination */}
             {renderedServices && renderedServices.totalPages > 1 && (

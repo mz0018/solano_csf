@@ -130,7 +130,7 @@ export const RenderedServiceSummary = ({
                                 ([service, count]) => (
                                     <div
                                         key={service}
-                                        className="flex items-center justify-between px-4 py-3"
+                                        className="flex items-center justify-between px-4 py-3 hover:bg-blue-50/50 transition-colors"
                                     >
                                         <p className="text-sm text-gray-600">
                                             {service

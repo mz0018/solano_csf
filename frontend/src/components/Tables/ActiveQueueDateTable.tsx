@@ -67,9 +67,9 @@ export const ActiveQueueDateTable = ({
       <TableUI>
         <thead>
           <tr>
-            <th>ticket</th>
-            <th>status</th>
-            <th>actions</th>
+            <th className="px-4 py-3">ticket</th>
+            <th className="px-4 py-3">status</th>
+            <th className="px-4 py-3">actions</th>
           </tr>
         </thead>
 
