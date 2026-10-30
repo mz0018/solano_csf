@@ -75,7 +75,7 @@ const AdminLayout = () => {
   return (
     <div
       id="admin-theme"
-      className="h-screen bg-gray-100 lg:flex"
+      className="flex h-screen min-h-0 bg-gray-100"
       style={{
         backgroundColor: 'transparent',
         border: 'none',
@@ -91,13 +91,13 @@ const AdminLayout = () => {
         }
       `}</style>
 
-      <div className="flex w-full">
+      <div className="flex h-full min-h-0 w-full ">
         <SidebarUI navLinks={filteredNavLinks} user={user} />
 
-        <div className="flex min-w-0 flex-1 flex-col">
+        <div className="flex min-h-0 min-w-0 flex-1 flex-col pl-16 lg:pl-0">
           <AdminNavbar />
 
-          <main className="flex-1 overflow-y-auto p-6 bg-slate-100">
+          <main className="min-h-0 flex-1 overflow-y-auto bg-slate-100 p-6">
             <Outlet />
           </main>
         </div>

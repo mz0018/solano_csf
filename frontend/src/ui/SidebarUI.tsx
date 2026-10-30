@@ -28,7 +28,7 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('sidebar-collapsed')
       if (saved !== null) return JSON.parse(saved)
-      return window.innerWidth < 768
+      return window.innerWidth < 1024
     }
     return false
   })
@@ -36,7 +36,7 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
   useEffect(() => {
     const checkIfShouldCollapse = () => {
 
-      if (window.innerWidth < 768) {
+      if (window.innerWidth < 1024) {
         setCollapsed(true)
       }
       
@@ -54,15 +54,22 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
   }, [collapsed])
 
   return (
-    <aside className={`flex h-screen min-h-0 shrink-0 flex-col border-r border-slate-200 bg-white ${collapsed ? 'w-16' : 'w-80'}`}>
+    <>
+      {!collapsed && (
+        <button
+          type="button"
+          aria-label="Close sidebar"
+          onClick={() => setCollapsed(true)}
+          className="fixed inset-0 z-30 bg-slate-900/20 lg:hidden"
+        />
+      )}
 
-      <>
+      <aside className={`fixed inset-y-0 left-0 z-40 flex h-full min-h-0 shrink-0 flex-col border-r border-slate-200 bg-white lg:static lg:z-auto ${collapsed ? 'w-16' : 'w-80'}`}>
         <div className={`flex h-24 shrink-0 items-center py-3 ${collapsed ? 'justify-center' : 'justify-between gap-3'}`}>
           {/* User Initial Avatar */}
           <div
             className={`${collapsed ? 'hidden' : 'h-18 min-w-0 flex-1 px-4 overflow-hidden'}`}>
             <img
-              // src={ '/img/csf-remove-light.png'}
               src={ '/img/csf-orig-optimized.png'}
               alt={user?.userName || 'User'}
               className="h-9 m-4 object-contain"
@@ -77,9 +84,8 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
           <PanelLeft size={18}/>
         </button>
         </div>
-      </>
 
-      <nav className={`flex-1 space-y-1 overflow-y-auto py-2 ${collapsed ? 'px-2' : 'px-5'}`}>
+      <nav className={`min-h-0 flex-1 space-y-1 overflow-y-auto py-2 ${collapsed ? 'px-2' : 'px-5'}`}>
         {navLinks.map((item, index) => (
           <div key={item.path ?? item.name}>
             {!collapsed && item.section && item.section !== navLinks[index - 1]?.section && (
@@ -118,6 +124,7 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
           </div>
         ))}
       </nav>
-    </aside>
+      </aside>
+    </>
   )
 }
