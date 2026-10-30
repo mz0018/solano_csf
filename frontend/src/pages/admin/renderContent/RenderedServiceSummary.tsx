@@ -2,6 +2,7 @@ import {
     Bar,
     BarChart,
     CartesianGrid,
+    Cell,
     ResponsiveContainer,
     Tooltip,
     XAxis,
@@ -10,23 +11,63 @@ import {
 
 type RenderedServiceSummaryProps = {
     serviceCounts: Record<string, number>;
+    dateFrom: string;
+    dateTo: string;
 };
 
 export const RenderedServiceSummary = ({
     serviceCounts,
+    dateFrom,
+    dateTo,
 }: RenderedServiceSummaryProps) => {
     const chartData = Object.entries(serviceCounts).map(([service, count]) => ({
         service: service.replaceAll("_", " "),
         count,
     }));
 
+    const matteColors = [
+        "#6b7280",
+        "#7c8f8a",
+        "#8f8175",
+        "#7d8491",
+        "#9b8f82",
+        "#718096",
+        "#858e7c",
+        "#927c83",
+    ];
+
+    const sortedServiceCounts = Object.entries(serviceCounts).sort(
+        ([serviceA], [serviceB]) => {
+            const isOtherService = (service: string) =>
+                service.toLowerCase() === "other_service";
+
+            return Number(isOtherService(serviceA)) - Number(isOtherService(serviceB));
+        }
+    );
+
+    const formatSelectedDate = (date: string) =>
+        new Date(`${date}T00:00:00`).toLocaleDateString("en-PH", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        });
+
+    const selectedDateRange =
+        dateFrom === dateTo
+            ? formatSelectedDate(dateFrom)
+            : `${formatSelectedDate(dateFrom)} - ${formatSelectedDate(dateTo)}`;
+
     return (
-        <div className="w-full grid grid-cols-1 lg:grid-cols-2">
+        <div className="w-full grid grid-cols-1 lg:grid-cols-2 rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md sm:p-5 lg:p-6 mb-5">
             {/* Left column */}
             <div>
-                <h2 className="my-4 truncate text-lg font-semibold text-[#628dec]">
+                <h2 className="mb-1 text-base font-semibold text-slate-500 sm:text-lg lg:text-xl">
                     Services Chart
                 </h2>
+
+                <small className="mb-5 inline-flex max-w-full items-center rounded-full border border-slate-200 px-3 py-1.5 text-xs font-light text-[#628dec] sm:text-sm">
+                    {selectedDateRange}
+                </small>
 
                 <div className="h-[400px] w-full">
                     <ResponsiveContainer width="100%" height="100%">
@@ -56,9 +97,15 @@ export const RenderedServiceSummary = ({
 
                             <Bar
                                 dataKey="count"
-                                fill="#3b82f6"
                                 radius={[4, 4, 0, 0]}
-                            />
+                            >
+                                {chartData.map((entry, index) => (
+                                    <Cell
+                                        key={`${entry.service}-${index}`}
+                                        fill={matteColors[index % matteColors.length]}
+                                    />
+                                ))}
+                            </Bar>
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
@@ -79,14 +126,18 @@ export const RenderedServiceSummary = ({
                         </div> */}
 
                         <div className="divide-y divide-gray-100">
-                            {Object.entries(serviceCounts).map(
+                            {sortedServiceCounts.map(
                                 ([service, count]) => (
                                     <div
                                         key={service}
                                         className="flex items-center justify-between px-4 py-3"
                                     >
-                                        <p className="text-sm capitalize text-gray-600">
-                                            {service.replaceAll("_", " ")}
+                                        <p className="text-sm text-gray-600">
+                                            {service
+                                                .replaceAll("_", " ")
+                                                .replace(/([a-z])([A-Z])/g, "$1 $2")
+                                                .toLowerCase()
+                                                .replace(/\b\w/g, (letter) => letter.toUpperCase())}
                                         </p>
 
                                         <span className="text-sm font-semibold text-gray-900">

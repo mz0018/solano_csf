@@ -83,7 +83,7 @@ const RenderedService = () => {
             {/* Date Filter */}
             <div className="mb-2 flex w-full flex-col gap-3 sm:flex-row sm:gap-4">
                 <div className="w-full sm:w-96 sm:max-w-[calc(50%-0.5rem)]">
-                    <label className="mb-1 block text-sm font-medium">
+                    <label className="mb-2 block text-base font-semibold text-slate-500 sm:text-lg lg:text-xl">
                         Start Date
                     </label>
 
@@ -99,7 +99,7 @@ const RenderedService = () => {
                 </div>
 
                 <div className="w-full sm:w-96 sm:max-w-[calc(50%-0.5rem)]">
-                    <label className="mb-1 block text-sm font-medium">
+                    <label className="mb-2 block text-base font-semibold text-slate-500 sm:text-lg lg:text-xl">
                         End Date
                     </label>
 
@@ -116,7 +116,11 @@ const RenderedService = () => {
             </div>
 
             {/* Summary */}
-            <RenderedServiceSummary serviceCounts={serviceCounts} />
+            <RenderedServiceSummary
+                serviceCounts={serviceCounts}
+                dateFrom={dateFrom}
+                dateTo={dateTo}
+            />
 
             {/* Rendered Services Table */}
             <TableUI>
