@@ -32,7 +32,7 @@ const ReportStatistics = () => {
                 <div className="w-full sm:w-96 sm:max-w-full">
                     <label
                         htmlFor="office"
-                        className="mb-1 block text-sm font-medium"
+                        className="mb-2 block text-base font-semibold text-slate-500 sm:text-lg lg:text-xl"
                     >
                         Municipality Office
                     </label>
@@ -61,7 +61,7 @@ const ReportStatistics = () => {
                 <div className="w-full sm:w-96 sm:max-w-full">
                     <label
                         htmlFor="dateFrom"
-                        className="mb-1 block text-sm font-medium"
+                        className="mb-2 block text-base font-semibold text-slate-500 sm:text-lg lg:text-xl"
                     >
                         Start Date
                     </label>
@@ -79,7 +79,7 @@ const ReportStatistics = () => {
                 <div className="w-full sm:w-96 sm:max-w-full">
                     <label
                         htmlFor="dateTo"
-                        className="mb-1 block text-sm font-medium"
+                        className="mb-2 block text-base font-semibold text-slate-500 sm:text-lg lg:text-xl"
                     >
                         End Date
                     </label>
