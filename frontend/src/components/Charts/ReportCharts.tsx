@@ -68,35 +68,42 @@ export const ReportCharts = ({
         }));
     };
 
+    const createChartDescription = (
+        title: string,
+        data: { name: string; value: number }[]
+    ) => {
+        if (data.length === 0) {
+            return `No ${title.toLowerCase()} feedback is available for this report.`;
+        }
+
+        const total = data.reduce((sum, item) => sum + item.value, 0);
+        const leadingEntry = data.reduce((current, item) =>
+            item.value > current.value ? item : current
+        );
+        const leadingPercent = Math.round((leadingEntry.value / total) * 100);
+
+        return `${leadingEntry.name} is the largest group with ${leadingEntry.value} of ${total} responses (${leadingPercent}%). This helps show which ${title.toLowerCase()} segment is most represented in the current feedback.`;
+    };
+
     const charts = [
         {
             title: "Address",
-            description:
-                "Shows where clients are located, helping identify the areas most frequently served.",
             data: createChartData("address"),
         },
         {
             title: "Affiliation",
-            description:
-                "Shows whether clients are from within the LGU, another government agency, or the private sector.",
             data: createChartData("affiliation"),
         },
         {
             title: "Age Group",
-            description:
-                "Shows the age groups most represented among clients who provided feedback.",
             data: createChartData("ageGroup"),
         },
         {
             title: "Employment",
-            description:
-                "Shows the employment status distribution of clients, providing context about the people served.",
             data: createChartData("employmentStatus"),
         },
         {
             title: "Sex",
-            description:
-                "Shows the reported sex distribution of clients to support inclusive service planning.",
             data: createChartData("gender"),
         },
     ];
@@ -116,16 +123,17 @@ export const ReportCharts = ({
             />
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                {charts.map(({ title, description, data }, index) => (
+                {charts.map(({ title, data }, index) => (
                     <div
                         key={title}
-                        className="grid min-w-0 grid-cols-1 items-center gap-4 sm:grid-cols-[minmax(0,1fr)_minmax(180px,0.8fr)]"
+                        className="grid min-w-0 grid-cols-1 items-center gap-4 lg:grid-cols-2 bg-white"
                     >
+                        {/* Left Container */}
                         <div
                             ref={(el) => {
                                 chartRefs.current[index] = el;
                             }}
-                            className="flex min-w-0 flex-col items-center"
+                            className="flex min-w-0 flex-col items-center bg-blue-500"
                         >
                             <h3 className="m-2 font-semibold">
                                 {title}
@@ -219,9 +227,12 @@ export const ReportCharts = ({
                             />
                         </div>
 
-                        <p className="max-w-sm text-sm leading-6 text-slate-600">
-                            {description}
-                        </p>
+                        {/* Right Container */}
+                        <div className="flex items-center bg-red-500 p-4">
+                            <p className="max-w-sm text-sm leading-6 text-slate-600">
+                                {createChartDescription(title, data)}
+                            </p>
+                        </div>
                     </div>
                 ))}
             </div>
