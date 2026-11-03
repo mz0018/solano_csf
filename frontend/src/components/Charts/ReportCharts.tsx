@@ -73,7 +73,9 @@ export const ReportCharts = ({
         data: { name: string; value: number }[]
     ) => {
         if (data.length === 0) {
-            return `No ${title.toLowerCase()} feedback is available for this report.`;
+            return (
+                <>No {title.toLowerCase()} feedback is available for this report.</>
+            );
         }
 
         const total = data.reduce((sum, item) => sum + item.value, 0);
@@ -82,7 +84,18 @@ export const ReportCharts = ({
         );
         const leadingPercent = Math.round((leadingEntry.value / total) * 100);
 
-        return `${leadingEntry.name} is the largest group with ${leadingEntry.value} of ${total} responses (${leadingPercent}%). This helps show which ${title.toLowerCase()} segment is most represented in the current feedback.`;
+        return (
+            <>
+                <strong className="text-slate-800">{leadingEntry.name}</strong> is
+                the largest group with{" "}
+                <strong className="text-slate-800">{leadingEntry.value}</strong> of{" "}
+                <strong className="text-slate-800">{total} responses</strong> (
+                <strong className="text-blue-600">{leadingPercent}%</strong>).
+                This helps show which{" "}
+                <strong className="text-slate-800">{title.toLowerCase()}</strong>{" "}
+                segment is most represented in the current feedback.
+            </>
+        );
     };
 
     const charts = [
@@ -122,18 +135,18 @@ export const ReportCharts = ({
                 services={services}
             />
 
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div className="mt-5 grid grid-cols-1 gap-6 xl:grid-cols-2">
                 {charts.map(({ title, data }, index) => (
                     <div
                         key={title}
-                        className="grid min-w-0 grid-cols-1 items-center gap-4 lg:grid-cols-2 bg-white"
+                        className="grid min-w-0 grid-cols-1 items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md sm:p-5 lg:grid-cols-[60%_40%] lg:p-6"
                     >
                         {/* Left Container */}
                         <div
                             ref={(el) => {
                                 chartRefs.current[index] = el;
                             }}
-                            className="flex min-w-0 flex-col items-center bg-blue-500"
+                            className="flex min-w-0 flex-col items-center"
                         >
                             <h3 className="m-2 font-semibold">
                                 {title}
@@ -228,8 +241,8 @@ export const ReportCharts = ({
                         </div>
 
                         {/* Right Container */}
-                        <div className="flex items-center bg-red-500 p-4">
-                            <p className="max-w-sm text-sm leading-6 text-slate-600">
+                        <div className="flex text-start p-4">
+                            <p className="max-w-sm text-sm leading-6 text-slate-600 border-b border-slate-200/80">
                                 {createChartDescription(title, data)}
                             </p>
                         </div>
