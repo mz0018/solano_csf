@@ -1,3 +1,4 @@
+
 type LegendData = {
     name: string;
     value: number;
@@ -10,7 +11,7 @@ type CustomLegendProps = {
 
 export const CustomLegend = ({ data, colors }: CustomLegendProps) => {
     return (
-        <div className="mt-3 flex flex-wrap justify-center gap-x-3 gap-y-2 p-5 text-xs">
+        <div className="mx-auto mt-3 grid w-full grid-cols-3 justify-items-center gap-x-2 gap-y-3 p-5 text-xs">
             {data.map((entry, index) => {
                 const label =
                     entry.name === "Government (Within LGU)"
@@ -22,16 +23,16 @@ export const CustomLegend = ({ data, colors }: CustomLegendProps) => {
                 return (
                     <div
                         key={entry.name}
-                        className="flex w-full items-start gap-2"
+                        className="flex min-w-0 items-center justify-center gap-1"
                     >
                         <span
-                            className="mt-1 h-3 w-3 flex-shrink-0"
+                            className="h-3 w-3 flex-shrink-0"
                             style={{
                                 backgroundColor: colors[index % colors.length],
                             }}
                         />
 
-                        <span className="font-semibold break-words leading-4">
+                        <span className="whitespace-nowrap font-semibold leading-4">
                             {label}
                         </span>
                     </div>

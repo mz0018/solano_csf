@@ -1,8 +1,12 @@
+
 import { useRef } from "react";
 import { PieChart, Pie, Cell } from "recharts";
 import { CustomLegend } from "../../utils/CustomLegend";
 import { useCaptureChart } from "../../hooks/useCaptureChart";
-import { BtnGenerateReport, type FeedbackItem } from "../buttons/BtnGenerateReport";
+import {
+    BtnGenerateReport,
+    type FeedbackItem,
+} from "../buttons/BtnGenerateReport";
 
 type Client = {
     address: string;
@@ -17,8 +21,14 @@ export type ReportChartsProps = {
     selectedOfficeName: string;
     selectedDateFrom: string;
     selectedDateTo: string;
-    serviceTransactions: { service: string; totalTransactions: number }[];
-    services: { service: string; type: string }[];
+    serviceTransactions: {
+        service: string;
+        totalTransactions: number;
+    }[];
+    services: {
+        service: string;
+        type: string;
+    }[];
 };
 
 const COLORS = [
@@ -32,9 +42,16 @@ const COLORS = [
     "#F97316",
 ];
 
-export const ReportCharts = ({ feedback, selectedOfficeName, selectedDateFrom, selectedDateTo, serviceTransactions, services }: ReportChartsProps) => {
+export const ReportCharts = ({
+    feedback,
+    selectedOfficeName,
+    selectedDateFrom,
+    selectedDateTo,
+    serviceTransactions,
+    services,
+}: ReportChartsProps) => {
     const chartRefs = useRef<(HTMLDivElement | null)[]>([]);
-    const { handleCapture, isCapturing } = useCaptureChart()
+    const { handleCapture, isCapturing } = useCaptureChart();
 
     const createChartData = (key: keyof Client) => {
         return Object.entries(
@@ -61,111 +78,120 @@ export const ReportCharts = ({ feedback, selectedOfficeName, selectedDateFrom, s
 
     return (
         <>
-        <BtnGenerateReport 
-            isCapturing={isCapturing} 
-            handleCapture={handleCapture} 
-            chartRefs={chartRefs} 
-            feedback={feedback}
-            selectedOfficeName={selectedOfficeName}
-            selectedDateFrom={selectedDateFrom}
-            selectedDateTo={selectedDateTo}
-            serviceTransactions={serviceTransactions}
-            services={services}
-        />
+            <BtnGenerateReport
+                isCapturing={isCapturing}
+                handleCapture={handleCapture}
+                chartRefs={chartRefs}
+                feedback={feedback}
+                selectedOfficeName={selectedOfficeName}
+                selectedDateFrom={selectedDateFrom}
+                selectedDateTo={selectedDateTo}
+                serviceTransactions={serviceTransactions}
+                services={services}
+            />
 
-        <div className="flex flex-wrap gap-6">
-            {charts.map(({ title, data }, index) => (
-                <div 
-                    key={title} 
-                    ref={(el) => {
-                        chartRefs.current[index] = el;
-                    }}
-                    className="flex flex-col items-center"
-                >
-                    <h3 className="font-semibold m-2">
-                        {title}
-                    </h3>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                {charts.map(({ title, data }, index) => (
+                    <div
+                        key={title}
+                        ref={(el) => {
+                            chartRefs.current[index] = el;
+                        }}
+                        className="flex min-w-0 flex-col items-center"
+                    >
+                        <h3 className="m-2 font-semibold">
+                            {title}
+                        </h3>
 
-                    <PieChart width={320} height={280}>
-                        <Pie
+                        <PieChart width={320} height={280}>
+                            <Pie
+                                data={data}
+                                dataKey="value"
+                                outerRadius={80}
+                                labelLine={false}
+                                label={({
+                                    cx = 0,
+                                    cy = 0,
+                                    midAngle = 0,
+                                    outerRadius = 0,
+                                    percent = 0,
+                                    index = 0,
+                                }) => {
+                                    const RADIAN = Math.PI / 180;
+                                    const color = COLORS[index % COLORS.length];
+                                    const text = `${(percent * 100).toFixed(0)}%`;
+
+                                    const angle = -midAngle * RADIAN;
+
+                                    const sx =
+                                        cx + outerRadius * Math.cos(angle);
+                                    const sy =
+                                        cy + outerRadius * Math.sin(angle);
+
+                                    const labelDistance = 28;
+
+                                    const bx =
+                                        cx +
+                                        (outerRadius + labelDistance) *
+                                            Math.cos(angle);
+
+                                    const by =
+                                        cy +
+                                        (outerRadius + labelDistance) *
+                                            Math.sin(angle);
+
+                                    return (
+                                        <g>
+                                            <line
+                                                x1={bx}
+                                                y1={by}
+                                                x2={sx}
+                                                y2={sy}
+                                                stroke={color}
+                                                strokeWidth={1}
+                                            />
+
+                                            <rect
+                                                x={bx - 18}
+                                                y={by - 10}
+                                                width={36}
+                                                height={20}
+                                                rx={6}
+                                                fill="white"
+                                                stroke={color}
+                                                strokeWidth={1}
+                                            />
+
+                                            <text
+                                                x={bx}
+                                                y={by + 4}
+                                                textAnchor="middle"
+                                                fontSize={12}
+                                                fontWeight="bold"
+                                                fill="#000"
+                                            >
+                                                {text}
+                                            </text>
+                                        </g>
+                                    );
+                                }}
+                            >
+                                {data.map((_, index) => (
+                                    <Cell
+                                        key={index}
+                                        fill={COLORS[index % COLORS.length]}
+                                    />
+                                ))}
+                            </Pie>
+                        </PieChart>
+
+                        <CustomLegend
                             data={data}
-                            dataKey="value"
-                            // innerRadius={55}
-                            outerRadius={80}
-                            labelLine={false}
-                            label={({
-                                cx = 0,
-                                cy = 0,
-                                midAngle = 0,
-                                outerRadius = 0,
-                                percent = 0,
-                                index = 0,
-                            }) => {
-                                const RADIAN = Math.PI / 180;
-                                const color = COLORS[index % COLORS.length];
-                                const text = `${(percent * 100).toFixed(0)}%`;
-
-                                const angle = -midAngle * RADIAN;
-
-                                const sx = cx + outerRadius * Math.cos(angle);
-                                const sy = cy + outerRadius * Math.sin(angle);
-
-                                const labelDistance = 28;
-                                const bx = cx + (outerRadius + labelDistance) * Math.cos(angle);
-                                const by = cy + (outerRadius + labelDistance) * Math.sin(angle);
-
-                                return (
-                                    <g>
-                                        <line
-                                            x1={bx}
-                                            y1={by}
-                                            x2={sx}
-                                            y2={sy}
-                                            stroke={color}
-                                            strokeWidth={1}
-                                        />
-
-                                        <rect
-                                            x={bx - 18}
-                                            y={by - 10}
-                                            width={36}
-                                            height={20}
-                                            rx={6}
-                                            fill="white"
-                                            stroke={color}
-                                            strokeWidth={1}
-                                        />
-
-                                        <text
-                                            x={bx}
-                                            y={by + 4}
-                                            textAnchor="middle"
-                                            fontSize={12}
-                                            fontWeight="bold"
-                                            fill="#000"
-                                        >
-                                            {text}
-                                        </text>
-                                    </g>
-                                );
-                            }}
-                        >
-                            {data.map((_, index) => (
-                                <Cell
-                                    key={index}
-                                    fill={COLORS[index % COLORS.length]}
-                                />
-                            ))}
-                        </Pie>
-                    </PieChart>
-
-                    <CustomLegend
-                        data={data}
-                        colors={COLORS}
-                    />
-                </div>
-            ))}
-        </div>
+                            colors={COLORS}
+                        />
+                    </div>
+                ))}
+            </div>
         </>
     );
 };

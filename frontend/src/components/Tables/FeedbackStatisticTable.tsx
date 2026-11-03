@@ -53,7 +53,7 @@ export const FeedbackStatisticTable = ({ stats, isLoading, error }: FeedbackStat
     }
 
     return (
-        <div className="p-9 flex w-full flex-col items-center justify-center overflow-x-auto rounded-md border border-slate-200/80 bg-white text-center">
+        <div className="flex w-full flex-col items-start justify-start overflow-x-auto rounded-md border border-slate-200/80 bg-white text-center p-2">
             <p className="text-sm text-gray-600 mb-2">
                 Total Feedbacks: <span className="font-semibold">{stats.totalFeedbacks}</span>
             </p>
