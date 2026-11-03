@@ -69,11 +69,36 @@ export const ReportCharts = ({
     };
 
     const charts = [
-        { title: "Address", data: createChartData("address") },
-        { title: "Affiliation", data: createChartData("affiliation") },
-        { title: "Age Group", data: createChartData("ageGroup") },
-        { title: "Employment", data: createChartData("employmentStatus") },
-        { title: "Sex", data: createChartData("gender") },
+        {
+            title: "Address",
+            description:
+                "Shows where clients are located, helping identify the areas most frequently served.",
+            data: createChartData("address"),
+        },
+        {
+            title: "Affiliation",
+            description:
+                "Shows whether clients are from within the LGU, another government agency, or the private sector.",
+            data: createChartData("affiliation"),
+        },
+        {
+            title: "Age Group",
+            description:
+                "Shows the age groups most represented among clients who provided feedback.",
+            data: createChartData("ageGroup"),
+        },
+        {
+            title: "Employment",
+            description:
+                "Shows the employment status distribution of clients, providing context about the people served.",
+            data: createChartData("employmentStatus"),
+        },
+        {
+            title: "Sex",
+            description:
+                "Shows the reported sex distribution of clients to support inclusive service planning.",
+            data: createChartData("gender"),
+        },
     ];
 
     return (
@@ -91,19 +116,22 @@ export const ReportCharts = ({
             />
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                {charts.map(({ title, data }, index) => (
+                {charts.map(({ title, description, data }, index) => (
                     <div
                         key={title}
-                        ref={(el) => {
-                            chartRefs.current[index] = el;
-                        }}
-                        className="flex min-w-0 flex-col items-center"
+                        className="grid min-w-0 grid-cols-1 items-center gap-4 sm:grid-cols-[minmax(0,1fr)_minmax(180px,0.8fr)]"
                     >
-                        <h3 className="m-2 font-semibold">
-                            {title}
-                        </h3>
+                        <div
+                            ref={(el) => {
+                                chartRefs.current[index] = el;
+                            }}
+                            className="flex min-w-0 flex-col items-center"
+                        >
+                            <h3 className="m-2 font-semibold">
+                                {title}
+                            </h3>
 
-                        <PieChart width={320} height={280}>
+                            <PieChart width={320} height={280}>
                             <Pie
                                 data={data}
                                 dataKey="value"
@@ -183,12 +211,17 @@ export const ReportCharts = ({
                                     />
                                 ))}
                             </Pie>
-                        </PieChart>
+                            </PieChart>
 
-                        <CustomLegend
-                            data={data}
-                            colors={COLORS}
-                        />
+                            <CustomLegend
+                                data={data}
+                                colors={COLORS}
+                            />
+                        </div>
+
+                        <p className="max-w-sm text-sm leading-6 text-slate-600">
+                            {description}
+                        </p>
                     </div>
                 ))}
             </div>
