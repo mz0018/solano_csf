@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Select } from "../../ui/form/Select";
 import { useGetOffices } from "../../hooks/useGetOffices";
 import { useGetReportStatistics } from "../../hooks/useGetReportStatistics";
 import { FeedbackStatisticTable } from "../../components/Tables/FeedbackStatisticTable";
+import { useCaptureChart } from "../../hooks/useCaptureChart";
+import { BtnGenerateReport } from "../../components/buttons/BtnGenerateReport";
 
 const ReportStatistics = () => {
     const { data: offices, isLoading: officesLoading } = useGetOffices();
@@ -10,6 +12,8 @@ const ReportStatistics = () => {
     const [dateFrom, setDateFrom] = useState("");
     const [dateTo, setDateTo] = useState("");
     const { data: stats, isLoading, error } = useGetReportStatistics(officeCode, dateFrom, dateTo);
+    const chartRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const { handleCapture, isCapturing } = useCaptureChart();
 
     return (
         <>
@@ -92,6 +96,22 @@ const ReportStatistics = () => {
                         className="w-full min-w-0 rounded-lg border border-gray-300 bg-white px-3 py-4 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                     />
                 </div>
+
+                {stats && stats.totalFeedbacks > 0 && (
+                    <div className="w-full sm:w-auto">
+                        <BtnGenerateReport
+                            isCapturing={isCapturing}
+                            handleCapture={handleCapture}
+                            chartRefs={chartRefs}
+                            feedback={stats.feedbacks}
+                            selectedOfficeName={stats.office?.name ?? ""}
+                            selectedDateFrom={stats.dateFrom}
+                            selectedDateTo={stats.dateTo}
+                            serviceTransactions={stats.serviceTransactions}
+                            services={stats.services}
+                        />
+                    </div>
+                )}
             </div>
 
             {/* Feedback Statistics Table */}
@@ -100,6 +120,7 @@ const ReportStatistics = () => {
                     isLoading={isLoading}
                     error={error}
                     stats={stats}
+                    chartRefs={chartRefs}
                 />
             </div>
         </>

@@ -1,5 +1,6 @@
 import { ReportCharts } from "../Charts/ReportCharts";
 import type { FeedbackItem } from "../buttons/BtnGenerateReport";
+import type { RefObject } from "react";
 import { ErrorText } from "../../ui/form/ErrorText";
 import { InlineLoader } from "../Loader";
 
@@ -22,9 +23,10 @@ type FeedbackStatisticTableProps = {
     stats?: ReportStatistics;
     isLoading: boolean;
     error: Error | null;
+    chartRefs: RefObject<(HTMLDivElement | null)[]>;
 };
 
-export const FeedbackStatisticTable = ({ stats, isLoading, error }: FeedbackStatisticTableProps) => {
+export const FeedbackStatisticTable = ({ stats, isLoading, error, chartRefs }: FeedbackStatisticTableProps) => {
 
     if (isLoading) {
         return <InlineLoader message="Loading statistics..." />;
@@ -63,8 +65,7 @@ export const FeedbackStatisticTable = ({ stats, isLoading, error }: FeedbackStat
                     selectedOfficeName={stats.office?.name ?? ''}
                     selectedDateFrom={stats.dateFrom}
                     selectedDateTo={stats.dateTo}
-                    serviceTransactions={stats.serviceTransactions} 
-                    services={stats.services}
+                    chartRefs={chartRefs}
                 />
             </div>
         </div>

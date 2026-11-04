@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import type { RefObject } from "react";
 import {
     CartesianGrid,
     Cell,
@@ -12,11 +12,7 @@ import {
     YAxis,
 } from "recharts";
 import { CustomLegend } from "../../utils/CustomLegend";
-import { useCaptureChart } from "../../hooks/useCaptureChart";
-import {
-    BtnGenerateReport,
-    type FeedbackItem,
-} from "../buttons/BtnGenerateReport";
+import type { FeedbackItem } from "../buttons/BtnGenerateReport";
 
 type Client = {
     address: string;
@@ -31,14 +27,7 @@ export type ReportChartsProps = {
     selectedOfficeName: string;
     selectedDateFrom: string;
     selectedDateTo: string;
-    serviceTransactions: {
-        service: string;
-        totalTransactions: number;
-    }[];
-    services: {
-        service: string;
-        type: string;
-    }[];
+    chartRefs: RefObject<(HTMLDivElement | null)[]>;
 };
 
 const COLORS = [
@@ -57,12 +46,8 @@ export const ReportCharts = ({
     selectedOfficeName,
     selectedDateFrom,
     selectedDateTo,
-    serviceTransactions,
-    services,
+    chartRefs,
 }: ReportChartsProps) => {
-    const chartRefs = useRef<(HTMLDivElement | null)[]>([]);
-    const { handleCapture, isCapturing } = useCaptureChart();
-
     const createChartData = (key: keyof Client) =>
         Object.entries(
             feedback.reduce((acc, item) => {
@@ -141,18 +126,6 @@ export const ReportCharts = ({
 
     return (
         <>
-            <BtnGenerateReport
-                isCapturing={isCapturing}
-                handleCapture={handleCapture}
-                chartRefs={chartRefs}
-                feedback={feedback}
-                selectedOfficeName={selectedOfficeName}
-                selectedDateFrom={selectedDateFrom}
-                selectedDateTo={selectedDateTo}
-                serviceTransactions={serviceTransactions}
-                services={services}
-            />
-
             <div className="mt-4 grid grid-cols-1 gap-4 sm:mt-5 sm:gap-5 2xl:grid-cols-2">
                 {charts.map(({ title, data }, index) => {
                     const leadingEntry = data.length
@@ -260,8 +233,8 @@ export const ReportCharts = ({
                         </div>
 
                         <div className="col-span-full flex flex-col gap-1 border-t border-slate-100 pt-3 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
-                            <span>Office: <strong className="font-medium text-slate-700">{selectedOfficeName || "All offices"}</strong></span>
-                            <span>Date range: <strong className="font-medium text-slate-700">{formatDate(selectedDateFrom)} - {formatDate(selectedDateTo)}</strong></span>
+                            <span><strong className="font-medium text-slate-700">{selectedOfficeName || "All offices"}</strong></span>
+                            <span><strong className="font-medium text-slate-700">{formatDate(selectedDateFrom)} - {formatDate(selectedDateTo)}</strong></span>
                         </div>
                     </div>
                     );
