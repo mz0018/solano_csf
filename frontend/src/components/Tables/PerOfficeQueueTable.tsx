@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { TableUI } from "../../ui/form/TableUI";
+import { AdminButton } from "../../ui/form/AdminButton";
 import { HRViewFeedbackModal } from "../Modals/HRViewFeedbackModal";
 import { PaginationUI } from "../../ui/form/PaginationUI";
-import { Fullscreen, Search } from "lucide-react";
 
 type Feedback = {
     queueNumber: string
@@ -16,9 +16,31 @@ type Props = {
     page: number;
     onPageChange: (page: number) => void;
     hasSelectedOffice: boolean;
+    selectedOfficeName?: string;
+    selectedPeriod?: string;
 };
 
-export const PerOfficeQueueTable = ({ feedbacks, totalPages, page, onPageChange, hasSelectedOffice }: Props) => {
+const getRatingIcon = (averageRating: string) => {
+    const rating = Number.parseFloat(averageRating);
+
+    if (!Number.isFinite(rating)) return "/icons/line-graph.svg";
+    if (rating >= 4.5) return "/icons/very-satisfied.svg";
+    if (rating >= 3.5) return "/icons/satisfied.svg";
+    if (rating >= 2.5) return "/icons/neutral.svg";
+    if (rating >= 1.5) return "/icons/dissatisfied.svg";
+
+    return "/icons/very-dissatisfied.svg";
+};
+
+export const PerOfficeQueueTable = ({
+    feedbacks,
+    totalPages,
+    page,
+    onPageChange,
+    hasSelectedOffice,
+    selectedOfficeName,
+    selectedPeriod,
+}: Props) => {
 
     const [feedbackModalOpen, setFeedbackModalOpen] = useState<boolean>(false);
     const [selectedFeedback, setSelectedFeedback] = useState<string | null>(null);
@@ -36,20 +58,20 @@ export const PerOfficeQueueTable = ({ feedbacks, totalPages, page, onPageChange,
                 </thead>
 
                 <tbody>
-                    {!hasSelectedOffice ? (
+                    {!hasSelectedOffice || !selectedPeriod ? (
                         <tr>
                             <td colSpan={4} className="py-8 text-center">
-                                <div className="m-9 flex flex-col items-center justify-center text-center">
-                                    <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
-                                        <Search size={22} className="text-gray-400" />
+                                <div className="m-9 flex max-w-full flex-col items-center justify-center px-4 text-center">
+                                    <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-gray-100 sm:h-16 sm:w-16 md:h-[72px] md:w-[72px]">
+                                        <img src="/icons/records.svg" alt="" aria-hidden="true" className="h-8 w-8 sm:h-9 sm:w-9" />
                                     </div>
 
-                                    <p className="text-sm font-medium text-gray-700">
-                                        Please select an office
+                                    <p className="block text-base font-semibold text-slate-500 sm:text-lg lg:text-xl">
+                                        Please select an office, month, and year
                                     </p>
 
-                                    <p className="mt-1 text-xs text-gray-400">
-                                        Select a municipality office to view its feedback.
+                                    <p className="mt-1 text-xs text-gray-400 sm:text-sm">
+                                        Choose the filters above to view office feedback.
                                     </p>
                                 </div>
                             </td>
@@ -57,17 +79,17 @@ export const PerOfficeQueueTable = ({ feedbacks, totalPages, page, onPageChange,
                     ) : feedbacks.length === 0 ? (
                         <tr>
                             <td colSpan={4} className="py-8 text-center">
-                                <div className="m-9 flex flex-col items-center justify-center text-center">
-                                    <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
-                                        <Search size={22} className="text-gray-400" />
+                                <div className="m-9 flex max-w-full flex-col items-center justify-center px-4 text-center">
+                                    <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-gray-100 sm:h-16 sm:w-16 md:h-[72px] md:w-[72px]">
+                                        <img src="/icons/table-graph.svg" alt="" aria-hidden="true" className="h-8 w-8 sm:h-9 sm:w-9" />
                                     </div>
 
-                                    <p className="text-sm font-medium text-gray-700">
-                                        No Feedbacks found
+                                    <p className="block max-w-full text-base font-semibold text-slate-500 sm:text-lg lg:text-xl">
+                                        No feedback found for {selectedOfficeName ?? "the selected office"}{selectedPeriod ? ` in ${selectedPeriod}` : ""}
                                     </p>
 
-                                    <p className="mt-1 text-xs text-gray-400">
-                                        Try changing the filter or check back later.
+                                    <p className="mt-1 text-xs text-gray-400 sm:text-sm">
+                                        Try changing the office, month, or year filter, then check again.
                                     </p>
                                 </div>
                             </td>
@@ -75,28 +97,43 @@ export const PerOfficeQueueTable = ({ feedbacks, totalPages, page, onPageChange,
                     ) : (
                         feedbacks.map((item) => (
                             <tr key={item.queueNumber}>
-                                <td>{item.queueNumber}</td>
-                                <td>{item.averageRating}</td>
                                 <td>
-                                    {new Date(item.createdAt).toLocaleString("en-US", {
-                                        month: "short",
-                                        day: "numeric",
-                                        year: "numeric",
-                                        hour: "numeric",
-                                        minute: "2-digit",
-                                    })}
+                                    <span className="inline-flex items-center gap-2">
+                                        <img src="/icons/ticket.svg" alt="" aria-hidden="true" className="h-5 w-5" />
+                                        {item.queueNumber}
+                                    </span>
                                 </td>
                                 <td>
-                                    <button
+                                    <span className="inline-flex items-center gap-2">
+                                        <img src={getRatingIcon(item.averageRating)} alt="" aria-hidden="true" className="h-5 w-5" />
+                                        {item.averageRating}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span className="inline-flex items-center gap-2">
+                                        <img src="/icons/date-time.svg" alt="" aria-hidden="true" className="h-5 w-5" />
+                                        {new Date(item.createdAt).toLocaleString("en-US", {
+                                            month: "short",
+                                            day: "numeric",
+                                            year: "numeric",
+                                            hour: "numeric",
+                                            minute: "2-digit",
+                                        })}
+                                    </span>
+                                </td>
+                                <td>
+                                    <AdminButton
+                                        type="button"
+                                        icon="/icons/open.svg"
+                                        iconAlt="Review Feedback"
                                         onClick={() => {
                                             setFeedbackModalOpen(true);
                                             setSelectedFeedback(item.queueNumber);
                                         }}
-                                        className="inline-flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-gray-100"
+                                        className="border border-[#628dec] py-2 text-sm font-semibold text-[#628dec] transition-colors hover:bg-[#628dec]/10"
                                     >
-                                        <Fullscreen size={16} />
-                                        <span>Review</span>
-                                    </button>
+                                        Review
+                                    </AdminButton>
                                 </td>
                             </tr>
                         ))

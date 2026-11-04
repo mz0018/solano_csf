@@ -4,7 +4,6 @@ import { ErrorText } from "../../ui/form/ErrorText";
 import { useGetActiveQueue } from "../../hooks/useGetActiveQueue";
 import { ViewFeedbackModal } from "../Modals/ViewFeedbackModal";
 import { PaginationUI } from "../../ui/form/PaginationUI";
-import { Search } from "lucide-react";
 import { InlineLoader } from "../Loader";
 import { AdminButton } from "../../ui/form/AdminButton";
 import { CSFCustomToaster } from "../../utils/Toaster";
@@ -148,17 +147,30 @@ export const ActiveQueueDateTable = ({
           ) : (
             <tr>
               <td colSpan={3} className="py-12">
-                <div className="flex flex-col items-center justify-center text-center m-9">
-                  <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
-                    <Search size={22} className="text-gray-400" />
+                <div className="m-9 flex max-w-full flex-col items-center justify-center px-4 text-center">
+                  <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-gray-100 sm:h-16 sm:w-16 md:h-[72px] md:w-[72px]">
+                    <img
+                      src={
+                        statusFilter === "pending"
+                          ? "/icons/pending.svg"
+                          : statusFilter === "used"
+                            ? "/icons/done.svg"
+                            : "/icons/records.svg"
+                      }
+                      alt=""
+                      aria-hidden="true"
+                      className="h-8 w-8 sm:h-9 sm:w-9"
+                    />
                   </div>
 
-                  <p className="text-sm font-medium text-gray-700">
-                    No {statusFilter || ""} tickets found
+                  <p className="block max-w-full text-base font-semibold text-slate-500 sm:text-lg lg:text-xl">
+                    No {statusFilter ? `${statusLabel.toLowerCase()} ` : ""}tickets found
                   </p>
 
-                  <p className="mt-1 text-xs text-gray-400">
-                    Try changing the filter or check back later.
+                  <p className="mt-1 text-xs text-gray-400 sm:text-sm">
+                    {statusFilter
+                      ? `Try changing the Filter by selection, then check again.`
+                      : "Try changing the Filter by selection or check back later."}
                   </p>
                 </div>
               </td>

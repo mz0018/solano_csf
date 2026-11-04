@@ -21,6 +21,13 @@ const OfficesFeedbacks = () => {
         itemsPerPage
     );
 
+    const selectedOfficeName = offices?.find(
+        (office) => office.code === selectedOfficeCode
+    )?.name;
+    const selectedPeriod = selectedMonth && selectedYear
+        ? `${new Date(2000, Number(selectedMonth) - 1).toLocaleString("en-US", { month: "long" })} ${selectedYear}`
+        : undefined;
+
     const currentYear = new Date().getFullYear();
 
     const years = Array.from(
@@ -74,7 +81,7 @@ const OfficesFeedbacks = () => {
                 <div className="w-full sm:w-96 sm:max-w-full">
                     <label
                         htmlFor="office"
-                        className="mb-1 block text-sm font-medium"
+                        className="mb-2 block text-base font-semibold text-slate-500 sm:text-lg lg:text-xl"
                     >
                         Municipality Office
                     </label>
@@ -103,7 +110,7 @@ const OfficesFeedbacks = () => {
                 <div className="w-full sm:w-96 sm:max-w-full">
                     <label
                         htmlFor="month"
-                        className="mb-1 block text-sm font-medium"
+                        className="mb-2 block text-base font-semibold text-slate-500 sm:text-lg lg:text-xl"
                     >
                         Select Month
                     </label>
@@ -134,7 +141,7 @@ const OfficesFeedbacks = () => {
                 <div className="w-full sm:w-96 sm:max-w-full">
                     <label
                         htmlFor="year"
-                        className="mb-1 block text-sm font-medium"
+                        className="mb-2 block text-base font-semibold text-slate-500 sm:text-lg lg:text-xl"
                     >
                         Select Year
                     </label>
@@ -169,6 +176,8 @@ const OfficesFeedbacks = () => {
                     page={page}
                     onPageChange={handlePageChange}
                     hasSelectedOffice={!!selectedOfficeCode}
+                    selectedOfficeName={selectedOfficeName}
+                    selectedPeriod={selectedPeriod}
                 />
             </div>
         </>
