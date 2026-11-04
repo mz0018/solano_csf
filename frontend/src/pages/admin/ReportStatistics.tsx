@@ -14,6 +14,7 @@ const ReportStatistics = () => {
     const { data: stats, isLoading, error } = useGetReportStatistics(officeCode, dateFrom, dateTo);
     const chartRefs = useRef<(HTMLDivElement | null)[]>([]);
     const { handleCapture, isCapturing } = useCaptureChart();
+    const selectedOfficeName = offices?.find((office) => office.code === officeCode)?.name;
 
     return (
         <>
@@ -121,6 +122,9 @@ const ReportStatistics = () => {
                     error={error}
                     stats={stats}
                     chartRefs={chartRefs}
+                    selectedOfficeName={selectedOfficeName}
+                    selectedDateFrom={dateFrom}
+                    selectedDateTo={dateTo}
                 />
             </div>
         </>

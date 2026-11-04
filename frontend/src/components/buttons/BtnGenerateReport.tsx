@@ -1,4 +1,4 @@
-import { Button } from "../../ui/form/Buttons"
+import { AdminButton } from "../../ui/form/AdminButton"
 import { useGenerateDocx } from "../../hooks/useGenerateDocx"
 
 type ChartRefs = React.RefObject<(HTMLDivElement | null)[]>
@@ -59,8 +59,16 @@ export const BtnGenerateReport = ({ isCapturing, handleCapture, chartRefs, feedb
   }
 
   return (
-    <Button disabled={isCapturing} onClick={onClick} className="bg-blue-500 text-white p-4 rounded-sm cursor-pointer hover:bg-blue-600 transition-colors">
+    <>
+    <AdminButton 
+      icon="/icons/download.svg"
+      iconAlt="Download"
+      disabled={isCapturing} 
+      onClick={onClick} 
+      className="w-full bg-[#628dec] text-white hover:bg-[#628dec]/90 transition-colors font-semibold"
+    >
       {isCapturing ? "Generating..." : "Generate Report"}
-    </Button>
+    </AdminButton>
+    </>
   )
 }

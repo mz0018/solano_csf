@@ -24,9 +24,20 @@ type FeedbackStatisticTableProps = {
     isLoading: boolean;
     error: Error | null;
     chartRefs: RefObject<(HTMLDivElement | null)[]>;
+    selectedOfficeName?: string;
+    selectedDateFrom?: string;
+    selectedDateTo?: string;
 };
 
-export const FeedbackStatisticTable = ({ stats, isLoading, error, chartRefs }: FeedbackStatisticTableProps) => {
+export const FeedbackStatisticTable = ({
+    stats,
+    isLoading,
+    error,
+    chartRefs,
+    selectedOfficeName,
+    selectedDateFrom,
+    selectedDateTo,
+}: FeedbackStatisticTableProps) => {
 
     if (isLoading) {
         return <InlineLoader message="Loading statistics..." />;
@@ -44,21 +55,22 @@ export const FeedbackStatisticTable = ({ stats, isLoading, error, chartRefs }: F
                 </div>
 
                 <p className="text-sm font-medium text-gray-700 block text-base font-semibold text-slate-500 sm:text-lg lg:text-xl">
-                No Reports found
+                {!selectedOfficeName || !selectedDateFrom || !selectedDateTo
+                    ? 'Please select an office and date range'
+                    : `No reports found for ${stats?.office?.name ?? selectedOfficeName} from ${stats?.dateFrom ?? selectedDateFrom} to ${stats?.dateTo ?? selectedDateTo}`}
                 </p>
 
                 <p className="mt-1 text-xs md:text-sm text-gray-400">
-                Try changing the filter or check back later.
+                {!selectedOfficeName || !selectedDateFrom || !selectedDateTo
+                    ? 'Choose the filters above to view report statistics.'
+                    : 'Try changing the office or date range, then check again.'}
                 </p>
             </div>
         );
     }
 
     return (
-        <div className="flex w-full flex-col items-start justify-start overflow-x-auto rounded-md text-center p-2">
-            <p className="text-sm text-gray-600 mb-2">
-                Total Feedbacks: <span className="font-semibold">{stats.totalFeedbacks}</span>
-            </p>
+        <div className="flex w-full flex-col items-start justify-start overflow-x-auto rounded-md text-center">
             <div>
                 <ReportCharts 
                     feedback={stats.feedbacks} 
