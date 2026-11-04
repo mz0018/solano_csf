@@ -1,8 +1,3 @@
-import {
-  Building2,
-  CircleUserRound,
-} from "lucide-react";
-
 import { useGetUserProfile } from "../../../hooks/useGetUserProfile";
 import { ErrorText } from "../../../ui/form/ErrorText";
 import { InlineLoader } from "../../../components/Loader";
@@ -31,124 +26,56 @@ const ProfileSettings = () => {
 
   return (
     <>
-    <div className="w-full">
+      <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md">
         {/* Mobile Header */}
-        <div className="mb-4 border-b border-gray-300 py-3 lg:hidden">
-            <h1 className="text-lg font-semibold text-[#628dec]">
-                Profile Information
-            </h1>
-
-            <p className="mt-1 text-sm leading-relaxed text-gray-900">
-                View your account information and administrator details.
-            </p>
+        <div>
+          <h1 className="mb-3 text-base font-semibold text-slate-500 sm:text-lg lg:text-xl">Account Settings</h1>
         </div>
 
-        {/* Profile Card */}
-        <div className="overflow-hidden">
-            {/* Profile Header */}
-            <div className="flex items-center gap-3 border-b border-gray-200 bg-gray-50 px-4 py-4 sm:gap-4 sm:px-6 sm:py-5">
-                {/* Name */}
-                <div className="min-w-0 flex-1">
-                    <h2 className="truncate text-base font-semibold capitalize text-gray-900 sm:text-lg">
-                        {user?.firstName || "-"} {user?.lastName || ""}
-                    </h2>
-
-                    <p className="mt-0.5 truncate text-sm text-gray-500">
-                        @{user?.userName || "-"}
-                    </p>
+        {/* Two Columns */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Profile */}
+            <div className="p-4 flex flex-col items-center justify-center gap-1">
+                <div className="bg-[#628dec] border-7/20 border-green-500 mb-2 w-24 h-24 rounded-full flex items-center justify-center text-white text-4xl font-bold">
+                    {user?.firstName?.charAt(0).toUpperCase() || "-"}
                 </div>
 
-                {/* Status */}
-                <div className="ml-auto shrink-0">
-                    <span
-                        className="inline-flex items-center gap-1.5 rounded-full bg-green-50 px-2.5 py-1 text-xs font-medium text-green-700 sm:px-3"
-                        title="Active"
-                    >
-                        <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
-                        Active
-                    </span>
-                </div>
+                <small className="text-slate-500 text-base sm:text-lg lg:text-xl capitalize font-semibold text-center leading-none">
+                    {user?.firstName || "-"} {user?.lastName || ""}
+                </small>
+
+                <small className="inline-flex max-w-full items-center rounded-full border border-slate-200 px-3 py-1.5  font-light text-[#628dec] sm:text-sm">
+                    {role}
+                </small>
             </div>
 
-            {/* Account Information */}
-            <div className="px-4 py-5 sm:px-6 sm:py-6">
-                <div className="mb-4 flex items-center gap-2 sm:mb-5">
-                    <CircleUserRound
-                        size={18}
-                        className="shrink-0 text-gray-500"
-                    />
-
-                    <h3 className="text-sm font-semibold text-gray-800">
-                        Account Information
-                    </h3>
+            {/* Account Details */}
+            <div className="grid grid-cols-3 gap-4 p-4 text-left items-start">
+                <div className="flex flex-col items-start">
+                    <small>First Name</small>
+                    <div className="capitalize text-slate-500">{user?.firstName || "-"}</div>
                 </div>
 
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
-                    {/* First Name */}
-                    <div className="min-w-0 rounded-lg border border-gray-200 bg-gray-50/50 px-3 py-3 sm:px-4">
-                        <span className="text-xs font-medium uppercase tracking-wide text-gray-400">
-                            First Name
-                        </span>
+                <div className="flex flex-col items-start">
+                    <small>Last Name</small>
+                    <div className="capitalize text-slate-500">{user?.lastName || "-"}</div>
+                </div>
 
-                        <p className="mt-1 break-words text-sm font-medium capitalize text-gray-800">
-                            {user?.firstName || "-"}
-                        </p>
-                    </div>
+                <div className="flex flex-col items-start">
+                    <small>Office Code</small>
+                    <div className="capitalize text-slate-500">{user?.officeCode || "-"}</div>
+                </div>
 
-                    {/* Last Name */}
-                    <div className="min-w-0 rounded-lg border border-gray-200 bg-gray-50/50 px-3 py-3 sm:px-4">
-                        <span className="text-xs font-medium uppercase tracking-wide text-gray-400">
-                            Last Name
-                        </span>
-
-                        <p className="mt-1 break-words text-sm font-medium capitalize text-gray-800">
-                            {user?.lastName || "-"}
-                        </p>
-                    </div>
-
-                    {/* Username */}
-                    <div className="min-w-0 rounded-lg border border-gray-200 bg-gray-50/50 px-3 py-3 sm:px-4">
-                        <span className="text-xs font-medium uppercase tracking-wide text-gray-400">
-                            Username
-                        </span>
-
-                        <p className="mt-1 break-words text-sm font-medium text-gray-800">
-                            {user?.userName || "-"}
-                        </p>
-                    </div>
-
-                    {/* Role */}
-                    <div className="min-w-0 rounded-lg border border-gray-200 bg-gray-50/50 px-3 py-3 sm:px-4">
-                        <span className="text-xs font-medium uppercase tracking-wide text-gray-400">
-                            Role
-                        </span>
-
-                        <p className="mt-1 break-words text-sm font-medium text-gray-800">
-                            {role}
-                        </p>
-                    </div>
-
-                    {/* Office Code */}
-                    <div className="min-w-0 rounded-lg border border-gray-200 bg-gray-50/50 px-3 py-3 sm:col-span-2 sm:px-4">
-                        <span className="text-xs font-medium uppercase tracking-wide text-gray-400">
-                            Office Code
-                        </span>
-
-                        <p className="mt-1 flex flex-wrap items-center gap-2 break-words text-sm font-medium text-gray-800">
-                            <Building2
-                                size={15}
-                                className="shrink-0 text-gray-400"
-                            />
-                            <span className="break-all">
-                                {user?.officeCode || "-"}
-                            </span>
-                        </p>
+                <div className="col-start-1 col-end-4 flex flex-col items-start">
+                    <small>User ID / Username</small>
+                    <div className="capitalize">
+                        {`${user?.id || "-"} - ${user?.userName || "-"}`}
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</>
+      </div>
+    </>
   );
 };
 
