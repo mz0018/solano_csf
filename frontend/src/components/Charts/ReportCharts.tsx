@@ -1,5 +1,16 @@
 import { useRef } from "react";
-import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
+import {
+    CartesianGrid,
+    Cell,
+    Line,
+    LineChart,
+    Pie,
+    PieChart,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis,
+} from "recharts";
 import { CustomLegend } from "../../utils/CustomLegend";
 import { useCaptureChart } from "../../hooks/useCaptureChart";
 import {
@@ -87,6 +98,39 @@ export const ReportCharts = ({
         );
     };
 
+    const createCategoryTrend = (key: keyof Client, category: string) => {
+        const counts = feedback.reduce((acc, item) => {
+            const date = new Date(item.createdAt);
+            if (Number.isNaN(date.getTime()) || item.client[key] !== category) {
+                return acc;
+            }
+
+            const dateKey = date.toISOString().slice(0, 10);
+            acc[dateKey] = (acc[dateKey] || 0) + 1;
+            return acc;
+        }, {} as Record<string, number>);
+
+        return Object.entries(counts)
+            .sort(([left], [right]) => left.localeCompare(right))
+            .map(([date, responses]) => ({
+                date,
+                label: new Date(`${date}T00:00:00`).toLocaleDateString("en-PH", {
+                    month: "short",
+                    day: "numeric",
+                }),
+                responses,
+            }));
+    };
+
+    const formatDate = (value: string) =>
+        value
+            ? new Date(`${value}T00:00:00`).toLocaleDateString("en-PH", {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+              })
+            : "All dates";
+
     const charts = [
         { title: "Address", data: createChartData("address") },
         { title: "Affiliation", data: createChartData("affiliation") },
@@ -110,7 +154,28 @@ export const ReportCharts = ({
             />
 
             <div className="mt-4 grid grid-cols-1 gap-4 sm:mt-5 sm:gap-5 2xl:grid-cols-2">
-                {charts.map(({ title, data }, index) => (
+                {charts.map(({ title, data }, index) => {
+                    const leadingEntry = data.length
+                        ? data.reduce((current, item) =>
+                              item.value > current.value ? item : current
+                          )
+                        : undefined;
+                    const categoryTrend = leadingEntry
+                        ? createCategoryTrend(
+                              title === "Address"
+                                  ? "address"
+                                  : title === "Affiliation"
+                                  ? "affiliation"
+                                  : title === "Age Group"
+                                  ? "ageGroup"
+                                  : title === "Employment"
+                                  ? "employmentStatus"
+                                  : "gender",
+                              leadingEntry.name
+                          )
+                        : [];
+
+                    return (
                     <div
                         key={title}
                         className="grid min-w-0 grid-cols-1 items-center gap-5 rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md sm:p-5 lg:p-6 2xl:grid-cols-[minmax(0,1.15fr)_minmax(12rem,.85fr)] 2xl:gap-4"
@@ -175,18 +240,32 @@ export const ReportCharts = ({
                             <p className="max-w-sm text-sm leading-6 text-slate-600">
                                 {createChartDescription(title, data)}
                             </p>
-                            <div className="mt-2 max-w-sm text-sm leading-6 text-slate-600 border border-slate-200/80 p-2">
-                                Line graphs can be used to visualize trends over time, while bar charts are effective for comparing different categories. Pie charts are useful for showing proportions of a whole, and scatter plots can reveal relationships between two variables.
+                            <div className="mt-4 h-40 w-full min-w-0">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <LineChart data={categoryTrend} margin={{ top: 8, right: 8, left: -24, bottom: 0 }}>
+                                        <CartesianGrid stroke="#E2E8F0" strokeDasharray="4 4" />
+                                        <XAxis dataKey="label" tick={{ fill: "#64748B", fontSize: 10 }} tickLine={false} axisLine={false} />
+                                        <YAxis allowDecimals={false} tick={{ fill: "#64748B", fontSize: 10 }} tickLine={false} axisLine={false} width={30} />
+                                        <Tooltip
+                                            contentStyle={{ border: "1px solid #E2E8F0", borderRadius: 8, fontSize: 12 }}
+                                            formatter={(value) => [`${value} responses`, leadingEntry?.name || "Feedback"]}
+                                        />
+                                        <Line type="monotone" dataKey="responses" stroke={COLORS[index % COLORS.length]} strokeWidth={2.5} dot={{ r: 3, fill: COLORS[index % COLORS.length], stroke: "#fff", strokeWidth: 1.5 }} activeDot={{ r: 5 }} />
+                                    </LineChart>
+                                </ResponsiveContainer>
                             </div>
-                        </div>
-
-                        <div className="min-w-0 border-t border-slate-200/80 pt-4 text-left 2xl:border-l 2xl:border-t-0 2xl:pl-5 2xl:pt-0">
-                            <p className="max-w-sm text-sm leading-6 text-slate-600">
-                                Footer
+                            <p className="mt-2 text-xs leading-5 text-slate-500">
+                                Daily responses for <strong className="font-medium text-slate-700">{leadingEntry?.name || "this segment"}</strong>.
                             </p>
                         </div>
+
+                        <div className="col-span-full flex flex-col gap-1 border-t border-slate-100 pt-3 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+                            <span>Office: <strong className="font-medium text-slate-700">{selectedOfficeName || "All offices"}</strong></span>
+                            <span>Date range: <strong className="font-medium text-slate-700">{formatDate(selectedDateFrom)} - {formatDate(selectedDateTo)}</strong></span>
+                        </div>
                     </div>
-                ))}
+                    );
+                })}
             </div>
         </>
     );
