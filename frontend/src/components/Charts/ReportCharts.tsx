@@ -1,6 +1,5 @@
-
 import { useRef } from "react";
-import { PieChart, Pie, Cell } from "recharts";
+import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 import { CustomLegend } from "../../utils/CustomLegend";
 import { useCaptureChart } from "../../hooks/useCaptureChart";
 import {
@@ -53,29 +52,21 @@ export const ReportCharts = ({
     const chartRefs = useRef<(HTMLDivElement | null)[]>([]);
     const { handleCapture, isCapturing } = useCaptureChart();
 
-    const createChartData = (key: keyof Client) => {
-        return Object.entries(
+    const createChartData = (key: keyof Client) =>
+        Object.entries(
             feedback.reduce((acc, item) => {
                 const value = item.client[key];
-
                 acc[value] = (acc[value] || 0) + 1;
-
                 return acc;
             }, {} as Record<string, number>)
-        ).map(([name, value]) => ({
-            name,
-            value,
-        }));
-    };
+        ).map(([name, value]) => ({ name, value }));
 
     const createChartDescription = (
         title: string,
         data: { name: string; value: number }[]
     ) => {
         if (data.length === 0) {
-            return (
-                <>No {title.toLowerCase()} feedback is available for this report.</>
-            );
+            return <>No {title.toLowerCase()} feedback is available for this report.</>;
         }
 
         const total = data.reduce((sum, item) => sum + item.value, 0);
@@ -87,38 +78,21 @@ export const ReportCharts = ({
         return (
             <>
                 <strong className="text-slate-800">{leadingEntry.name}</strong> is
-                the largest group with{" "}
-                <strong className="text-slate-800">{leadingEntry.value}</strong> of{" "}
-                <strong className="text-slate-800">{total} responses</strong> (
+                the largest group with <strong className="text-slate-800">{leadingEntry.value}</strong> of{" "}
+                <strong className="text-slate-800">{total} responses</strong> ( 
                 <strong className="text-blue-600">{leadingPercent}%</strong>).
-                This helps show which{" "}
-                <strong className="text-slate-800">{title.toLowerCase()}</strong>{" "}
+                This helps show which <strong className="text-slate-800">{title.toLowerCase()}</strong>{" "}
                 segment is most represented in the current feedback.
             </>
         );
     };
 
     const charts = [
-        {
-            title: "Address",
-            data: createChartData("address"),
-        },
-        {
-            title: "Affiliation",
-            data: createChartData("affiliation"),
-        },
-        {
-            title: "Age Group",
-            data: createChartData("ageGroup"),
-        },
-        {
-            title: "Employment",
-            data: createChartData("employmentStatus"),
-        },
-        {
-            title: "Sex",
-            data: createChartData("gender"),
-        },
+        { title: "Address", data: createChartData("address") },
+        { title: "Affiliation", data: createChartData("affiliation") },
+        { title: "Age Group", data: createChartData("ageGroup") },
+        { title: "Employment", data: createChartData("employmentStatus") },
+        { title: "Sex", data: createChartData("gender") },
     ];
 
     return (
@@ -135,115 +109,80 @@ export const ReportCharts = ({
                 services={services}
             />
 
-            <div className="mt-5 grid grid-cols-1 gap-6 xl:grid-cols-2">
+            <div className="mt-4 grid grid-cols-1 gap-4 sm:mt-5 sm:gap-5 2xl:grid-cols-2">
                 {charts.map(({ title, data }, index) => (
                     <div
                         key={title}
-                        className="grid min-w-0 grid-cols-1 items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md sm:p-5 lg:grid-cols-[60%_40%] lg:p-6"
+                        className="grid min-w-0 grid-cols-1 items-center gap-5 rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md sm:p-5 lg:p-6 2xl:grid-cols-[minmax(0,1.15fr)_minmax(12rem,.85fr)] 2xl:gap-4"
                     >
-                        {/* Left Container */}
                         <div
-                            ref={(el) => {
-                                chartRefs.current[index] = el;
+                            ref={(element) => {
+                                chartRefs.current[index] = element;
                             }}
                             className="flex min-w-0 flex-col items-center"
                         >
-                            <h3 className="m-2 font-semibold">
+                            <h3 className="mb-1 text-sm font-semibold tracking-wide text-slate-700 sm:text-base">
                                 {title}
                             </h3>
 
-                            <PieChart width={320} height={280}>
-                            <Pie
-                                data={data}
-                                dataKey="value"
-                                outerRadius={80}
-                                labelLine={false}
-                                label={({
-                                    cx = 0,
-                                    cy = 0,
-                                    midAngle = 0,
-                                    outerRadius = 0,
-                                    percent = 0,
-                                    index = 0,
-                                }) => {
-                                    const RADIAN = Math.PI / 180;
-                                    const color = COLORS[index % COLORS.length];
-                                    const text = `${(percent * 100).toFixed(0)}%`;
+                            <div className="h-[280px] w-full max-w-[22rem]">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <PieChart>
+                                        <Pie
+                                            data={data}
+                                            dataKey="value"
+                                            outerRadius={80}
+                                            labelLine={false}
+                                            label={({
+                                                cx = 0,
+                                                cy = 0,
+                                                midAngle = 0,
+                                                outerRadius = 0,
+                                                percent = 0,
+                                                index = 0,
+                                            }) => {
+                                                const angle = -midAngle * (Math.PI / 180);
+                                                const color = COLORS[index % COLORS.length];
+                                                const labelDistance = 28;
+                                                const sx = cx + outerRadius * Math.cos(angle);
+                                                const sy = cy + outerRadius * Math.sin(angle);
+                                                const bx = cx + (outerRadius + labelDistance) * Math.cos(angle);
+                                                const by = cy + (outerRadius + labelDistance) * Math.sin(angle);
 
-                                    const angle = -midAngle * RADIAN;
+                                                return (
+                                                    <g>
+                                                        <line x1={bx} y1={by} x2={sx} y2={sy} stroke={color} strokeWidth={1} />
+                                                        <rect x={bx - 18} y={by - 10} width={36} height={20} rx={6} fill="white" stroke={color} strokeWidth={1} />
+                                                        <text x={bx} y={by + 4} textAnchor="middle" fontSize={12} fontWeight="bold" fill="#334155">
+                                                            {(percent * 100).toFixed(0)}%
+                                                        </text>
+                                                    </g>
+                                                );
+                                            }}
+                                        >
+                                            {data.map((_, dataIndex) => (
+                                                <Cell key={dataIndex} fill={COLORS[dataIndex % COLORS.length]} />
+                                            ))}
+                                        </Pie>
+                                    </PieChart>
+                                </ResponsiveContainer>
+                            </div>
 
-                                    const sx =
-                                        cx + outerRadius * Math.cos(angle);
-                                    const sy =
-                                        cy + outerRadius * Math.sin(angle);
-
-                                    const labelDistance = 28;
-
-                                    const bx =
-                                        cx +
-                                        (outerRadius + labelDistance) *
-                                            Math.cos(angle);
-
-                                    const by =
-                                        cy +
-                                        (outerRadius + labelDistance) *
-                                            Math.sin(angle);
-
-                                    return (
-                                        <g>
-                                            <line
-                                                x1={bx}
-                                                y1={by}
-                                                x2={sx}
-                                                y2={sy}
-                                                stroke={color}
-                                                strokeWidth={1}
-                                            />
-
-                                            <rect
-                                                x={bx - 18}
-                                                y={by - 10}
-                                                width={36}
-                                                height={20}
-                                                rx={6}
-                                                fill="white"
-                                                stroke={color}
-                                                strokeWidth={1}
-                                            />
-
-                                            <text
-                                                x={bx}
-                                                y={by + 4}
-                                                textAnchor="middle"
-                                                fontSize={12}
-                                                fontWeight="bold"
-                                                fill="#000"
-                                            >
-                                                {text}
-                                            </text>
-                                        </g>
-                                    );
-                                }}
-                            >
-                                {data.map((_, index) => (
-                                    <Cell
-                                        key={index}
-                                        fill={COLORS[index % COLORS.length]}
-                                    />
-                                ))}
-                            </Pie>
-                            </PieChart>
-
-                            <CustomLegend
-                                data={data}
-                                colors={COLORS}
-                            />
+                            <CustomLegend data={data} colors={COLORS} />
                         </div>
 
-                        {/* Right Container */}
-                        <div className="flex text-start p-4">
-                            <p className="max-w-sm text-sm leading-6 text-slate-600 border-b border-slate-200/80">
+                        <div className="min-w-0 border-t border-slate-200/80 pt-4 text-left 2xl:border-l 2xl:border-t-0 2xl:pl-5 2xl:pt-0">
+                            <p className="max-w-sm text-sm leading-6 text-slate-600">
                                 {createChartDescription(title, data)}
+                            </p>
+                            <div className="mt-2 max-w-sm text-sm leading-6 text-slate-600 border border-slate-200/80 p-2">
+                                Line graphs can be used to visualize trends over time, while bar charts are effective for comparing different categories. Pie charts are useful for showing proportions of a whole, and scatter plots can reveal relationships between two variables.
+                            </div>
+                        </div>
+
+                        <div className="min-w-0 border-t border-slate-200/80 pt-4 text-left 2xl:border-l 2xl:border-t-0 2xl:pl-5 2xl:pt-0">
+                            <p className="max-w-sm text-sm leading-6 text-slate-600">
+                                Footer
                             </p>
                         </div>
                     </div>

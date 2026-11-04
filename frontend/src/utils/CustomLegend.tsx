@@ -11,7 +11,7 @@ type CustomLegendProps = {
 
 export const CustomLegend = ({ data, colors }: CustomLegendProps) => {
     return (
-        <div className="mx-auto mt-3 grid w-full grid-cols-3 justify-items-center gap-x-2 gap-y-3 p-5 text-xs">
+        <div className="mx-auto mt-2 grid w-full grid-cols-2 justify-items-start gap-x-3 gap-y-2 px-2 py-3 text-xs sm:grid-cols-3 sm:px-4">
             {data.map((entry, index) => {
                 const label =
                     entry.name === "Government (Within LGU)"
@@ -23,7 +23,7 @@ export const CustomLegend = ({ data, colors }: CustomLegendProps) => {
                 return (
                     <div
                         key={entry.name}
-                        className="flex min-w-0 items-center justify-center gap-1"
+                        className="flex min-w-0 items-start gap-1.5"
                     >
                         <span
                             className="h-3 w-3 flex-shrink-0"
@@ -32,7 +32,7 @@ export const CustomLegend = ({ data, colors }: CustomLegendProps) => {
                             }}
                         />
 
-                        <span className="whitespace-nowrap font-semibold leading-4">
+                        <span className="min-w-0 break-words font-medium leading-4 text-slate-600">
                             {label}
                         </span>
                     </div>
