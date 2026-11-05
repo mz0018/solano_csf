@@ -51,16 +51,17 @@ export const MonitorTotalQueue = () => {
                     return (
                         <div
                             key={card.title}
-                            className="min-w-0 rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md sm:p-5 lg:p-6"
+                            className="min-w-0 rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md sm:p-5 lg:p-6 bg-gradient-to-l from-blue-50 to-white"
                         >
                             {/* Card Header */}
                             <div className="flex items-start justify-between gap-3">
                                 <div className="min-w-0 flex-1">
-                                    <p className="mb-3 text-base font-semibold text-slate-500 sm:text-lg lg:text-xl">
+                                    <div className="mb-3 flex items-baseline gap-1 text-base font-semibold text-[#000814] sm:text-lg lg:text-xl">
                                         {card.title}
-                                    </p>
+                                        <p className="text-sm text-slate-500 font-light">/ Day</p>
+                                    </div>
 
-                                    <small className="inline-flex max-w-full items-center rounded-full border border-slate-200 px-3 py-1.5 text-xs font-light text-[#628dec] sm:text-sm">
+                                    <small className="inline-flex max-w-full items-center rounded-full border border-slate-200 px-3 py-1.5 text-xs font-light text-[#003566] sm:text-sm">
                                         {queueData?.date
                                             ? new Date(queueData.date).toLocaleDateString(
                                                 "en-PH",
@@ -87,7 +88,7 @@ export const MonitorTotalQueue = () => {
                                 {queueLoading ? (
                                     <div className="h-8 w-16 animate-pulse rounded bg-gray-200 sm:h-10 sm:w-20" />
                                 ) : (
-                                    <p className="break-words text-3xl font-bold leading-tight text-[#628dec] sm:text-4xl lg:text-5xl">
+                                    <p className="break-words text-3xl font-bold leading-tight text-[#000814] sm:text-4xl lg:text-5xl">
                                         {card.value}
                                     </p>
                                 )}
