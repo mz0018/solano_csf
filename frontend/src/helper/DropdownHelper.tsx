@@ -31,7 +31,7 @@ export const DropdownHelper = ({ item, collapsed, setCollapsed }: Props) => {
         }}
         title={collapsed ? item.name : undefined}
         aria-expanded={!collapsed && open}
-        className={`flex min-h-10 w-full items-center rounded-md text-left text-sm font-medium ${collapsed ? 'h-10 justify-center p-0' : 'gap-3 py-5 pl-5 pr-5'} ${open && !collapsed ? 'bg-slate-50 text-[#628dec]' : 'text-slate-600 hover:bg-slate-50 hover:text-[#628dec]'}`}
+        className={`flex min-h-10 w-full items-center rounded-md text-left text-sm font-medium ${collapsed ? 'h-10 justify-center p-0' : 'gap-3 py-5 pl-5 pr-5'} ${open && !collapsed ? 'bg-slate-50 text-[#003566]' : 'text-slate-600 hover:bg-slate-50 hover:text-[#003566]'}`}
       >
         {item.icon && (
           <img
@@ -67,7 +67,7 @@ export const DropdownHelper = ({ item, collapsed, setCollapsed }: Props) => {
                   setCollapsed(true)
                 }
               }}
-              className={({ isActive }) => `flex min-h-9 items-center rounded-md p-5 text-sm ${isActive ? 'bg-[#628dec] font-medium text-white' : 'text-slate-500 hover:bg-slate-50 hover:text-[#628dec]'}`}>
+              className={({ isActive }) => `flex min-h-9 items-center rounded-md p-5 text-sm ${isActive ? 'bg-[#003566] font-medium text-white' : 'text-slate-500 hover:bg-slate-50 hover:text-[#003566]'}`}>
                 <span className="truncate">{child.name}</span>
               </NavLink>
           ))}

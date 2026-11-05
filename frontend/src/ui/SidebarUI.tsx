@@ -1,13 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import { DropdownHelper } from '../helper/DropdownHelper'
-import { useState, useEffect } from 'react'
-import { PanelLeft } from 'lucide-react'
-
-interface User {
-  id: string;
-  userName: string;
-  role: string;
-}
+import { useEffect } from 'react'
 
 type NavItem = {
   name: string
@@ -20,19 +13,11 @@ type NavItem = {
 
 type SidebarUIProps = {
   navLinks: NavItem[]
-  user: User | null
+  collapsed: boolean
+  setCollapsed: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
-  const [collapsed, setCollapsed] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('sidebar-collapsed')
-      if (saved !== null) return JSON.parse(saved)
-      return window.innerWidth < 1024
-    }
-    return false
-  })
-
+export const SidebarUI = ({ navLinks, collapsed, setCollapsed }: SidebarUIProps) => {
   useEffect(() => {
     const checkIfShouldCollapse = () => {
 
@@ -47,7 +32,7 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
     window.addEventListener('resize', checkIfShouldCollapse);
     
     return () => window.removeEventListener('resize', checkIfShouldCollapse);
-  }, []);
+  }, [setCollapsed]);
 
   useEffect(() => {
     localStorage.setItem('sidebar-collapsed', JSON.stringify(collapsed))
@@ -60,31 +45,11 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
           type="button"
           aria-label="Close sidebar"
           onClick={() => setCollapsed(true)}
-          className="fixed inset-0 z-30 bg-slate-900/20 lg:hidden"
+          className="fixed inset-x-0 top-24 bottom-0 z-30 bg-slate-900/20 lg:hidden"
         />
       )}
 
-      <aside className={`fixed inset-y-0 left-0 z-40 flex h-full min-h-0 shrink-0 flex-col border-r border-slate-200 bg-white lg:static lg:z-auto ${collapsed ? 'w-16' : 'w-80'}`}>
-        <div className={`flex h-24 shrink-0 items-center py-3 ${collapsed ? 'justify-center' : 'justify-between gap-3'}`}>
-          {/* User Initial Avatar */}
-          <div
-            className={`${collapsed ? 'hidden' : 'h-18 min-w-0 flex-1 px-4 overflow-hidden'}`}>
-            <img
-              src={ '/img/csf-orig-optimized.png'}
-              alt={user?.userName || 'User'}
-              className="h-9 m-4 object-contain"
-            />
-          </div>
-
-        <button
-          onClick={() => setCollapsed(!collapsed)}
-          aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          className="inline-flex m-2 h-9 w-9 shrink-0 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100 hover:text-[#628dec] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 cursor-pointer"
-        >
-          <PanelLeft size={18}/>
-        </button>
-        </div>
-
+      <aside className={`fixed top-24 bottom-0 left-0 z-40 pt-5 flex min-h-0 shrink-0 flex-col border-r border-slate-200 bg-white lg:static lg:z-auto lg:h-full ${collapsed ? 'w-16' : 'w-80'}`}>
       <nav className={`min-h-0 flex-1 space-y-1 overflow-y-auto py-2 ${collapsed ? 'px-2' : 'px-5'}`}>
         {navLinks.map((item, index) => (
           <div key={item.path ?? item.name}>
@@ -103,7 +68,7 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
               <NavLink
                 to={item.path || '#'}
                 title={collapsed ? item.name : undefined}
-                className={({ isActive }) => `flex min-h-10 items-center rounded-md text-sm font-medium transition-colors duration-150 ${collapsed ? 'h-10 justify-center p-0' : 'gap-3 p-5'} ${isActive ? collapsed ? 'text-[#628dec]' : 'bg-[#628dec] text-white' : 'text-slate-600 hover:bg-slate-50 hover:text-[#628dec]'}`}>
+                className={({ isActive }) => `flex min-h-10 items-center rounded-md text-sm font-medium transition-colors duration-150 ${collapsed ? 'h-10 justify-center p-0' : 'gap-3 p-5'} ${isActive ? collapsed ? 'text-[#003566]' : 'bg-[#003566] text-white' : 'text-slate-600 hover:bg-slate-50 hover:text-[#003566]'}`}>
                 {({ isActive }) => (
                   <>
                     {item.icon && (

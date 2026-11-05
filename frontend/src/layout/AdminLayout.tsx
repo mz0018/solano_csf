@@ -1,4 +1,5 @@
 
+import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import { SidebarUI } from '../ui/SidebarUI'
 import { useAuth } from '../context/AuthContext'
@@ -6,6 +7,14 @@ import { AdminNavbar } from '../components/Navbar/AdminNavbar'
 
 const AdminLayout = () => {
   const { user } = useAuth()
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('sidebar-collapsed')
+      if (saved !== null) return JSON.parse(saved)
+      return window.innerWidth < 1024
+    }
+    return false
+  })
 
   const navLinks = [
     {
@@ -18,27 +27,27 @@ const AdminLayout = () => {
     {
       name: 'Dashboard',
       path: '/admin/queue/dashboard',
-      icon: '/icons/dashboard.svg',
+      icon: '/icons/colored-dashboard.svg',
       roles: ['office_admin', 'hr_admin', 'head_office_admin'],
       section: 'General',
     },
     {
       name: 'Live Monitoring',
       path: '/admin/queue/monitor',
-      icon: '/icons/monitor.svg',
+      icon: '/icons/colored-monitor.svg',
       roles: ['office_admin', 'hr_admin', 'head_office_admin'],
       section: 'General',
     },
     {
       name: 'Total Service Rendered',
       path: '/admin/queue/service/rendered',
-      icon: '/icons/hands-helping.svg',
+      icon: '/icons/colored-hand.svg',
       roles: ['head_office_admin', 'hr_admin'],
       section: 'Reports',
     },
     {
       name: 'Reports',
-      icon: '/icons/records.svg',
+      icon: '/icons/colored-reports.svg',
       roles: ['hr_admin', 'super_admin'],
       section: 'Reports',
       children: [
@@ -57,7 +66,7 @@ const AdminLayout = () => {
     {
       name: 'Settings',
       path: '/admin/settings',
-      icon: '/icons/settings.svg',
+      icon: '/icons/colored-settings.svg',
       roles: [
         'office_admin',
         'hr_admin',
@@ -91,11 +100,20 @@ const AdminLayout = () => {
         }
       `}</style>
 
-      <div className="flex h-full min-h-0 w-full ">
-        <SidebarUI navLinks={filteredNavLinks} user={user} />
+      <div className="flex h-full min-h-0 w-full flex-col">
+        <AdminNavbar
+          sidebarCollapsed={sidebarCollapsed}
+          onToggleSidebar={() =>
+            setSidebarCollapsed((collapsed: boolean) => !collapsed)
+          }
+        />
 
-        <div className="flex min-h-0 min-w-0 flex-1 flex-col pl-16 lg:pl-0">
-          <AdminNavbar />
+        <div className="flex min-h-0 min-w-0 flex-1 pl-16 lg:pl-0">
+          <SidebarUI
+            navLinks={filteredNavLinks}
+            collapsed={sidebarCollapsed}
+            setCollapsed={setSidebarCollapsed}
+          />
 
           <main className="min-h-0 flex-1 overflow-y-auto bg-slate-100 p-6">
             <Outlet />
