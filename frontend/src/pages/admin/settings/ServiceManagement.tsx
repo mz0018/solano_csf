@@ -5,6 +5,7 @@ import { TableUI } from "../../../ui/form/TableUI";
 import { NewServiceModal } from "../../../components/Modals/NewServiceModal";
 import { ViewServiceModal } from "../../../components/Modals/ViewServiceModal";
 import { Fullscreen } from "lucide-react";
+import { AdminButton } from "../../../ui/form/AdminButton";
 
 const ServiceManagementSettings = () => {
   const { getOfficeService } = useGetServices();
@@ -39,13 +40,15 @@ const ServiceManagementSettings = () => {
                 </div>
 
                 {/* Add New Service - Always Visible */}
-                <button
+                <AdminButton
                     type="button"
+                    icon="/icons/generate.svg"
+                    iconAlt="Service"
                     onClick={() => setIsModalOpen(true)}
-                    className="admin-blue-button w-full shrink-0 sm:ml-auto sm:w-auto"
+                    className="bg-[#628dec] text-white hover:bg-[#628dec]/90 transition-colors font-semibold sm:ml-auto sm:w-auto whitespace-nowrap"
                 >
                     Add New Service
-                </button>
+                </AdminButton>
             </div>
         </div>
 
