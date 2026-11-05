@@ -13,19 +13,19 @@ import {
     ResponsiveContainer,
 } from "recharts";
 
-const MATTE_COLORS = [
-    "#8FA8A0", // Sage green
-    "#B7795B", // Terracotta
-    "#8E9DB5", // Muted blue
-    "#C49A8A", // Dusty rose
-    "#A3A380", // Olive
-    "#A69CAC", // Muted lavender
-    "#C2A878", // Matte gold
-    "#7F9C96", // Eucalyptus
-    "#B58B8B", // Dusty pink
-    "#8996A8", // Slate blue
-    "#B5A08B", // Sand
-    "#9AAB8A", // Soft moss
+const GRAPH_COLORS = [
+    "#22C55E", // Vibrant green
+    "#EA580C", // Bright orange
+    "#2563EB", // Royal blue
+    "#E11D48", // Rose red
+    "#A3E635", // Lime green
+    "#9333EA", // Vivid purple
+    "#EAB308", // Bright yellow
+    "#0D9488", // Teal
+    "#EC4899", // Hot pink
+    "#4F46E5", // Indigo
+    "#D97706", // Amber
+    "#16A34A", // Emerald
 ];
 
 const shuffleColors = (colors: string[]) => {
@@ -44,7 +44,7 @@ export const RenderReportStatistics = ({
     chartsDataArray,
 }: RenderReportStatisticsProps) => {
     const chartColors = useMemo(
-        () => shuffleColors(MATTE_COLORS),
+        () => shuffleColors(GRAPH_COLORS),
         [chartsDataArray]
     );
 
@@ -58,9 +58,9 @@ export const RenderReportStatistics = ({
                         key={chart.title}
                         className="min-w-0 p-5"
                     >
-                        <h2 className="mb-5 text-base font-semibold text-slate-700">
+                        <small className="inline-flex max-w-full items-center rounded-full border border-slate-200 px-3 py-1.5 text-xs font-light text-[#003566] sm:text-sm mb-9">
                             {chart.title}
-                        </h2>
+                        </small>
 
                         <div className="h-[280px] w-full">
                             <ResponsiveContainer width="100%" height="100%">

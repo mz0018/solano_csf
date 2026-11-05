@@ -117,9 +117,9 @@ export const ReadReportStatistics = () => {
                 type="button"
                 aria-pressed={isLineChart}
                 onClick={() => setCurrentGraph(0)}
-                className={`flex items-center gap-2 border-b-2 px-4 py-3 text-md sm:text-lg lg:text-xl font-medium transition-colors ${
+                className={`cursor-pointer flex items-center gap-2 px-4 py-3 text-md sm:text-lg lg:text-xl font-medium transition-colors ${
                     isLineChart
-                        ? "border-[#628dec] text-[#628dec]"
+                        ? "rounded-lg bg-[#003566]/10 border-[#003566] text-[#003566]"
                         : "border-transparent text-slate-500 hover:text-slate-700"
                 }`}
             >
@@ -130,16 +130,21 @@ export const ReadReportStatistics = () => {
                         isLineChart ? "" : "opacity-60"
                     }`}
                 />
-                Line
+                <div className="flex items-baseline gap-1">
+                    Line
+                    <p className="text-sm font-light text-slate-500">
+                        / Graph
+                    </p>
+                </div>
             </button>
 
             <button
                 type="button"
                 aria-pressed={isBarChart}
                 onClick={() => setCurrentGraph(1)}
-                className={`flex items-center gap-2 border-b-2 px-4 py-3 text-md sm:text-lg lg:text-xl font-medium transition-colors ${
+                className={`cursor-pointer flex items-center gap-2 px-4 py-3 text-md sm:text-lg lg:text-xl font-medium transition-colors ${
                     isBarChart
-                        ? "border-[#628dec] text-[#628dec]"
+                        ? "rounded-lg bg-[#003566]/10 border-[#003566] text-[#003566]"
                         : "border-transparent text-slate-500 hover:text-slate-700"
                 }`}
             >
@@ -150,16 +155,21 @@ export const ReadReportStatistics = () => {
                         isBarChart ? "" : "opacity-60"
                     }`}
                 />
-                Bar
+                <div className="flex items-baseline gap-1">
+                    Bar
+                    <p className="text-sm font-light text-slate-500">
+                        / Graph
+                    </p>
+                </div>
             </button>
 
             <button
                 type="button"
                 aria-pressed={isTable}
                 onClick={() => setCurrentGraph(2)}
-                className={`flex items-center gap-2 border-b-2 px-4 py-3 text-md sm:text-lg lg:text-xl font-medium transition-colors ${
+                className={`cursor-pointer flex items-center gap-2 px-4 py-3 text-md sm:text-lg lg:text-xl font-medium transition-colors ${
                     isTable
-                        ? "border-[#628dec] text-[#628dec]"
+                    ? "rounded-lg bg-[#003566]/10 border-[#003566] text-[#003566]"
                         : "border-transparent text-slate-500 hover:text-slate-700"
                 }`}
             >
@@ -170,7 +180,12 @@ export const ReadReportStatistics = () => {
                         isTable ? "" : "opacity-60"
                     }`}
                 />
-                Table
+                <div className="flex items-baseline gap-1">
+                    Table
+                    <p className="text-sm font-light text-slate-500">
+                        / DataView
+                    </p>
+                </div>
             </button>
         </div>
     );
@@ -180,7 +195,7 @@ export const ReadReportStatistics = () => {
             {/* Mobile Header */}
             <div className="mb-4 border-b border-gray-300 py-3 lg:hidden">
                 <div className="mb-4">
-                    <h1 className="text-lg font-semibold text-[#628dec]">
+                    <h1 className="text-lg font-semibold text-[#003566]">
                         Report Statistics
                     </h1>
 
@@ -194,7 +209,7 @@ export const ReadReportStatistics = () => {
             <div className="flex w-full flex-col gap-4 lg:flex-row">
                 {/* Chart with attached navigation tabs */}
                 <div className="w-full lg:w-2/3">
-                    <div className="overflow-hidden min-w-0 rounded-xl border border-gray-200 bg-white py-4 shadow-sm transition-shadow hover:shadow-md">
+                    <div className="overflow-hidden min-w-0 rounded-xl border border-gray-200 bg-white py-4 shadow-sm transition-shadow hover:shadow-md bg-gradient-to-l from-blue-50 to-white">
                         {/* Navigation Tabs */}
                         <div className=" border-slate-200 px-4">
                             {chartTypeTabs}

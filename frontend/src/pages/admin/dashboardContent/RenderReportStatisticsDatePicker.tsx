@@ -37,18 +37,21 @@ export const RenderReportStatisticsDatePicker = ({
     return (
         <>
             {/* Report Period */}
-            <div className="w-full rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
+            <div className="w-full rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md bg-gradient-to-l from-blue-50 to-white">
                 <div className="">
-                    <p className="text-base font-semibold text-slate-500 sm:text-lg lg:text-xl">
-                        {officeCode} Report Period
-                    </p>
 
-                     <small className="mt-3 inline-flex max-w-full items-center rounded-full border border-slate-200 px-3 py-1.5 text-xs font-light text-[#628dec] sm:text-sm">
+                    <div className="mb-3 flex items-baseline gap-1 text-base font-semibold text-[#000814] sm:text-lg lg:text-xl">
+                        {officeCode}
+                        <p className="text-sm text-slate-500 font-light">/ Report Period</p>
+                    </div>
+
+
+                     <small className="mt-3 inline-flex max-w-full items-center rounded-full border border-slate-200 px-3 py-1.5 text-xs font-light text-[#003566] sm:text-sm">
                         {formattedMonth}
                      </small>
                 </div>
      
-                <div className="mt-4 rounded-md bg-blue-50 p-4">
+                <div className="mt-4 rounded-md border border-blue-200 bg-blue-50 p-4">
                     <p className="text-sm leading-relaxed tracking-wide text-slate-600">
                         This report covers the entire calendar month of{" "}
                         <span className="font-medium text-slate-800">
@@ -71,12 +74,11 @@ export const RenderReportStatisticsDatePicker = ({
             </div>
 
             {/* Live Tickets */}
-            <div className="mt-3 w-full rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
+            <div className="mt-3 w-full rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md bg-gradient-to-l from-blue-50 to-white">
                 <div className="mb-4 flex items-center justify-between border-b border-slate-200 pb-4">
-                    <div>
-                        <p className="text-base font-semibold text-slate-500 sm:text-lg lg:text-xl">
-                            {officeCode} Live Tickets
-                        </p>
+                    <div className="flex items-baseline gap-1 text-base font-semibold text-[#000814] sm:text-lg lg:text-xl">
+                        {officeCode}
+                        <p className="text-sm text-slate-500 font-light">/ Live Tickets</p>
                     </div>
 
                     <button
@@ -129,7 +131,15 @@ export const RenderReportStatisticsDatePicker = ({
                                         </p>
                                     </div>
 
-                                    <small className="rounded-md bg-blue-50 px-2.5 py-1 text-xs font-medium capitalize text-slate-500">
+                                   <small
+                                        className={`tracking-wide rounded-md px-2.5 py-1 text-xs font-medium capitalize border ${
+                                            ticket.status === "pending"
+                                                ? "bg-amber-100 text-amber-800 border-amber-400"
+                                                : ticket.status === "used"
+                                                    ? "bg-green-100 text-green-800 border-green-400"
+                                                    : "bg-blue-50 text-blue-800 border-blue-300"
+                                        }`}
+                                    >
                                         {ticket.status}
                                     </small>
                                 </div>
