@@ -2,10 +2,10 @@ import { Outlet, NavLink } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 const tabs = [
-  { name: 'Profile Information', path: 'profile', icon: '/icons/user.svg', roles: ['office_admin', 'hr_admin', 'super_admin', 'head_office_admin'] },
-  { name: 'Service Management', path: 'manage-services', icon: '/icons/service-management.svg', roles: ['head_office_admin', 'hr_admin'] },
-  { name: 'Security', path: 'security', icon: '/icons/security.svg', roles: ['office_admin', 'hr_admin', 'super_admin', 'head_office_admin'] },
-  { name: 'Notifications', path: 'notifications', icon: '/icons/notifications.svg', roles: ['office_admin', 'hr_admin', 'super_admin', 'head_office_admin'] },
+  { name: 'Profile Information', path: 'profile', icon: '/icons/colored-user.svg', roles: ['office_admin', 'hr_admin', 'super_admin', 'head_office_admin'] },
+  { name: 'Service Management', path: 'manage-services', icon: '/icons/colored-manage-service.svg', roles: ['head_office_admin', 'hr_admin'] },
+  { name: 'Security', path: 'security', icon: '/icons/colored-security.svg', roles: ['office_admin', 'hr_admin', 'super_admin', 'head_office_admin'] },
+  { name: 'Notifications', path: 'notifications', icon: '/icons/colored-bell.svg', roles: ['office_admin', 'hr_admin', 'super_admin', 'head_office_admin'] },
 ]
 
 export const SettingsLayout = () => {
@@ -22,8 +22,8 @@ export const SettingsLayout = () => {
             className={({ isActive }) =>
               `flex min-h-10 items-center gap-3 rounded-md p-5 text-sm font-medium transition-colors duration-150 ${
                 isActive
-                  ? 'bg-[#628dec] text-white'
-                  : 'text-slate-600 hover:bg-slate-50 hover:text-[#628dec]'
+                  ? 'bg-[#003566] text-white'
+                  : 'text-slate-600 hover:bg-slate-200 hover:text-[#003566]'
               }`
             }
           >

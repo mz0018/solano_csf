@@ -68,7 +68,7 @@ export const SidebarUI = ({ navLinks, collapsed, setCollapsed }: SidebarUIProps)
               <NavLink
                 to={item.path || '#'}
                 title={collapsed ? item.name : undefined}
-                className={({ isActive }) => `flex min-h-10 items-center rounded-md text-sm font-medium transition-colors duration-150 ${collapsed ? 'h-10 justify-center p-0' : 'gap-3 p-5'} ${isActive ? collapsed ? 'text-[#003566]' : 'bg-[#003566] text-white' : 'text-slate-600 hover:bg-slate-50 hover:text-[#003566]'}`}>
+                className={({ isActive }) => `flex min-h-10 items-center rounded-md text-sm font-medium transition-colors duration-150 ${collapsed ? 'h-10 justify-center p-0' : 'gap-3 p-5'} ${isActive ? collapsed ? 'text-[#003566]' : 'bg-[#003566] text-white' : 'text-slate-600 hover:bg-slate-200 hover:text-[#003566]'}`}>
                 {({ isActive }) => (
                   <>
                     {item.icon && (
