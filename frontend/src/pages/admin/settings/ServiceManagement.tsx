@@ -42,7 +42,7 @@ const ServiceManagementSettings = () => {
         <div className="mb-4 border-b border-gray-300 py-3">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 {/* Title and Description */}
-                <div className="min-w-0">
+                <div className="min-w-0 lg:hidden">
                     <h1 className="text-lg font-semibold text-[#628dec]">
                         Service Management
                     </h1>
