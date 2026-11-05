@@ -61,7 +61,7 @@ export const AdminNavbar = ({
   };
 
   return (
-    <header className="flex h-24 w-full items-center justify-between border-b-8 border-[#FFC300] bg-[#001D3D] p-2 py-3 text-white shadow-[0_2px_12px_rgba(47,86,165,0.18)]">
+    <header className="backdrop-blur-sm flex h-24 w-full items-center justify-between border-b-5 border-[#FFC300] bg-[#001D3D] p-2 py-3 text-white shadow-[0_2px_12px_rgba(47,86,165,0.18)]">
 
       {/* Left */}
       <div className="flex min-w-0 flex-1 items-center gap-3">
