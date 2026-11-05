@@ -109,20 +109,15 @@ export const ActiveQueueDateTable = ({
                 </td>
 
                 <td className="capitalize">
-                  <span className="inline-flex items-center gap-2">
-                  <img
-                    src={
-                      queue.status === "pending"
-                        ? "/icons/pending.svg"
-                        : "/icons/done.svg"
-                    }
-                    alt=""
-                    aria-hidden="true"
-                    title={queue.status}
-                    className="h-6 w-6"
-                  />
+                  <small className={`tracking-wide rounded-md px-2.5 py-1 text-sm font-medium capitalize border ${
+                        queue.status === "pending"
+                            ? "bg-amber-100 text-amber-800 border-amber-400"
+                            : queue.status === "used"
+                                ? "bg-green-100 text-green-800 border-green-400"
+                                : "bg-blue-50 text-blue-800 border-blue-300"
+                    }`}>
                     <span>{queue.status}</span>
-                  </span>
+                  </small>
                 </td>
 
                 <td>
@@ -136,9 +131,9 @@ export const ActiveQueueDateTable = ({
                         setFeedbackModalOpen(true);
                         setSelectedFeedback(queue.code);
                       }}
-                      className="border border-[#628dec] text-[#628dec] hover:bg-[#628dec]/10 transition-colors font-semibold"
+                      className="border border-[#2563EB] text-[#2563EB] hover:bg-[#2563EB]/10 transition-colors font-semibold"
                     >
-                      Review
+                      Review Feedback
                     </AdminButton>
                   )}
                 </td>

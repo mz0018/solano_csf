@@ -15,17 +15,17 @@ export const TableUI = ({
                     w-full table-fixed border-collapse text-sm
 
                     /* Premium table header */
-                    [&_thead]:bg-slate-50/90
-                    [&_th]:border-b
-                    [&_th]:border-slate-200
+                    [&_thead]:bg-[#003566]
+                    [&_th]:border-b-5
+                    [&_th]:border-[#FFC300]
                     [&_th]:px-3
                     [&_th]:py-4
                     [&_th]:text-start
                     [&_th]:text-md
                     [&_th]:font-semibold
-                    [&_th]:uppercase
+                    [&_th]:capitalize
                     [&_th]:tracking-wider
-                    [&_th]:text-slate-500
+                    [&_th]:text-white
                     [&_th]:align-middle
 
                     /* Refined table cells */

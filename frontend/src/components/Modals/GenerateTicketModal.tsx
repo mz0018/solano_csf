@@ -179,7 +179,7 @@ export const GenerateTicketModal = ({
             iconAlt="Submit"
             disabled={isGeneratingTicket}
             onClick={handleGenerateTicket}
-            className="w-full bg-[#628dec] text-white hover:bg-[#628dec]/90 transition-colors font-semibold"
+            className="w-full bg-[#2563EB] text-white hover:bg-[#2563EB]/90 transition-colors font-semibold"
           >
             {isGeneratingTicket ? "Loading..." : "Proceed"}
           </AdminButton>

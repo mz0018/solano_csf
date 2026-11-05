@@ -130,7 +130,7 @@ export const PerOfficeQueueTable = ({
                                             setFeedbackModalOpen(true);
                                             setSelectedFeedback(item.queueNumber);
                                         }}
-                                        className="border border-[#628dec] py-2 text-sm font-semibold text-[#628dec] transition-colors hover:bg-[#628dec]/10"
+                                        className="border border-[#2563EB] py-2 text-sm font-semibold text-[#2563EB] transition-colors hover:bg-[#2563EB]/10"
                                     >
                                         Review
                                     </AdminButton>

@@ -37,7 +37,7 @@ export const DropdownHelper = ({ item, collapsed, setCollapsed }: Props) => {
           <img
             src={item.icon}
             alt=""
-            className={`h-5 w-5 shrink-0 ${open ? '' : ''}`}
+            className={`h-7 w-7 shrink-0 ${open ? '' : ''}`}
           />
         )}
 

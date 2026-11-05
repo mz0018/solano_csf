@@ -75,7 +75,7 @@ export const SidebarUI = ({ navLinks, collapsed, setCollapsed }: SidebarUIProps)
                       <img
                         src={item.icon}
                         alt=""
-                        className={`h-5 w-5 shrink-0 ${isActive && !collapsed ? 'brightness-0 invert' : ''}`}
+                        className={`h-7 w-7 shrink-0 ${isActive && !collapsed ? 'brightness-0 invert' : ''}`}
                       />
                     )}
 

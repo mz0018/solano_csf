@@ -58,7 +58,7 @@ const ServiceManagementSettings = () => {
                     icon="/icons/generate.svg"
                     iconAlt="Service"
                     onClick={() => setIsModalOpen(true)}
-                    className="bg-[#628dec] text-white hover:bg-[#628dec]/90 transition-colors font-semibold sm:ml-auto sm:w-auto whitespace-nowrap"
+                    className="bg-[#2563EB] text-white hover:bg-[#2563EB]/90 transition-colors font-semibold sm:ml-auto sm:w-auto whitespace-nowrap"
                 >
                     Add New Service
                 </AdminButton>
@@ -134,7 +134,7 @@ const ServiceManagementSettings = () => {
                                                 onClick={() =>
                                                     setSelectedService(service)
                                                 }
-                                                className="shrink-0 whitespace-nowrap border border-[#628dec] py-2 text-sm font-semibold text-[#628dec] transition-colors hover:bg-[#628dec]/10"
+                                                className="shrink-0 whitespace-nowrap border border-[#2563EB] py-2 text-sm font-semibold text-[#2563EB] transition-colors hover:bg-[#2563EB]/10"
                                             >
                                                 Manage
                                             </AdminButton>
@@ -185,7 +185,7 @@ const ServiceManagementSettings = () => {
                                                 onClick={() =>
                                                     setSelectedService(service)
                                                 }
-                                                className="shrink-0 whitespace-nowrap border border-[#628dec] py-2 text-sm font-semibold text-[#628dec] transition-colors hover:bg-[#628dec]/10"
+                                                className="shrink-0 whitespace-nowrap border border-[#2563EB] py-2 text-sm font-semibold text-[#2563EB] transition-colors hover:bg-[#2563EB]/10"
                                             >
                                                 Manage
                                             </AdminButton>

@@ -135,7 +135,7 @@ export const ChangePassword = () => {
           icon="/icons/generate.svg"
           iconAlt="Service"
           disabled={changePasswordMutation.isPending || !isFormValid || isRateLimited}
-          className="bg-[#628dec] text-white hover:bg-[#628dec]/90 transition-colors font-semibold whitespace-nowrap"
+          className="bg-[#2563EB] text-white hover:bg-[#2563EB]/90 transition-colors font-semibold whitespace-nowrap"
         >
           {changePasswordMutation.isPending ? "Changing..." : "Change Password"}
         </AdminButton>
