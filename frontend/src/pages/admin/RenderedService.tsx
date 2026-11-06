@@ -122,6 +122,18 @@ const RenderedService = () => {
                 dateTo={dateTo}
             />
 
+            <div className="w-full">
+                <div className="mb-4 border-b border-gray-300 py-3">
+                    <h1 className="min-w-0 text-2xl font-bold text-[#003566] lg:text-3xl">
+                        Employee Service Overview
+                    </h1>
+
+                    <p className="mt-1 max-w-2xl text-sm leading-relaxed tracking-wide text-[#000814] sm:text-base md:text-md">
+                        View the services rendered by each employee, including their corresponding total counts.
+                    </p>
+                </div>
+            </div>
+
             {/* Rendered Services Table */}
             <TableUI className="min-w-[52rem]">
                 <thead>

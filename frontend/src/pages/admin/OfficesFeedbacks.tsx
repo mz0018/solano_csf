@@ -64,12 +64,12 @@ const OfficesFeedbacks = () => {
         <>
             {/* Mobile Header */}
             <div className="w-full">
-                <div className="mb-4 border-b border-gray-300 py-3 lg:hidden">
-                    <h1 className="text-lg font-semibold text-[#628dec]">
+                <div className="mb-4 border-b border-gray-300 py-3">
+                    <h1 className="min-w-0 text-2xl font-bold text-[#003566] lg:text-3xl">
                         Select an office to view specific feedback
                     </h1>
 
-                    <p className="mt-1 text-sm leading-relaxed text-gray-900">
+                    <p className="mt-1 max-w-2xl text-sm leading-relaxed tracking-wide text-[#000814] sm:text-base md:text-md">
                         Filter and review feedback entries by office
                     </p>
                 </div>
@@ -81,7 +81,7 @@ const OfficesFeedbacks = () => {
                 <div className="w-full sm:w-96 sm:max-w-full">
                     <label
                         htmlFor="office"
-                        className="mb-2 block text-base font-semibold text-slate-500 sm:text-lg lg:text-xl"
+                        className="mb-2 block text-base font-semibold text-[#003566] sm:text-lg lg:text-xl"
                     >
                         Municipality Office
                     </label>
@@ -110,7 +110,7 @@ const OfficesFeedbacks = () => {
                 <div className="w-full sm:w-96 sm:max-w-full">
                     <label
                         htmlFor="month"
-                        className="mb-2 block text-base font-semibold text-slate-500 sm:text-lg lg:text-xl"
+                        className="mb-2 block text-base font-semibold text-[#003566] sm:text-lg lg:text-xl"
                     >
                         Select Month
                     </label>
@@ -141,7 +141,7 @@ const OfficesFeedbacks = () => {
                 <div className="w-full sm:w-96 sm:max-w-full">
                     <label
                         htmlFor="year"
-                        className="mb-2 block text-base font-semibold text-slate-500 sm:text-lg lg:text-xl"
+                        className="mb-2 block text-base font-semibold text-[#003566] sm:text-lg lg:text-xl"
                     >
                         Select Year
                     </label>

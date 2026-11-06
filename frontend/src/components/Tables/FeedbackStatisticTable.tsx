@@ -1,8 +1,10 @@
 import { ReportCharts } from "../Charts/ReportCharts";
 import type { FeedbackItem } from "../buttons/BtnGenerateReport";
 import type { RefObject } from "react";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { ErrorText } from "../../ui/form/ErrorText";
 import { InlineLoader } from "../Loader";
+import notFoundReport from "../../assets/not-found-report.json";
 
 type ReportStatistics = {
     totalFeedbacks: number;
@@ -50,8 +52,13 @@ export const FeedbackStatisticTable = ({
     if (!stats || stats.totalFeedbacks === 0) {
         return (
             <div className="p-9 flex w-full flex-col items-center justify-center overflow-x-auto rounded-md border border-slate-200/80 bg-white text-center">
-                <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-gray-100 sm:h-16 sm:w-16 md:h-18 md:w-18">
-                <img src="/icons/piechart.svg" alt="" className="h-[32px] w-[32px] sm:h-[36px] sm:w-[36px]" />
+                <div className="mb-3 flex h-14 w-14 items-center justify-center sm:h-16 sm:w-16 md:h-18 md:w-18">
+                <DotLottieReact
+                    data={notFoundReport}
+                    loop
+                    autoplay
+                    style={{ width: "100%", height: "100%" }}
+                />
                 </div>
 
                 <p className="text-sm font-medium text-gray-700 block text-base font-semibold text-slate-500 sm:text-lg lg:text-xl">

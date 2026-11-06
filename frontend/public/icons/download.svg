@@ -1,4 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16">
-	<path d="M0 0h16v16H0z" fill="none" />
-	<path fill="#fff" d="M16 13.5a.48.48 0 0 1-.15.35l-2 2a.48.48 0 0 1-.7 0l-2-2a.48.48 0 0 1 0-.7a.48.48 0 0 1 .7 0L13 14.29V9.5a.5.5 0 1 1 1 0v4.79l1.15-1.14a.48.48 0 0 1 .7 0q.071.07.111.16q.039.091.039.19M11 12h1v-1H3a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v5h1V3a2 2 0 0 0-2-2H3a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2v2H3.5a.5.5 0 0 0 0 1H10v-1H6v-2h4v1.5a1.47 1.47 0 0 1 .466-1.079a1.4 1.4 0 0 1 .439-.296c.031-.014.063-.019.095-.03z" />
+<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+	<path d="M0 0h24v24H0z" fill="none" />
+	<g fill="none" stroke="#ffd60a" stroke-linecap="round" stroke-width="1.5">
+		<path d="M14 21H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v9" />
+		<path stroke-linejoin="round" d="M2 7h20M5 5.01l.01-.011M8 5.01l.01-.011M11 5.01l.01-.011M19.5 16v6m0 0L17 19.5m2.5 2.5l2.5-2.5" />
+	</g>
 </svg>

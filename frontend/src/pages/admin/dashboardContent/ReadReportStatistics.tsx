@@ -193,13 +193,13 @@ export const ReadReportStatistics = () => {
     return (
         <div className="w-full">
             {/* Mobile Header */}
-            <div className="mb-4 border-b border-gray-300 py-3 lg:hidden">
+            <div className="mb-4 border-b border-gray-300 py-3">
                 <div className="mb-4">
-                    <h1 className="text-lg font-semibold text-[#003566]">
+                    <h1 className="min-w-0 text-2xl font-bold text-[#003566] lg:text-3xl">
                         Report Statistics
                     </h1>
 
-                    <p className="mt-1 text-sm text-gray-900">
+                    <p className="mt-1 max-w-2xl text-sm leading-relaxed tracking-wide text-[#000814] sm:text-base md:text-md">
                         View and compare client feedback statistics.
                     </p>
                 </div>

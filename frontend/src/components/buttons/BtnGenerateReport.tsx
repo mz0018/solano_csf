@@ -65,7 +65,7 @@ export const BtnGenerateReport = ({ isCapturing, handleCapture, chartRefs, feedb
       iconAlt="Download"
       disabled={isCapturing} 
       onClick={onClick} 
-      className="w-full bg-[#2563EB] text-white hover:bg-[#2563EB]/90 transition-colors font-semibold"
+      className="bg-[#003566] border border-[#FFC300] text-[#FFD60A] transition-colors duration-200 hover:bg-[#004080] hover:border-[#FFD60A] font-semibold sm:ml-auto sm:w-auto whitespace-nowrap"
     >
       {isCapturing ? "Generating..." : "Generate Report"}
     </AdminButton>
