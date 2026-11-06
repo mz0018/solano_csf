@@ -6,6 +6,7 @@ type ActiveQueue = {
   _id: string;
   code: string;
   status: string;
+  selectedService: string[];
 };
 
 type ActiveQueueResponse = {

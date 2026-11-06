@@ -16,16 +16,16 @@ export const TableUI = ({
 
                     /* Premium table header */
                     [&_thead]:bg-[#003566]
-                    [&_th]:border-b-5
+                    [&_th]:border-b
                     [&_th]:border-[#FFC300]
                     [&_th]:px-3
                     [&_th]:py-4
                     [&_th]:text-start
                     [&_th]:text-md
-                    [&_th]:font-semibold
-                    [&_th]:capitalize
-                    [&_th]:tracking-wider
-                    [&_th]:text-white
+                    [&_th]:font-bold
+                    [&_th]:uppercase
+                    [&_th]:tracking-widest
+                    [&_th]:text-[#FFD60A]
                     [&_th]:align-middle
 
                     /* Refined table cells */

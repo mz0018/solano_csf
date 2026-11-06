@@ -5,7 +5,6 @@ import { useGetActiveQueue } from "../../hooks/useGetActiveQueue";
 import { ViewFeedbackModal } from "../Modals/ViewFeedbackModal";
 import { PaginationUI } from "../../ui/form/PaginationUI";
 import { InlineLoader } from "../Loader";
-import { AdminButton } from "../../ui/form/AdminButton";
 import { CSFCustomToaster } from "../../utils/Toaster";
 
 export interface ActiveQueueDateTableProps {
@@ -61,6 +60,8 @@ export const ActiveQueueDateTable = ({
     }
   };
 
+  console.log(data);
+
   return (
     <>
       <TableUI>
@@ -68,6 +69,7 @@ export const ActiveQueueDateTable = ({
           <tr>
             <th className="px-4 py-3">ticket</th>
             <th className="px-4 py-3">status</th>
+            <th className="px-4 py-3">selected service</th>
             <th className="px-4 py-3">actions</th>
           </tr>
         </thead>
@@ -75,7 +77,7 @@ export const ActiveQueueDateTable = ({
         <tbody>
           {isLoading ? (
             <tr>
-              <td colSpan={3}>
+              <td colSpan={4}>
                 <InlineLoader />
               </td>
             </tr>
@@ -104,37 +106,57 @@ export const ActiveQueueDateTable = ({
                         className="h-5 w-5"
                       />
                     </button>
-                    <span>{queue.code}</span>
+
+                    <div className="flex flex-col">
+                      <div className="text-lg">{queue.code}</div>
+                      <small className="text-sm text-gray-500 tracking-wider font-light">
+                        CSF{queue._id}.v1
+                      </small>
+                    </div>
                   </span>
                 </td>
 
                 <td className="capitalize">
-                  <small className={`tracking-wide rounded-md px-2.5 py-1 text-sm font-medium capitalize border ${
-                        queue.status === "pending"
-                            ? "bg-amber-100 text-amber-800 border-amber-400"
-                            : queue.status === "used"
-                                ? "bg-green-100 text-green-800 border-green-400"
-                                : "bg-blue-50 text-blue-800 border-blue-300"
-                    }`}>
-                    <span>{queue.status}</span>
+                  <small className={`tracking-wide rounded-full px-2.5 py-1 text-sm font-medium capitalize border ${
+                      queue.status === "pending"
+                          ? "bg-amber-100 text-amber-800 border-amber-400"
+                          : queue.status === "used"
+                              ? "bg-green-100 text-green-800 border-green-400"
+                              : "bg-blue-50 text-blue-800 border-blue-300"
+                  }`}>
+                      <span>
+                          <span className="text-xl leading-none">•</span>
+                          &nbsp;{queue.status}
+                      </span>
                   </small>
+                </td>
+
+                <td>
+                  <p className="line-clamp-2">
+                    {queue.selectedService
+                      .map(service =>
+                        service
+                          .replace(/_/g, " ")
+                          .toLowerCase()
+                          .replace(/\b\w/g, char => char.toUpperCase())
+                      )
+                      .join(", ")}
+                  </p>
                 </td>
 
                 <td>
                   {queue.status === "pending" ? (
                     <>- -</>
                   ) : (
-                    <AdminButton
-                      icon="/icons/open.svg"
-                      iconAlt="Review Ticket"
+                    <button
                       onClick={() => {
                         setFeedbackModalOpen(true);
                         setSelectedFeedback(queue.code);
                       }}
-                      className="border border-[#2563EB] text-[#2563EB] hover:bg-[#2563EB]/10 transition-colors font-semibold"
+                      className="text-[#000814] bg-[#FFC300] rounded-md px-2.5 py-1 hover:bg-[#E5AC00] transition-colors duration-200 font-semibold tracking-wider cursor-pointer"
                     >
                       Review Feedback
-                    </AdminButton>
+                    </button>
                   )}
                 </td>
               </tr>

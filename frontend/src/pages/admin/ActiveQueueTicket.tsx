@@ -58,10 +58,10 @@ const ActiveQueueTicket = () => {
 
         {/* Generate Ticket */}
         <AdminButton
-          icon="/icons/generate.svg"
+          icon="/icons/colored-generate.svg"
           iconAlt="Ticket"
           onClick={() => setIsModalOpen(true)}
-          className="bg-[#2563EB] text-white hover:bg-[#2563EB]/90 transition-colors font-semibold sm:ml-auto sm:w-auto whitespace-nowrap"
+          className="bg-[#003566] border border-[#FFC300] text-[#FFD60A] transition-colors duration-200 hover:bg-[#004080] hover:border-[#FFD60A] font-semibold sm:ml-auto sm:w-auto whitespace-nowrap"
         >
           Generate Ticket
         </AdminButton>
