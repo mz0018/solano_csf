@@ -6,18 +6,30 @@ import { NewServiceModal } from "../../../components/Modals/NewServiceModal";
 import { ViewServiceModal } from "../../../components/Modals/ViewServiceModal";
 import { AdminButton } from "../../../ui/form/AdminButton";
 
-const getServiceStatusDotColor = (status: string) => {
-    const normalizedStatus = status.toLowerCase();
+const getServiceStatusColors = (status: string = "") => {
+  const normalizedStatus = status.toLowerCase();
 
-    if (normalizedStatus === "active" || normalizedStatus === "enabled") {
-        return "bg-green-500";
-    }
+  if (normalizedStatus === "active" || normalizedStatus === "enabled") {
+    return {
+      dot: "bg-green-500",
+      text: "text-green-500",
+      border: "bg-green-500/10 border border-green-500",
+    };
+  }
 
-    if (normalizedStatus === "inactive" || normalizedStatus === "disabled") {
-        return "bg-red-500";
-    }
+  if (normalizedStatus === "inactive" || normalizedStatus === "disabled") {
+    return {
+      dot: "bg-red-500",
+      text: "text-red-500",
+      border: "bg-red-500/10 border border-red-500",
+    };
+  }
 
-    return "bg-amber-500";
+  return {
+    dot: "bg-amber-500",
+    text: "text-amber-500",
+    border: "bg-amber-500/10 border border-amber-500",
+  };
 };
 
 const ServiceManagementSettings = () => {
@@ -42,12 +54,12 @@ const ServiceManagementSettings = () => {
         <div className="mb-4 border-b border-gray-300 py-3">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 {/* Title and Description */}
-                <div className="min-w-0 lg:hidden">
-                    <h1 className="text-lg font-semibold text-[#628dec]">
+                <div className="min-w-0">
+                    <h1 className="min-w-0 text-2xl font-bold text-[#003566] lg:text-3xl">
                         Service Management
                     </h1>
 
-                    <p className="mt-1 text-sm leading-relaxed text-gray-900">
+                    <p className="mt-1 max-w-2xl text-sm leading-relaxed tracking-wide text-[#000814] sm:text-base md:text-md line-clamp-2">
                         Create new services and manage existing service information and status.
                     </p>
                 </div>
@@ -55,10 +67,10 @@ const ServiceManagementSettings = () => {
                 {/* Add New Service*/}
                 <AdminButton
                     type="button"
-                    icon="/icons/generate.svg"
+                    icon="/icons/colored-generate.svg"
                     iconAlt="Service"
                     onClick={() => setIsModalOpen(true)}
-                    className="bg-[#2563EB] text-white hover:bg-[#2563EB]/90 transition-colors font-semibold sm:ml-auto sm:w-auto whitespace-nowrap"
+                    className="bg-[#003566] border border-[#FFC300] text-[#FFD60A] transition-colors duration-200 hover:bg-[#004080] hover:border-[#FFD60A] font-semibold sm:ml-auto sm:w-auto whitespace-nowrap"
                 >
                     Add New Service
                 </AdminButton>
@@ -116,14 +128,15 @@ const ServiceManagementSettings = () => {
                                         </td>
 
                                         <td className="whitespace-nowrap capitalize">
-                                            <span className="inline-flex shrink-0 items-center gap-2">
-                                                <span
-                                                    className={`h-2.5 w-2.5 shrink-0 rounded-full ${getServiceStatusDotColor(service.status)}`}
+                                            <div className={`inline-flex items-center gap-2 px-2 py-1 rounded-full ${getServiceStatusColors(service.status).border}`}>
+                                                <div
+                                                    className={`h-2.5 w-2.5 shrink-0 rounded-full ${getServiceStatusColors(service.status).dot}`}
                                                     title={`${service.status} status`}
                                                 />
-                                                {/* <img src={getServiceStatusIcon(service.status)} alt="" aria-hidden="true" className="h-5 w-5 shrink-0" /> */}
-                                                {service.status}
-                                            </span>
+                                                <p className={getServiceStatusColors(service.status).text}>
+                                                    {service.status}
+                                                </p>
+                                            </div>
                                         </td>
 
                                         <td>
@@ -136,7 +149,7 @@ const ServiceManagementSettings = () => {
                                                 }
                                                 className="shrink-0 whitespace-nowrap border border-[#2563EB] py-2 text-sm font-semibold text-[#2563EB] transition-colors hover:bg-[#2563EB]/10"
                                             >
-                                                Manage
+                                                Manage Service
                                             </AdminButton>
                                         </td>
                                     </tr>
@@ -167,14 +180,15 @@ const ServiceManagementSettings = () => {
                                         </td>
 
                                         <td className="whitespace-nowrap capitalize">
-                                            <span className="inline-flex shrink-0 items-center gap-2">
-                                                <span
-                                                    className={`h-2.5 w-2.5 shrink-0 rounded-full ${getServiceStatusDotColor(service.status)}`}
-                                                    title={`${service.status} status`}
+                                            <div className={`inline-flex items-center gap-2 px-2 py-1 rounded-full ${getServiceStatusColors(service.status).border}`}>
+                                                <div
+                                                className={`h-2.5 w-2.5 shrink-0 rounded-full ${getServiceStatusColors(service.status).dot}`}
+                                                title={`${service.status} status`}
                                                 />
-                                                {/* <img src={getServiceStatusIcon(service.status)} alt="" aria-hidden="true" className="h-5 w-5 shrink-0" /> */}
+                                                <p className={getServiceStatusColors(service.status).text}>
                                                 {service.status}
-                                            </span>
+                                                </p>
+                                            </div>
                                         </td>
 
                                         <td>
@@ -187,7 +201,7 @@ const ServiceManagementSettings = () => {
                                                 }
                                                 className="shrink-0 whitespace-nowrap border border-[#2563EB] py-2 text-sm font-semibold text-[#2563EB] transition-colors hover:bg-[#2563EB]/10"
                                             >
-                                                Manage
+                                                Manage Service
                                             </AdminButton>
                                         </td>
                                     </tr>

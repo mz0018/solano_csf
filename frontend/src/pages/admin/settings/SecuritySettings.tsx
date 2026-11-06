@@ -16,14 +16,14 @@ const SecuritySettings = () => {
   };
 
   return (
-    <div className="@container w-full min-w-0 rounded-xl border border-gray-200 bg-white p-3 shadow-sm @sm:p-4 @lg:p-5">
+    <div className="@container w-full min-w-0 rounded-xl border border-gray-200 bg-white p-3 shadow-sm @sm:p-4 @lg:p-5 bg-gradient-to-l from-blue-50 to-white">
       {/* Page Header */}
-      <div className="mb-4 border-b border-gray-300 py-3 @lg:hidden">
-        <h1 className="text-xl font-semibold text-[#628dec]">
+      <div className="mb-4 border-b border-gray-300 py-3">
+        <h1 className="min-w-0 text-2xl font-bold text-[#003566] lg:text-3xl">
           Security Settings
         </h1>
 
-        <p className="mt-1 text-sm leading-relaxed text-gray-900">
+        <p className="mt-1 max-w-2xl text-sm leading-relaxed tracking-wide text-[#000814] sm:text-base md:text-md line-clamp-2">
           Manage your password and review recent account activity.
         </p>
       </div>

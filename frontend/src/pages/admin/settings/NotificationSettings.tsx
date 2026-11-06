@@ -46,12 +46,12 @@ const NotificationSettings = () => {
     <>
       <div className="w-full min-w-0">
           {/* Page Header */}
-          <div className="mb-4 border-b border-gray-300 py-3 lg:hidden">
-              <h1 className="text-xl font-semibold text-[#628dec]">
+          <div className="mb-4 border-b border-gray-300 py-3">
+              <h1 className="min-w-0 text-2xl font-bold text-[#003566] lg:text-3xl">
                   Notification Settings
               </h1>
 
-              <p className="mt-1 text-sm leading-relaxed text-gray-900">
+              <p className="mt-1 max-w-2xl text-sm leading-relaxed tracking-wide text-[#000814] sm:text-base md:text-md line-clamp-2">
                   View your recent account notifications and activity updates.
               </p>
           </div>
