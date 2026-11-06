@@ -12,34 +12,40 @@ const ActiveQueueTicket = () => {
   return (
     <>
       <div className="w-full">
-        <div className="block mb-4 flex items-center gap-3 border-b border-gray-300 py-3 lg:hidden">
-          <div>
-            <h1 className="text-lg font-semibold text-[#628dec]">
-              View Active Queue{" "}
-              {activeDate
-                ? `- ${activeDate.toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                    year: "numeric",
-                  })}`
-                : "Today"}
-            </h1>
+        <div className="mb-4 flex items-center gap-3 border-b border-gray-300 py-3">
+          
+          <div className="w-full min-w-0">
+            <div className="mb-2 flex flex-wrap items-center gap-2 sm:gap-3">
+              <h1 className="min-w-0 text-2xl font-bold text-[#003566] lg:text-3xl">
+                View Active Queue
+              </h1>
 
-            <p className="mt-1 text-sm leading-relaxed text-gray-900">
+              <small className="inline-flex max-w-full items-center rounded-full border border-[#FFC300] bg-[#FFC300]/20 px-3 py-1.5 text-sm font-normal text-[#003566] sm:text-lg sm:py-2">
+                {activeDate
+                  ? activeDate.toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })
+                  : "Today"}
+              </small>
+            </div>
+
+            <p className="mt-1 max-w-2xl text-sm leading-relaxed tracking-wide text-[#000814] sm:text-base md:text-md">
               Get an overview of the current queues, pending requests, and
               completed services.
             </p>
           </div>
+
         </div>
       
 
-      {/* Filter and Generate Ticket */}
       <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-end sm:gap-4">
         {/* Filter */}
         <div className="w-full sm:w-auto">
           <label
             htmlFor="status"
-            className="mb-2 block text-base font-semibold text-slate-500 sm:text-lg lg:text-xl"
+            className="mb-2 block text-base font-semibold text-[#003566] sm:text-lg lg:text-xl"
           >
             Filter by
           </label>

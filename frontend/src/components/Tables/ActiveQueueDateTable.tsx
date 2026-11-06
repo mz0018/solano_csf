@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { TableUI } from "../../ui/form/TableUI";
 import { ErrorText } from "../../ui/form/ErrorText";
@@ -67,10 +68,10 @@ export const ActiveQueueDateTable = ({
       <TableUI>
         <thead>
           <tr>
-            <th className="px-4 py-3">ticket</th>
-            <th className="px-4 py-3">status</th>
-            <th className="px-4 py-3">selected service</th>
-            <th className="px-4 py-3">actions</th>
+            <th className="w-[25%] px-4 py-3">ticket</th>
+            <th className="w-[15%] px-4 py-3">status</th>
+            <th className="w-[35%] px-4 py-3">selected service</th>
+            <th className="w-[25%] px-4 py-3">actions</th>
           </tr>
         </thead>
 
@@ -83,21 +84,21 @@ export const ActiveQueueDateTable = ({
             </tr>
           ) : isError ? (
             <tr>
-              <td colSpan={3}>
+              <td colSpan={4}>
                 <ErrorText message={(error as Error).message} />
               </td>
             </tr>
           ) : data?.queue && data.queue.length > 0 ? (
-              data.queue.map((queue) => (
+            data.queue.map((queue) => (
               <tr key={queue._id}>
                 <td>
-                  <span className="inline-flex items-center gap-2">
+                  <div className="flex min-w-0 items-center gap-2">
                     <button
                       type="button"
                       onClick={() => handleCopyTicket(queue.code)}
                       aria-label={`Copy ticket ${queue.code}`}
                       title={`Copy ticket ${queue.code}`}
-                      className="cursor-pointer rounded p-1 transition-colors hover:bg-[#628dec]/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#628dec]"
+                      className="shrink-0 cursor-pointer rounded p-1 transition-colors hover:bg-[#628dec]/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#628dec]"
                     >
                       <img
                         src="/icons/copy-ticket.svg"
@@ -107,38 +108,45 @@ export const ActiveQueueDateTable = ({
                       />
                     </button>
 
-                    <div className="flex flex-col">
-                      <div className="text-lg">{queue.code}</div>
-                      <small className="text-sm text-gray-500 tracking-wider font-light">
+                    <div className="min-w-0">
+                      <div className="truncate text-lg">
+                        {queue.code}
+                      </div>
+
+                      <small className="block truncate text-sm text-gray-500 tracking-wider font-light">
                         CSF{queue._id}.v1
                       </small>
                     </div>
-                  </span>
+                  </div>
                 </td>
 
                 <td className="capitalize">
-                  <small className={`tracking-wide rounded-full px-2.5 py-1 text-sm font-medium capitalize border ${
+                  <small
+                    className={`inline-flex items-center whitespace-nowrap tracking-wide rounded-full px-2.5 py-1 text-sm font-medium border ${
                       queue.status === "pending"
-                          ? "bg-amber-100 text-amber-800 border-amber-400"
-                          : queue.status === "used"
-                              ? "bg-green-100 text-green-800 border-green-400"
-                              : "bg-blue-50 text-blue-800 border-blue-300"
-                  }`}>
-                      <span>
-                          <span className="text-xl leading-none">•</span>
-                          &nbsp;{queue.status}
-                      </span>
+                        ? "bg-amber-100 text-amber-800 border-amber-400"
+                        : queue.status === "used"
+                          ? "bg-green-100 text-green-800 border-green-400"
+                          : "bg-blue-50 text-blue-800 border-blue-300"
+                    }`}
+                  >
+                    <span className="mr-1 text-xl leading-none">
+                      •
+                    </span>
+                    {queue.status}
                   </small>
                 </td>
 
                 <td>
                   <p className="line-clamp-2">
                     {queue.selectedService
-                      .map(service =>
+                      .map((service) =>
                         service
                           .replace(/_/g, " ")
                           .toLowerCase()
-                          .replace(/\b\w/g, char => char.toUpperCase())
+                          .replace(/\b\w/g, (char) =>
+                            char.toUpperCase()
+                          )
                       )
                       .join(", ")}
                   </p>
@@ -163,7 +171,7 @@ export const ActiveQueueDateTable = ({
             ))
           ) : (
             <tr>
-              <td colSpan={3} className="py-12">
+              <td colSpan={4} className="py-12">
                 <div className="m-9 flex max-w-full flex-col items-center justify-center px-4 text-center">
                   <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-gray-100 sm:h-16 sm:w-16 md:h-[72px] md:w-[72px]">
                     <img
