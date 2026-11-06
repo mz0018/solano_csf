@@ -61,8 +61,6 @@ export const ActiveQueueDateTable = ({
     }
   };
 
-  console.log(data);
-
   return (
     <>
       <TableUI>

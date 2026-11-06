@@ -35,11 +35,11 @@ export const MonitorTotalQueue = () => {
     return (
         <div className="w-full min-w-0 mb-5">
             {/* Dashboard Header - Mobile Only */}
-            <div className="mb-4 border-b border-gray-300 py-3 lg:hidden">
-                <h1 className="text-lg font-semibold text-[#628dec]">
+            <div className="mb-4 border-b border-gray-300 py-3">
+                <h1 className="min-w-0 text-2xl font-bold text-[#003566] lg:text-3xl">
                     Dashboard
                 </h1>
-                <p className="mt-1 max-w-2xl text-sm leading-relaxed text-gray-600">
+                <p className="mt-1 max-w-2xl text-sm leading-relaxed tracking-wide text-[#000814] sm:text-base md:text-md">
                     Get an overview of the current queues, pending requests, and
                     completed services.
                 </p>

@@ -25,15 +25,15 @@ export const RenderedServiceSummary = ({
         count,
     }));
 
-    const matteColors = [
-        "#6b7280",
-        "#7c8f8a",
-        "#8f8175",
-        "#7d8491",
-        "#9b8f82",
-        "#718096",
-        "#858e7c",
-        "#927c83",
+    const vibrantColors = [
+        "#F43F5E", 
+        "#10B981",
+        "#F59E0B",
+        "#6366F1",
+        "#D946EF",
+        "#0EA5E9",
+        "#84CC16",
+        "#F97316",
     ];
 
     const sortedServiceCounts = Object.entries(serviceCounts).sort(
@@ -61,13 +61,16 @@ export const RenderedServiceSummary = ({
         <div className="w-full grid grid-cols-1 lg:grid-cols-2 rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md sm:p-5 lg:p-6 mb-5">
             {/* Left column */}
             <div>
-                <h2 className="mb-1 text-base font-semibold text-slate-500 sm:text-lg lg:text-xl">
-                    Services Chart
-                </h2>
+                     
+                <div className="mb-2 w-full min-w-0">
+                    <h2 className="flex flex-row flex-nowrap items-center gap-2 text-base font-semibold text-[#003566] sm:text-lg lg:text-xl">
+                        <span className="shrink-0">Services Chart</span>
 
-                <small className="mb-5 inline-flex max-w-full items-center rounded-full border border-slate-200 px-3 py-1.5 text-xs font-light text-[#628dec] sm:text-sm">
-                    {selectedDateRange}
-                </small>
+                        <small className="min-w-0 truncate rounded-full border border-[#FFC300] bg-[#FFC300]/20 px-2 py-1.5 text-xs font-normal text-[#003566] sm:px-3 sm:text-sm lg:text-base sm:py-2">
+                            {selectedDateRange}
+                        </small>
+                    </h2>
+                </div>
 
                 <div className="h-[400px] w-full">
                     <ResponsiveContainer width="100%" height="100%">
@@ -102,7 +105,7 @@ export const RenderedServiceSummary = ({
                                 {chartData.map((entry, index) => (
                                     <Cell
                                         key={`${entry.service}-${index}`}
-                                        fill={matteColors[index % matteColors.length]}
+                                        fill={vibrantColors[index % vibrantColors.length]}
                                     />
                                 ))}
                             </Bar>

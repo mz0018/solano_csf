@@ -12,7 +12,7 @@ export const TableUI = ({
         <div className="w-full overflow-x-auto rounded-md border border-slate-200/80 bg-white">
             <table
                 className={`
-                    w-full min-w-[800px] table-fixed border border-blue-500/20 text-sm
+                    w-full min-w-[800px] table-fixed border border-blue-500/20 text-sm bg-gradient-to-l from-blue-50 to-white
 
                     /* Premium table header */
                     [&_thead]:bg-[#003566]
