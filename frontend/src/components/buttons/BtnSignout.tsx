@@ -1,7 +1,9 @@
+import { useState } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '../../ui/form/Buttons'
 import { LogOut } from 'lucide-react'
+import { ClipLoader } from 'react-spinners'
 
 type BtnSignoutProps = {
     collapsed?: boolean
@@ -10,12 +12,19 @@ type BtnSignoutProps = {
 export const BtnSignout = ({ collapsed = false }: BtnSignoutProps) => {
     const { signOut } = useAuth()
     const navigate = useNavigate()
+    const [isLoggingOut, setIsLoggingOut] = useState(false)
 
     const handleSignOut = async () => {
         if (!confirm('Are you sure you want to log out?')) return
 
-        await signOut()
-        navigate('/signin', { replace: true })
+        setIsLoggingOut(true)
+
+        try {
+            await signOut()
+            navigate('/signin', { replace: true })
+        } finally {
+            setIsLoggingOut(false)
+        }
     }
 
     return (
@@ -24,9 +33,11 @@ export const BtnSignout = ({ collapsed = false }: BtnSignoutProps) => {
                 collapsed ? 'justify-center' : 'justify-start'
             }`}
             onClick={handleSignOut}
+            disabled={isLoggingOut}
+            aria-label={collapsed ? 'Log out' : undefined}
         >
-            <LogOut size={20} />
-            {!collapsed && 'Log out'}
+            {isLoggingOut ? <ClipLoader size={20} color="currentColor" /> : <LogOut size={20} />}
+            {!collapsed && (isLoggingOut ? 'Logging out...' : 'Log out')}
         </Button>
     )
 }

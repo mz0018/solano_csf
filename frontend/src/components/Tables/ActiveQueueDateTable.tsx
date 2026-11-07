@@ -7,6 +7,8 @@ import { ViewFeedbackModal } from "../Modals/ViewFeedbackModal";
 import { PaginationUI } from "../../ui/form/PaginationUI";
 import { InlineLoader } from "../Loader";
 import { CSFCustomToaster } from "../../utils/Toaster";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import notFoundReport from "../../assets/not-found-report.json";
 
 export interface ActiveQueueDateTableProps {
   onDateChange?: (date: Date) => void;
@@ -172,17 +174,12 @@ export const ActiveQueueDateTable = ({
               <td colSpan={4} className="py-12">
                 <div className="m-9 flex max-w-full flex-col items-center justify-center px-4 text-center">
                   <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-gray-100 sm:h-16 sm:w-16 md:h-[72px] md:w-[72px]">
-                    <img
-                      src={
-                        statusFilter === "pending"
-                          ? "/icons/pending.svg"
-                          : statusFilter === "used"
-                            ? "/icons/done.svg"
-                            : "/icons/records.svg"
-                      }
-                      alt=""
-                      aria-hidden="true"
-                      className="h-8 w-8 sm:h-9 sm:w-9"
+                    <DotLottieReact
+                      data={notFoundReport}
+                      loop
+                      autoplay
+                      aria-label="No tickets found"
+                      style={{ width: "100%", height: "100%" }}
                     />
                   </div>
 
