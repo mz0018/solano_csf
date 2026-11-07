@@ -162,6 +162,7 @@ export const GenerateTicketModal = ({
       isOpen={isModalOpen}
       onClose={handleClose}
       title="Generate Ticket"
+      description="Generate a new queue ticket?"
       footer={
         activeQr ? (
           <Button
@@ -169,17 +170,17 @@ export const GenerateTicketModal = ({
               printQr(activeQr.qrCode, activeQr.ticket.code, activeQr.ticket.officeCode)
               handleClose()
             }}
-            className="w-full bg-blue-500 text-white p-4 rounded-sm cursor-pointer hover:bg-blue-600 transition-colors"
+            className="w-full bg-[#003566] border border-[#FFC300] text-[#FFD60A] transition-colors duration-200 hover:bg-[#004080] hover:border-[#FFD60A] font-semibold whitespace-nowrap"
           >
             Print QR
           </Button>
         ) : (
           <AdminButton
-            icon="/icons/submit.svg"
+            icon="/icons/colored-submit.svg"
             iconAlt="Submit"
             disabled={isGeneratingTicket}
             onClick={handleGenerateTicket}
-            className="w-full bg-[#2563EB] text-white hover:bg-[#2563EB]/90 transition-colors font-semibold"
+            className="w-full bg-[#003566] border border-[#FFC300] text-[#FFD60A] transition-colors duration-200 hover:bg-[#004080] hover:border-[#FFD60A] font-semibold whitespace-nowrap"
           >
             {isGeneratingTicket ? "Loading..." : "Proceed"}
           </AdminButton>
@@ -189,15 +190,7 @@ export const GenerateTicketModal = ({
       <div className="space-y-4">
         {!activeQr ? (
           <>
-            <p className="text-sm text-gray-500">
-              Generate a new queue ticket?
-            </p>
-
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">
-                Services
-              </label>
-
               <div className="w-96 space-y-2">
                 {sortedServices.map((service) => (
                   <div key={service.code}>

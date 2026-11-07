@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { ModalUI } from "../../ui/form/ModalUI";
-import { Button } from "../../ui/form/Buttons";
+import { AdminButton } from "../../ui/form/AdminButton";
 import type { Service } from "../../hooks/useGetServices";
 import { useUpdateNewService } from "../../hooks/useUpdateNewService";
 import { useServicePartialUpdate } from "../../hooks/useServicePartialUpdate";
 import { CSFCustomToaster } from "../../utils/Toaster";
 import { ErrorText } from "../../ui/form/ErrorText";
+import { Select } from "../../ui/form/Select";
 
 type ViewServiceModalProps = {
   service: Service | null;
@@ -120,6 +121,7 @@ export const ViewServiceModal = ({ service, onClose, onServiceUpdated }: ViewSer
       isOpen
       onClose={onClose}
       title={`Service ${service.name}`}
+      description={`View and edit details for service ${service.name}.`}
       footer={
         <>
           <button
@@ -130,14 +132,16 @@ export const ViewServiceModal = ({ service, onClose, onServiceUpdated }: ViewSer
           >
             {statusButtonLabel}
           </button>
-          <Button
+          <AdminButton
             type="button"
+            icon="/icons/colored-submit.svg"
+            iconAlt="Save"
             onClick={handlePartialUpdate}
             disabled={isSaving || !hasChanges || isRateLimited}
-            className="w-full bg-blue-500 p-4 text-white transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
+            className="w-full bg-[#003566] border border-[#FFC300] text-[#FFD60A] transition-colors duration-200 hover:bg-[#004080] hover:border-[#FFD60A] font-semibold whitespace-nowrap"
           >
-            {isSaving ? "Saving..." : "Save"}
-          </Button>
+            {isSaving ? "Saving..." : "Save Changes"}
+          </AdminButton>
         </>
       }
     >
@@ -155,14 +159,15 @@ export const ViewServiceModal = ({ service, onClose, onServiceUpdated }: ViewSer
                 type: serviceType,
               })
             }
-            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-4 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
           />
         </div>
 
         {/* Service type */}
         <div>
           <dt className="text-sm font-medium text-gray-500">Service Type</dt>
-          <select
+          <Select
+            variant="admin"
             value={serviceType}
             onChange={(event) =>
               setDraft({
@@ -171,11 +176,11 @@ export const ViewServiceModal = ({ service, onClose, onServiceUpdated }: ViewSer
                 type: event.target.value,
               })
             }
-            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900"
+            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-4 text-sm text-gray-900"
           >
             <option value="external">External</option>
             <option value="internal">Internal</option>
-          </select>
+          </Select>
         </div>
 
         {/* Status */}

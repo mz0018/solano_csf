@@ -1,6 +1,6 @@
 import { Select } from "../../ui/form/Select";
 import { ModalUI } from "../../ui/form/ModalUI";
-import { Button } from "../../ui/form/Buttons";
+import { AdminButton } from "../../ui/form/AdminButton";
 import { ErrorText } from "../../ui/form/ErrorText";
 import { useSaveNewService, type ServiceType } from "../../hooks/useSaveNewService";
 import { CSFCustomToaster } from "../../utils/Toaster";
@@ -35,15 +35,16 @@ export const NewServiceModal = ({ onClose }: NewServiceModalProps) => {
       isOpen
       onClose={onClose}
       title="Add New Service"
+      description="Fill in the details below to create and add a new service to the system."
       footer={
-        <Button
+        <AdminButton
           type="button"
           onClick={handleSave}
           disabled={isLoading || isRateLimited}
-          className="w-full bg-blue-500 text-white p-4 rounded-sm cursor-pointer hover:bg-blue-600 transition-colors"
+          className="w-full bg-[#003566] border border-[#FFC300] text-[#FFD60A] transition-colors duration-200 hover:bg-[#004080] hover:border-[#FFD60A] font-semibold whitespace-nowrap"
         >
           {isLoading ? "Loading..." : "Save Service"}
-        </Button>
+        </AdminButton>
       }
     >
       <div className="space-y-4">
@@ -57,7 +58,7 @@ export const NewServiceModal = ({ onClose }: NewServiceModalProps) => {
             value={serviceName}
             onChange={(event) => setServiceName(event.target.value)}
             placeholder="Enter service name"
-            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-4 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
           />
         </div>
 
