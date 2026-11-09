@@ -118,15 +118,6 @@ export const RenderedServiceSummary = ({
             <div className="rounded-md bg-white p-4">
                 {Object.keys(serviceCounts).length > 0 && (
                     <section>
-                        {/* <div className="border-b border-gray-200 px-4 py-3">
-                            <h2 className="text-sm font-semibold text-gray-900">
-                                Service Summary
-                            </h2>
-
-                            <p className="mt-1 text-xs text-gray-500">
-                                Total rendered services for the selected date range.
-                            </p>
-                        </div> */}
 
                         <div className="divide-y divide-gray-100">
                             {sortedServiceCounts.map(

@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { PaginationUI } from "../../ui/form/PaginationUI";
 import { TableUI } from "../../ui/form/TableUI";
 import { useRenderedServices } from "../../hooks/useRenderedServices";
-import { Search } from "lucide-react";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import notFoundReport from "../../assets/not-found-report.json";
 import { RenderedServiceSummary } from "./renderContent/RenderedServiceSummary";
 
 type RenderedService = {
@@ -208,10 +209,13 @@ const RenderedService = () => {
                         <tr>
                             <td colSpan={3} className="py-12">
                                 <div className="m-9 flex flex-col items-center justify-center text-center">
-                                    <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
-                                        <Search
-                                            size={22}
-                                            className="text-gray-400"
+                                    <div className="mb-3 flex h-14 w-14 items-center justify-center sm:h-16 sm:w-16 md:h-[72px] md:w-[72px]">
+                                        <DotLottieReact
+                                            data={notFoundReport}
+                                            loop
+                                            autoplay
+                                            aria-label="No rendered services found"
+                                            style={{ width: "100%", height: "100%" }}
                                         />
                                     </div>
 
