@@ -1,12 +1,13 @@
 import { NavLink } from 'react-router-dom'
 import { useState } from 'react'
 import { ChevronDown } from 'lucide-react'
+import type { ReactNode } from 'react'
 
 type NavItem = {
   name: string
   path?: string
   children?: NavItem[]
-  icon?: string
+  icon?: string | ReactNode
 }
 
 type Props = {
@@ -33,13 +34,13 @@ export const DropdownHelper = ({ item, collapsed, setCollapsed }: Props) => {
         aria-expanded={!collapsed && open}
         className={`flex min-h-10 w-full items-center rounded-md text-left text-sm font-medium ${collapsed ? 'h-10 justify-center p-0' : 'gap-3 py-5 pl-5 pr-5'} ${open && !collapsed ? 'bg-slate-50 text-[#003566]' : 'text-slate-600 hover:bg-slate-50 hover:text-[#003566]'}`}
       >
-        {item.icon && (
+        {typeof item.icon === 'string' ? (
           <img
             src={item.icon}
             alt=""
-            className={`h-7 w-7 shrink-0 ${open ? '' : ''}`}
+            className="h-7 w-7 shrink-0"
           />
-        )}
+        ) : item.icon}
 
         {!collapsed && (
           <>
