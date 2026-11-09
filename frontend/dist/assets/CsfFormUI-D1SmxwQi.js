@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-UyaNSxZQ.js";var t=e(),n=({children:e})=>(0,t.jsx)(`div`,{className:`w-full max-w-xl bg-[var(--theme-nav-bg)]/90 border border-[var(--theme-border)] rounded-lg shadow-md p-8`,children:e});export{n as t};

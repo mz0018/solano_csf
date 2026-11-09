@@ -1,0 +1,1 @@
+import{t as e}from"./useQuery-BNm_8Mu0.js";var t=async e=>{let t=await fetch(`http://192.168.110.141:5001/api/admin/feedback/${e}`,{credentials:`include`});if(!t.ok)throw Error(`Failed to fetch detailed feedback`);return await t.json()},n=n=>e({queryKey:[`detailed-feedback`,n],queryFn:()=>t(n),staleTime:1e3*60*5,enabled:!!n});export{n as t};
