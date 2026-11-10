@@ -77,7 +77,7 @@ router.post(
 router.get(
     '/child-services',
     authorizeViaCookie,
-    authorizeViaRole('hr_admin', 'head_office_admin'),
+    authorizeViaRole('office_admin', 'hr_admin', 'super_admin', 'head_office_admin'),
     AdminController.getChildServices
 )
 
