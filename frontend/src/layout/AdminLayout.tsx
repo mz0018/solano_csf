@@ -115,7 +115,17 @@ const AdminLayout = () => {
             setCollapsed={setSidebarCollapsed}
           />
 
-          <main className="min-h-0 flex-1 overflow-y-auto bg-slate-100 p-6">
+          <main
+            className="min-h-0 flex-1 overflow-y-auto bg-slate-100 p-6"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(241, 245, 249, 0.88), rgba(241, 245, 249, 0.88)), url('/img/solano_logo_optimized_bg_remove.png')",
+              backgroundPosition: "center, right 30px bottom 30px",
+              backgroundRepeat: "no-repeat, no-repeat",
+              backgroundSize: "100% 100%, min(25rem, 65vw)",
+              backgroundAttachment: "fixed, fixed",
+            }}
+          >
             <Outlet />
           </main>
         </div>
