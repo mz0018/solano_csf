@@ -57,10 +57,25 @@ export const ActiveQueueDateTable = ({
   const handleCopyTicket = async (ticketCode: string) => {
     try {
       await navigator.clipboard.writeText(ticketCode);
-      CSFCustomToaster.success(`Ticket ${ticketCode} copied`);
     } catch {
-      CSFCustomToaster.error("Unable to copy ticket");
+      const textArea = document.createElement("textarea");
+      textArea.value = ticketCode;
+      textArea.setAttribute("readonly", "");
+      textArea.style.position = "fixed";
+      textArea.style.opacity = "0";
+      document.body.appendChild(textArea);
+      textArea.select();
+
+      const copied = document.execCommand("copy");
+      textArea.remove();
+
+      if (!copied) {
+        CSFCustomToaster.error("Unable to copy ticket");
+        return;
+      }
     }
+
+    CSFCustomToaster.success(`Ticket ${ticketCode} copied`);
   };
 
   return (
