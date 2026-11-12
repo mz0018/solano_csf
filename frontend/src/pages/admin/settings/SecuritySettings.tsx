@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 
@@ -15,68 +16,67 @@ const SecuritySettings = () => {
   };
 
   return (
-    <div className="w-full max-w-3xl space-y-4">
-
+    <div className="@container w-full min-w-0 rounded-xl border border-gray-200 bg-white p-3 shadow-sm @sm:p-4 @lg:p-5 bg-gradient-to-l from-blue-50 to-white">
       {/* Page Header */}
       <div className="mb-4 border-b border-gray-300 py-3">
-        <h1 className="text-xl font-semibold text-gray-900">
+        <h1 className="min-w-0 text-2xl font-bold text-[#003566] lg:text-3xl">
           Security Settings
         </h1>
 
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-1 max-w-2xl text-sm leading-relaxed tracking-wide text-[#000814] sm:text-base md:text-md line-clamp-2">
           Manage your password and review recent account activity.
         </p>
       </div>
 
       {/* Change Password */}
-      <div>
+      <div className="mb-4 w-full">
         <button
           type="button"
           onClick={() => toggleSection("change-password")}
-          className="flex w-full items-center justify-between rounded-lg border border-gray-200 bg-white px-4 py-3 text-left transition hover:bg-gray-50"
+          className="flex w-full items-center justify-between gap-3 rounded-lg border border-gray-200 bg-white px-3 py-3 text-left transition hover:bg-gray-50 sm:px-4"
           aria-expanded={openSection === "change-password"}
         >
-          <span className="text-sm font-semibold text-gray-800">
+          <p className="text-base font-semibold text-slate-500 @sm:text-lg @lg:text-xl">
             Change Password
-          </span>
+          </p>
 
           <ChevronDown
             size={18}
-            className={`text-gray-500 transition-transform duration-200 ${
+            className={`shrink-0 text-gray-500 transition-transform duration-200 ${
               openSection === "change-password" ? "rotate-180" : ""
             }`}
           />
         </button>
 
         {openSection === "change-password" && (
-          <div className="mt-3">
+          <div className="mt-3 w-full min-w-0">
             <ChangePassword />
           </div>
         )}
       </div>
 
       {/* Login History */}
-      <div>
+      <div className="mb-4 w-full">
         <button
           type="button"
           onClick={() => toggleSection("login-history")}
-          className="flex w-full items-center justify-between rounded-lg border border-gray-200 bg-white px-4 py-3 text-left transition hover:bg-gray-50"
+          className="flex w-full items-center justify-between gap-3 rounded-lg border border-gray-200 bg-white px-3 py-3 text-left transition hover:bg-gray-50 sm:px-4"
           aria-expanded={openSection === "login-history"}
         >
-          <span className="text-sm font-semibold text-gray-800">
+          <p className="text-base font-semibold text-slate-500 @sm:text-lg @lg:text-xl">
             Login History
-          </span>
+          </p>
 
           <ChevronDown
             size={18}
-            className={`text-gray-500 transition-transform duration-200 ${
+            className={`shrink-0 text-gray-500 transition-transform duration-200 ${
               openSection === "login-history" ? "rotate-180" : ""
             }`}
           />
         </button>
 
         {openSection === "login-history" && (
-          <div className="mt-3">
+          <div className="mt-3 w-full min-w-0">
             <LoginHistory />
           </div>
         )}

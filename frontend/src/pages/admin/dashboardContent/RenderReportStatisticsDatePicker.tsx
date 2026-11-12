@@ -1,6 +1,7 @@
 import { Maximize2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useGetActiveQueue } from "../../../hooks/useGetActiveQueue";
+import { ErrorText } from "../../../ui/form/ErrorText";
 import type { RenderReportStatisticsDatePickerProps } from "./ReadReportStatistics";
 
 export const RenderReportStatisticsDatePicker = ({
@@ -11,6 +12,21 @@ export const RenderReportStatisticsDatePicker = ({
     endDate,
 }: RenderReportStatisticsDatePickerProps) => {
     const navigate = useNavigate();
+    const formatDate = (date: string) =>
+        new Date(`${date}T00:00:00`).toLocaleDateString("en-US", {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+        });
+    const formattedStartDate = formatDate(startDate);
+    const formattedEndDate = formatDate(endDate);
+    const formattedMonth = new Date(year, month - 1).toLocaleDateString(
+        "en-US",
+        {
+            month: "long",
+            year: "numeric",
+        }
+    );
 
     const {
         data: queueData,
@@ -21,61 +37,48 @@ export const RenderReportStatisticsDatePicker = ({
     return (
         <>
             {/* Report Period */}
-            <div className="w-full rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
-                <div className="mb-5 border-b border-slate-200 pb-4">
-                    <p className="text-base font-semibold text-slate-800">
-                        Report Period
-                    </p>
+            <div className="w-full rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md bg-gradient-to-l from-blue-50 to-white">
+                <div className="">
 
-                    <p className="mt-1 text-sm text-slate-500">
-                        {month}/{year}
-                    </p>
-                </div>
-
-                <div className="mb-5">
-                    <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
-                        Office
-                    </p>
-
-                    <p className="mt-1 text-sm font-medium text-slate-700">
+                    <div className="mb-3 flex items-baseline gap-1 text-base font-semibold text-[#000814] sm:text-lg lg:text-xl">
                         {officeCode}
+                        <p className="text-sm text-slate-500 font-light">/ Report Period</p>
+                    </div>
+
+
+                     <small className="mt-3 inline-flex max-w-full items-center rounded-full border border-slate-200 px-3 py-1.5 text-xs font-light text-[#003566] sm:text-sm">
+                        {formattedMonth}
+                     </small>
+                </div>
+     
+                <div className="mt-4 rounded-md border border-blue-200 bg-blue-50 p-4">
+                    <p className="text-sm leading-relaxed tracking-wide text-slate-600">
+                        This report covers the entire calendar month of{" "}
+                        <span className="font-medium text-slate-800">
+                            {formattedMonth}
+                        </span>
+                        , automatically including all dates from{" "}
+                        <span className="font-medium text-slate-800">
+                            {formattedStartDate}
+                        </span>{" "}
+                        through{" "}
+                        <span className="font-medium text-slate-800">
+                            {formattedEndDate}
+                        </span>
+                        . The reporting period is automatically set by default to
+                        cover the full calendar month, providing a complete overview
+                        of office statistics and performance.
                     </p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
-                    <div>
-                        <p className="mb-1 text-xs font-medium text-slate-500">
-                            Start Date
-                        </p>
-
-                        <div className="rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700">
-                            {startDate}
-                        </div>
-                    </div>
-
-                    <div>
-                        <p className="mb-1 text-xs font-medium text-slate-500">
-                            End Date
-                        </p>
-
-                        <div className="rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700">
-                            {endDate}
-                        </div>
-                    </div>
-                </div>
             </div>
 
             {/* Live Tickets */}
-            <div className="mt-3 w-full rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
+            <div className="mt-3 w-full rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md bg-gradient-to-l from-blue-50 to-white">
                 <div className="mb-4 flex items-center justify-between border-b border-slate-200 pb-4">
-                    <div>
-                        <p className="text-base font-semibold text-slate-800">
-                            {officeCode} Live Tickets
-                        </p>
-
-                        <p className="mt-1 text-sm text-slate-500">
-                            Active tickets
-                        </p>
+                    <div className="flex items-baseline gap-1 text-base font-semibold text-[#000814] sm:text-lg lg:text-xl">
+                        {officeCode}
+                        <p className="text-sm text-slate-500 font-light">/ Live Tickets</p>
                     </div>
 
                     <button
@@ -97,9 +100,7 @@ export const RenderReportStatisticsDatePicker = ({
                 )}
 
                 {queueError && (
-                    <p className="py-3 text-sm text-red-500">
-                        Failed to load active tickets.
-                    </p>
+                    <ErrorText message="Failed to load active tickets." />
                 )}
 
                 {!queueLoading &&
@@ -121,7 +122,7 @@ export const RenderReportStatisticsDatePicker = ({
                                     className="flex items-center justify-between py-3"
                                 >
                                     <div>
-                                        <p className="text-sm font-semibold text-slate-800">
+                                        <p className="text-md sm:text-lg lg:text-xl font-semibold text-slate-500">
                                             {ticket.code}
                                         </p>
 
@@ -130,9 +131,17 @@ export const RenderReportStatisticsDatePicker = ({
                                         </p>
                                     </div>
 
-                                    <span className="rounded-full bg-amber-50 px-2.5 py-1 text-xs font-medium capitalize text-amber-600">
+                                   <small
+                                        className={`tracking-wide rounded-md px-2.5 py-1 text-xs font-medium capitalize border ${
+                                            ticket.status === "pending"
+                                                ? "bg-amber-100 text-amber-800 border-amber-400"
+                                                : ticket.status === "used"
+                                                    ? "bg-green-100 text-green-800 border-green-400"
+                                                    : "bg-blue-50 text-blue-800 border-blue-300"
+                                        }`}
+                                    >
                                         {ticket.status}
-                                    </span>
+                                    </small>
                                 </div>
                             ))}
                         </div>

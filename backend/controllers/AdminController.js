@@ -3,7 +3,7 @@ import AdminService from '../services/AdminService.js'
 class AdminController {
     async generateTicket(req, res, next) {
         try {
-            const ticket = await AdminService.generateTicket(req.user_id, req.body.selectedService, req.body.otherServiceDetail)
+            const ticket = await AdminService.generateTicket(req.user_id, req.body.selectedService, req.body.otherServiceDetail, req.body.selectedChildServices)
             res.status(201).json({ ticket })
         } catch (error) { next(error) }
     }
@@ -88,6 +88,45 @@ class AdminController {
             const result = await AdminService.getRenderedService(userOfficeCode, req.query.dateFrom, req.query.dateTo, page, limit)
             res.status(200).json(result)
         } catch (error) { next(error) }
+    }
+
+    async addNewService(req, res, next) {
+        try {
+            await AdminService.saveNewService(req.body, req.user)
+            res.status(200).json({ success: true, message: 'Service created successfully' })
+        } catch (error) { next(error) }
+    }
+
+    async updateServiceStatus(req, res, next) {
+        try {
+            const service = await AdminService.updateServiceStatus(
+                req.params.id,
+                req.body.status,
+                req.user
+            )
+            res.status(200).json({
+                success: true,
+                message: `Service ${req.body.status === 'active' ? 'activated' : 'deactivated'} successfully`,
+                service
+            })
+        } catch (error) { next(error) }
+    }
+
+    async partialUpdateService(req, res, next) {
+        try {
+            await AdminService.partialUpdateService(req.params.id, req.body, req.user)
+            res.status(200).json({ success: true, message: 'Service partially updated successfully' })
+        } catch (error) { next(error) }
+    }
+
+    async getChildServices(req, res, next) {
+        try {
+            const userOfficeCode = req.user?.officeCode
+            const result = await AdminService.getChildServices(userOfficeCode)
+            res.status(200).json(result)
+        } catch (error) {
+            next(error)
+        }
     }
 }
 

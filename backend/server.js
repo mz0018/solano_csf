@@ -18,9 +18,13 @@ import requestLogger from './middleware/requestLogger.js'
 
 const app = express()
 const httpServer = createServer(app)
+const corsOrigins = (process.env.CORS_ORIGINS ?? '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean)
 
 const io = new Server(httpServer, {
-    cors: { origin: ['http://localhost:5173', 'https://csf.proaws.online', 'https://www.csf.proaws.online'], credentials: true }
+    cors: { origin: corsOrigins, credentials: true }
 })
 
 io.use(async (socket, next) => {
@@ -58,7 +62,7 @@ app.use(gzipCompression)
 app.use(express.urlencoded({ extended: true }))
 
 app.use(cors({
-    origin: ['http://localhost:5173', 'https://proaws.online', 'https://csf.proaws.online', 'https://www.csf.proaws.online/'],
+  origin: corsOrigins,
     credentials: true
 }))
 
@@ -70,14 +74,22 @@ app.use('/api/psgc', psgcRoute)
 
 app.use(errorHandler)
 
+
 const start_server = async () => {
   try {
     await connection.connect_to_mongo()
-    httpServer.listen(connection.PORT, () => {
+
+    httpServer.on('error', (err) => {
+      console.error('HTTP Server Error:', err)
+      process.exit(1)
+    })
+
+    httpServer.listen(connection.PORT, '0.0.0.0', () => {
       console.log(`Running on PORT ${connection.PORT}`)
     })
+
   } catch (err) {
-    console.error('', err.message)
+    console.error('Server startup failed:', err.message)
     process.exit(1)
   }
 }

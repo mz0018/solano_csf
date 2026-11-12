@@ -13,14 +13,16 @@ const TEL_MAX = 15;
 
 export const RespondentProfileForm = ({ onNext, onBack }: Props) => {
     const { t } = useTranslation();
-    const { updateFormData, formData } = useFeedback();
+    const { updateFormData, formData, verified } = useFeedback();
     const [clientName, setClientName] = useState<string>(formData.clientName || "");
     const [contactNumber, setContactNumber] = useState<string>(formData.contactNumber || "");
     const [gender, setGender] = useState<string>(formData.gender || "");
 
+    const isHrmoTicket = verified?.officeCode === "HRMO";
     const nameError = clientName.length > NAME_MAX;
     const contactError = contactNumber.length > TEL_MAX;
-    const hasError = nameError || contactError;
+    const missingNameForHr = isHrmoTicket && !clientName.trim();
+    const hasError = nameError || contactError || missingNameForHr;
 
     const handleNext = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -35,7 +37,12 @@ export const RespondentProfileForm = ({ onNext, onBack }: Props) => {
                 <h2 className="text-xl font-semibold text-[var(--theme-text)] mb-6">{t("feedback.respondentProfile.title")}</h2>
                 <div className="space-y-4">
                     <label htmlFor="client-name" className="block">
-                        <span className="text-sm text-[var(--theme-text)]">{t("feedback.respondentProfile.nameLabel")}</span>
+                        <span className="text-sm text-[var(--theme-text)]">
+                            {isHrmoTicket
+                                ? t("feedback.respondentProfile.nameLabel").replace(" Optional", "")
+                                : t("feedback.respondentProfile.nameLabel")}
+                            {isHrmoTicket && <span className="text-[var(--theme-text)]"> (Required for HRMO)</span>}
+                        </span>
                         <Input id="client-name" name="clientName" type="text" value={clientName}
                             onChange={(e) => setClientName(e.target.value)}
                             className="w-full mt-1 p-3" placeholder={t("feedback.respondentProfile.namePlaceholder")}

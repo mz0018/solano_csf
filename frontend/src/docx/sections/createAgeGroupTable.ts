@@ -1,4 +1,11 @@
-import { Paragraph, Table, TableRow, TableCell, TextRun } from "docx";
+import {
+  Paragraph,
+  Table,
+  TableRow,
+  TableCell,
+  TextRun,
+  AlignmentType,
+} from "docx";
 import type { FeedbackItem } from "../../components/buttons/BtnGenerateReport";
 
 export interface ServiceSurveyed {
@@ -21,59 +28,172 @@ export const createAgeGroupTable = ({ feedback }: ServiceSurveyed) => {
       (monthData[month][item.client.ageGroup] ?? 0) + 1;
   });
 
+  const totalCounts = ageGroups.map((ageGroup) =>
+    Object.values(monthData).reduce(
+      (sum, counts) => sum + (counts[ageGroup] ?? 0),
+      0
+    )
+  );
+
   const table = new Table({
+    indent: { size: 1070, type: "dxa" },
+
     rows: [
+      // Header
       new TableRow({
         children: [
           new TableCell({
-            children: [new Paragraph("Month")],
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            shading: { fill: "4472C4" },
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.CENTER,
+                children: [
+                  new TextRun({
+                    text: "Month",
+                    color: "FFFF00",
+                    bold: true,
+                  }),
+                ],
+              }),
+            ],
           }),
+
           ...ageGroups.map(
             (ageGroup) =>
               new TableCell({
-                children: [new Paragraph(ageGroup)],
+                margins: {
+                  top: 20,
+                  bottom: 20,
+                  left: 50,
+                  right: 50,
+                },
+                shading: { fill: "4472C4" },
+                children: [
+                  new Paragraph({
+                    alignment: AlignmentType.CENTER,
+                    children: [
+                      new TextRun({
+                        text: ageGroup,
+                        color: "FFFF00",
+                        bold: true,
+                      }),
+                    ],
+                  }),
+                ],
               })
           ),
         ],
       }),
 
+      // Data rows
       ...Object.entries(monthData).map(([month, counts]) =>
         new TableRow({
           children: [
             new TableCell({
-              children: [new Paragraph(month)],
+              margins: {
+                top: 20,
+                bottom: 20,
+                left: 50,
+                right: 50,
+              },
+              children: [
+                new Paragraph(month),
+              ],
             }),
+
             ...ageGroups.map(
               (ageGroup) =>
                 new TableCell({
+                  margins: {
+                    top: 20,
+                    bottom: 20,
+                    left: 50,
+                    right: 50,
+                  },
                   children: [
-                    new Paragraph((counts[ageGroup] ?? 0).toString()),
+                    new Paragraph({
+                      alignment: AlignmentType.CENTER,
+                      children: [
+                        new TextRun({
+                          text: (counts[ageGroup] ?? 0).toString()
+                        })
+                      ]  
+                    }),
                   ],
                 })
             ),
           ],
         })
       ),
-    ],
-  });
 
-  const tableSpacing = new Paragraph({
-      text: "",
-      spacing: {
-          after: 200,
-      },
+      // Total row
+      new TableRow({
+        children: [
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.END,
+                children: [
+                  new TextRun({
+                    text: "Total",
+                    bold: true,
+                  }),
+                ],
+              }),
+            ],
+          }),
+
+          ...totalCounts.map(
+            (count) =>
+              new TableCell({
+                margins: {
+                  top: 20,
+                  bottom: 20,
+                  left: 50,
+                  right: 50,
+                },
+                shading: { fill: "FFFF00" },
+                children: [
+                  new Paragraph({
+                    alignment: AlignmentType.CENTER,
+                    children: [
+                      new TextRun({
+                        text: count.toString(),
+                        bold: true,
+                        color: "4472C4",
+                      }),
+                    ],
+                  }),
+                ],
+              })
+          ),
+        ],
+      }),
+    ],
   });
 
   return [
     new Paragraph({
-        children: [
-            new TextRun({
-            text: "Age Group",
-            bold: true,
-            }),
-        ],
+      indent: { left: 1060 },
+      children: [
+        new TextRun({
+          text: "Age Group",
+        }),
+      ],
     }),
+
     table,
-    tableSpacing,
   ];
 };

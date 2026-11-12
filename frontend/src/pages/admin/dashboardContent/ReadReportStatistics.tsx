@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { BarChart3, LineChart } from "lucide-react";
 import { useAuth } from "../../../context/AuthContext";
 import { RenderReportStatistics } from "./RenderStatistics";
 import { RenderReportStatisticsTable } from "./RenderReportStatisticsTable";
@@ -50,11 +49,11 @@ export const ReadReportStatistics = () => {
 
     const officeCode = user?.officeCode ?? "";
 
-    const { data: stats, isLoading, error } = useGetReportStatistics(
-        officeCode,
-        startDate,
-        endDate
-    );
+    const {
+        data: stats,
+        isLoading,
+        error,
+    } = useGetReportStatistics(officeCode, startDate, endDate);
 
     if (isLoading) return <>Loading....</>;
     if (error) return <>Something error</>;
@@ -104,74 +103,136 @@ export const ReadReportStatistics = () => {
     ];
 
     const isLineChart = currentGraph === 0;
+    const isBarChart = currentGraph === 1;
+    const isTable = currentGraph === 2;
 
-    const handleGraphToggle = () => {
-        setCurrentGraph((prev) => (prev === 0 ? 1 : 0));
-    };
+    // Line / Bar / Table navigation tabs
+    const chartTypeTabs = (
+        <div
+            className="flex flex-wrap items-center gap-1"
+            role="group"
+            aria-label="Statistics view"
+        >
+            <button
+                type="button"
+                aria-pressed={isLineChart}
+                onClick={() => setCurrentGraph(0)}
+                className={`cursor-pointer flex items-center gap-2 px-4 py-3 text-md sm:text-lg lg:text-xl font-medium transition-colors ${
+                    isLineChart
+                        ? "rounded-lg bg-[#003566]/10 border-[#003566] text-[#003566]"
+                        : "border-transparent text-slate-500 hover:text-slate-700"
+                }`}
+            >
+                <img
+                    src="/icons/line-graph.svg"
+                    alt=""
+                    className={`h-5 w-5 object-contain ${
+                        isLineChart ? "" : "opacity-60"
+                    }`}
+                />
+                <div className="flex items-baseline gap-1">
+                    Line
+                    <p className="text-sm font-light text-slate-500">
+                        / Graph
+                    </p>
+                </div>
+            </button>
+
+            <button
+                type="button"
+                aria-pressed={isBarChart}
+                onClick={() => setCurrentGraph(1)}
+                className={`cursor-pointer flex items-center gap-2 px-4 py-3 text-md sm:text-lg lg:text-xl font-medium transition-colors ${
+                    isBarChart
+                        ? "rounded-lg bg-[#003566]/10 border-[#003566] text-[#003566]"
+                        : "border-transparent text-slate-500 hover:text-slate-700"
+                }`}
+            >
+                <img
+                    src="/icons/bar-graph.svg"
+                    alt=""
+                    className={`h-5 w-5 object-contain ${
+                        isBarChart ? "" : "opacity-60"
+                    }`}
+                />
+                <div className="flex items-baseline gap-1">
+                    Bar
+                    <p className="text-sm font-light text-slate-500">
+                        / Graph
+                    </p>
+                </div>
+            </button>
+
+            <button
+                type="button"
+                aria-pressed={isTable}
+                onClick={() => setCurrentGraph(2)}
+                className={`cursor-pointer flex items-center gap-2 px-4 py-3 text-md sm:text-lg lg:text-xl font-medium transition-colors ${
+                    isTable
+                    ? "rounded-lg bg-[#003566]/10 border-[#003566] text-[#003566]"
+                        : "border-transparent text-slate-500 hover:text-slate-700"
+                }`}
+            >
+                <img
+                    src="/icons/table-graph.svg"
+                    alt=""
+                    className={`h-5 w-5 object-contain ${
+                        isTable ? "" : "opacity-60"
+                    }`}
+                />
+                <div className="flex items-baseline gap-1">
+                    Table
+                    <p className="text-sm font-light text-slate-500">
+                        / DataView
+                    </p>
+                </div>
+            </button>
+        </div>
+    );
 
     return (
         <div className="w-full">
-            <div className="mb-5 flex items-center justify-between border-b border-gray-300">
+            {/* Mobile Header */}
+            <div className="mb-4 border-b border-gray-300 py-3">
                 <div className="mb-4">
-                    <h1 className="text-xl font-semibold text-gray-900">
+                    <h1 className="min-w-0 text-2xl font-bold text-[#003566] lg:text-3xl">
                         Report Statistics
                     </h1>
 
-                    <p className="mt-0.5 text-sm text-gray-500">
+                    <p className="mt-1 max-w-2xl text-sm leading-relaxed tracking-wide text-[#000814] sm:text-base md:text-md">
                         View and compare client feedback statistics.
                     </p>
                 </div>
-
-                {/* Chart Type Switch */}
-                <div className="flex items-center gap-3">
-                    <span className="text-sm font-medium text-gray-600">
-                        Chart type
-                    </span>
-
-                    <button
-                        type="button"
-                        role="switch"
-                        aria-checked={isLineChart}
-                        aria-label="Toggle chart type"
-                        onClick={handleGraphToggle}
-                        className="group flex items-center gap-1 rounded-full border border-gray-200 bg-gray-100 p-1 shadow-sm transition-colors hover:bg-gray-200 cursor-pointer"
-                    >
-                        {/* Line Chart */}
-                        <span
-                            className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition-all ${
-                                isLineChart
-                                    ? "bg-white text-blue-600 shadow-sm"
-                                    : "text-gray-500"
-                            }`}
-                        >
-                            <LineChart className="h-4 w-4" />
-                            Line
-                        </span>
-
-                        {/* Bar Chart */}
-                        <span
-                            className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition-all ${
-                                !isLineChart
-                                    ? "bg-white text-blue-600 shadow-sm"
-                                    : "text-gray-500"
-                            }`}
-                        >
-                            <BarChart3 className="h-4 w-4" />
-                            Bar
-                        </span>
-                    </button>
-                </div>
             </div>
 
-            <div className="flex w-full gap-4">
-                <div className="w-2/3">
-                    <RenderReportStatistics
-                        currentGraph={currentGraph}
-                        chartsDataArray={chartsDataArray}
-                    />
+            {/* Chart and Date Picker */}
+            <div className="flex w-full flex-col gap-4 lg:flex-row">
+                {/* Chart with attached navigation tabs */}
+                <div className="w-full lg:w-2/3">
+                    <div className="overflow-hidden min-w-0 rounded-xl border border-gray-200 bg-white py-4 shadow-sm transition-shadow hover:shadow-md bg-gradient-to-l from-blue-50 to-white">
+                        {/* Navigation Tabs */}
+                        <div className=" border-slate-200 px-4">
+                            {chartTypeTabs}
+                        </div>
+
+                        {/* Chart Content */}
+                        <div className="p-4">
+                            {isTable ? (
+                                <RenderReportStatisticsTable
+                                    chartsDataArray={chartsDataArray}
+                                />
+                            ) : (
+                                <RenderReportStatistics
+                                    currentGraph={currentGraph}
+                                    chartsDataArray={chartsDataArray}
+                                />
+                            )}
+                        </div>
+                    </div>
                 </div>
 
-                <div className="min-w-0 flex-1">
+                {/* Date Picker */}
+                <div className="min-w-0 w-full lg:flex-1">
                     <RenderReportStatisticsDatePicker
                         officeCode={officeCode}
                         month={month}
@@ -181,10 +242,6 @@ export const ReadReportStatistics = () => {
                     />
                 </div>
             </div>
-
-            <RenderReportStatisticsTable
-                chartsDataArray={chartsDataArray}
-            />
         </div>
     );
 };

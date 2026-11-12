@@ -13,7 +13,7 @@ export const PaginationUI = ({ currentPage, totalPages, onPageChange }: Paginati
     >
       Prev
     </button>
-    <span className="text-sm text-[#6b7280] p-4">Page {currentPage} of {totalPages}</span>
+    <small className="text-xs font-semibold text-slate-500 lg:text-sm">Page {currentPage} of {totalPages}</small>
     <button
       onClick={() => onPageChange(currentPage + 1)}
       disabled={currentPage === totalPages}

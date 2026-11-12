@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Select } from "../../ui/form/Select";
-import { AdminResponsiveContainer } from "../../ui/form/AdminResponsiveContainer";
+import { AdminButton } from "../../ui/form/AdminButton";
 import { GenerateTicketModal } from "../../components/Modals/GenerateTicketModal";
 import { ActiveQueueDateTable } from "../../components/Tables/ActiveQueueDateTable";
 
@@ -11,69 +11,82 @@ const ActiveQueueTicket = () => {
 
   return (
     <>
-      <AdminResponsiveContainer>
-        <div className="flex w-full flex-col leading-none">
-          <div className="border-b border-gray-300 py-3">
-              <h1 className="text-xl font-semibold text-gray-900">
-              View Active Queue{" "}
-              {activeDate
-                ? `- ${activeDate.toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                    year: "numeric",
-                  })}`
-                : "Today"}
-            </h1>
+      <div className="w-full">
+        <div className="mb-4 flex items-center gap-3 border-b border-gray-300 py-3">
+          
+          <div className="w-full min-w-0">
+            <div className="mb-2 flex flex-wrap items-center gap-2 sm:gap-3">
+              <h1 className="min-w-0 text-2xl font-bold text-[#003566] lg:text-3xl">
+                View Active Queue
+              </h1>
 
-                <p className="mt-1 text-sm text-gray-500">
-                    Get an overview of the current queues, pending requests,
-                    and completed services.
-                </p>
+              <small className="inline-flex max-w-full items-center rounded-full border border-[#FFC300] bg-[#FFC300]/20 px-3 py-1.5 text-sm font-normal text-[#003566] sm:text-lg sm:py-2">
+                {activeDate
+                  ? activeDate.toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })
+                  : "Today"}
+              </small>
             </div>
-        </div>
 
-        <div className="flex w-full items-end gap-4">
-          {/* Left */}
-          <div>
-            <label
-              htmlFor="status"
-              className="mb-1 block text-sm font-medium capitalize tracking-wider"
-            >
-              filter by
-            </label>
-
-            <Select
-              id="status"
-              variant="admin"
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-            >
-              <option value="">All Status</option>
-              <option value="used">Used</option>
-              <option value="pending">Pending</option>
-              {/* <option value="expired">Expired</option> */}
-            </Select>
+            <p className="mt-1 max-w-2xl text-sm leading-relaxed tracking-wide text-[#000814] sm:text-base md:text-md">
+              Get an overview of the current queues, pending requests, and
+              completed services.
+            </p>
           </div>
 
-          {/* Right */}
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="admin-blue-button ml-auto"
+        </div>
+      
+
+      <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-end sm:gap-4">
+        {/* Filter */}
+        <div className="w-full sm:w-auto">
+          <label
+            htmlFor="status"
+            className="mb-2 block text-base font-semibold text-[#003566] sm:text-lg lg:text-xl"
           >
-            Generate Ticket
-          </button>
+            Filter by
+          </label>
+
+          <Select
+            id="status"
+            variant="admin"
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+          >
+            <option value="">All Status</option>
+            <option value="used">Used</option>
+            <option value="pending">Pending</option>
+          </Select>
         </div>
 
+        {/* Generate Ticket */}
+        <AdminButton
+          icon="/icons/colored-generate.svg"
+          iconAlt="Ticket"
+          onClick={() => setIsModalOpen(true)}
+          className="bg-[#003566] border border-[#FFC300] text-[#FFD60A] transition-colors duration-200 hover:bg-[#004080] hover:border-[#FFD60A] font-semibold sm:ml-auto sm:w-auto whitespace-nowrap"
+        >
+          Generate Ticket
+        </AdminButton>
+      </div>
+
+      {/* Active Queue Table */}
+      <div className="mt-4 w-full">
         <ActiveQueueDateTable
           onDateChange={setActiveDate}
           statusFilter={statusFilter}
         />
-      </AdminResponsiveContainer>
+      </div>
 
+      {/* Generate Ticket Modal */}
       <GenerateTicketModal
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
       />
+      </div>
     </>
   );
 };

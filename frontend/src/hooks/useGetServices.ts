@@ -1,8 +1,12 @@
+import { useCallback } from "react"
 import { useQueryClient } from "@tanstack/react-query"
 
 export type Service = {
+  _id: string
   code: string
   name: string
+  status: string
+  type: string
 }
 
 const getOfficeServices = async (): Promise<Service[]> => {
@@ -23,7 +27,7 @@ const getOfficeServices = async (): Promise<Service[]> => {
 export const useGetServices = () => {
   const queryClient = useQueryClient()
 
-  const getOfficeService = async () => {
+  const getOfficeService = useCallback(async () => {
     try {
       const services = await queryClient.fetchQuery({
         queryKey: ["office-services"],
@@ -34,7 +38,7 @@ export const useGetServices = () => {
     } catch (err) {
       console.error("Something went wrong!", err)
     }
-  }
+  }, [queryClient])
 
   return { getOfficeService }
 }

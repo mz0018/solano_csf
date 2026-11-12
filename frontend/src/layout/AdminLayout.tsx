@@ -1,29 +1,80 @@
+
+import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import { SidebarUI } from '../ui/SidebarUI'
-import { MainLayoutUI } from '../ui/MainLayoutUI'
-import { Radio, Settings2, Files, BrickWallShield, HandCoins } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { AdminNavbar } from '../components/Navbar/AdminNavbar'
 
 const AdminLayout = () => {
-
   const { user } = useAuth()
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('sidebar-collapsed')
+      if (saved !== null) return JSON.parse(saved)
+      return window.innerWidth < 1024
+    }
+    return false
+  })
 
   const navLinks = [
-    { name: 'Overview', path: '/admin/overview', icon: <Radio size={20} />, roles: ['super_admin'] },
-    { name: 'Dashboard', path: '/admin/queue/dashboard', icon: <BrickWallShield size={20} />, roles: ['office_admin', 'hr_admin', 'head_office_admin'] },
-    { name: 'Live Monitoring', path: '/admin/queue/monitor', icon: <Radio size={20} />, roles: ['office_admin', 'hr_admin', 'head_office_admin'] },
-    { name: 'Total Service Rendered', path: '/admin/queue/service/rendered', icon: <HandCoins size={20} />, roles: ['head_office_admin'] },
+    {
+      name: 'Overview',
+      path: '/admin/overview',
+      icon: '/icons/overview.svg',
+      roles: ['super_admin'],
+      section: 'General',
+    },
+    {
+      name: 'Dashboard',
+      path: '/admin/queue/dashboard',
+      icon: '/icons/colored-dashboard.svg',
+      roles: ['office_admin', 'hr_admin', 'head_office_admin'],
+      section: 'General',
+    },
+    {
+      name: 'Live Monitoring',
+      path: '/admin/queue/monitor',
+      icon: '/icons/colored-monitor.svg',
+      roles: ['office_admin', 'hr_admin', 'head_office_admin'],
+      section: 'General',
+    },
+    {
+      name: 'Total Service Rendered',
+      path: '/admin/queue/service/rendered',
+      icon: '/icons/colored-hand.svg',
+      roles: ['head_office_admin', 'hr_admin'],
+      section: 'Reports',
+    },
     {
       name: 'Reports',
-      icon: <Files size={20} />,
+      icon: '/icons/colored-reports.svg',
       roles: ['hr_admin', 'super_admin'],
+      section: 'Reports',
       children: [
-        { name: 'Queue Statistics', path: '/admin/queue/statistics', roles: ['hr_admin', 'super_admin'] },
-        { name: 'Review Office Feedback', path: '/admin/queue/offices/feedbacks', roles: ['hr_admin', 'super_admin'] },
-      ]
+        {
+          name: 'Queue Statistics',
+          path: '/admin/queue/statistics',
+          roles: ['hr_admin', 'super_admin'],
+        },
+        {
+          name: 'Review Office Feedback',
+          path: '/admin/queue/offices/feedbacks',
+          roles: ['hr_admin', 'super_admin'],
+        },
+      ],
     },
-    { name: 'Settings', path: '/admin/settings', icon: <Settings2 size={20} />, roles: ['office_admin', 'hr_admin', 'super_admin', 'head_office_admin'] }
+    {
+      name: 'Settings',
+      path: '/admin/settings',
+      icon: '/icons/colored-settings.svg',
+      roles: [
+        'office_admin',
+        'hr_admin',
+        'super_admin',
+        'head_office_admin',
+      ],
+      section: 'Others',
+    },
   ]
 
   const filteredNavLinks = navLinks.filter((link) =>
@@ -31,27 +82,54 @@ const AdminLayout = () => {
   )
 
   return (
-    <div id="admin-theme" className="h-screen bg-gray-100 lg:flex" style={{ backgroundColor: 'transparent', border: 'none', boxShadow: 'none', transform: 'none' }}>
+    <div
+      id="admin-theme"
+      className="flex h-screen min-h-0 bg-gray-100"
+      style={{
+        backgroundColor: 'transparent',
+        border: 'none',
+        boxShadow: 'none',
+        transform: 'none',
+      }}
+    >
       <style>{`
         #admin-theme span { color: inherit !important; }
-        #admin-theme aside button:hover, #admin-theme aside a:hover { transform: none !important; }
+        #admin-theme aside button:hover,
+        #admin-theme aside a:hover {
+          transform: none !important;
+        }
       `}</style>
 
+      <div className="flex h-full min-h-0 w-full flex-col">
+        <AdminNavbar
+          sidebarCollapsed={sidebarCollapsed}
+          onToggleSidebar={() =>
+            setSidebarCollapsed((collapsed: boolean) => !collapsed)
+          }
+        />
 
-      <div className="flex w-full">
-        <SidebarUI navLinks={filteredNavLinks} user={user} />
+        <div className="flex min-h-0 min-w-0 flex-1 pl-16 lg:pl-0">
+          <SidebarUI
+            navLinks={filteredNavLinks}
+            collapsed={sidebarCollapsed}
+            setCollapsed={setSidebarCollapsed}
+          />
 
-        <div className="flex min-w-0 flex-1 flex-col">
-          <AdminNavbar />
-
-          <main className="flex-1 overflow-y-auto p-6">
-            <MainLayoutUI>
-              <Outlet />
-            </MainLayoutUI>
+          <main
+            className="min-h-0 flex-1 overflow-y-auto bg-slate-100 p-6"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(241, 245, 249, 0.88), rgba(241, 245, 249, 0.88)), url('/img/solano_logo_optimized_bg_remove.png')",
+              backgroundPosition: "center, right 30px bottom 30px",
+              backgroundRepeat: "no-repeat, no-repeat",
+              backgroundSize: "100% 100%, min(25rem, 65vw)",
+              backgroundAttachment: "fixed, fixed",
+            }}
+          >
+            <Outlet />
           </main>
         </div>
       </div>
-
     </div>
   )
 }

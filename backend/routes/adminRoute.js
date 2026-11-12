@@ -1,9 +1,12 @@
 import express from 'express'
 import AdminController from '../controllers/AdminController.js'
-import { validate } from '../middleware/validate.js'
-import { cacheHeaders } from '../middleware/cacheHeaders.js'
+// import { validate } from '../middleware/validate.js'
+// import { cacheHeaders } from '../middleware/cacheHeaders.js'
 import { authorizeViaCookie } from '../middleware/authorizeViaCookie.js'
 import { authorizeViaRole } from '../middleware/authorizeViaRole.js'
+import { updateServicePartialLimiter } from '../middleware/updateServicePartialLimiter.js'
+import { updateServiceStatusLimiter } from '../middleware/updateServiceStatusLimiter.js'
+import { addNewServiceLimiter } from '../middleware/addNewServiceLimiter.js'
 
 const router = express.Router()
 
@@ -59,8 +62,39 @@ router.get(
 router.get(
     '/rendered/service',
     authorizeViaCookie,
-    authorizeViaRole('head_office_admin'),
+    authorizeViaRole('hr_admin', 'head_office_admin'),
     AdminController.getRenderedService
+)
+
+router.post(
+    '/services',
+    addNewServiceLimiter,
+    authorizeViaCookie,
+    authorizeViaRole('hr_admin', 'head_office_admin'),
+    AdminController.addNewService
+)
+
+router.get(
+    '/child-services',
+    authorizeViaCookie,
+    authorizeViaRole('office_admin', 'hr_admin', 'super_admin', 'head_office_admin'),
+    AdminController.getChildServices
+)
+
+router.patch(
+    '/services/update/:id',
+    updateServicePartialLimiter,
+    authorizeViaCookie,
+    authorizeViaRole('hr_admin', 'head_office_admin'),
+    AdminController.partialUpdateService
+)
+
+router.patch(
+    '/services/:id/status',
+    updateServiceStatusLimiter,
+    authorizeViaCookie,
+    authorizeViaRole('hr_admin', 'head_office_admin'),
+    AdminController.updateServiceStatus
 )
 
 export default router

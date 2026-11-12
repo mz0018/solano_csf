@@ -1,60 +1,420 @@
-import { Paragraph, Table, TableRow, TableCell, TextRun } from "docx";
+import {
+  Paragraph,
+  Table,
+  TableRow,
+  TableCell,
+  TextRun,
+  AlignmentType,
+} from "docx";
+
 import type { FeedbackItem } from "../../components/buttons/BtnGenerateReport";
+
 export interface ServiceSurveyed {
   feedback: FeedbackItem[];
+  selectedOfficeName?: string;
+  services: { service: string; type: string }[];
 }
-export const createAverageScorePerService = ({ feedback }: ServiceSurveyed) => {
-  const serviceGroups: Record<string, FeedbackItem[]> = {};
+
+export const createAverageScorePerService = ({
+  feedback,
+  selectedOfficeName,
+  services,
+}: ServiceSurveyed) => {
+  const externalGroups: Record<string, FeedbackItem[]> = {};
+  const internalGroups: Record<string, FeedbackItem[]> = {};
+  const typeByService = new Map(
+    services.map(({ service, type }) => [service, type.toLowerCase()])
+  );
+
+  console.log(services);
+  console.log(feedback);
+
   feedback.forEach((item) => {
-    const codes: string[] = Array.isArray((item as any).service) ? (item as any).service : [(item as any).service]
-    codes.forEach(c => {
-      serviceGroups[c] ??= [];
-      serviceGroups[c].push(item);
-    })
+    const codes: string[] = Array.isArray(item.service)
+      ? item.service
+      : [item.service];
+
+    codes.forEach((c) => {
+      const key = c.startsWith("Other Service:") ? "Other Service" : c;
+      const type = typeByService.get(c) ?? typeByService.get(key);
+      const t = type ? type.toLowerCase() : "";
+
+      if (t === "internal") {
+        internalGroups[key] ??= [];
+        internalGroups[key].push(item);
+      } else if (t === "external") {
+        externalGroups[key] ??= [];
+        externalGroups[key].push(item);
+      }
+    });
   });
-  const table = new Table({
+
+  const externalTable = new Table({
+    indent: { size: 1070, type: "dxa" },
+
     rows: [
+      // Header
       new TableRow({
         children: [
-          new TableCell({ children: [new Paragraph("Service")] }),
-          new TableCell({ children: [new Paragraph("Responses")] }),
-          new TableCell({ children: [new Paragraph("Average Score")] }),
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            shading: { fill: "4472C4" },
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.CENTER,
+                children: [
+                  new TextRun({
+                    text: "Service",
+                    color: "FFFF00",
+                    bold: true,
+                  }),
+                ],
+              }),
+            ],
+          }),
+
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            shading: { fill: "4472C4" },
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.CENTER,
+                children: [
+                  new TextRun({
+                    text: "Responses",
+                    color: "FFFF00",
+                    bold: true,
+                  }),
+                ],
+              }),
+            ],
+          }),
+
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            shading: { fill: "4472C4" },
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.CENTER,
+                children: [
+                  new TextRun({
+                    text: "Average Score",
+                    color: "FFFF00",
+                    bold: true,
+                  }),
+                ],
+              }),
+            ],
+          }),
         ],
       }),
-      ...Object.entries(serviceGroups).map(([service, items]) => {
+
+      // Data rows
+      ...Object.entries(externalGroups).map(([service, items]) => {
         const sum = items.reduce((acc, item) => {
           const ratings = Object.values(item.ratings);
-          return acc + ratings.reduce((a, b) => a + b, 0) / ratings.length;
+
+          return (
+            acc +
+            ratings.reduce((a, b) => a + b, 0) / ratings.length
+          );
         }, 0);
-        const avg = items.length > 0 ? (sum / items.length).toFixed(2) : "0.00";
+
+        const avg =
+          items.length > 0
+            ? (sum / items.length).toFixed(2)
+            : "0.00";
+
         return new TableRow({
           children: [
-            new TableCell({ children: [new Paragraph(service)] }),
-            new TableCell({ children: [new Paragraph(items.length.toString())] }),
-            new TableCell({ children: [new Paragraph(avg)] }),
+            new TableCell({
+              margins: {
+                top: 20,
+                bottom: 20,
+                left: 50,
+                right: 50,
+              },
+              children: [new Paragraph(service)],
+            }),
+
+            new TableCell({
+              margins: {
+                top: 20,
+                bottom: 20,
+                left: 50,
+                right: 50,
+              },
+              children: [new Paragraph(items.length.toString())],
+            }),
+
+            new TableCell({
+              margins: {
+                top: 20,
+                bottom: 20,
+                left: 50,
+                right: 50,
+              },
+              children: [new Paragraph(avg)],
+            }),
           ],
         });
       }),
     ],
   });
 
-   const tableSpacing = new Paragraph({
-      text: "",
-      spacing: {
-          after: 200,
-      },
+  // Internal services table
+  const internalTable = new Table({
+    indent: { size: 1070, type: "dxa" },
+
+    rows: [
+      // Header
+      new TableRow({
+        children: [
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            shading: { fill: "4472C4" },
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.CENTER,
+                children: [
+                  new TextRun({
+                    text: "Service",
+                    color: "FFFF00",
+                    bold: true,
+                  }),
+                ],
+              }),
+            ],
+          }),
+
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            shading: { fill: "4472C4" },
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.CENTER,
+                children: [
+                  new TextRun({
+                    text: "Responses",
+                    color: "FFFF00",
+                    bold: true,
+                  }),
+                ],
+              }),
+            ],
+          }),
+
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            shading: { fill: "4472C4" },
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.CENTER,
+                children: [
+                  new TextRun({
+                    text: "Average Score",
+                    color: "FFFF00",
+                    bold: true,
+                  }),
+                ],
+              }),
+            ],
+          }),
+        ],
+      }),
+
+      // Data rows
+      ...Object.entries(internalGroups).map(([service, items]) => {
+        const sum = items.reduce((acc, item) => {
+          const ratings = Object.values(item.ratings);
+
+          return (
+            acc +
+            ratings.reduce((a, b) => a + b, 0) / ratings.length
+          );
+        }, 0);
+
+        const avg =
+          items.length > 0
+            ? (sum / items.length).toFixed(2)
+            : "0.00";
+
+        return new TableRow({
+          children: [
+            new TableCell({
+              margins: {
+                top: 20,
+                bottom: 20,
+                left: 50,
+                right: 50,
+              },
+              children: [new Paragraph(service)],
+            }),
+
+            new TableCell({
+              margins: {
+                top: 20,
+                bottom: 20,
+                left: 50,
+                right: 50,
+              },
+              children: [new Paragraph(items.length.toString())],
+            }),
+
+            new TableCell({
+              margins: {
+                top: 20,
+                bottom: 20,
+                left: 50,
+                right: 50,
+              },
+              children: [new Paragraph(avg)],
+            }),
+          ],
+        });
+      }),
+    ],
   });
+
+  // ---- accurate paragraph: everything computed from feedback ----
+  const serviceStats = Object.entries(externalGroups).map(([service, items]) => {
+    const total = items.reduce((acc, item) => {
+      const ratings = Object.values(item.ratings);
+      return acc + ratings.reduce((a, b) => a + b, 0) / ratings.length;
+    }, 0);
+    return {
+      service,
+      responses: items.length,
+      avg: items.length > 0 ? total / items.length : 0,
+    };
+  });
+
+  const byAvg = [...serviceStats].sort((a, b) => b.avg - a.avg);
+  const highest = byAvg[0];
+  const lowest = byAvg[byAvg.length - 1];
+  const minAvg = Math.min(...serviceStats.map((s) => s.avg));
+  const maxAvg = Math.max(...serviceStats.map((s) => s.avg));
+  const overallAvg =
+    serviceStats.reduce((a, s) => a + s.avg, 0) / serviceStats.length;
+
+  const perfect = serviceStats.filter((s) => s.avg === 5);
+  const mostResponses = [...serviceStats].sort(
+    (a, b) => b.responses - a.responses
+  )[0];
+  const minResp = Math.min(...serviceStats.map((s) => s.responses));
+  const maxResp = Math.max(...serviceStats.map((s) => s.responses));
+
+  const fmt = (n: number) => n.toFixed(2);
+  const listNames = (names: string[]) =>
+    names.length === 1
+      ? `"${names[0]}"`
+      : `${names
+          .slice(0, -1)
+          .map((n) => `"${n}"`)
+          .join(", ")} and "${names[names.length - 1]}"`;
+
+  const satWord =
+    overallAvg >= 4.5 ? "high" : overallAvg >= 3.5 ? "moderate" : "low";
+  const perfectSentence =
+    serviceStats.length === 0
+      ? ""
+      : perfect.length > 0
+      ? ` Services with perfect scores, such as ${listNames(
+          perfect.map((s) => s.service)
+        )}, highlight exemplary performance and customer delight.`
+      : ` The highest-scoring service, "${highest.service}", reached an average of ${fmt(
+          highest.avg
+        )}, highlighting exemplary performance.`;
+
+  const analysisText =
+    serviceStats.length === 0
+      ? "No external service responses were provided for analysis."
+      : `The external services offered by the ${
+          selectedOfficeName ?? "office"
+        } generally reflect ${satWord} levels of customer satisfaction, as indicated by average scores ranging from ${fmt(
+          minAvg
+        )} to ${fmt(maxAvg)}. ${perfectSentence} Response counts range from ${minResp} to ${maxResp} per service, with "${mostResponses.service}" recording the most at ${mostResponses.responses} responses. The lowest-scoring service, "${lowest.service}" recorded an average of ${fmt(
+          lowest.avg
+        )}, pinpointing an area for continued focus. Overall, continued focus on improving response coverage and maintaining high service standards will be essential for sustaining positive public perception and operational excellence.`;
+  // ---------------------------------------------------------------
 
   return [
     new Paragraph({
-        children: [
-            new TextRun({
-            text: "Average Score Per Service",
-            bold: true,
-            }),
-        ],
+      indent: { left: 720 },
+      spacing: { after: 300 },
+      children: [
+        new TextRun({
+          text: "C.  Average Score per service",
+        }),
+      ],
     }),
-    table,
-    tableSpacing,
+
+    new Paragraph({
+      indent: { left: 1060 },
+      children: [
+        new TextRun({
+          text: "External Service",
+        }),
+      ],
+    }),
+
+    externalTable,
+
+    new Paragraph({
+      indent: { left: 1060 },
+      spacing: { before: 300 },
+      children: [
+        new TextRun({
+          text: "Internal Service",
+        }),
+      ],
+    }),
+
+    internalTable,
+
+    //gap
+    new Paragraph({
+      spacing: { after: 300 },
+    }),
+
+    new Paragraph({
+      indent: { left: 1060 },
+      spacing: { after: 300 },
+      children: [
+        new TextRun({
+          text: analysisText,
+        }),
+      ],
+    }),
   ];
 };

@@ -1,0 +1,1 @@
+import{t as e}from"./useQuery-BNm_8Mu0.js";var t=async()=>{let e=await fetch(`http://192.168.110.141:5001/api/admin/offices`,{credentials:`include`});if(!e.ok)throw Error(`Failed to fetch offices`);return e.json()},n=1e3*60*60,r=()=>e({queryKey:[`offices`],queryFn:t,staleTime:n,gcTime:n});export{r as t};

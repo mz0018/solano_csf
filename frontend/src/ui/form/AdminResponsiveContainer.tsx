@@ -4,7 +4,7 @@ type AdminContainer = {
 };
 export const AdminResponsiveContainer = ({ children }: AdminContainer) => {
   return (
-    <div className="admin-content w-full min-w-0 overflow-x-scroll p-6 flex flex-col items-start gap-6">
+    <div className="sidebar-surface admin-content w-full min-w-0 overflow-x-scroll p-6 flex flex-col items-start gap-6 shadow-md rounded-sm border border-[#cbd5e1]">
       {children}
     </div>
   );

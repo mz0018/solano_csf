@@ -3,7 +3,6 @@ import { Select } from "../../ui/form/Select";
 import { useGetOffices } from "../../hooks/useGetOffices";
 import { useGetOfficeFeedbackByDate } from "../../hooks/useGetOfficeFeedbackByDate";
 import { PerOfficeQueueTable } from "../../components/Tables/PerOfficeQueueTable";
-import { AdminResponsiveContainer } from "../../ui/form/AdminResponsiveContainer";
 import { ErrorText } from "../../ui/form/ErrorText";
 
 const OfficesFeedbacks = () => {
@@ -21,6 +20,13 @@ const OfficesFeedbacks = () => {
         page,
         itemsPerPage
     );
+
+    const selectedOfficeName = offices?.find(
+        (office) => office.code === selectedOfficeCode
+    )?.name;
+    const selectedPeriod = selectedMonth && selectedYear
+        ? `${new Date(2000, Number(selectedMonth) - 1).toLocaleString("en-US", { month: "long" })} ${selectedYear}`
+        : undefined;
 
     const currentYear = new Date().getFullYear();
 
@@ -55,24 +61,27 @@ const OfficesFeedbacks = () => {
     };
 
     return (
-        <AdminResponsiveContainer>
-            <div className="flex w-full flex-col leading-none">
-                <div className="border-b border-gray-300 py-3">
-                    <h1 className="text-xl font-semibold text-gray-900">
+        <>
+            {/* Mobile Header */}
+            <div className="w-full">
+                <div className="mb-4 border-b border-gray-300 py-3">
+                    <h1 className="min-w-0 text-2xl font-bold text-[#003566] lg:text-3xl">
                         Select an office to view specific feedback
                     </h1>
 
-                    <p className="mt-1 text-sm text-gray-500">
+                    <p className="mt-1 max-w-2xl text-sm leading-relaxed tracking-wide text-[#000814] sm:text-base md:text-md">
                         Filter and review feedback entries by office
                     </p>
                 </div>
             </div>
 
-            <div className="flex gap-2">
-                <div>
+            {/* Filters */}
+            <div className="mb-4 flex w-full flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end sm:gap-4">
+                {/* Municipality Office */}
+                <div className="w-full sm:w-96 sm:max-w-full">
                     <label
                         htmlFor="office"
-                        className="mb-1 block text-sm font-medium"
+                        className="mb-2 block text-base font-semibold text-[#003566] sm:text-lg lg:text-xl"
                     >
                         Municipality Office
                     </label>
@@ -97,10 +106,11 @@ const OfficesFeedbacks = () => {
                     </Select>
                 </div>
 
-                <div>
+                {/* Month */}
+                <div className="w-full sm:w-96 sm:max-w-full">
                     <label
                         htmlFor="month"
-                        className="mb-1 block text-sm font-medium"
+                        className="mb-2 block text-base font-semibold text-[#003566] sm:text-lg lg:text-xl"
                     >
                         Select Month
                     </label>
@@ -127,10 +137,11 @@ const OfficesFeedbacks = () => {
                     </Select>
                 </div>
 
-                <div>
+                {/* Year */}
+                <div className="w-full sm:w-96 sm:max-w-full">
                     <label
                         htmlFor="year"
-                        className="mb-1 block text-sm font-medium"
+                        className="mb-2 block text-base font-semibold text-[#003566] sm:text-lg lg:text-xl"
                     >
                         Select Year
                     </label>
@@ -152,19 +163,24 @@ const OfficesFeedbacks = () => {
                 </div>
             </div>
 
+            {/* Error Message */}
             {error && (
                 <ErrorText message={(error as Error).message} />
             )}
-            
-            <PerOfficeQueueTable
-                feedbacks={data?.feedbacks ?? []}
-                totalPages={data?.totalPages ?? 0}
-                page={page}
-                onPageChange={handlePageChange}
-                hasSelectedOffice={!!selectedOfficeCode}
-            />
 
-        </AdminResponsiveContainer>
+            {/* Feedback Table */}
+            <div className="w-full min-w-0">
+                <PerOfficeQueueTable
+                    feedbacks={data?.feedbacks ?? []}
+                    totalPages={data?.totalPages ?? 0}
+                    page={page}
+                    onPageChange={handlePageChange}
+                    hasSelectedOffice={!!selectedOfficeCode}
+                    selectedOfficeName={selectedOfficeName}
+                    selectedPeriod={selectedPeriod}
+                />
+            </div>
+        </>
     );
 };
 

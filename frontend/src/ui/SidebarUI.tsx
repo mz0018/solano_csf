@@ -1,41 +1,27 @@
 import { NavLink } from 'react-router-dom'
 import { DropdownHelper } from '../helper/DropdownHelper'
-import { useState, useEffect } from 'react'
-import { PanelLeft } from 'lucide-react'
-
-interface User {
-  id: string;
-  userName: string;
-  role: string;
-}
+import { useEffect } from 'react'
 
 type NavItem = {
   name: string
   path?: string
   children?: NavItem[]
-  icon?: React.ReactNode
+  icon?: string
   roles: string[]
+  section?: string
 }
 
 type SidebarUIProps = {
   navLinks: NavItem[]
-  user: User | null
+  collapsed: boolean
+  setCollapsed: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
-  const [collapsed, setCollapsed] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('sidebar-collapsed')
-      if (saved !== null) return JSON.parse(saved)
-      return window.innerWidth < 768
-    }
-    return false
-  })
-
+export const SidebarUI = ({ navLinks, collapsed, setCollapsed }: SidebarUIProps) => {
   useEffect(() => {
     const checkIfShouldCollapse = () => {
 
-      if (window.innerWidth < 768) {
+      if (window.innerWidth < 1024) {
         setCollapsed(true)
       }
       
@@ -46,174 +32,64 @@ export const SidebarUI = ({ navLinks, user }: SidebarUIProps) => {
     window.addEventListener('resize', checkIfShouldCollapse);
     
     return () => window.removeEventListener('resize', checkIfShouldCollapse);
-  }, []);
+  }, [setCollapsed]);
 
   useEffect(() => {
     localStorage.setItem('sidebar-collapsed', JSON.stringify(collapsed))
   }, [collapsed])
 
   return (
-    <aside
-     className={`
-        fixed lg:static
-        h-full
-        sidebar-surface text-[#1f2937]
-        flex flex-col
-        z-50
-        transition-all duration-300
-        ${collapsed ? 'w-16' : 'w-80'}
-        translate-x-0
-        border-r border-[#cbd5e1]
-      `}
-    >
-      <div className="p-4 flex justify-between items-center border-b border-[#cbd5e1]">
-        <div className="flex items-center gap-3 min-w-0">
-          {/* User Initial Avatar */}
-          <div
-            className={`
-              flex
-              items-center
-              justify-center
-              shrink-0
-              h-10
-              rounded-full
-              bg-blue-500
-              text-white
-              font-semibold
-              text-sm
-              uppercase
-              shadow-sm
-              overflow-hidden
-              transition-all
-              duration-300
-              ease-in-out
-              ${
-                collapsed
-                  ? 'w-0 opacity-0 scale-75 -ml-3'
-                  : 'w-10 opacity-100 scale-100 ml-0'
-              }
-            `}
-          >
-            {user?.userName?.charAt(0) || 'U'}
-          </div>
-
-          {/* User Information */}
-          <div
-            className={`
-              flex flex-col leading-tight
-              overflow-hidden
-              whitespace-nowrap
-              transition-all duration-300 ease-in-out
-              ${
-                collapsed
-                  ? 'w-0 max-w-0 opacity-0 -translate-x-2'
-                  : 'w-[180px] max-w-[180px] opacity-100 translate-x-0'
-              }
-            `}
-          >
-            <h1 className="text-xl font-semibold text-gray-900">
-              {user?.role === "hr_admin"
-                    ? 'Human Resource'
-                    : user?.role === 'super_admin'
-                    ? 'Super Admin'
-                    : 'Office Admin'}
-            </h1>
-          </div>
-        </div>
-
+    <>
+      {!collapsed && (
         <button
-          onClick={() => setCollapsed(!collapsed)}
-          className="cursor-pointer flex items-center justify-center p-2 rounded-sm text-[#476581] hover:bg-[#dbeafe] hover:text-[#1e3a5f] transition-colors duration-150"
-        >
-          <PanelLeft size={20}/>
-        </button>
-      </div>
+          type="button"
+          aria-label="Close sidebar"
+          onClick={() => setCollapsed(true)}
+          className="fixed inset-x-0 top-24 bottom-0 z-30 bg-slate-900/20 lg:hidden"
+        />
+      )}
 
-      <nav className="flex-1 p-2 space-y-2 overflow-hidden">
-        {navLinks.map((item) =>
-          item.children ? (
-            <DropdownHelper
-              key={item.name}
-              item={item}
-              collapsed={collapsed}
-              setCollapsed={setCollapsed}
-            />
-          ) : (
-            <NavLink
-              key={item.path}
-              to={item.path || '#'}
-              className={({ isActive }) =>
-                `
-                  sidebar-item
-                  sidebar-link-border
-                  flex
-                  items-center
-                  h-10
-                  rounded-sm
-                  overflow-hidden
-                  transition-all
-                  duration-300
-                  ease-in-out
+      <aside className={`fixed top-24 bottom-0 left-0 z-40 pt-5 flex min-h-0 shrink-0 flex-col border-r border-slate-200 bg-white lg:static lg:z-auto lg:h-full ${collapsed ? 'w-16' : 'w-80'}`}>
+      <nav className={`min-h-0 flex-1 space-y-1 overflow-y-auto py-2 ${collapsed ? 'px-2' : 'px-5'}`}>
+        {navLinks.map((item, index) => (
+          <div key={item.path ?? item.name}>
+            {!collapsed && item.section && item.section !== navLinks[index - 1]?.section && (
+              <h2 className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-slate-400">
+                {item.section}
+              </h2>
+            )}
+            {item.children ? (
+              <DropdownHelper
+                item={item}
+                collapsed={collapsed}
+                setCollapsed={setCollapsed}
+              />
+            ) : (
+              <NavLink
+                to={item.path || '#'}
+                title={collapsed ? item.name : undefined}
+                className={({ isActive }) => `flex min-h-10 items-center rounded-md text-sm font-medium transition-colors duration-150 ${collapsed ? 'h-10 justify-center p-0' : 'gap-3 p-5'} ${isActive ? collapsed ? 'text-[#003566]' : 'bg-[#003566] text-white' : 'text-slate-600 hover:bg-slate-200 hover:text-[#003566]'}`}>
+                {({ isActive }) => (
+                  <>
+                    {item.icon && (
+                      <img
+                        src={item.icon}
+                        alt=""
+                        className={`h-7 w-7 shrink-0 ${isActive && !collapsed ? 'brightness-0 invert' : ''}`}
+                      />
+                    )}
 
-                  ${collapsed
-                    ? 'w-full justify-center px-0'
-                    : 'w-full px-4 gap-3'
-                  }
-
-                  ${
-                    isActive
-                      ? 'bg-[#dbeafe] text-[#1e3a5f] active'
-                      : 'text-[#476581] hover:bg-[#dbeafe] hover:text-[#1e3a5f] p-5'
-                  }
-                `
-              }
-            >
-              {({ isActive }) => (
-                <>
-                  {/* Fixed icon container */}
-                  <span
-                    className={`
-                      flex
-                      items-center
-                      justify-center
-                      shrink-0
-                      w-6
-                      h-6
-                      transition-all
-                      duration-300
-                      ${
-                        isActive
-                          ? 'text-[#1e3a5f]'
-                          : 'text-[#476581]'
-                      }
-                    `}
-                  >
-                    {item.icon}
-                  </span>
-
-                  {/* Animated label */}
-                  <span
-                    className={`
-                      whitespace-nowrap
-                      overflow-hidden
-                      transition-all
-                      duration-300
-                      ease-in-out
-                      ${
-                        collapsed
-                          ? 'w-0 max-w-0 opacity-0 -translate-x-2'
-                          : 'w-auto max-w-[200px] opacity-100 translate-x-0'
-                      }
-                    `}
-                  >
-                    {item.name}
-                  </span>
-                </>
-              )}
-            </NavLink>
-          )
-        )}
+                    <span className={`${collapsed ? 'hidden' : 'truncate'}`}>
+                      {item.name}
+                    </span>
+                  </>
+                )}
+              </NavLink>
+            )}
+          </div>
+        ))}
       </nav>
-    </aside>
+      </aside>
+    </>
   )
 }

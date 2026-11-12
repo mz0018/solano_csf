@@ -22,13 +22,14 @@ class QueueService {
 
     const selectedService = queue.selectedService
     const otherServiceDetail = queue.otherServiceDetail || null
+    const selectedChildService = queue.selectedChildService
 
     const officeCode = queue.officeCode
     if (!officeCode) {
         throw new ErrorController('Invalid Queue Ticket', 401)
     }
     const services = await Service.find({ officeCode }).select('code name')
-    return { exists: true, officeCode, services, selectedService, otherServiceDetail }
+    return { exists: true, officeCode, services, selectedService, otherServiceDetail, selectedChildService }
   }
 
   async saveFeedback(formData, queueNumber) {

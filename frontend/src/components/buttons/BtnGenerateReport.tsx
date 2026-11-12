@@ -1,4 +1,4 @@
-import { Button } from "../../ui/form/Buttons"
+import { AdminButton } from "../../ui/form/AdminButton"
 import { useGenerateDocx } from "../../hooks/useGenerateDocx"
 
 type ChartRefs = React.RefObject<(HTMLDivElement | null)[]>
@@ -37,9 +37,11 @@ interface BtnGenerateReportProps {
   selectedOfficeName: string
   selectedDateFrom: string
   selectedDateTo: string
+  serviceTransactions: { service: string; totalTransactions: number }[]
+  services: { service: string; type: string }[]
 }
 
-export const BtnGenerateReport = ({ isCapturing, handleCapture, chartRefs, feedback, selectedOfficeName, selectedDateFrom, selectedDateTo }: BtnGenerateReportProps) => {
+export const BtnGenerateReport = ({ isCapturing, handleCapture, chartRefs, feedback, selectedOfficeName, selectedDateFrom, selectedDateTo, serviceTransactions, services }: BtnGenerateReportProps) => {
   const { downloadDocx } = useGenerateDocx()
 
   const onClick = async () => {
@@ -50,13 +52,23 @@ export const BtnGenerateReport = ({ isCapturing, handleCapture, chartRefs, feedb
       feedback,
       selectedOfficeName,
       selectedDateFrom,
-      selectedDateTo
-    }, "feedback-report.docx")
+      selectedDateTo,
+      serviceTransactions,
+      services,
+    }, `CSF-${selectedOfficeName}-${selectedDateFrom}-${selectedDateTo}-report.docx`)
   }
 
   return (
-    <Button disabled={isCapturing} onClick={onClick} className="bg-blue-500 text-white p-4 rounded-sm cursor-pointer hover:bg-blue-600 transition-colors">
+    <>
+    <AdminButton 
+      icon="/icons/download.svg"
+      iconAlt="Download"
+      disabled={isCapturing} 
+      onClick={onClick} 
+      className="bg-[#003566] border border-[#FFC300] text-[#FFD60A] transition-colors duration-200 hover:bg-[#004080] hover:border-[#FFD60A] font-semibold sm:ml-auto sm:w-auto whitespace-nowrap"
+    >
       {isCapturing ? "Generating..." : "Generate Report"}
-    </Button>
+    </AdminButton>
+    </>
   )
 }

@@ -31,6 +31,7 @@ const OfficesFeedbacks = lazy(() => import('./pages/admin/OfficesFeedbacks.tsx')
 
 const Settings = lazy(() => import('./pages/admin/Settings.tsx'))
 const ProfileSettings = lazy(() => import('./pages/admin/settings/ProfileSettings.tsx'))
+const ServiceManagementSettings = lazy(() => import('./pages/admin/settings/ServiceManagement.tsx'))
 const SecuritySettings = lazy(() => import('./pages/admin/settings/SecuritySettings.tsx'))
 const NotificationSettings = lazy(() => import('./pages/admin/settings/NotificationSettings.tsx'))
 
@@ -74,6 +75,7 @@ const router = createBrowserRouter([
             children: [
               { index: true, element: <Navigate to="profile" replace /> },
               { path: "profile", element: <ProfileSettings /> },
+              { path: "manage-services", element: <ServiceManagementSettings /> },
               { path: "security", element: <SecuritySettings /> },
               { path: "notifications", element: <NotificationSettings /> },
             ]

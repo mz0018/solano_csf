@@ -1,8 +1,17 @@
-import { Paragraph, Table, TableRow, TableCell, TextRun } from "docx";
+import {
+  Paragraph,
+  Table,
+  TableRow,
+  TableCell,
+  TextRun,
+  AlignmentType,
+} from "docx";
 import type { FeedbackItem } from "../../components/buttons/BtnGenerateReport";
+
 export interface ServiceSurveyed {
   feedback: FeedbackItem[];
 }
+
 const SERVICE_QUALITY_DIMENSIONS = [
   { label: "Responsiveness", key: "responsiveness" as const },
   { label: "Reliability", key: "reliability" as const },
@@ -15,63 +24,647 @@ const SERVICE_QUALITY_DIMENSIONS = [
 ];
 
 export const createCountServiceQuality = ({ feedback }: ServiceSurveyed) => {
+  // Overall counts across all service quality dimensions
+  const overallCounts: Record<number, number> = {
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0,
+  };
+
+  // Overall rating calculation
+  let overallSum = 0;
+
+  feedback.forEach((item) => {
+    SERVICE_QUALITY_DIMENSIONS.forEach(({ key }) => {
+      const rating = item.ratings[key];
+
+      overallCounts[rating] = (overallCounts[rating] ?? 0) + 1;
+      overallSum += rating;
+    });
+  });
+
+  const overallRespondents =
+    feedback.length * SERVICE_QUALITY_DIMENSIONS.length;
+
+  const overallRating =
+    overallRespondents > 0
+      ? (overallSum / overallRespondents).toFixed(2)
+      : "0.00";
+
   const table = new Table({
+    indent: { size: 1070, type: "dxa" },
+
     rows: [
+      // Header
       new TableRow({
         children: [
-          new TableCell({ children: [new Paragraph("Service Quality")] }),
-          new TableCell({ children: [new Paragraph("Very Satisfied")] }),
-          new TableCell({ children: [new Paragraph("Satisfied")] }),
-          new TableCell({ children: [new Paragraph("Neutral")] }),
-          new TableCell({ children: [new Paragraph("Dissatisfied")] }),
-          new TableCell({ children: [new Paragraph("Very Dissatisfied")] }),
-          new TableCell({ children: [new Paragraph("Respondents")] }),
-          new TableCell({ children: [new Paragraph("Rating")] }),
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            shading: { fill: "4472C4" },
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.CENTER,
+                children: [
+                  new TextRun({
+                    text: "Service Quality",
+                    color: "FFFF00",
+                    bold: true,
+                  }),
+                ],
+              }),
+            ],
+          }),
+
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            shading: { fill: "4472C4" },
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.CENTER,
+                children: [
+                  new TextRun({
+                    text: "Very Satisfied",
+                    color: "FFFF00",
+                    bold: true,
+                  }),
+                ],
+              }),
+            ],
+          }),
+
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            shading: { fill: "4472C4" },
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.CENTER,
+                children: [
+                  new TextRun({
+                    text: "Satisfied",
+                    color: "FFFF00",
+                    bold: true,
+                  }),
+                ],
+              }),
+            ],
+          }),
+
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            shading: { fill: "4472C4" },
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.CENTER,
+                children: [
+                  new TextRun({
+                    text: "Neutral",
+                    color: "FFFF00",
+                    bold: true,
+                  }),
+                ],
+              }),
+            ],
+          }),
+
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            shading: { fill: "4472C4" },
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.CENTER,
+                children: [
+                  new TextRun({
+                    text: "Dissatisfied",
+                    color: "FFFF00",
+                    bold: true,
+                  }),
+                ],
+              }),
+            ],
+          }),
+
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            shading: { fill: "4472C4" },
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.CENTER,
+                children: [
+                  new TextRun({
+                    text: "Very Dissatisfied",
+                    color: "FFFF00",
+                    bold: true,
+                  }),
+                ],
+              }),
+            ],
+          }),
+
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            shading: { fill: "4472C4" },
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.CENTER,
+                children: [
+                  new TextRun({
+                    text: "Respondents",
+                    color: "FFFF00",
+                    bold: true,
+                  }),
+                ],
+              }),
+            ],
+          }),
+
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            shading: { fill: "4472C4" },
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.CENTER,
+                children: [
+                  new TextRun({
+                    text: "Rating",
+                    color: "FFFF00",
+                    bold: true,
+                  }),
+                ],
+              }),
+            ],
+          }),
         ],
       }),
+
+      // Data rows
       ...SERVICE_QUALITY_DIMENSIONS.map(({ label, key }) => {
-        const counts: Record<number, number> = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+        const counts: Record<number, number> = {
+          1: 0,
+          2: 0,
+          3: 0,
+          4: 0,
+          5: 0,
+        };
+
         feedback.forEach((item) => {
           const rating = item.ratings[key];
           counts[rating] = (counts[rating] ?? 0) + 1;
         });
+
         const respondents = feedback.length;
-        const sum = feedback.reduce((acc, item) => acc + item.ratings[key], 0);
-        const rating = respondents > 0 ? (sum / respondents).toFixed(2) : "0.00";
+
+        const sum = feedback.reduce(
+          (acc, item) => acc + item.ratings[key],
+          0
+        );
+
+        const rating =
+          respondents > 0 ? (sum / respondents).toFixed(2) : "0.00";
+
         return new TableRow({
           children: [
-            new TableCell({ children: [new Paragraph(label)] }),
-            new TableCell({ children: [new Paragraph(counts[5].toString())] }),
-            new TableCell({ children: [new Paragraph(counts[4].toString())] }),
-            new TableCell({ children: [new Paragraph(counts[3].toString())] }),
-            new TableCell({ children: [new Paragraph(counts[2].toString())] }),
-            new TableCell({ children: [new Paragraph(counts[1].toString())] }),
-            new TableCell({ children: [new Paragraph(respondents.toString())] }),
-            new TableCell({ children: [new Paragraph(rating)] }),
+            new TableCell({
+              margins: {
+                top: 20,
+                bottom: 20,
+                left: 50,
+                right: 50,
+              },
+              children: [new Paragraph(label)],
+            }),
+
+            new TableCell({
+              margins: {
+                top: 20,
+                bottom: 20,
+                left: 50,
+                right: 50,
+              },
+              children: [
+                new Paragraph({
+                  alignment: AlignmentType.CENTER,
+                  children: [
+                    new TextRun({
+                      text: counts[5].toString()
+                    })
+                  ]
+                })
+              ],
+            }),
+
+            new TableCell({
+              margins: {
+                top: 20,
+                bottom: 20,
+                left: 50,
+                right: 50,
+              },
+              children: [
+                new Paragraph({
+                  alignment: AlignmentType.CENTER,
+                  children: [
+                    new TextRun({
+                      text: counts[4].toString()
+                    })
+                  ]
+                })
+              ],
+            }),
+
+            new TableCell({
+              margins: {
+                top: 20,
+                bottom: 20,
+                left: 50,
+                right: 50,
+              },
+              children: [
+                new Paragraph({
+                  alignment: AlignmentType.CENTER,
+                  children: [
+                    new TextRun({
+                      text: counts[3].toString()
+                    })
+                  ]
+                })
+              ],
+            }),
+
+            new TableCell({
+              margins: {
+                top: 20,
+                bottom: 20,
+                left: 50,
+                right: 50,
+              },
+              children: [
+                new Paragraph({
+                  alignment: AlignmentType.CENTER,
+                  children: [
+                    new TextRun({
+                      text: counts[2].toString()
+                    })
+                  ]
+                })
+              ],
+            }),
+
+            new TableCell({
+              margins: {
+                top: 20,
+                bottom: 20,
+                left: 50,
+                right: 50,
+              },
+              children: [
+                new Paragraph({
+                  alignment: AlignmentType.CENTER,
+                  children: [
+                    new TextRun({
+                      text: counts[1].toString()
+                    })
+                  ]
+                })
+              ],
+            }),
+
+            new TableCell({
+              margins: {
+                top: 20,
+                bottom: 20,
+                left: 50,
+                right: 50,
+              },
+              children: [
+                new Paragraph({
+                  alignment: AlignmentType.CENTER,
+                  children: [
+                    new TextRun({
+                      text: respondents.toString()
+                    })
+                  ]
+                })
+              ],
+            }),
+
+            new TableCell({
+              margins: {
+                top: 20,
+                bottom: 20,
+                left: 50,
+                right: 50,
+              },
+              children: [
+                new Paragraph({
+                  alignment: AlignmentType.CENTER,
+                  children: [
+                    new TextRun({
+                      text: rating
+                    })
+                  ]
+                })
+              ],
+            }),
           ],
         });
+      }),
+
+      // Overall row
+      new TableRow({
+        children: [
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.END,
+                children: [
+                  new TextRun({
+                    text: "Overall",
+                    bold: true,
+                  }),
+                ],
+              }),
+            ],
+          }),
+
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            shading: { fill: "FFFF00" },
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.CENTER,
+                children: [
+                  new TextRun({
+                    text: overallCounts[5].toString(),
+                    bold: true,
+                    color: "4472C4",
+                  }),
+                ],
+              }),
+            ],
+          }),
+
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            shading: { fill: "FFFF00" },
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.CENTER,
+                children: [
+                  new TextRun({
+                    text: overallCounts[4].toString(),
+                    bold: true,
+                    color: "4472C4",
+                  }),
+                ],
+              }),
+            ],
+          }),
+
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            shading: { fill: "FFFF00" },
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.CENTER,
+                children: [
+                  new TextRun({
+                    text: overallCounts[3].toString(),
+                    bold: true,
+                    color: "4472C4",
+                  }),
+                ],
+              }),
+            ],
+          }),
+
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            shading: { fill: "FFFF00" },
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.CENTER,
+                children: [
+                  new TextRun({
+                    text: overallCounts[2].toString(),
+                    bold: true,
+                    color: "4472C4",
+                  }),
+                ],
+              }),
+            ],
+          }),
+
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            shading: { fill: "FFFF00" },
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.CENTER,
+                children: [
+                  new TextRun({
+                    text: overallCounts[1].toString(),
+                    bold: true,
+                    color: "4472C4",
+                  }),
+                ],
+              }),
+            ],
+          }),
+
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            shading: { fill: "FFFF00" },
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.CENTER,
+                children: [
+                  new TextRun({
+                    text: overallRespondents.toString(),
+                    bold: true,
+                    color: "4472C4",
+                  }),
+                ],
+              }),
+            ],
+          }),
+
+          new TableCell({
+            margins: {
+              top: 20,
+              bottom: 20,
+              left: 50,
+              right: 50,
+            },
+            shading: { fill: "FFFF00" },
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.CENTER,
+                children: [
+                  new TextRun({
+                    text: overallRating,
+                    bold: true,
+                    color: "4472C4",
+                  }),
+                ],
+              }),
+            ],
+          }),
+        ],
       }),
     ],
   });
 
-  const tableSpacing = new Paragraph({
-      text: "",
-      spacing: {
-          after: 200,
-      },
-  });
+  // ---- accurate paragraph: everything computed from feedback ----
+  const dimensionAverages = SERVICE_QUALITY_DIMENSIONS.map(
+    ({ label, key }) => {
+      const avg =
+        feedback.length > 0
+          ? feedback.reduce(
+              (acc, item) => acc + item.ratings[key],
+              0
+            ) / feedback.length
+          : 0;
+
+      return { label, avg };
+    }
+  );
+
+  const sorted = [...dimensionAverages].sort(
+    (a, b) => b.avg - a.avg
+  );
+
+  const highest = sorted[0];
+  const second = sorted[1];
+  const lowest = sorted[sorted.length - 1];
+
+  const overallAvg =
+    dimensionAverages.reduce(
+      (acc, d) => acc + d.avg,
+      0
+    ) / dimensionAverages.length;
+
+  const fmt = (n: number) => n.toFixed(2);
+
+  const analysisText =
+    feedback.length === 0
+      ? "No responses were provided for analysis."
+      : `Upon analyzing the provided data on service quality dimensions, several insights emerge. Ratings across dimensions range from ${fmt(lowest.avg)} to ${fmt(highest.avg)}, with an overall average of ${fmt(overallAvg)}, indicating ${overallAvg >= 4 ? "a high" : overallAvg >= 3 ? "a moderate" : "a low"} level of satisfaction. ${highest.label} received the highest rating at ${fmt(highest.avg)}, followed closely by ${second.label} at ${fmt(second.avg)}. ${lowest.label} scored the lowest at ${fmt(lowest.avg)}, pinpointing an area for targeted improvement. Overall, these findings underscore areas of strength while highlighting opportunities for enhancement in service provision.`;
+  // ---------------------------------------------------------------
 
   return [
     new Paragraph({
-        children: [
-            new TextRun({
-            text: "Count of Service Quality Dimensions results",
-            bold: true,
-            }),
-        ],
+      indent: { left: 720 },
+      spacing: { after: 300 },
+      children: [
+        new TextRun({
+          text: "B.  Count of Citizen's Charter and Service Quality Dimension results",
+        }),
+      ],
     }),
-    
+
+    new Paragraph({
+      indent: { left: 1060 },
+      spacing: { after: 300 },
+      children: [
+        new TextRun({
+          text: "Count of Service Quality Dimensions results",
+        }),
+      ],
+    }),
+
     table,
-    tableSpacing,
+
+    // gap
+    new Paragraph({
+      spacing: { after: 100 },
+    }),
+
+    new Paragraph({
+      indent: { left: 1060 },
+      spacing: { after: 300 },
+      children: [
+        new TextRun({
+          text: analysisText,
+        }),
+      ],
+    }),
   ];
 };

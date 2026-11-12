@@ -14,7 +14,7 @@ export const createPieCharts = (
         new Paragraph({
           children: [
             new ImageRun({
-              data: img,
+              data: img.split(',')[1],
               transformation: {
                 width: 400,
                 height: 350

@@ -1,12 +1,13 @@
 import { NavLink } from 'react-router-dom'
 import { useState } from 'react'
 import { ChevronDown } from 'lucide-react'
+import type { ReactNode } from 'react'
 
 type NavItem = {
   name: string
   path?: string
   children?: NavItem[]
-  icon?: React.ReactNode
+  icon?: string | ReactNode
 }
 
 type Props = {
@@ -29,30 +30,34 @@ export const DropdownHelper = ({ item, collapsed, setCollapsed }: Props) => {
 
           setOpen(prev => !prev)
         }}
-        className="sidebar-item sidebar-link-border relative w-full flex items-center gap-3 px-4 py-2 rounded-sm text-[#476581] hover:bg-[#dbeafe] hover:text-[#1e3a5f] transition-colors duration-150 focus:ring-0 focus:outline-none"
+        title={collapsed ? item.name : undefined}
+        aria-expanded={!collapsed && open}
+        className={`flex min-h-10 w-full items-center rounded-md text-left text-sm font-medium ${collapsed ? 'h-10 justify-center p-0' : 'gap-3 py-5 pl-5 pr-5'} ${open && !collapsed ? 'bg-slate-50 text-[#003566]' : 'text-slate-600 hover:bg-slate-50 hover:text-[#003566]'}`}
       >
-        <span className="shrink-0">
-          {item.icon}
-        </span>
+        {typeof item.icon === 'string' ? (
+          <img
+            src={item.icon}
+            alt=""
+            className="h-7 w-7 shrink-0"
+          />
+        ) : item.icon}
 
         {!collapsed && (
           <>
-            <span className="whitespace-nowrap">
+            <span className="min-w-0 flex-1 truncate">
               {item.name}
             </span>
 
             <ChevronDown
-              size={18}
-              className={`absolute right-3 top-1/2 -translate-y-1/2 transition-transform duration-150 ${
-                open ? 'rotate-180' : ''
-              }`}
+              size={16}
+              className={`shrink-0 duration-150 ${open ? 'rotate-180' : ''}`}
             />
           </>
         )}
       </button>
 
       {!collapsed && open && (
-        <div className="ml-5 space-y-1">
+        <div className="ml-5 mt-1 space-y-1 border-l border-slate-200 pl-3">
           {item.children?.map((child) => (
             <NavLink
               key={child.path}
@@ -63,16 +68,8 @@ export const DropdownHelper = ({ item, collapsed, setCollapsed }: Props) => {
                   setCollapsed(true)
                 }
               }}
-              className={({ isActive }) =>
-                `sidebar-item sidebar-link-border flex items-center gap-2 pl-6 pr-4 py-2 rounded-sm transition-colors duration-150 ${
-                  isActive
-                    ? 'bg-[#dbeafe] text-[#1e3a5f] active'
-                    : 'text-[#476581] hover:bg-[#dbeafe] hover:text-[#1e3a5f]'
-                }`
-              }
-              >
-                <span className="text-[0.5rem] text-[#9ca3af]">●</span>
-                <span className="whitespace-nowrap">{child.name}</span>
+              className={({ isActive }) => `flex min-h-9 items-center rounded-md p-5 text-sm ${isActive ? 'bg-[#003566] font-medium text-white' : 'text-slate-500 hover:bg-slate-50 hover:text-[#003566]'}`}>
+                <span className="truncate">{child.name}</span>
               </NavLink>
           ))}
         </div>

@@ -1,8 +1,3 @@
-import {
-  Building2,
-  CircleUserRound,
-} from "lucide-react";
-
 import { useGetUserProfile } from "../../../hooks/useGetUserProfile";
 import { ErrorText } from "../../../ui/form/ErrorText";
 import { InlineLoader } from "../../../components/Loader";
@@ -30,115 +25,138 @@ const ProfileSettings = () => {
             : "-";
 
   return (
-    <div className="w-full max-w-3xl space-y-6">
+    <> 
+    <div className="@container rounded-xl border border-gray-200 bg-white p-3 shadow-sm transition-shadow hover:shadow-md sm:p-4 bg-gradient-to-l from-blue-50 to-white">
+
+      {/* Header */}
       <div className="mb-4 border-b border-gray-300 py-3">
-          <h1 className="text-xl font-semibold text-gray-900">
-              Profile Information
-          </h1>
-
-          <p className="mt-1 text-sm text-gray-500">
-              View your account information and administrator details.
-          </p>
-      </div>
-
-      {/* Profile Card */}
-      <div className="overflow-hidden bg-white shadow-sm">
-
-        {/* Profile Header */}
-        <div className="flex items-center gap-4 border-b border-gray-200 bg-gray-50 px-6 py-5">
-
-          {/* Name */}
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="min-w-0">
-            <h2 className="truncate text-lg font-semibold capitalize text-gray-900">
-              {user?.firstName || "-"} {user?.lastName || ""}
-            </h2>
+            <h1 className="min-w-0 text-2xl font-bold text-[#003566] lg:text-3xl">
+              Profile Information
+            </h1>
 
-            <p className="mt-0.5 text-sm text-gray-500">
-              @{user?.userName || "-"}
+            <p className="mt-1 max-w-2xl text-sm leading-relaxed tracking-wide text-[#000814] sm:text-base md:text-md">
+              View your personal information, account details, and assigned administrative role.
             </p>
           </div>
+        </div>
+      </div>
 
-          {/* Status */}
-          <div className="ml-auto">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-700">
-              <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
-            </span>
+      {/* Two Columns */}
+      <div className="grid min-w-0 grid-cols-1 gap-4 @lg:grid-cols-[30%_minmax(0,1fr)]">
+
+        {/* Profile */}
+        <div className="flex min-w-0 flex-col items-center justify-center gap-1 rounded-xl border border-gray-200 bg-gray-50/50 p-4 sm:p-5 lg:p-6">
+
+          <div className="mb-2 flex h-32 w-32 shrink-0 items-center justify-center rounded-full border-8 border-[#FFC300] bg-[#628dec] p-2 text-6xl font-bold text-white sm:h-36 sm:w-36 sm:text-7xl">
+            {user?.firstName?.charAt(0).toUpperCase() || "-"}
           </div>
+
+          <small className="text-center text-base font-semibold capitalize leading-none text-slate-500 sm:text-lg lg:text-xl">
+            {user?.firstName || "-"} {user?.lastName || ""}
+          </small>
+
+          <small className="inline-flex max-w-full items-center rounded-full px-3 py-1.5 text-xs font-light text-[#628dec] sm:text-sm">
+            {role}
+          </small>
+
         </div>
 
-        {/* Account Information */}
-        <div className="px-6 py-6">
+        {/* Account Details */}
+        <div className="@container min-w-0 w-full rounded-xl border border-gray-200 bg-white p-3 text-left sm:p-4 lg:p-5">
 
-          <div className="mb-5 flex items-center gap-2">
-            <CircleUserRound size={18} className="text-gray-500" />
-
-            <h3 className="text-sm font-semibold text-gray-800">
-              Account Information
-            </h3>
-          </div>
-
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="grid min-w-0 grid-cols-1 items-start gap-3 @lg:grid-cols-2 sm:gap-4">
 
             {/* First Name */}
-            <div className="rounded-lg border border-gray-200 bg-gray-50/50 px-4 py-3">
-              <span className="text-xs font-medium uppercase tracking-wide text-gray-400">
-                First Name
-              </span>
+            <div className="flex min-w-0 items-center gap-3 rounded-lg border border-gray-200 bg-gray-50/50 p-3 sm:p-4">
+                <div className="rounded-full border-2 border-[#FFC300] p-2">
+                  <img
+                    src="/icons/profile.svg"
+                    alt=""
+                    className="h-6 w-6 shrink-0"
+                  />
+                </div>
 
-              <p className="mt-1 capitalize text-sm font-medium text-gray-800">
-                {user?.firstName || "-"}
-              </p>
+                <div className="flex min-w-0 flex-col">
+                    <small className="text-sm text-[#003566]">
+                        First Name
+                    </small>
+
+                    <div className="mt-0.5 break-words text-base font-semibold capitalize text-[#003566] sm:text-lg">
+                        {user?.firstName || "-"}
+                    </div>
+                </div>
             </div>
 
             {/* Last Name */}
-            <div className="rounded-lg border border-gray-200 bg-gray-50/50 px-4 py-3">
-              <span className="text-xs font-medium uppercase tracking-wide text-gray-400">
-                Last Name
-              </span>
+            <div className="flex min-w-0 items-center gap-3 rounded-lg border border-gray-200 bg-gray-50/50 p-3 sm:p-4">
+                <div className="rounded-full border-2 border-[#FFC300] p-2">
+                  <img
+                    src="/icons/profile.svg"
+                    alt=""
+                    className="h-6 w-6 shrink-0"
+                  />
+                </div>
 
-              <p className="mt-1 capitalize text-sm font-medium text-gray-800">
-                {user?.lastName || "-"}
-              </p>
-            </div>
+                <div className="flex min-w-0 flex-col">
+                    <small className="text-sm text-[#003566]">
+                        Last Name
+                    </small>
 
-            {/* Username */}
-            <div className="rounded-lg border border-gray-200 bg-gray-50/50 px-4 py-3">
-              <span className="text-xs font-medium uppercase tracking-wide text-gray-400">
-                Username
-              </span>
-
-              <p className="mt-1 text-sm font-medium text-gray-800">
-                {user?.userName || "-"}
-              </p>
-            </div>
-
-            {/* Role */}
-            <div className="rounded-lg border border-gray-200 bg-gray-50/50 px-4 py-3">
-              <span className="text-xs font-medium uppercase tracking-wide text-gray-400">
-                Role
-              </span>
-
-              <p className="mt-1 text-sm font-medium text-gray-800">
-                {role}
-              </p>
+                    <div className="mt-0.5 break-words text-base font-semibold capitalize text-[#003566] sm:text-lg">
+                        {user?.lastName || "-"}
+                    </div>
+                </div>
             </div>
 
             {/* Office Code */}
-            <div className="rounded-lg border border-gray-200 bg-gray-50/50 px-4 py-3 sm:col-span-2">
-              <span className="text-xs font-medium uppercase tracking-wide text-gray-400">
-                Office Code
-              </span>
+            <div className="flex min-w-0 items-center gap-3 rounded-lg border border-gray-200 bg-gray-50/50 p-3 sm:p-4">
+                <div className="rounded-full border-2 border-[#FFC300] p-2">
+                  <img
+                    src="/icons/service-management.svg"
+                    alt=""
+                    className="h-6 w-6 shrink-0"
+                  />
+                </div>
 
-              <p className="mt-1 flex items-center gap-2 text-sm font-medium text-gray-800">
-                <Building2 size={15} className="text-gray-400" />
-                {user?.officeCode || "-"}
-              </p>
+                <div className="flex min-w-0 flex-col">
+                    <small className="text-sm text-[#003566]">
+                        Office Code
+                    </small>
+
+                    <div className="mt-0.5 break-words text-base font-semibold capitalize text-[#003566] sm:text-lg">
+                        {user?.officeCode || "-"}
+                    </div>
+                </div>
+            </div>
+
+            {/* User ID / Username */}
+            <div className="col-span-1 flex min-w-0 items-center gap-3 rounded-lg border border-gray-200 bg-gray-50/50 p-3 @lg:col-span-2 sm:p-4">
+                <div className="rounded-full border-2 border-[#FFC300] p-2">
+                  <img
+                    src="/icons/user.svg"
+                    alt=""
+                    className="h-6 w-6 shrink-0"
+                  />
+                </div>
+
+                <div className="flex min-w-0 flex-col">
+                    <small className="text-sm text-[#003566]">
+                        User ID / Username
+                    </small>
+
+                    <div className="mt-0.5 w-full break-all text-base font-semibold text-[#003566] sm:text-lg">
+                        {`${user?.id || "-"} - ${user?.userName || "-"}`}
+                    </div>
+                </div>
             </div>
 
           </div>
         </div>
       </div>
     </div>
+    </>
   );
 };
 

@@ -23,6 +23,7 @@ export const HRViewFeedbackModal = ({
       isOpen={feedbackModalOpen}
       onClose={() => setFeedbackModalOpen(false)}
       title={`${selectedFeedback}`}
+      description="Review Feedback details submitted by the client."
     >
       <div className="w-full overflow-hidden rounded-sm border border-gray-200 bg-white">
         {isLoading ? (

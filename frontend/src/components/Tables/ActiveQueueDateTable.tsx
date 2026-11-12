@@ -1,11 +1,14 @@
+
 import { useState, useEffect } from "react";
 import { TableUI } from "../../ui/form/TableUI";
 import { ErrorText } from "../../ui/form/ErrorText";
 import { useGetActiveQueue } from "../../hooks/useGetActiveQueue";
 import { ViewFeedbackModal } from "../Modals/ViewFeedbackModal";
 import { PaginationUI } from "../../ui/form/PaginationUI";
-import { Fullscreen, Search } from "lucide-react";
 import { InlineLoader } from "../Loader";
+import { CSFCustomToaster } from "../../utils/Toaster";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import notFoundReport from "../../assets/not-found-report.json";
 
 export interface ActiveQueueDateTableProps {
   onDateChange?: (date: Date) => void;
@@ -51,37 +54,117 @@ export const ActiveQueueDateTable = ({
       ] ?? 0
     : data?.total ?? 0;
 
+  const handleCopyTicket = async (ticketCode: string) => {
+    try {
+      await navigator.clipboard.writeText(ticketCode);
+    } catch {
+      const textArea = document.createElement("textarea");
+      textArea.value = ticketCode;
+      textArea.setAttribute("readonly", "");
+      textArea.style.position = "fixed";
+      textArea.style.opacity = "0";
+      document.body.appendChild(textArea);
+      textArea.select();
+
+      const copied = document.execCommand("copy");
+      textArea.remove();
+
+      if (!copied) {
+        CSFCustomToaster.error("Unable to copy ticket");
+        return;
+      }
+    }
+
+    CSFCustomToaster.success(`Ticket ${ticketCode} copied`);
+  };
+
   return (
     <>
       <TableUI>
         <thead>
           <tr>
-            <th>Ticket</th>
-            <th>Status</th>
-            <th>Actions</th>
+            <th className="w-[25%] px-4 py-3">ticket</th>
+            <th className="w-[15%] px-4 py-3">status</th>
+            <th className="w-[35%] px-4 py-3">selected service</th>
+            <th className="w-[25%] px-4 py-3">actions</th>
           </tr>
         </thead>
 
         <tbody>
           {isLoading ? (
             <tr>
-              <td colSpan={3}>
+              <td colSpan={4}>
                 <InlineLoader />
               </td>
             </tr>
           ) : isError ? (
             <tr>
-              <td colSpan={3}>
+              <td colSpan={4}>
                 <ErrorText message={(error as Error).message} />
               </td>
             </tr>
           ) : data?.queue && data.queue.length > 0 ? (
-              data.queue.map((queue) => (
+            data.queue.map((queue) => (
               <tr key={queue._id}>
-                <td>{queue.code}</td>
+                <td>
+                  <div className="flex min-w-0 items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => handleCopyTicket(queue.code)}
+                      aria-label={`Copy ticket ${queue.code}`}
+                      title={`Copy ticket ${queue.code}`}
+                      className="shrink-0 cursor-pointer rounded p-1 transition-colors hover:bg-[#628dec]/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#628dec]"
+                    >
+                      <img
+                        src="/icons/copy-ticket.svg"
+                        alt=""
+                        aria-hidden="true"
+                        className="h-5 w-5"
+                      />
+                    </button>
+
+                    <div className="min-w-0">
+                      <div className="truncate text-lg">
+                        {queue.code}
+                      </div>
+
+                      <small className="block truncate text-sm text-gray-500 tracking-wider font-light">
+                        CSF{queue._id}.v1
+                      </small>
+                    </div>
+                  </div>
+                </td>
 
                 <td className="capitalize">
-                  {queue.status}
+                  <small
+                    className={`inline-flex items-center whitespace-nowrap tracking-wide rounded-full px-2.5 py-1 text-sm font-medium border ${
+                      queue.status === "pending"
+                        ? "bg-amber-100 text-amber-800 border-amber-400"
+                        : queue.status === "used"
+                          ? "bg-green-100 text-green-800 border-green-400"
+                          : "bg-blue-50 text-blue-800 border-blue-300"
+                    }`}
+                  >
+                    <span className="mr-1 text-xl leading-none">
+                      •
+                    </span>
+                    {queue.status}
+                  </small>
+                </td>
+
+                <td>
+                  <p className="line-clamp-2">
+                    {queue.selectedService
+                      .map((service) =>
+                        service
+                          .replace(/_/g, " ")
+                          .toLowerCase()
+                          .replace(/\b\w/g, (char) =>
+                            char.toUpperCase()
+                          )
+                      )
+                      .join(", ")}
+                  </p>
                 </td>
 
                 <td>
@@ -93,10 +176,9 @@ export const ActiveQueueDateTable = ({
                         setFeedbackModalOpen(true);
                         setSelectedFeedback(queue.code);
                       }}
-                      className="inline-flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-gray-100"
+                      className="text-[#000814] bg-[#FFC300] rounded-md px-2.5 py-1 hover:bg-[#E5AC00] transition-colors duration-200 font-semibold tracking-wider cursor-pointer"
                     >
-                      <Fullscreen size={16} />
-                      <span>Review</span>
+                      Review Feedback
                     </button>
                   )}
                 </td>
@@ -104,18 +186,26 @@ export const ActiveQueueDateTable = ({
             ))
           ) : (
             <tr>
-              <td colSpan={3} className="py-12">
-                <div className="flex flex-col items-center justify-center text-center m-9">
-                  <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
-                    <Search size={22} className="text-gray-400" />
+              <td colSpan={4} className="py-12">
+                <div className="m-9 flex max-w-full flex-col items-center justify-center px-4 text-center">
+                  <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-gray-100 sm:h-16 sm:w-16 md:h-[72px] md:w-[72px]">
+                    <DotLottieReact
+                      data={notFoundReport}
+                      loop
+                      autoplay
+                      aria-label="No tickets found"
+                      style={{ width: "100%", height: "100%" }}
+                    />
                   </div>
 
-                  <p className="text-sm font-medium text-gray-700">
-                    No {statusFilter || ""} tickets found
+                  <p className="block max-w-full text-base font-semibold text-slate-500 sm:text-lg lg:text-xl">
+                    No {statusFilter ? `${statusLabel.toLowerCase()} ` : ""}tickets found
                   </p>
 
-                  <p className="mt-1 text-xs text-gray-400">
-                    Try changing the filter or check back later.
+                  <p className="mt-1 text-xs text-gray-400 sm:text-sm">
+                    {statusFilter
+                      ? `Try changing the Filter by selection, then check again.`
+                      : "Try changing the Filter by selection or check back later."}
                   </p>
                 </div>
               </td>
@@ -125,7 +215,7 @@ export const ActiveQueueDateTable = ({
       </TableUI>
 
       {/* Total */}
-      <p className="mx-2 text-sm text-gray-500 capitalize tracking-wider">
+      <p className="mx-2 my-2 text-xs lg:text-sm text-slate-500 capitalize border-b border-slate-200 py-4">
         Total {statusLabel.toLowerCase()}: {total} ticket{total === 1 ? "" : "s"}
       </p>
 

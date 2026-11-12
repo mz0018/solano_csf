@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Input } from "../../../ui/form/Input";
 import { useChangePassword } from "../../../hooks/useChangePassword";
 import { ErrorText } from "../../../ui/form/ErrorText";
+import { AdminButton } from "../../../ui/form/AdminButton";
+
 export const ChangePassword = () => {
   const [currentPassword, setCurrentPassword] = useState<string>("");
   const [newPassword, setNewPassword] = useState<string>("");
@@ -47,11 +49,11 @@ export const ChangePassword = () => {
     confirmPassword === newPassword;
   const isRateLimited = (changePasswordMutation.error as Error & { status?: number })?.status === 429;
   return (
-    <>
-      <span className="text-sm text-gray-500 mb-4">
+    <div className="w-full max-w-2xl px-1 @sm:px-2 @lg:px-4">
+      <span className="mb-4 block text-sm text-gray-500">
         To help protect your account, password changes are limited to once every 60 days.
       </span>
-      <form onSubmit={handleChangePassword} className="space-y-4 max-w-md">
+      <form onSubmit={handleChangePassword} className="w-full max-w-2xl space-y-4">
         <div>
           <label htmlFor="current-password" className="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
           <Input
@@ -61,7 +63,7 @@ export const ChangePassword = () => {
             value={currentPassword}
             onChange={(e) => setCurrentPassword(e.target.value)}
             placeholder="Enter current password"
-            className="w-full text-black"
+            className="w-full min-w-0 rounded-md border border-gray-200 p-3 text-black focus:border-transparent focus:ring-2 focus:ring-blue-500"
             error={currentPasswordError ? "error" : undefined}
           />
           {currentPasswordError && <ErrorText message="Current password is required" />}
@@ -75,7 +77,7 @@ export const ChangePassword = () => {
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
             placeholder="Enter new password (min 8 chars)"
-            className="w-full text-black"
+            className="w-full min-w-0 rounded-md border border-gray-200 p-3 text-black focus:border-transparent focus:ring-2 focus:ring-blue-500"
             error={newPasswordError ? "error" : undefined}
           />
           {newPasswordError && <ErrorText message="Password must be at least 8 characters" />}
@@ -89,7 +91,7 @@ export const ChangePassword = () => {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             placeholder="Confirm new password"
-            className="w-full text-black"
+            className="w-full min-w-0 rounded-md border border-gray-200 p-3 text-black focus:border-transparent focus:ring-2 focus:ring-blue-500"
             error={confirmPasswordError ? "error" : undefined}
           />
           {confirmPasswordError && <ErrorText message="Passwords do not match" />}
@@ -128,14 +130,14 @@ export const ChangePassword = () => {
           />
           Show passwords
         </label>
-        <button
+        <AdminButton
           type="submit"
           disabled={changePasswordMutation.isPending || !isFormValid || isRateLimited}
-          className="admin-blue-button"
+          className="bg-[#003566] border border-[#FFC300] text-[#FFD60A] transition-colors duration-200 hover:bg-[#004080] hover:border-[#FFD60A] font-semibold whitespace-nowrap"
         >
           {changePasswordMutation.isPending ? "Changing..." : "Change Password"}
-        </button>
+        </AdminButton>
       </form>
-    </>
+    </div>
   );
 };

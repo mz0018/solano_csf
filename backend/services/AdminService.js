@@ -2,8 +2,10 @@ import Queue from '../models/queue.model.js'
 import User from '../models/user.model.js'
 import Office from '../models/office.model.js'
 import Service from '../models/service.model.js'
+import ChildServices from '../models/services.child.model.js'
 import Feedback from '../models/feedback.model.js'
 import ErrorController from '../controllers/ErrorController.js'
+import mongoose from 'mongoose'
 
 import { customAlphabet } from 'nanoid'
 
@@ -21,9 +23,16 @@ const calculateRatingAverage = (ratings = {}) => {
 
 class AdminService {
 
-    async generateTicket(userId, selectedService, otherServiceDetail) {
-        if (!selectedService) {
+    async generateTicket(userId, selectedService, otherServiceDetail, selectedChildServices) {
+        console.log(selectedService)
+        console.log(selectedChildServices)
+
+        if (!selectedService || (Array.isArray(selectedService) && selectedService.length === 0)) {
             throw new ErrorController('No service found', 400)
+        }
+
+        if (selectedService.includes('APPLICATION_FOR_LEAVE') && !selectedChildServices) {
+            throw new ErrorController('No selected type of leave found', 400)
         }
 
         const user = await User.findById(userId)
@@ -49,10 +58,9 @@ class AdminService {
         }
         const normalizedOtherDetail = hasOther ? otherServiceDetail.trim().slice(0, 200) : null
 
-        // const year = String(new Date().getFullYear()).slice(-2)
-
         const ticket = await Queue.create({
             selectedService: services,
+            selectedChildService: selectedChildServices,
             otherServiceDetail: normalizedOtherDetail,
             officeCode: `${officeCode}`,
             code: generateCode(),
@@ -239,7 +247,7 @@ class AdminService {
 
         const startDate = new Date(dateFrom);
         const endDate = new Date(dateTo + 'T23:59:59.999');
-        const [feedbacks, serviceDocs] = await Promise.all([
+        const [feedbacks, serviceDocs, queueServiceCounts] = await Promise.all([
             Feedback.find({
                 officeCode,
                 createdAt: { $gte: startDate, $lte: endDate }
@@ -247,15 +255,31 @@ class AdminService {
             .lean()
             .select('service otherServiceDetail client.gender client.affiliation client.ageGroup client.employmentStatus client.address ratings comments createdAt'),
             Service.find({ officeCode })
-                .select('code name')
-                .lean()
+                .select('code name type')
+                .lean(),
+            Queue.aggregate([                      
+                {
+                    $match: { officeCode, createdAt: { $gte: startDate, $lte: endDate } }
+                },
+                { $unwind: '$selectedService' },
+                { $group: { _id: '$selectedService', count: { $sum: 1 } } }
+            ])
         ]);
+
         const serviceNameMap = Object.fromEntries(
             serviceDocs.map(s => [s.code, s.name])
         );
-        // Keep one object per feedback (per person) – service stays as array of names
-        // so Gender/Age/Affiliation/Quality counts stay 1 per person, while
-        // service-specific docx sections expand internally per service
+        const serviceTypeMap = Object.fromEntries(
+            serviceDocs.map(s => [s.code, s.type])
+        );
+
+        const serviceTransactions = queueServiceCounts
+        .map(({ _id, count }) => ({
+            service: _id === 'OTHER_SERVICE' ? 'Other Service' : serviceNameMap[_id] || _id,
+            totalTransactions: count,
+        }))
+        .sort((a, b) => b.totalTransactions - a.totalTransactions);
+        
         const feedbacksWithNames = feedbacks.map(f => {
             const codes = Array.isArray(f.service) ? f.service : f.service ? [f.service] : []
             const names = codes.map(code => {
@@ -267,12 +291,29 @@ class AdminService {
             return { ...f, service: names }
         });
 
+        const services = feedbacks.flatMap(item => {
+            const codes = Array.isArray(item.service)
+                ? item.service
+                : item.service ? [item.service] : [];
+
+            return codes.map(code => ({
+                service: code === 'OTHER_SERVICE' && item.otherServiceDetail
+                    ? `Other Service: ${item.otherServiceDetail}`
+                    : serviceNameMap[code] || code,
+                type: serviceTypeMap[code] || 'unknown'
+            }));
+        });
+
+        console.log(services)
+
         return {
             office,
             dateFrom,
             dateTo,
+            serviceTransactions,
             totalFeedbacks: feedbacks.length,
             feedbacks: feedbacksWithNames,
+            services,
         };
     }
 
@@ -282,10 +323,22 @@ class AdminService {
         }
         
         const services = await Service.find({ officeCode: userOfficeCode })
-            .select('code name')
+            .select('code name status type')
             .lean()
         
         return services
+    }
+
+    async getChildServices(userOfficeCode) {
+        if (!userOfficeCode) {
+            throw new ErrorController('Office code is required', 400)
+        }
+
+        const childServices = await ChildServices.find({ officeCode: userOfficeCode })
+            .select('code name status type')
+            .lean()
+
+        return childServices
     }
 
     async getRenderedService(userOfficeCode, dateFrom, dateTo, page = 1, limit = 10) {
@@ -379,6 +432,121 @@ class AdminService {
             limit,
             totalPages: Math.ceil(total / limit)
         }
+    }
+
+    async saveNewService(data, user) {
+
+        if (!data) throw new ErrorController('New service data not found', 401)
+        if (!user) throw new ErrorController('User not found', 401)
+
+        const serviceName = data.serviceName.charAt(0).toUpperCase() + data.serviceName.slice(1).toLowerCase();
+        const serviceCode = serviceName.toUpperCase().replace(/\s+/g, '_')
+        const serviceOfficeCode = user.officeCode
+        const userName = `${user.firstName}, ${user.lastName}`
+        const userId = user.id
+        const serviceType = data.serviceType
+        const serviceStatus = 'active'
+
+        const newService = await Service({
+            officeCode: serviceOfficeCode,
+            code: serviceCode,
+            name: serviceName,
+            status: serviceStatus,
+            type: serviceType,
+            createdBy: {
+                user: userName,
+                userId: userId,
+            }
+        })
+
+        await newService.save()
+        return newService
+    }
+
+    async updateServiceStatus(serviceId, status, user) {
+        if (!user?.officeCode) throw new ErrorController('Office code is required', 400)
+
+        if (!mongoose.Types.ObjectId.isValid(serviceId)) {
+            throw new ErrorController('Invalid service ID', 400)
+        }
+
+        if (!['active', 'inactive'].includes(status)) {
+            throw new ErrorController('Invalid service status', 400)
+        }
+
+        const service = await Service.findOneAndUpdate(
+            { _id: serviceId, officeCode: user.officeCode },
+            { status },
+            { returnDocument: 'after', runValidators: true }
+        ).select('code name status type').lean()
+
+        if (!service) throw new ErrorController('Service not found', 404)
+
+        return service
+    }
+
+    async partialUpdateService(serviceId, changes, user) {
+        if (!user?.officeCode) {
+            throw new ErrorController('Office code is required', 400)
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(serviceId)) {
+            throw new ErrorController('Invalid service ID', 400)
+        }
+
+        if (!changes || typeof changes !== 'object' || Array.isArray(changes)) {
+            throw new ErrorController('Service changes are required', 400)
+        }
+
+        const allowedFields = ['name', 'type']
+        const changedFields = Object.keys(changes)
+
+        if (
+            changedFields.length === 0 ||
+            changedFields.some(field => !allowedFields.includes(field))
+        ) {
+            throw new ErrorController('Invalid service changes', 400)
+        }
+
+        const updates = {}
+
+        if (Object.hasOwn(changes, 'name')) {
+            if (typeof changes.name !== 'string' || !changes.name.trim()) {
+                throw new ErrorController('Service name is required', 400)
+            }
+
+            updates.name = changes.name.trim()
+        }
+
+        if (Object.hasOwn(changes, 'type')) {
+            if (!['external', 'internal'].includes(changes.type)) {
+                throw new ErrorController('Invalid service type', 400)
+            }
+
+            updates.type = changes.type
+        }
+
+        const service = await Service.findOneAndUpdate(
+            {
+                _id: serviceId,
+                officeCode: user.officeCode
+            },
+            {
+                $set: updates
+            },
+            {
+                returnDocument: 'after',
+                runValidators: true
+            }
+        )
+            .select('code name status type')
+            .lean()
+
+        if (!service) {
+            throw new ErrorController('Service not found', 404)
+        }
+
+        return service
     }
 
 }

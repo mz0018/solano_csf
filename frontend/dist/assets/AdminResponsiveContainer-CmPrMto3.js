@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-UyaNSxZQ.js";var t=e(),n=({children:e})=>(0,t.jsx)(`div`,{className:`sidebar-surface admin-content w-full min-w-0 overflow-x-scroll p-6 flex flex-col items-start gap-6 shadow-md rounded-sm border border-[#cbd5e1]`,children:e});export{n as t};

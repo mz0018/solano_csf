@@ -1,27 +1,42 @@
+
 import { useRef, useState } from "react";
 
 import {
   UserRound,
   Bell,
   ChevronDown,
-  // Search
 } from "lucide-react";
 
-import { useAuth } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { BtnSignout } from "../buttons/BtnSignout";
 
-export const AdminNavbar = () => {
-  const { user } = useAuth();
+type AdminNavbarProps = {
+  sidebarCollapsed: boolean;
+  onToggleSidebar: () => void;
+};
+
+export const AdminNavbar = ({
+  sidebarCollapsed,
+  onToggleSidebar,
+}: AdminNavbarProps) => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
-  // Timer for delayed dropdown closing
-  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isNotificationsActive = pathname.startsWith(
+    "/admin/settings/notifications"
+  );
+
+  const isProfileActive = pathname.startsWith(
+    "/admin/settings/profile"
+  );
+
+  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  );
 
   const handleProfileToggle = () => {
-    // Cancel pending close
     if (closeTimeoutRef.current) {
       clearTimeout(closeTimeoutRef.current);
       closeTimeoutRef.current = null;
@@ -31,7 +46,6 @@ export const AdminNavbar = () => {
   };
 
   const handleProfileEnter = () => {
-    // Cancel pending close when mouse comes back
     if (closeTimeoutRef.current) {
       clearTimeout(closeTimeoutRef.current);
       closeTimeoutRef.current = null;
@@ -39,7 +53,6 @@ export const AdminNavbar = () => {
   };
 
   const handleProfileLeave = () => {
-    // Only close if dropdown is currently open
     if (!isProfileOpen) return;
 
     closeTimeoutRef.current = setTimeout(() => {
@@ -48,82 +61,114 @@ export const AdminNavbar = () => {
   };
 
   return (
-    <header className="flex items-center justify-between sidebar-surface text-[#1f2937] border-b border-[#cbd5e1] px-6 py-3 shadow-xs">
+    <header className="backdrop-blur-sm flex h-24 w-full items-center justify-between border-b-5 border-[#FFC300] bg-[#001D3D] p-2 py-3 text-white shadow-[0_2px_12px_rgba(47,86,165,0.18)]">
 
       {/* Left */}
-      <div className="flex w-full items-center gap-3">
-        {/* <div className="relative w-full max-w-md">
-          <Search
-            size={17}
-            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+      <div className="flex min-w-0 flex-1 items-center gap-3">
+        <button
+          type="button"
+          onClick={onToggleSidebar}
+          aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+          className="inline-flex h-14 shrink-0 items-center justify-center px-2 cursor-pointer"
+        >
+          <img
+            src="/img/logo.png"
+            alt="Toggle admin sidebar"
+            className="h-14 w-14 object-contain"
           />
+        </button>
 
-          <input
-            type="text"
-            placeholder="Search..."
-            className="w-full rounded-lg border border-gray-300 bg-white py-2 pl-10 pr-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-          />
-        </div> */}
+        <div className="hidden sm:flex min-w-0 flex-col justify-center">
+          <p className="text-2xl font-semibold tracking-wide font-mono leading-tight">
+            Solano CSF
+          </p>
+          <p className="text-xs text-white tracking-wide">
+            Client Satisfaction Feedback
+          </p>
+        </div>
       </div>
 
       {/* Right */}
-      <div className="flex items-center gap-3">
+      <div className="ml-auto flex shrink-0 items-center gap-2">
 
         {/* Notifications */}
         <button
           type="button"
-          onClick={() => navigate("/admin/settings/notifications")}
-          className="relative flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-white text-gray-500 transition hover:bg-gray-200 hover:text-gray-700"
+          onClick={() =>
+            navigate("/admin/settings/notifications")
+          }
+          className={`relative flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-white/20 transition hover:bg-white/15 ${
+            isNotificationsActive
+              ? "bg-white text-[#4f79d2] shadow-sm"
+              : "bg-white/10 text-white"
+          }`}
           aria-label="Notifications"
+          aria-current={
+            isNotificationsActive ? "page" : undefined
+          }
+          title="Notifications"
         >
-          <Bell size={17} />
+          <Bell size={17} strokeWidth={2} />
 
-          <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white" />
+          <span
+            className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white"
+            aria-hidden="true"
+          />
         </button>
 
         {/* Profile */}
         <div
-          className="relative flex items-center gap-2 rounded-lg px-2 py-1.5"
+          className="relative flex items-center gap-2"
           onMouseEnter={handleProfileEnter}
           onMouseLeave={handleProfileLeave}
         >
-
-          {/* Avatar */}
           <button
             type="button"
             onClick={() => navigate("/admin/settings/profile")}
-            className="relative flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-white text-gray-500 transition hover:bg-gray-200 hover:text-gray-700"
+            className={`flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-white/20 transition hover:bg-white/15 ${
+              isProfileActive
+                ? "bg-white text-[#4f79d2] shadow-sm"
+                : "bg-white/10 text-white"
+            }`}
             aria-label="Profile"
+            aria-current={
+              isProfileActive ? "page" : undefined
+            }
+            title="Profile"
           >
-            <UserRound size={17} />
+            <UserRound size={17} strokeWidth={3} />
           </button>
 
-          {/* Name + Dropdown Toggle */}
+          {/* Profile Menu Toggle */}
           <button
             type="button"
             onClick={handleProfileToggle}
-            className="hidden cursor-pointer items-center gap-1 text-left sm:flex"
+            className={`flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-white/20 transition hover:bg-white/15 ${
+              isProfileOpen
+                ? "bg-white text-[#4f79d2] shadow-sm"
+                : "bg-white/10 text-white"
+            }`}
+            aria-label="Open profile menu"
             aria-expanded={isProfileOpen}
             aria-haspopup="menu"
+            title="Profile menu"
           >
-            <span className="text-sm font-medium text-gray-700 whitespace-nowrap">
-              Welcome back, {user?.userName}
-            </span>
-
             <ChevronDown
-              size={15}
-              className={`text-gray-400 transition-transform duration-200 ${
+              size={17}
+              strokeWidth={3}
+              className={`transition-transform duration-200 ${
                 isProfileOpen ? "rotate-180" : ""
               }`}
             />
           </button>
 
-          {/* Dropdown */}
+          {/* Profile Menu */}
           {isProfileOpen && (
             <div
               className="absolute right-0 top-full z-50 mt-2 w-48 overflow-hidden rounded-lg border border-gray-200 bg-white py-1 shadow-lg"
               onMouseEnter={handleProfileEnter}
               onMouseLeave={handleProfileLeave}
+              role="menu"
             >
               <BtnSignout />
             </div>
@@ -133,4 +178,3 @@ export const AdminNavbar = () => {
     </header>
   );
 };
-

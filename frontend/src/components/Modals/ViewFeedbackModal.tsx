@@ -22,7 +22,8 @@ export const ViewFeedbackModal = ({
     <ModalUI
       isOpen={feedbackModalOpen}
       onClose={() => setFeedbackModalOpen(false)}
-      title={`Review ${selectedFeedback} Feedback`}
+      title={`Review Feedback`}
+      description={`Ticket ${selectedFeedback}.`}
     >
       <div className="w-full overflow-hidden rounded-sm border border-gray-200 bg-white">
         {isLoading ? (

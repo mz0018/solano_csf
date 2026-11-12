@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react"
-
+import { Select } from "../../ui/form/Select"
 import { ModalUI } from "../../ui/form/ModalUI"
 import { Button } from "../../ui/form/Buttons"
+import { AdminButton } from "../../ui/form/AdminButton"
 import { useGenerateTicket } from "../../hooks/useGenerateTicket"
 import { useGetServices } from "../../hooks/useGetServices"
+import { useGetChildServices } from "../../hooks/useGetChildServices"
 import type { Service } from "../../hooks/useGetServices"
+import type { ChildService } from "../../hooks/useGetChildServices"
 import { ErrorText } from "../../ui/form/ErrorText"
 import { Input } from "../../ui/form/Input"
 import { printQr } from "../../utils/printQr"
@@ -36,10 +39,14 @@ export const GenerateTicketModal = ({
   const { createNewTicket, isGeneratingTicket } = useGenerateTicket()
 
   const { getOfficeService } = useGetServices()
+  const { getChildServices } = useGetChildServices()
 
   const [services, setServices] = useState<Service[]>([])
+  const [childServices, setChildServices] = useState<ChildService[]>([])
   const [selectedService, setSelectedService] = useState<string[]>([])
+  const [selectedChildServices, setSelectedChildServices] = useState<string>("")
   const [serviceError, setServiceError] = useState<string>("")
+  const [childServiceError, setChildServiceError] = useState<string>("")
   const [otherText, setOtherText] = useState<string>("")
   const [otherError, setOtherError] = useState<string>("")
   const [activeQr, setActiveQr] = useState<GeneratedQrCode | null>(null)
@@ -80,6 +87,11 @@ export const GenerateTicketModal = ({
   }
 
   const handleGenerateTicket = async () => {
+    if (selectedService.includes("APPLICATION_FOR_LEAVE") && !selectedChildServices) {
+      setChildServiceError("Please select a leave type")
+      return
+    }
+
     if (selectedService.length === 0) {
       setServiceError("Service is required")
       return
@@ -93,7 +105,7 @@ export const GenerateTicketModal = ({
     setServiceError("")
     setOtherError("")
 
-    const qrCodes = await createNewTicket(selectedService, otherText.trim())
+    const qrCodes = await createNewTicket(selectedService, otherText.trim(), selectedChildServices)
     if (qrCodes?.length) {
       setActiveQr(qrCodes[0])
     }
@@ -124,6 +136,22 @@ export const GenerateTicketModal = ({
     fetchServices()
   }, [isModalOpen, getOfficeService])
 
+  useEffect(() => {
+    if (!isModalOpen) return
+
+    const fetchChildServices = async () => {
+      const data = await getChildServices()
+
+      if (data) {
+        setChildServices(data)
+      } else {
+        setChildServices([])
+      }
+    }
+
+    fetchChildServices()
+  }, [isModalOpen, getChildServices])
+
   const handleClose = () => {
     resetModal()
     setIsModalOpen(false)
@@ -134,6 +162,7 @@ export const GenerateTicketModal = ({
       isOpen={isModalOpen}
       onClose={handleClose}
       title="Generate Ticket"
+      description="Generate a new queue ticket?"
       footer={
         activeQr ? (
           <Button
@@ -141,51 +170,73 @@ export const GenerateTicketModal = ({
               printQr(activeQr.qrCode, activeQr.ticket.code, activeQr.ticket.officeCode)
               handleClose()
             }}
-            className="w-full bg-blue-500 text-white p-4 rounded-sm cursor-pointer hover:bg-blue-600 transition-colors"
+            className="w-full bg-[#003566] border border-[#FFC300] text-[#FFD60A] transition-colors duration-200 hover:bg-[#004080] hover:border-[#FFD60A] font-semibold whitespace-nowrap"
           >
             Print QR
           </Button>
         ) : (
-          <Button
+          <AdminButton
+            icon="/icons/colored-submit.svg"
+            iconAlt="Submit"
             disabled={isGeneratingTicket}
             onClick={handleGenerateTicket}
-            className="w-full bg-blue-500 text-white p-4 rounded-sm cursor-pointer hover:bg-blue-600 transition-colors"
+            className="w-full bg-[#003566] border border-[#FFC300] text-[#FFD60A] transition-colors duration-200 hover:bg-[#004080] hover:border-[#FFD60A] font-semibold whitespace-nowrap"
           >
-            {isGeneratingTicket ? "Loading..." : "Generate"}
-          </Button>
+            {isGeneratingTicket ? "Loading..." : "Proceed"}
+          </AdminButton>
         )
       }
     >
       <div className="space-y-4">
         {!activeQr ? (
           <>
-            <p className="text-sm text-gray-500">
-              Generate a new queue ticket?
-            </p>
-
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">
-                Services
-              </label>
-
               <div className="w-96 space-y-2">
                 {sortedServices.map((service) => (
-                  <label
-                    key={service.code}
-                    className="flex items-center gap-3 p-3 border border-gray-200 rounded-md cursor-pointer hover:bg-gray-50 transition-colors"
-                  >
-                    <input
-                      type="checkbox"
-                      value={service.code}
-                      checked={selectedService.includes(service.code)}
-                      onChange={() => handleServiceChange(service.code)}
-                      className="h-4 w-4 rounded text-blue-500 focus:ring-blue-500"
-                    />
+                  <div key={service.code}>
+                    <label className="flex items-center gap-3 p-3 border border-gray-200 rounded-md cursor-pointer hover:bg-gray-50 transition-colors">
+                      <input
+                        type="checkbox"
+                        value={service.code}
+                        checked={selectedService.includes(service.code)}
+                        onChange={() => handleServiceChange(service.code)}
+                        className="h-4 w-4 rounded text-blue-500 focus:ring-blue-500"
+                      />
 
-                    <span className="text-sm text-gray-700">
-                      {service.name}
-                    </span>
-                  </label>
+                      <span className="text-sm text-gray-700">
+                        {service.name}
+                      </span>
+                    </label>
+
+                    {service.code === "APPLICATION_FOR_LEAVE" &&
+                      selectedService.includes("APPLICATION_FOR_LEAVE") && (
+                        <>
+                        <Select
+                          variant="admin"
+                          className="mt-2"
+                          value={selectedChildServices}
+                          onChange={(e) => {
+                            setSelectedChildServices(e.target.value)
+                            setChildServiceError("")
+                          }}
+                          error={childServiceError}
+                        >
+                          <option value="" disabled>
+                            Select leave type
+                          </option>
+                          
+                          {childServices.map((cs) => (
+                            <option key={cs._id} value={cs.code}>
+                              {cs.name}
+                            </option>
+                          ))}
+                        </Select>
+                        {childServiceError && (
+                          <ErrorText message={childServiceError} />
+                        )}
+                        </>
+                      )}
+                  </div>
                 ))}
 
                 {isOtherSelected && (
@@ -207,9 +258,7 @@ export const GenerateTicketModal = ({
                     />
 
                     {otherError && (
-                      <p className="mt-1 text-xs text-red-500">
-                        {otherError}
-                      </p>
+                      <ErrorText message={otherError} />
                     )}
                   </div>
                 )}
