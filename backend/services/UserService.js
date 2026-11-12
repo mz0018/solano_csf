@@ -91,7 +91,7 @@ class UserService {
                 tokenVersion: user.tokenVersion 
             },
             process.env.JWT_SECRET,
-            { expiresIn: '30m' }
+            { expiresIn: '10s' }
         )
 
         return token
@@ -110,7 +110,6 @@ class UserService {
             if (!decoded || !decoded.id) return
             const user = await User.findById(decoded.id)
             if (user) {
-                // console.log("Token version: ", user.tokenVersion)
                 user.tokenVersion = 0
                 await user.save()
             }
@@ -183,6 +182,18 @@ class UserService {
             .lean()
 
         return { notifications }
+    }
+
+    async resetTokenVersionService(userId) {
+        console.log(`User Service reset token version to 0 ${userId}`)
+        const user = await User.findById(userId).select(' _id firstName lastName tokenVersion ')
+
+        if (!user) {
+            console.log('No user found!')
+            return null
+        }
+        user.tokenVersion = 0
+        await user.save()
     }
 
 }

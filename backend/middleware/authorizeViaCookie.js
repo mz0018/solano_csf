@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken'
 import User from '../models/user.model.js'
 import ErrorController from '../controllers/ErrorController.js'
+import UserController from '../controllers/UserController.js'
 
 export const authorizeViaCookie = async (req, res, next) => {
     const token = req.cookies.authToken
@@ -30,7 +31,7 @@ export const authorizeViaCookie = async (req, res, next) => {
                 tokenVersion: decoded.tokenVersion 
             },
             process.env.JWT_SECRET,
-            { expiresIn: '30m' }
+            { expiresIn: '10s' }
         )
         res.cookie('authToken', newToken, {
             httpOnly: false,
@@ -43,6 +44,12 @@ export const authorizeViaCookie = async (req, res, next) => {
         req.user_id = decoded.id
         next()
     } catch (error) {
+        if (error.name === 'TokenExpiredError') {
+            const decoded = jwt.decode(token)
+            if (decoded && typeof decoded === 'object' && decoded.id) {
+                await UserController.resetTokenVersion(decoded.id)
+            }
+        }
         return next(new ErrorController('Invalid or expired token', 401))
     }
 }

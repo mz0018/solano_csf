@@ -99,6 +99,15 @@ class UserController {
         }
     }
 
+    resetTokenVersion = async (userId) => {
+        try {
+            const result = await UserService.resetTokenVersionService(userId)
+            res.status(200).json(result)
+        } catch (error) {
+            next(error)
+        }
+    }
+
 }
 
 export default new UserController()
