@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken'
 import UserService from '../services/UserService.js'
+import { getAuthCookieMaxAge } from '../config/auth.js'
 class UserController {
 
     verifyUser = async (req, res, next) => {
@@ -36,7 +37,7 @@ class UserController {
                 httpOnly: false, // Set to true in production with HTTPS
                 secure: false,
                 sameSite: 'Lax',
-                maxAge: 15 * 60 * 1000,
+                maxAge: getAuthCookieMaxAge(),
                 path: '/'
             })
 
@@ -100,12 +101,8 @@ class UserController {
     }
 
     resetTokenVersion = async (userId) => {
-        try {
-            const result = await UserService.resetTokenVersionService(userId)
-            res.status(200).json(result)
-        } catch (error) {
-            next(error)
-        }
+        console.log(`Auto logout: user _id ${userId}`)
+        return UserService.resetTokenVersionService(userId)
     }
 
 }

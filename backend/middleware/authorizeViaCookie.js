@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken'
 import User from '../models/user.model.js'
 import ErrorController from '../controllers/ErrorController.js'
 import UserController from '../controllers/UserController.js'
+import { getAuthCookieMaxAge, getJwtExpiresIn } from '../config/auth.js'
 
 export const authorizeViaCookie = async (req, res, next) => {
     const token = req.cookies.authToken
@@ -31,13 +32,13 @@ export const authorizeViaCookie = async (req, res, next) => {
                 tokenVersion: decoded.tokenVersion 
             },
             process.env.JWT_SECRET,
-            { expiresIn: '10s' }
+            { expiresIn: getJwtExpiresIn() }
         )
         res.cookie('authToken', newToken, {
             httpOnly: false,
             secure: false,
             sameSite: 'Lax',
-            maxAge: 15 * 60 * 1000,
+            maxAge: getAuthCookieMaxAge(),
             path: '/'
         })
         req.user = decoded

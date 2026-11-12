@@ -5,6 +5,7 @@ import argon2 from 'argon2'
 import jwt from 'jsonwebtoken'
 import ErrorController from '../controllers/ErrorController.js'
 import { recordFailedSigninAttempt } from '../middleware/signinRateLimiter.js'
+import { getJwtExpiresIn } from '../config/auth.js'
 
 class UserService {
     
@@ -91,7 +92,7 @@ class UserService {
                 tokenVersion: user.tokenVersion 
             },
             process.env.JWT_SECRET,
-            { expiresIn: '10s' }
+            { expiresIn: getJwtExpiresIn() }
         )
 
         return token
