@@ -1,0 +1,15 @@
+-sudo apt update
+-sudo apt install nginx -y
+-sudo systemctl status nginx
+-sudo systemctl start nginx
+-sudo systemctl enable nginx
+
+/etc/nginx/nginx.conf = Main Nginx configuration
+
+/etc/nginx/sites-available/ = Virtual host configurations
+
+/etc/nginx/sites-enabled/ = Enabled virtual hosts
+
+/var/log/nginx/access.log = Access logs
+
+/var/log/nginx/error.log = Error logs
