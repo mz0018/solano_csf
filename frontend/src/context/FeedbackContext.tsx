@@ -1,8 +1,7 @@
-import { createContext, useContext, useState } from 'react'
+import { useState } from 'react'
 import type { ReactNode } from 'react'
-import type { FeedbackFormRequest, FeedbackVerifiedQueue, FeedbackContextType } from '../types/ClientFeedbackTypes'
-
-const FeedbackContext = createContext<FeedbackContextType | null>(null)
+import type { FeedbackFormRequest, FeedbackVerifiedQueue } from '../types/ClientFeedbackTypes'
+import { FeedbackContext } from '../hooks/useFeedback'
 
 export const FeedbackProvider = ({ children }: { children: ReactNode }) => {
   const [verified, setVerifiedState] = useState<FeedbackVerifiedQueue | null>(null)
@@ -21,10 +20,4 @@ export const FeedbackProvider = ({ children }: { children: ReactNode }) => {
       {children}
     </FeedbackContext.Provider>
   )
-}
-
-export const useFeedback = () => {
-  const context = useContext(FeedbackContext)
-  if (!context) throw new Error('useFeedback must be used within a FeedbackProvider')
-  return context
 }

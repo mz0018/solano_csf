@@ -2,7 +2,7 @@ import { CsfFormUI } from "../ui/form/CsfFormUI";
 import { ArrowLeft, Send } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useFeedback } from "../context/FeedbackContext";
+import { useFeedback } from "../hooks/useFeedback";
 import { ErrorText } from "../ui/form/ErrorText";
 import type { FeedbackFormButtons } from "../types/ClientFeedbackTypes";
 

@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useVerifyQueue } from "../hooks/useVerifyQueue";
 import { ErrorText } from "../ui/form/ErrorText";
 import { Input } from "../ui/form/Input";
-import { useFeedback } from "../context/FeedbackContext";
+import { useFeedback } from "../hooks/useFeedback";
 import { useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
 import type { FeedbackFormButtons } from "../types/ClientFeedbackTypes";

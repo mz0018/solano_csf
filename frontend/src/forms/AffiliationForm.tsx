@@ -3,7 +3,7 @@ import { Input } from "../ui/form/Input"
 import { ArrowLeft, ArrowRightToLine } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useFeedback } from "../context/FeedbackContext";
+import { useFeedback } from "../hooks/useFeedback";
 import type { FeedbackFormButtons } from "../types/ClientFeedbackTypes";
 
 export const AffiliationForm = ({ onNext, onBack }: Pick<FeedbackFormButtons, "onNext" | "onBack">) => {

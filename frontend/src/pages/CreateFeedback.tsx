@@ -9,7 +9,8 @@ import { AddressForm } from "../forms/AddressForm";
 import { EmploymentStatusForm } from "../forms/EmploymentStatusForm";
 import { ServiceRatingForm } from "../forms/ServiceRatingsForm";
 import { OtherSuggestionForm } from "../forms/OtherSuggestionForm";
-import { FeedbackProvider, useFeedback } from "../context/FeedbackContext";
+import { FeedbackProvider } from "../context/FeedbackContext";
+import { useFeedback } from "../hooks/useFeedback";
 import { useSubmitFeedback } from "../hooks/useSubmitFeedback";
 import type { FeedbackFormRequest } from "../types/ClientFeedbackTypes";
 

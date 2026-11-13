@@ -3,7 +3,7 @@ import { Input } from "../ui/form/Input"
 import { ArrowLeft, ArrowRightToLine } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useFeedback } from "../context/FeedbackContext";
+import { useFeedback } from "../hooks/useFeedback";
 import { ErrorText } from "../ui/form/ErrorText";
 import type { FeedbackFormButtons } from "../types/ClientFeedbackTypes";
 

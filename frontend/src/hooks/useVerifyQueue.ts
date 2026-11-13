@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useFeedback } from '../context/FeedbackContext'
+import { useFeedback } from './useFeedback';
 
 export const useVerifyQueue = () => {
   const { formData } = useFeedback();
