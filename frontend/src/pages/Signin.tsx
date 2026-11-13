@@ -7,14 +7,14 @@ import { ErrorText } from "../ui/form/ErrorText";
 import { Eye, EyeOff, LogIn } from "lucide-react";
 import { ClipLoader } from "react-spinners";
 import { PasswordAssistanceModal } from "../components/Modals/PasswordAssistanceModal";
-import { useAuth } from "../context/AuthContext";
+import { useAuthorize } from "../hooks/useAuthorize";
 import { getRoleBasedNavigationPath } from "../utils/getRoleBasedNavigationPath";
 import { Loader } from "../components/Loader";
 import { Navigate } from "react-router-dom";
 
 const Signin = () => {
   const { handleSubmit, isLoading, setUserName, userName, setPassword, password, hasError, status } = useSignin();
-  const { user, loading } = useAuth();
+  const { user, loading } = useAuthorize();
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showPasswordAssistance, setShowPasswordAssistance] = useState<boolean>(false);
 

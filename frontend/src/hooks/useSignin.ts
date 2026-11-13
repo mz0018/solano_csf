@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useAuth } from '../context/AuthContext'
+import { useAuthorize } from './useAuthorize'
 import { useNavigate } from 'react-router-dom'
 import { getRoleBasedNavigationPath } from '../utils/getRoleBasedNavigationPath'
 
@@ -16,7 +16,7 @@ export const useSignin = () => {
         general?: string
     }>({})
 
-    const { verifyAuth } = useAuth()
+    const { verifyAuth } = useAuthorize()
     const navigate = useNavigate()
 
     const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {

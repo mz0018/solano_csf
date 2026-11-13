@@ -2,11 +2,11 @@
 import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import { SidebarUI } from '../ui/SidebarUI'
-import { useAuth } from '../context/AuthContext'
+import { useAuthorize } from '../hooks/useAuthorize'
 import { AdminNavbar } from '../components/Navbar/AdminNavbar'
 
 const AdminLayout = () => {
-  const { user } = useAuth()
+  const { user } = useAuthorize()
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('sidebar-collapsed')

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAuth } from "../../../context/AuthContext";
+import { useAuthorize } from "../../../hooks/useAuthorize";
 import { RenderReportStatistics } from "./RenderStatistics";
 import { RenderReportStatisticsTable } from "./RenderReportStatisticsTable";
 import { useGetReportStatistics } from "../../../hooks/useGetReportStatistics";
@@ -33,7 +33,7 @@ export type RenderReportStatisticsDatePickerProps = {
 };
 
 export const ReadReportStatistics = () => {
-    const { user } = useAuth();
+    const { user } = useAuthorize();
 
     const now = new Date();
     const year = now.getFullYear();

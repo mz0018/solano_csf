@@ -1,25 +1,12 @@
-import { createContext, useContext, useState, useEffect, useRef } from 'react'
-import { useQueryClient } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
+import { useState, useEffect, useRef } from 'react'
+import type { AuthorizeUser } from '../types/AuthorizeTypes'
+import { AuthorizeContext } from '../hooks/useAuthorize'
 
-interface AuthUser {
-  id: string
-  userName: string
-  role: string
-  officeCode?: string
-}
-
-interface AuthContextType {
-  user: AuthUser | null
-  loading: boolean
-  verifyAuth: () => Promise<void>
-  signOut: () => Promise<void>
-}
-
-const AuthContext = createContext<AuthContextType | null>(null)
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<AuthUser | null>(null)
+  const [user, setUser] = useState<AuthorizeUser | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const queryClient = useQueryClient()
 
@@ -106,16 +93,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, verifyAuth, signOut }}>
+    <AuthorizeContext.Provider value={{ user, loading, verifyAuth, signOut }}>
       {children}
-    </AuthContext.Provider>
+    </AuthorizeContext.Provider>
   )
-}
-
-export const useAuth = () => {
-  const context = useContext(AuthContext)
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider")
-  }
-  return context
 }

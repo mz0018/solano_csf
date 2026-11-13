@@ -1,16 +1,16 @@
 import { useState } from 'react'
-import { useAuth } from '../../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '../../ui/form/Buttons'
 import { LogOut } from 'lucide-react'
 import { ClipLoader } from 'react-spinners'
+import { useAuthorize } from '../../hooks/useAuthorize'
 
 type BtnSignoutProps = {
     collapsed?: boolean
 }
 
 export const BtnSignout = ({ collapsed = false }: BtnSignoutProps) => {
-    const { signOut } = useAuth()
+    const { signOut } = useAuthorize()
     const navigate = useNavigate()
     const [isLoggingOut, setIsLoggingOut] = useState(false)
 

@@ -7,7 +7,7 @@ export const useFeedback = () => {
   const context = useContext(FeedbackContext)
 
   if (!context) {
-    throw new Error('Feedback must be used within a Feedback Provider!')
+    throw new Error('useFeedback.ts must be used within a Feedback Provider!')
   }
 
   return context

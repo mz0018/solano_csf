@@ -1,5 +1,5 @@
 import { Outlet, NavLink } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+import { useAuthorize } from '../hooks/useAuthorize'
 
 const tabs = [
   { name: 'Profile Information', path: 'profile', icon: '/icons/colored-user.svg', roles: ['office_admin', 'hr_admin', 'super_admin', 'head_office_admin'] },
@@ -9,7 +9,7 @@ const tabs = [
 ]
 
 export const SettingsLayout = () => {
-  const { user } = useAuth()
+  const { user } = useAuthorize()
   const visibleTabs = tabs.filter(({ roles }) => roles.includes(user?.role ?? ''))
 
   return (
