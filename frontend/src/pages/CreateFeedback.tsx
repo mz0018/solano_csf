@@ -11,7 +11,7 @@ import { ServiceRatingForm } from "../forms/ServiceRatingsForm";
 import { OtherSuggestionForm } from "../forms/OtherSuggestionForm";
 import { FeedbackProvider, useFeedback } from "../context/FeedbackContext";
 import { useSubmitFeedback } from "../hooks/useSubmitFeedback";
-import type { FeedbackFormData } from "../context/feedbackTypes";
+import type { FeedbackFormRequest } from "../types/ClientFeedbackTypes";
 
 const FeedbackFlow = () => {
     const [step, setStep] = useState<number>(0);
@@ -87,7 +87,7 @@ const FeedbackFlow = () => {
                     onBack={() => setStep(8)}
                     isLoading={isLoading}
                     onSubmit={(comments) => {
-                        handleSubmit({ ...formData, comments } as FeedbackFormData);
+                        handleSubmit({ ...formData, comments } as FeedbackFormRequest);
                         reset();
                         setStep(0);
                     }}

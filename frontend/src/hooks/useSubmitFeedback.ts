@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { CSFCustomToaster } from "../utils/Toaster";
-import type { FeedbackFormData } from "../context/feedbackTypes";
+import type { FeedbackFormRequest } from "../types/ClientFeedbackTypes";
 
 export const useSubmitFeedback = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const handleSubmit = async (formData: FeedbackFormData) => {
+    const handleSubmit = async (formData: FeedbackFormRequest) => {
         setIsLoading(true)
         try {
           const res = await fetch(`${import.meta.env.VITE_API_URL}/api/queues/feedback`, {
@@ -18,14 +18,6 @@ export const useSubmitFeedback = () => {
               CSFCustomToaster.success('Feedback submitted successfully!')
           } else {
               CSFCustomToaster.error('Something went wrong!')
-              // if (res.status === 401) {
-              //     setHasError({ general: "Invalid credentials. Please try again." })
-              // } else if (res.status === 429) {
-              //     setHasError({ general: "Too many requests. Please try again later." })
-              //     setStatus({ rateLimit: true })
-              // } else {
-              //     setHasError({ general: "An error occurred during sign-in. Please try again later." })
-              // }
           }
 
         } catch (err) {

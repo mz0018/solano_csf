@@ -1,14 +1,14 @@
 import { createContext, useContext, useState } from 'react'
 import type { ReactNode } from 'react'
-import type { VerifiedQueue, FeedbackContextType, FeedbackFormData } from './feedbackTypes'
+import type { FeedbackFormRequest, FeedbackVerifiedQueue, FeedbackContextType } from '../types/ClientFeedbackTypes'
 
 const FeedbackContext = createContext<FeedbackContextType | null>(null)
 
 export const FeedbackProvider = ({ children }: { children: ReactNode }) => {
-  const [verified, setVerifiedState] = useState<VerifiedQueue | null>(null)
-  const [formData, setFormData] = useState<Partial<FeedbackFormData>>({})
+  const [verified, setVerifiedState] = useState<FeedbackVerifiedQueue | null>(null)
+  const [formData, setFormData] = useState<Partial<FeedbackFormRequest>>({})
 
-  const setVerified = (data: VerifiedQueue) => setVerifiedState(data)
+  const setVerified = (data: FeedbackVerifiedQueue) => setVerifiedState(data)
   const updateFormData = (partial: Record<string, unknown>) =>
     setFormData((prev) => ({ ...prev, ...partial }))
   const reset = () => {
