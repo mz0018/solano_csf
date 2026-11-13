@@ -4,8 +4,7 @@ import { ArrowLeft, ArrowRightToLine } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useFeedback } from "../context/FeedbackContext";
-
-type Props = { onNext: () => void; onBack: () => void; };
+import type { FeedbackFormButtons } from "../types/ClientFeedbackTypes";
 
 const AGE_GROUPS = [
   { value: "17 and below", key: "17below" },
@@ -16,7 +15,7 @@ const AGE_GROUPS = [
   { value: "60 and above", key: "60above" },
 ];
 
-export const AgeGroupForm = ({ onNext, onBack }: Props) => {
+export const AgeGroupForm = ({ onNext, onBack }: FeedbackFormButtons) => {
     const { t } = useTranslation();
     const { updateFormData, formData } = useFeedback();
     const [selected, setSelected] = useState(formData.ageGroup || "");

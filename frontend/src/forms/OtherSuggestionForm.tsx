@@ -4,16 +4,11 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useFeedback } from "../context/FeedbackContext";
 import { ErrorText } from "../ui/form/ErrorText";
-
-type Props = {
-    onBack: () => void;
-    onSubmit: (comments: string) => void;
-    isLoading: boolean
-};
+import type { FeedbackFormButtons } from "../types/ClientFeedbackTypes";
 
 const COMMENTS_MAX = 100;
 
-export const OtherSuggestionForm = ({ onBack, isLoading, onSubmit }: Props) => {
+export const OtherSuggestionForm = ({ onBack, isLoading, onSubmit }: FeedbackFormButtons) => {
     const { t } = useTranslation();
     const { updateFormData, formData } = useFeedback();
     const [comments, setComments] = useState(formData.comments || "");

@@ -4,10 +4,9 @@ import { ArrowLeft, ArrowRightToLine } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useFeedback } from "../context/FeedbackContext";
+import type { FeedbackFormButtons } from "../types/ClientFeedbackTypes";
 
-type Props = { onNext: () => void; onBack: () => void; };
-
-export const AffiliationForm = ({ onNext, onBack }: Props) => {
+export const AffiliationForm = ({ onNext, onBack }: FeedbackFormButtons) => {
     const { t } = useTranslation();
     const { updateFormData, formData } = useFeedback();
     const [selected, setSelected] = useState(formData.affiliation || "");

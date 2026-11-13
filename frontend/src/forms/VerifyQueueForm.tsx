@@ -7,10 +7,9 @@ import { Input } from "../ui/form/Input";
 import { useFeedback } from "../context/FeedbackContext";
 import { useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
+import type { FeedbackFormButtons } from "../types/ClientFeedbackTypes";
 
-type Props = { onNext: () => void; onBack: () => void };
-
-export const VerifyQueueForm = ({ onNext, onBack }: Props) => {
+export const VerifyQueueForm = ({ onNext, onBack }: FeedbackFormButtons) => {
   const { t } = useTranslation();
   const { setVerified, updateFormData } = useFeedback();
   const { code, setCode, isLoading, error, verify, isRateLimited } = useVerifyQueue();

@@ -4,28 +4,18 @@ import { ArrowLeft, ArrowRightToLine } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useFeedback } from "../context/FeedbackContext";
+import type { 
+    FeedbackFormButtons,
+    FeedbackRating,
+    FeedbackRatingScale,
+    FeedbackFormRatingKey,
+} from "../types/ClientFeedbackTypes";
 
-type Props = {
-    onNext: () => void;
-    onBack: () => void;
-};
-
-type Rating = {
-    labelKey: string;
-    questionKey: string;
-};
-
-type RatingScale = {
-    value: number;
-    emoji: string;
-    labelKey: string;
-};
-
-export const ServiceRatingForm = ({ onNext, onBack }: Props) => {
+export const ServiceRatingForm = ({ onNext, onBack }: FeedbackFormButtons) => {
     const { t } = useTranslation();
     const { updateFormData, formData } = useFeedback();
 
-    const ratings: Rating[] = [
+    const ratings: FeedbackRating[] = [
         {
             labelKey: "responsiveness",
             questionKey: "responsivenessQ",
@@ -60,7 +50,7 @@ export const ServiceRatingForm = ({ onNext, onBack }: Props) => {
         },
     ];
 
-    const ratingsScale: RatingScale[] = [
+    const ratingsScale: FeedbackRatingScale[] = [
         { value: 1, emoji: "😣", labelKey: "stronglyDisagree" },
         { value: 2, emoji: "🙁", labelKey: "disagree" },
         { value: 3, emoji: "😐", labelKey: "neutral" },
@@ -68,9 +58,11 @@ export const ServiceRatingForm = ({ onNext, onBack }: Props) => {
         { value: 5, emoji: "😁", labelKey: "stronglyAgree" },
     ];
 
-    const [answers, setAnswers] = useState<Record<string, number>>(() => {
-    const initial = {} as Record<string, number>;
-        ratings.forEach(r => { initial[r.labelKey] = (formData as any)[r.labelKey] || 0; });
+    const [answers, setAnswers] = useState<Record<FeedbackFormRatingKey, number>>(() => {
+        const initial = {} as Record<FeedbackFormRatingKey, number>;
+        ratings.forEach(({ labelKey }) => {
+            initial[labelKey] = formData[labelKey] ?? 0;
+        });
         return initial;
     });
     const [currentIndex, setCurrentIndex] = useState(0);

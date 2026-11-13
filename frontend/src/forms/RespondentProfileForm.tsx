@@ -5,13 +5,12 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useFeedback } from "../context/FeedbackContext";
 import { ErrorText } from "../ui/form/ErrorText";
-
-type Props = { onNext: () => void; onBack: () => void; };
+import type { FeedbackFormButtons } from "../types/ClientFeedbackTypes";
 
 const NAME_MAX = 100;
 const TEL_MAX = 15;
 
-export const RespondentProfileForm = ({ onNext, onBack }: Props) => {
+export const RespondentProfileForm = ({ onNext, onBack }: FeedbackFormButtons) => {
     const { t } = useTranslation();
     const { updateFormData, formData, verified } = useFeedback();
     const [clientName, setClientName] = useState<string>(formData.clientName || "");

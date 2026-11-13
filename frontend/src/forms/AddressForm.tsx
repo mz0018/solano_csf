@@ -7,10 +7,9 @@ import { useTranslation } from "react-i18next";
 import { useFeedback } from "../context/FeedbackContext";
 import { Barangays } from "../utils/barangays";
 import { PSGCDropdown } from "../helper/PSGCDropdown";
+import type { FeedbackFormButtons } from "../types/ClientFeedbackTypes";
 
-type Props = { onNext: () => void; onBack: () => void; };
-
-export const AddressForm = ({ onNext, onBack }: Props) => {
+export const AddressForm = ({ onNext, onBack }: FeedbackFormButtons) => {
     const { t } = useTranslation();
     const { updateFormData, formData } = useFeedback();
     const [selected, setSelected] = useState(formData.address || "");

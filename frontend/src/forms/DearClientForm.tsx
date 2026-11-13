@@ -1,10 +1,9 @@
+import { useTranslation } from "react-i18next";
 import { CsfFormUI } from "../ui/form/CsfFormUI";
 import { Globe, ArrowRightToLine } from "lucide-react";
-import { useTranslation } from "react-i18next";
+import type { FeedbackFormButtons } from "../types/ClientFeedbackTypes";
 
-type Props = { onNext: () => void; };
-
-export const DearClientForm = ({ onNext }: Props) => {
+export const DearClientForm = ({ onNext }: FeedbackFormButtons) => {
     const { t, i18n } = useTranslation();
     const toggleLang = () => i18n.changeLanguage(i18n.language === "en" ? "fil" : "en");
 

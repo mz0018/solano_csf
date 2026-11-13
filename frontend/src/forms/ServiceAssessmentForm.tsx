@@ -4,10 +4,9 @@ import { Input } from "../ui/form/Input";
 import { useTranslation } from "react-i18next";
 import { useFeedback } from "../context/FeedbackContext";
 import { ArrowLeft, ArrowRightToLine } from "lucide-react";
+import type { FeedbackFormButtons } from "../types/ClientFeedbackTypes";
 
-type Props = { onNext: () => void; onBack: () => void; };
-
-export const ServiceAssessmentForm = ({ onNext, onBack }: Props) => {
+export const ServiceAssessmentForm = ({ onNext, onBack }: FeedbackFormButtons) => {
     const { t } = useTranslation();
     const { verified, updateFormData, formData } = useFeedback();
     const services = verified?.services ?? [];
