@@ -2,7 +2,7 @@ export type FeedbackFormButtons = {
     onNext: () => void;
     onBack: () => void;
     onSubmit: (arg: string) => void;
-    isLoading: boolean;
+    isLoading?: boolean;
 }
 
 export type FeedbackFormRatingKey = 

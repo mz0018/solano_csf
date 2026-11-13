@@ -3,7 +3,7 @@ import { CsfFormUI } from "../ui/form/CsfFormUI";
 import { Globe, ArrowRightToLine } from "lucide-react";
 import type { FeedbackFormButtons } from "../types/ClientFeedbackTypes";
 
-export const DearClientForm = ({ onNext }: FeedbackFormButtons) => {
+export const DearClientForm = ({ onNext }: Pick<FeedbackFormButtons, "onNext">) => {
     const { t, i18n } = useTranslation();
     const toggleLang = () => i18n.changeLanguage(i18n.language === "en" ? "fil" : "en");
 

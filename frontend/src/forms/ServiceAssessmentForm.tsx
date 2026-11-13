@@ -6,7 +6,7 @@ import { useFeedback } from "../context/FeedbackContext";
 import { ArrowLeft, ArrowRightToLine } from "lucide-react";
 import type { FeedbackFormButtons } from "../types/ClientFeedbackTypes";
 
-export const ServiceAssessmentForm = ({ onNext, onBack }: FeedbackFormButtons) => {
+export const ServiceAssessmentForm = ({ onNext, onBack }: Pick<FeedbackFormButtons, "onNext" | "onBack">) => {
     const { t } = useTranslation();
     const { verified, updateFormData, formData } = useFeedback();
     const services = verified?.services ?? [];

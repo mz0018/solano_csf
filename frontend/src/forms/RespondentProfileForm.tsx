@@ -10,7 +10,7 @@ import type { FeedbackFormButtons } from "../types/ClientFeedbackTypes";
 const NAME_MAX = 100;
 const TEL_MAX = 15;
 
-export const RespondentProfileForm = ({ onNext, onBack }: FeedbackFormButtons) => {
+export const RespondentProfileForm = ({ onNext, onBack }: Pick<FeedbackFormButtons, "onNext" | "onBack">) => {
     const { t } = useTranslation();
     const { updateFormData, formData, verified } = useFeedback();
     const [clientName, setClientName] = useState<string>(formData.clientName || "");

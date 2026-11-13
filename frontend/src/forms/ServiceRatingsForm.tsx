@@ -11,7 +11,7 @@ import type {
     FeedbackFormRatingKey,
 } from "../types/ClientFeedbackTypes";
 
-export const ServiceRatingForm = ({ onNext, onBack }: FeedbackFormButtons) => {
+export const ServiceRatingForm = ({ onNext, onBack }: Pick<FeedbackFormButtons, "onNext" | "onBack">) => {
     const { t } = useTranslation();
     const { updateFormData, formData } = useFeedback();
 

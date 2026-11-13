@@ -9,7 +9,7 @@ import { useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
 import type { FeedbackFormButtons } from "../types/ClientFeedbackTypes";
 
-export const VerifyQueueForm = ({ onNext, onBack }: FeedbackFormButtons) => {
+export const VerifyQueueForm = ({ onNext, onBack }: Pick<FeedbackFormButtons, "onNext" | "onBack">) => {
   const { t } = useTranslation();
   const { setVerified, updateFormData } = useFeedback();
   const { code, setCode, isLoading, error, verify, isRateLimited } = useVerifyQueue();

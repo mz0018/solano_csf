@@ -9,7 +9,7 @@ import { Barangays } from "../utils/barangays";
 import { PSGCDropdown } from "../helper/PSGCDropdown";
 import type { FeedbackFormButtons } from "../types/ClientFeedbackTypes";
 
-export const AddressForm = ({ onNext, onBack }: FeedbackFormButtons) => {
+export const AddressForm = ({ onNext, onBack }: Pick<FeedbackFormButtons, "onNext" | "onBack">) => {
     const { t } = useTranslation();
     const { updateFormData, formData } = useFeedback();
     const [selected, setSelected] = useState(formData.address || "");

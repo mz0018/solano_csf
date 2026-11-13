@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useFeedback } from "../context/FeedbackContext";
 import type { FeedbackFormButtons } from "../types/ClientFeedbackTypes";
 
-export const EmploymentStatusForm = ({ onNext, onBack }: FeedbackFormButtons) => {
+export const EmploymentStatusForm = ({ onNext, onBack }: Pick<FeedbackFormButtons, "onNext" | "onBack">) => {
     const { t } = useTranslation();
     const { updateFormData, formData } = useFeedback();
     const [selected, setSelected] = useState(formData.employmentStatus || "");

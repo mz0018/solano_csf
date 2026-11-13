@@ -8,7 +8,7 @@ import type { FeedbackFormButtons } from "../types/ClientFeedbackTypes";
 
 const COMMENTS_MAX = 100;
 
-export const OtherSuggestionForm = ({ onBack, isLoading, onSubmit }: FeedbackFormButtons) => {
+export const OtherSuggestionForm = ({ onBack, isLoading, onSubmit }: Pick<FeedbackFormButtons, "onBack" | "isLoading" | "onSubmit">) => {
     const { t } = useTranslation();
     const { updateFormData, formData } = useFeedback();
     const [comments, setComments] = useState(formData.comments || "");

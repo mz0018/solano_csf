@@ -15,7 +15,7 @@ const AGE_GROUPS = [
   { value: "60 and above", key: "60above" },
 ];
 
-export const AgeGroupForm = ({ onNext, onBack }: FeedbackFormButtons) => {
+export const AgeGroupForm = ({ onNext, onBack }: Pick<FeedbackFormButtons, "onNext" | "onBack">) => {
     const { t } = useTranslation();
     const { updateFormData, formData } = useFeedback();
     const [selected, setSelected] = useState(formData.ageGroup || "");
