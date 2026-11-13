@@ -53,12 +53,12 @@ export const GenerateTicketModal = ({
 
 
   const sortedServices = [
-    ...services.filter((service) => service.name !== "Other Service"),
-    ...services.filter((service) => service.name === "Other Service"),
+    ...services.filter((service) => service.status === "active" && service.name !== "Other Service"),
+    ...services.filter((service) => service.status === "active" && service.name === "Other Service"),
   ]
 
   const otherService = services.find(
-    (s) => s.name === "Other Service"
+    (s) => s.status === "active" && s.name === "Other Service"
   )
 
   const isOtherSelected = otherService

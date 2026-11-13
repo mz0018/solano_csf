@@ -52,6 +52,16 @@ class AdminService {
             throw new ErrorController('No service found', 400)
         }
 
+        const activeServices = await Service.find({
+            officeCode,
+            code: { $in: services },
+            status: 'active'
+        }).select('code').lean()
+
+        if (activeServices.length !== new Set(services).size) {
+            throw new ErrorController('One or more selected services are inactive or unavailable', 400)
+        }
+
         const hasOther = services.includes('OTHER_SERVICE')
         if (hasOther && !otherServiceDetail?.trim()) {
             throw new ErrorController('Other service detail is required', 400)

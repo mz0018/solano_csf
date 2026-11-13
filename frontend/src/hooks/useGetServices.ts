@@ -32,7 +32,7 @@ export const useGetServices = () => {
       const services = await queryClient.fetchQuery({
         queryKey: ["office-services"],
         queryFn: getOfficeServices,
-        staleTime: 1000 * 60 * 60,
+        staleTime: 0,
       })
       return services
     } catch (err) {
