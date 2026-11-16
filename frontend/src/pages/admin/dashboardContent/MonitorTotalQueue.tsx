@@ -1,8 +1,7 @@
-import { useGetActiveQueue } from "../../../hooks/useGetActiveQueue";
+import { useQueryGetActiveQueueHook } from "../../../hooks/office_admin/office_admin_service/useQueryGetActiveQueueHook";
 
 export const MonitorTotalQueue = () => {
-    const { data: queueData, isLoading: queueLoading } =
-        useGetActiveQueue();
+    const { data: queueData, isLoading: queueLoading } = useQueryGetActiveQueueHook();
 
     const totalQueues = queueData?.total ?? 0;
     const pendingQueues = queueData?.status?.pending ?? 0;

@@ -1,7 +1,6 @@
-import { CSFCustomToaster } from '../utils/Toaster';
-import type { FeedbackFormRequest } from '../types/ClientFeedbackTypes';
+import type { FeedbackFormRequest, FeedbackFormResponse } from '../types/ClientFeedbackTypes';
 
-export const submitClientFeedbackService = async (feedbackFormRequest: FeedbackFormRequest): Promise<void> => {
+export const submitClientFeedbackService = async (feedbackFormRequest: FeedbackFormRequest): Promise<FeedbackFormResponse> => {
     try {
         const res = await fetch(`${import.meta.env.VITE_API_URL}/api/queues/feedback`, {
             method: 'POST',
@@ -9,11 +8,11 @@ export const submitClientFeedbackService = async (feedbackFormRequest: FeedbackF
             body: JSON.stringify(feedbackFormRequest)
         })
 
-        if (res.ok) {
-            CSFCustomToaster.success('Feedback submitted successfully!')
-        } else {
-            CSFCustomToaster.error('Something went wrong!')
+        if (!res.ok) {
+            throw new Error('Failed to submit client feedback on service.')
         }
+        
+        return res.json();
     } catch (err) {
         console.error('Failed to submit client feedback on service. ', err);
         throw err;

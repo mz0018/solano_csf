@@ -1,16 +1,11 @@
 import { Maximize2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useGetActiveQueue } from "../../../hooks/useGetActiveQueue";
 import { ErrorText } from "../../../ui/form/ErrorText";
 import type { RenderReportStatisticsDatePickerProps } from "./ReadReportStatistics";
+import { useQueryGetActiveQueueHook } from "../../../hooks/office_admin/office_admin_service/useQueryGetActiveQueueHook";
 
-export const RenderReportStatisticsDatePicker = ({
-    officeCode,
-    month,
-    year,
-    startDate,
-    endDate,
-}: RenderReportStatisticsDatePickerProps) => {
+export const RenderReportStatisticsDatePicker = ({ officeCode, month, year, startDate, endDate }: RenderReportStatisticsDatePickerProps) => {
+
     const navigate = useNavigate();
     const formatDate = (date: string) =>
         new Date(`${date}T00:00:00`).toLocaleDateString("en-US", {
@@ -28,11 +23,7 @@ export const RenderReportStatisticsDatePicker = ({
         }
     );
 
-    const {
-        data: queueData,
-        isLoading: queueLoading,
-        isError: queueError,
-    } = useGetActiveQueue();
+    const { data: queueData, isLoading: queueLoading, isError: queueError } = useQueryGetActiveQueueHook();
 
     return (
         <>

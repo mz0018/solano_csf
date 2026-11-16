@@ -2,37 +2,24 @@
 import { useState, useEffect } from "react";
 import { TableUI } from "../../ui/form/TableUI";
 import { ErrorText } from "../../ui/form/ErrorText";
-import { useGetActiveQueue } from "../../hooks/useGetActiveQueue";
 import { ViewFeedbackModal } from "../Modals/ViewFeedbackModal";
 import { PaginationUI } from "../../ui/form/PaginationUI";
 import { InlineLoader } from "../Loader";
 import { CSFCustomToaster } from "../../utils/Toaster";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import notFoundReport from "../../assets/not-found-report.json";
+import { useQueryGetActiveQueueHook } from "../../hooks/office_admin/office_admin_service/useQueryGetActiveQueueHook";
 
 export interface ActiveQueueDateTableProps {
   onDateChange?: (date: Date) => void;
   statusFilter?: string;
 }
 
-export const ActiveQueueDateTable = ({
-  onDateChange,
-  statusFilter = "",
-}: ActiveQueueDateTableProps) => {
+export const ActiveQueueDateTable = ({ onDateChange, statusFilter = "" }: ActiveQueueDateTableProps) => {
   const [page, setPage] = useState<number>(1);
-
-  const {
-    data,
-    isLoading,
-    isError,
-    error,
-  } = useGetActiveQueue(page, statusFilter);
-
-  const [feedbackModalOpen, setFeedbackModalOpen] =
-    useState<boolean>(false);
-
-  const [selectedFeedback, setSelectedFeedback] =
-    useState<string | null>(null);
+  const { data, isLoading, isError, error } = useQueryGetActiveQueueHook(page, statusFilter);
+  const [feedbackModalOpen, setFeedbackModalOpen] = useState<boolean>(false);
+  const [selectedFeedback, setSelectedFeedback] = useState<string | null>(null);
 
   useEffect(() => {
     setPage(1);

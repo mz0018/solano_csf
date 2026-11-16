@@ -26,6 +26,11 @@ export type FeedbackRatingScale = {
     labelKey: string;
 }
 
+export type FeedbackFormResponse = {
+  success?: boolean;
+  queueNumber?: string;
+}
+
 export interface FeedbackFormRequest {
   queueNumber: string;
   clientName?: string;
