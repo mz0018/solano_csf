@@ -3,7 +3,7 @@ import { useAuthorize } from "../../../hooks/useAuthorize";
 import { RenderReportStatistics } from "./RenderStatistics";
 import { RenderReportStatisticsTable } from "./RenderReportStatisticsTable";
 import { RenderReportStatisticsDatePicker } from "./RenderReportStatisticsDatePicker";
-import { useQueryGetReportStatisticsByDateHook } from "../../../hooks/office_admin/office_admin_service/useQueryGetReportStatisticsByDateHook";
+import { useQueryGetReportStatisticsByDateHook } from "../../../hooks/office_admin/useQueryGetReportStatisticsByDateHook";
 
 type ChartData = {
     name: string;

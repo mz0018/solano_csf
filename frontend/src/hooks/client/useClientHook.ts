@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { CSFCustomToaster } from '../utils/Toaster';
-import { submitClientFeedbackService } from '../services/ClientService';
-import type { FeedbackFormRequest } from '../types/ClientFeedbackTypes';
+import { CSFCustomToaster } from '../../utils/Toaster';
+import { submitClientFeedbackService } from '../../services/ClientService';
+import type { FeedbackFormRequest } from '../../types/ClientFeedbackTypes';
 
 export const useClientHook = () => {
 

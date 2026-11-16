@@ -11,7 +11,7 @@ import { ServiceRatingForm } from "../forms/ServiceRatingsForm";
 import { OtherSuggestionForm } from "../forms/OtherSuggestionForm";
 import { FeedbackProvider } from "../context/FeedbackContext";
 import { useFeedback } from "../hooks/useFeedback";
-import { useClientHook } from "../hooks/useClientHook";
+import { useClientHook } from "../hooks/client/useClientHook";
 import type { FeedbackFormRequest } from "../types/ClientFeedbackTypes";
 
 const FeedbackFlow = () => {

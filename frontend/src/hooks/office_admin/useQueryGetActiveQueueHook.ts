@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { useSocket } from '../../useSocket';
+import { useSocket } from '../useSocket';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { getReportStatisticService } from '../../../services/OfficeAdminService';
+import { getReportStatisticService } from '../../services/OfficeAdminService';
 
 export const useQueryGetActiveQueueHook = (page: number = 1, statusFilter: string = "") => {
 

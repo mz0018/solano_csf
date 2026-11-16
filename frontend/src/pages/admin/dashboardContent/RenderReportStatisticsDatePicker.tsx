@@ -2,7 +2,7 @@ import { Maximize2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { ErrorText } from "../../../ui/form/ErrorText";
 import type { RenderReportStatisticsDatePickerProps } from "./ReadReportStatistics";
-import { useQueryGetActiveQueueHook } from "../../../hooks/office_admin/office_admin_service/useQueryGetActiveQueueHook";
+import { useQueryGetActiveQueueHook } from "../../../hooks/office_admin/useQueryGetActiveQueueHook";
 
 export const RenderReportStatisticsDatePicker = ({ officeCode, month, year, startDate, endDate }: RenderReportStatisticsDatePickerProps) => {
 

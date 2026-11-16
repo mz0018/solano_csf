@@ -4,7 +4,7 @@ import { useGetOffices } from "../../hooks/useGetOffices";
 import { FeedbackStatisticTable } from "../../components/Tables/FeedbackStatisticTable";
 import { useCaptureChart } from "../../hooks/useCaptureChart";
 import { BtnGenerateReport } from "../../components/buttons/BtnGenerateReport";
-import { useQueryGetReportStatisticsByDateHook } from "../../hooks/office_admin/office_admin_service/useQueryGetReportStatisticsByDateHook";
+import { useQueryGetReportStatisticsByDateHook } from "../../hooks/office_admin/useQueryGetReportStatisticsByDateHook";
 
 const ReportStatistics = () => {
     const { data: offices, isLoading: officesLoading } = useGetOffices();

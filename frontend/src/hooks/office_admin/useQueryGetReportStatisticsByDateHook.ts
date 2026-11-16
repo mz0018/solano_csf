@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getReportStatisticByDateService } from '../../../services/OfficeAdminService';
+import { getReportStatisticByDateService } from '../../services/OfficeAdminService';
 
 export const useQueryGetReportStatisticsByDateHook = (officeCode: string, dateFrom: string, dateTo: string) => {
 

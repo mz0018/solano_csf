@@ -8,7 +8,7 @@ import { InlineLoader } from "../Loader";
 import { CSFCustomToaster } from "../../utils/Toaster";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import notFoundReport from "../../assets/not-found-report.json";
-import { useQueryGetActiveQueueHook } from "../../hooks/office_admin/office_admin_service/useQueryGetActiveQueueHook";
+import { useQueryGetActiveQueueHook } from "../../hooks/office_admin/useQueryGetActiveQueueHook";
 
 export interface ActiveQueueDateTableProps {
   onDateChange?: (date: Date) => void;
