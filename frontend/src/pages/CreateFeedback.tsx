@@ -11,14 +11,12 @@ import { ServiceRatingForm } from "../forms/ServiceRatingsForm";
 import { OtherSuggestionForm } from "../forms/OtherSuggestionForm";
 import { FeedbackProvider } from "../context/FeedbackContext";
 import { useFeedback } from "../hooks/useFeedback";
-// import { useSubmitFeedback } from "../hooks/useSubmitFeedback";
 import { useClientHook } from "../hooks/useClientHook";
 import type { FeedbackFormRequest } from "../types/ClientFeedbackTypes";
 
 const FeedbackFlow = () => {
     const [step, setStep] = useState<number>(0);
     const { formData, reset } = useFeedback();
-    // const { handleSubmit, isLoading } = useSubmitFeedback();
     const { isSubmittingFeedback, submitClientFeedbackHook } = useClientHook();
 
     return (
