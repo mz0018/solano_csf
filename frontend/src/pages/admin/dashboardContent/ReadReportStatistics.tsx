@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useAuthorize } from "../../../hooks/useAuthorize";
 import { RenderReportStatistics } from "./RenderStatistics";
 import { RenderReportStatisticsTable } from "./RenderReportStatisticsTable";
-import { useGetReportStatistics } from "../../../hooks/useGetReportStatistics";
 import { RenderReportStatisticsDatePicker } from "./RenderReportStatisticsDatePicker";
+import { useQueryGetReportStatisticsByDateHook } from "../../../hooks/office_admin/office_admin_service/useQueryGetReportStatisticsByDateHook";
 
 type ChartData = {
     name: string;
@@ -51,9 +51,7 @@ export const ReadReportStatistics = () => {
 
     const {
         data: stats,
-        isLoading,
-        error,
-    } = useGetReportStatistics(officeCode, startDate, endDate);
+        isLoading,error } = useQueryGetReportStatisticsByDateHook(officeCode, startDate, endDate);
 
     if (isLoading) return <>Loading....</>;
     if (error) return <>Something error</>;

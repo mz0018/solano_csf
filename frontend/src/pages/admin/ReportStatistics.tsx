@@ -1,17 +1,17 @@
 import { useRef, useState } from "react";
 import { Select } from "../../ui/form/Select";
 import { useGetOffices } from "../../hooks/useGetOffices";
-import { useGetReportStatistics } from "../../hooks/useGetReportStatistics";
 import { FeedbackStatisticTable } from "../../components/Tables/FeedbackStatisticTable";
 import { useCaptureChart } from "../../hooks/useCaptureChart";
 import { BtnGenerateReport } from "../../components/buttons/BtnGenerateReport";
+import { useQueryGetReportStatisticsByDateHook } from "../../hooks/office_admin/office_admin_service/useQueryGetReportStatisticsByDateHook";
 
 const ReportStatistics = () => {
     const { data: offices, isLoading: officesLoading } = useGetOffices();
     const [officeCode, setOfficeCode] = useState("");
     const [dateFrom, setDateFrom] = useState("");
     const [dateTo, setDateTo] = useState("");
-    const { data: stats, isLoading, error } = useGetReportStatistics(officeCode, dateFrom, dateTo);
+    const { data: stats, isLoading, error } = useQueryGetReportStatisticsByDateHook(officeCode, dateFrom, dateTo);
     const chartRefs = useRef<(HTMLDivElement | null)[]>([]);
     const { handleCapture, isCapturing } = useCaptureChart();
     const selectedOfficeName = offices?.find((office) => office.code === officeCode)?.name;

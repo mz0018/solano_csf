@@ -1,4 +1,4 @@
-import type { ActiveQueueResponse } from '../types/OfficeAdminType';
+import type { ActiveQueueResponse, ReportStatisticsResponse } from '../types/OfficeAdminType';
 
 export const getReportStatisticService = async (page: number = 1, statusFilter: string = ""): Promise<ActiveQueueResponse> => {
 
@@ -11,12 +11,9 @@ export const getReportStatisticService = async (page: number = 1, statusFilter: 
         params.set("status", statusFilter);
     }
 
-    try {
-            const res = await fetch(
-                `${import.meta.env.VITE_API_URL}/api/admin/active-queue?${params}`,
-                {
-                credentials: "include",
-                }
+        try {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/active-queue?${params}`,
+                { credentials: "include" }
             );
     
             if (!res.ok) {
@@ -28,4 +25,28 @@ export const getReportStatisticService = async (page: number = 1, statusFilter: 
             console.error('Failed to fetch report statistics on service. ', err);
             throw err;
         }
+}
+
+export const getReportStatisticByDateService = async (officeCode: string, dateFrom: string, dateTo: string): Promise<ReportStatisticsResponse> => {
+
+    const params = new URLSearchParams({
+        officeCode,
+        dateFrom,
+        dateTo,
+    });
+
+    try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/report-statistics?${params}`,
+            { credentials: "include" }
+        );
+
+        if (!res.ok) {
+            throw new Error('Failed to fetch report statistics by date on service.')
+        }
+
+        return res.json();
+    } catch (err) {
+        console.error('Failed to fetch report statistics by date on service. ', err);
+        throw err;
+    }
 }
