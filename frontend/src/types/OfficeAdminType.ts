@@ -66,3 +66,15 @@ export type ReportStatisticsResponse = {
     dateFrom: string;
     dateTo: string;
 };
+
+/**getUserProfileInformationService types */
+export type UserProfileRequest = {
+  user: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    userName: string;
+    role: string;
+    officeCode: string;
+  };
+};

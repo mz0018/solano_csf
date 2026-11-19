@@ -1,9 +1,9 @@
-import { useGetUserProfile } from "../../../hooks/useGetUserProfile";
 import { ErrorText } from "../../../ui/form/ErrorText";
 import { InlineLoader } from "../../../components/Loader";
+import { useQueryGetUserProfileHook } from "../../../hooks/office_admin/useQueryGetUserProfileHook";
 
 const ProfileSettings = () => {
-  const { data, isLoading, isError, error } = useGetUserProfile();
+  const { data, isLoading, isError, error } = useQueryGetUserProfileHook();
 
   if (isLoading) return <InlineLoader />;
 

@@ -1,4 +1,4 @@
-import type { ActiveQueueResponse, ReportStatisticsResponse } from '../types/OfficeAdminType';
+import type { ActiveQueueResponse, ReportStatisticsResponse, UserProfileRequest } from '../types/OfficeAdminType';
 
 export const getReportStatisticService = async (page: number = 1, statusFilter: string = ""): Promise<ActiveQueueResponse> => {
 
@@ -17,7 +17,7 @@ export const getReportStatisticService = async (page: number = 1, statusFilter: 
             );
     
             if (!res.ok) {
-                throw new Error('Failed to fetch report statistics on service.')
+                throw new Error('Failed to fetch report response statistics on service.')
             }
 
             return res.json();
@@ -41,12 +41,29 @@ export const getReportStatisticByDateService = async (officeCode: string, dateFr
         );
 
         if (!res.ok) {
-            throw new Error('Failed to fetch report statistics by date on service.')
+            throw new Error('Failed to fetch report response statistics by date on service.')
         }
 
         return res.json();
     } catch (err) {
         console.error('Failed to fetch report statistics by date on service. ', err);
+        throw err;
+    }
+}
+
+export const getUserProfileInformationService = async (): Promise<UserProfileRequest> => {
+    try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/verify`, {
+            credentials: "include",
+        });
+
+        if (!res.ok) {
+            throw new Error("Failed to fetch profile information response on service.");
+        }
+
+        return res.json();
+    } catch (err) {
+        console.error('Failed to fetch user profile information on service. ', err);
         throw err;
     }
 }
