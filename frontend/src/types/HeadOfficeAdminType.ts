@@ -18,3 +18,12 @@ export type TotalServiceRenderedResponse = {
     limit: number;
     totalPages: number;
 };
+
+/**getServicesByOfficeService */
+export type ListOfServicesResponse = {
+  _id: string
+  code: string
+  name: string
+  status: string
+  type: string
+}
