@@ -1,56 +1,18 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { PaginationUI } from "../../ui/form/PaginationUI";
 import { TableUI } from "../../ui/form/TableUI";
-import { useRenderedServices } from "../../hooks/useRenderedServices";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-import notFoundReport from "../../assets/not-found-report.json";
 import { RenderedServiceSummary } from "./renderContent/RenderedServiceSummary";
+import { useQueryGetServiceRenderedByDateHook } from "../../hooks/head_office_admin/useQueryGetServiceRenderedByDateHook";
 
-type RenderedService = {
-    _id: string;
-    generatedBy: string;
-    generatedByUser: {
-        firstName: string;
-        lastName: string;
-    } | null;
-    selectedService: string[];
-    createdAt: string;
-};
-
-type RenderedServiceResponse = {
-    data: RenderedService[];
-    serviceCounts: Record<string, number>;
-    total: number;
-    page: number;
-    limit: number;
-    totalPages: number;
-};
+import notFoundReport from "../../assets/not-found-report.json";
 
 const RenderedService = () => {
     const [dateFrom, setDateFrom] = useState(() => new Date().toISOString().split("T")[0]);
     const [dateTo, setDateTo] = useState(() => new Date().toISOString().split("T")[0]);
     const [page, setPage] = useState(1);
-    const [renderedServices, setRenderedServices] =
-        useState<RenderedServiceResponse | null>(null);
 
-    const { handleGetRenderedServiceByDate } = useRenderedServices();
-
-    useEffect(() => {
-        if (!dateFrom || !dateTo) return;
-
-        const fetchData = async () => {
-            const result = await handleGetRenderedServiceByDate({
-                selectedDateFrom: dateFrom,
-                selectedDateTo: dateTo,
-                page,
-                limit: 10,
-            });
-
-            if (result) setRenderedServices(result);
-        };
-
-        fetchData();
-    }, [dateFrom, dateTo, page, handleGetRenderedServiceByDate]);
+    const { data: renderedServices } = useQueryGetServiceRenderedByDateHook(dateFrom, dateTo, page, 10);
 
     const data = renderedServices?.data || [];
     const serviceCounts = renderedServices?.serviceCounts || {};
