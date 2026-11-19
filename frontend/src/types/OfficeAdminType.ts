@@ -88,3 +88,18 @@ export type UserChangePasswordRequest = {
 export type UserChangePasswordResponse = {
   message: string;
 };
+
+/**getUserLoginHistoryService */
+type LoginHistoryEntry = {
+  ip: string;
+  userAgent: string;
+  loginAt: string;
+  success: boolean;
+};
+
+export type LoginHistoryResponse = {
+  history: LoginHistoryEntry[];
+  total: number;
+  totalPages: number;
+  page: number;
+};

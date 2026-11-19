@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { useGetLoginHistory } from "../../../hooks/useGetLoginHistory";
 import { TableUI } from "../../../ui/form/TableUI";
 import { ErrorText } from "../../../ui/form/ErrorText";
 import { InlineLoader } from "../../../components/Loader";
+import { useQueryGetLoginHistory } from "../../../hooks/office_admin/useQueryGetLoginHistoryHook";
 
 export const LoginHistory = () => {
   const [page, setPage] = useState<number>(1);
-  const { data, isLoading, isError, error } = useGetLoginHistory(page);
+  const { data, isLoading, isError, error } = useQueryGetLoginHistory(page);
   const formatDate = (isoString: string) => {
     return new Date(isoString).toLocaleString('en-US', {
       month: 'short',

@@ -1,7 +1,8 @@
 import type { 
     ActiveQueueResponse, 
     ReportStatisticsResponse, 
-    UserProfileResponse, 
+    UserProfileResponse,
+    LoginHistoryResponse,
     UserChangePasswordRequest,
     UserChangePasswordResponse,
 } from '../types/OfficeAdminType';
@@ -70,6 +71,30 @@ export const getUserProfileInformationService = async (): Promise<UserProfileRes
         return res.json();
     } catch (err) {
         console.error('Failed to fetch user profile information on service. ', err);
+        throw err;
+    }
+}
+
+export const getUserLoginHistoryService = async (page: number = 1, limit: number = 5): Promise<LoginHistoryResponse> => {
+
+    const params = new URLSearchParams({ 
+        page: String(page), 
+        limit: String(limit) 
+    });
+
+    try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/login-history?${params}`, 
+            { credentials: 'include' }
+        );
+
+        if (!res.ok) {
+            throw new Error('Failed to fetch user login history response on service.')
+        }
+
+        return res.json();
+
+    } catch (err) {
+        console.error('Failed to fetch user login history on service. ', err);
         throw err;
     }
 }
