@@ -3,6 +3,7 @@ import type {
     ReportStatisticsResponse, 
     UserProfileResponse,
     LoginHistoryResponse,
+    NotificationsResponse,
     UserChangePasswordRequest,
     UserChangePasswordResponse,
 } from '../types/OfficeAdminType';
@@ -98,6 +99,23 @@ export const getUserLoginHistoryService = async (page: number = 1, limit: number
         throw err;
     }
 }
+
+export const getUserNotificationService = async (): Promise<NotificationsResponse> => {
+    try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/notifications`,
+            { credentials: "include" }
+        );
+
+        if (!res.ok) {
+            throw new Error("Failed to fetch user notification response on service.");
+        }
+
+        return res.json();
+    } catch (err) {
+        console.error('Failed to fetch user notification on service.', err);
+        throw err;
+    }
+} 
 
 export const updateUserPasswordService = async ({ currentPassword, newPassword}: UserChangePasswordRequest): Promise<UserChangePasswordResponse> => {
     try {

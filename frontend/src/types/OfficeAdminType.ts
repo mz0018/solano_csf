@@ -103,3 +103,15 @@ export type LoginHistoryResponse = {
   totalPages: number;
   page: number;
 };
+
+/**getUserNotificationService */
+type Notification = {
+  _id: string;
+  type: string;
+  content: string;
+  createdAt: string;
+};
+
+export type NotificationsResponse = {
+  notifications: Notification[];
+};

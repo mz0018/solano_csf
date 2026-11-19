@@ -3,11 +3,11 @@ import { Bell } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { useSocket } from "../../../hooks/useSocket";
-import { useGetNotifications } from "../../../hooks/useGetNotifications";
 import { CSFCustomToaster } from "../../../utils/Toaster";
+import { useQueryGetUserNotificationHook } from "../../../hooks/office_admin/useQueryGetUserNotificationHook";
 
 const NotificationSettings = () => {
-  const { data, isLoading, isError } = useGetNotifications();
+  const { data, isLoading, isError } = useQueryGetUserNotificationHook();
   const queryClient = useQueryClient();
   const { socketRef, isConnected } = useSocket();
 
