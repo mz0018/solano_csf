@@ -1,4 +1,10 @@
-import type { ActiveQueueResponse, ReportStatisticsResponse, UserProfileRequest } from '../types/OfficeAdminType';
+import type { 
+    ActiveQueueResponse, 
+    ReportStatisticsResponse, 
+    UserProfileResponse, 
+    UserChangePasswordRequest,
+    UserChangePasswordResponse,
+} from '../types/OfficeAdminType';
 
 export const getReportStatisticService = async (page: number = 1, statusFilter: string = ""): Promise<ActiveQueueResponse> => {
 
@@ -51,7 +57,7 @@ export const getReportStatisticByDateService = async (officeCode: string, dateFr
     }
 }
 
-export const getUserProfileInformationService = async (): Promise<UserProfileRequest> => {
+export const getUserProfileInformationService = async (): Promise<UserProfileResponse> => {
     try {
         const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/verify`, {
             credentials: "include",
@@ -64,6 +70,27 @@ export const getUserProfileInformationService = async (): Promise<UserProfileReq
         return res.json();
     } catch (err) {
         console.error('Failed to fetch user profile information on service. ', err);
+        throw err;
+    }
+}
+
+export const updateUserPasswordService = async ({ currentPassword, newPassword}: UserChangePasswordRequest): Promise<UserChangePasswordResponse> => {
+    try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/change-password`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ currentPassword, newPassword })
+        });
+
+        if (!res.ok) {
+            throw new Error("Failed to update user password response on service.");
+        }
+
+        return res.json();
+
+    } catch (err) {
+        console.error('Failed to update user password on service.', err);
         throw err;
     }
 }

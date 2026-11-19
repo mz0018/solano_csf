@@ -140,12 +140,12 @@ class UserService {
         const user = await User.findById(userId)
         if (!user) throw new ErrorController('User not found', 404)
 
-        const lastChanged = user.passwordChangedAt || user.createdAt
-        const daysSinceChange = (Date.now() - lastChanged.getTime()) / (1000 * 60 * 60 * 24)
-        if (daysSinceChange < 60) {
-            const remaining = Math.ceil(60 - daysSinceChange)
-            throw new ErrorController(`Password can only be changed once every 60 days. Try again in ${remaining} day${remaining > 1 ? 's' : ''}.`, 400)
-        }
+        // const lastChanged = user.passwordChangedAt || user.createdAt
+        // const daysSinceChange = (Date.now() - lastChanged.getTime()) / (1000 * 60 * 60 * 24)
+        // if (daysSinceChange < 60) {
+        //     const remaining = Math.ceil(60 - daysSinceChange)
+        //     throw new ErrorController(`Password can only be changed once every 60 days. Try again in ${remaining} day${remaining > 1 ? 's' : ''}.`, 400)
+        // }
 
         const isValid = await argon2.verify(user.password, currentPassword)
         if (!isValid) throw new ErrorController('Current password is incorrect', 401)
@@ -153,7 +153,7 @@ class UserService {
         const hashedPassword = await argon2.hash(newPassword)
         user.password = hashedPassword
         user.passwordChangedAt = new Date()
-        user.tokenVersion += 1
+        user.tokenVersion = 0
         user.loginHistory = []
         
         await user.save()

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Input } from "../../../ui/form/Input";
-import { useChangePassword } from "../../../hooks/useChangePassword";
+import { useMutateChangePasswordHook } from "../../../hooks/office_admin/useMutateChangePasswordHook";
 import { ErrorText } from "../../../ui/form/ErrorText";
 import { AdminButton } from "../../../ui/form/AdminButton";
 
@@ -12,7 +12,7 @@ export const ChangePassword = () => {
   const [currentPasswordError, setCurrentPasswordError] = useState<boolean>(false);
   const [newPasswordError, setNewPasswordError] = useState<boolean>(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState<boolean>(false);
-  const changePasswordMutation = useChangePassword();
+  const changePasswordMutation = useMutateChangePasswordHook();
   const handleChangePassword = (e: React.FormEvent) => {
     e.preventDefault();
     setCurrentPasswordError(false);

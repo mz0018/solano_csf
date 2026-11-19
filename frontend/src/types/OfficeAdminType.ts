@@ -68,7 +68,7 @@ export type ReportStatisticsResponse = {
 };
 
 /**getUserProfileInformationService types */
-export type UserProfileRequest = {
+export type UserProfileResponse = {
   user: {
     id: string;
     firstName: string;
@@ -77,4 +77,14 @@ export type UserProfileRequest = {
     role: string;
     officeCode: string;
   };
+};
+
+/**updateUserPasswordService */
+export type UserChangePasswordRequest = {
+  currentPassword: string;
+  newPassword: string;
+}
+
+export type UserChangePasswordResponse = {
+  message: string;
 };
