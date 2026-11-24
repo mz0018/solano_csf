@@ -40,3 +40,20 @@ export const getServicesByOfficeService = async (): Promise<ListOfServicesRespon
         throw err;
     }
 }
+
+export const getChildServicesByParentService = async (): Promise<ListOfServicesResponse[]> => {
+    try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/child-services`,
+            { credentials: "include" }
+        )
+
+        if (!res.ok) {
+            throw new Error("Failed to fetch list of child services by parent response services")
+        }
+
+        return res.json();
+    } catch (err) {
+        console.error('Failed to fetch child services by parent on service.', err);
+        throw err;
+    }
+}

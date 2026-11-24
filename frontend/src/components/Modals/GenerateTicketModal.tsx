@@ -1,26 +1,25 @@
-import { useEffect, useState } from "react"
-import { Select } from "../../ui/form/Select"
+import { useState } from "react"
 import { Input } from "../../ui/form/Input"
+import { Select } from "../../ui/form/Select"
 import { printQr } from "../../utils/printQr"
 import { Button } from "../../ui/form/Buttons"
 import { ModalUI } from "../../ui/form/ModalUI"
 import { ErrorText } from "../../ui/form/ErrorText"
 import { AdminButton } from "../../ui/form/AdminButton"
 import { useGenerateTicket } from "../../hooks/useGenerateTicket"
-import { useGetChildServices } from "../../hooks/useGetChildServices"
 import { useQueryGetListOfServicesByOfficeHook } from "../../hooks/head_office_admin/useQueryGetListOfServicesByOfficeHook"
+import { useQueryGetChildServicesByParentHook } from "../../hooks/head_office_admin/useQueryGetChildServicesByParentHook"
 
 import type { GenerateTicketModalProps} from "../../types/ModalTypes"
-import type { ListOfServicesResponse, GeneratedQrCodeResponse } from "../../types/HeadOfficeAdminType"
+import type { GeneratedQrCodeResponse } from "../../types/HeadOfficeAdminType"
 
 export const GenerateTicketModal = ({ isModalOpen, setIsModalOpen }: GenerateTicketModalProps) => {
 
   const { createNewTicket, isGeneratingTicket } = useGenerateTicket()
 
-  const { getChildServices } = useGetChildServices()
+  const { data: childServices = [] } = useQueryGetChildServicesByParentHook()
   const { data: services = [] } = useQueryGetListOfServicesByOfficeHook()
 
-  const [childServices, setChildServices] = useState<ListOfServicesResponse[]>([])
   const [selectedService, setSelectedService] = useState<string[]>([])
   const [selectedChildServices, setSelectedChildServices] = useState<string>("")
   const [serviceError, setServiceError] = useState<string>("")
@@ -96,22 +95,6 @@ export const GenerateTicketModal = ({ isModalOpen, setIsModalOpen }: GenerateTic
     setOtherError("")
     setActiveQr(null)
   }
-
-  useEffect(() => {
-    if (!isModalOpen) return
-
-    const fetchChildServices = async () => {
-      const data = await getChildServices()
-
-      if (data) {
-        setChildServices(data)
-      } else {
-        setChildServices([])
-      }
-    }
-
-    fetchChildServices()
-  }, [isModalOpen, getChildServices])
 
   const handleClose = () => {
     resetModal()
