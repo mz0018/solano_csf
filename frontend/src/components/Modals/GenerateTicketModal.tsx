@@ -1,56 +1,33 @@
 import { useEffect, useState } from "react"
 import { Select } from "../../ui/form/Select"
-import { ModalUI } from "../../ui/form/ModalUI"
-import { Button } from "../../ui/form/Buttons"
-import { AdminButton } from "../../ui/form/AdminButton"
-import { useGenerateTicket } from "../../hooks/useGenerateTicket"
-import { useGetServices } from "../../hooks/useGetServices"
-import { useGetChildServices } from "../../hooks/useGetChildServices"
-import type { Service } from "../../hooks/useGetServices"
-import type { ChildService } from "../../hooks/useGetChildServices"
-import { ErrorText } from "../../ui/form/ErrorText"
 import { Input } from "../../ui/form/Input"
 import { printQr } from "../../utils/printQr"
+import { Button } from "../../ui/form/Buttons"
+import { ModalUI } from "../../ui/form/ModalUI"
+import { ErrorText } from "../../ui/form/ErrorText"
+import { AdminButton } from "../../ui/form/AdminButton"
+import { useGenerateTicket } from "../../hooks/useGenerateTicket"
+import { useGetChildServices } from "../../hooks/useGetChildServices"
+import { useQueryGetListOfServicesByOfficeHook } from "../../hooks/head_office_admin/useQueryGetListOfServicesByOfficeHook"
 
-type GeneratedQrCode = {
-  ticket: {
-    code: string
-    createdAt: string
-    generatedBy: string
-    officeCode: string
-    selectedService: string[]
-    status: string
-    updatedAt: string
-    _id: string
-    otherServiceDetail?: string | null
-  }
-  qrCode: string
-}
+import type { GenerateTicketModalProps} from "../../types/ModalTypes"
+import type { ListOfServicesResponse, GeneratedQrCodeResponse } from "../../types/HeadOfficeAdminType"
 
-type GenerateTicketModalProps = {
-  isModalOpen: boolean
-  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
-}
+export const GenerateTicketModal = ({ isModalOpen, setIsModalOpen }: GenerateTicketModalProps) => {
 
-export const GenerateTicketModal = ({
-  isModalOpen,
-  setIsModalOpen,
-}: GenerateTicketModalProps) => {
   const { createNewTicket, isGeneratingTicket } = useGenerateTicket()
 
-  const { getOfficeService } = useGetServices()
   const { getChildServices } = useGetChildServices()
+  const { data: services = [] } = useQueryGetListOfServicesByOfficeHook()
 
-  const [services, setServices] = useState<Service[]>([])
-  const [childServices, setChildServices] = useState<ChildService[]>([])
+  const [childServices, setChildServices] = useState<ListOfServicesResponse[]>([])
   const [selectedService, setSelectedService] = useState<string[]>([])
   const [selectedChildServices, setSelectedChildServices] = useState<string>("")
   const [serviceError, setServiceError] = useState<string>("")
   const [childServiceError, setChildServiceError] = useState<string>("")
   const [otherText, setOtherText] = useState<string>("")
   const [otherError, setOtherError] = useState<string>("")
-  const [activeQr, setActiveQr] = useState<GeneratedQrCode | null>(null)
-
+  const [activeQr, setActiveQr] = useState<GeneratedQrCodeResponse | null>(null)
 
   const sortedServices = [
     ...services.filter((service) => service.status === "active" && service.name !== "Other Service"),
@@ -119,22 +96,6 @@ export const GenerateTicketModal = ({
     setOtherError("")
     setActiveQr(null)
   }
-
-  useEffect(() => {
-    if (!isModalOpen) {
-      return
-    }
-
-    const fetchServices = async () => {
-      const data = await getOfficeService()
-
-      if (data) {
-        setServices(data)
-      }
-    }
-
-    fetchServices()
-  }, [isModalOpen, getOfficeService])
 
   useEffect(() => {
     if (!isModalOpen) return
