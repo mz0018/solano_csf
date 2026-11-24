@@ -28,7 +28,7 @@ export type ListOfServicesResponse = {
   type: string
 }
 
-/**GeneratedQrCodeResponse */
+/**generatedQrCodeResponse */
 export type GeneratedQrCodeResponse = {
   ticket: {
     code: string
@@ -42,4 +42,24 @@ export type GeneratedQrCodeResponse = {
     otherServiceDetail?: string | null
   }
   qrCode: string
+}
+
+/**generateNewTicketService */
+export type NewTicketRequest = {
+  selectedService: string[]
+  otherServiceDetail?: string
+  selectedChildServices?: string
+}
+
+export type NewTicketResponse = {
+  selectedService: string[]
+  selectedChildService?: string[]
+  otherServiceDetail: string
+  officeCode: string
+  code: string
+  status: string
+  generatedBy: string
+  _id: string
+  createdAt: string
+  updatedAt: string
 }

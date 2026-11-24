@@ -6,7 +6,7 @@ import { Button } from "../../ui/form/Buttons"
 import { ModalUI } from "../../ui/form/ModalUI"
 import { ErrorText } from "../../ui/form/ErrorText"
 import { AdminButton } from "../../ui/form/AdminButton"
-import { useGenerateTicket } from "../../hooks/useGenerateTicket"
+import { useMutateGenerateTicketHook } from "../../hooks/head_office_admin/useMutateGenerateTicketHook"
 import { useQueryGetListOfServicesByOfficeHook } from "../../hooks/head_office_admin/useQueryGetListOfServicesByOfficeHook"
 import { useQueryGetChildServicesByParentHook } from "../../hooks/head_office_admin/useQueryGetChildServicesByParentHook"
 
@@ -15,7 +15,7 @@ import type { GeneratedQrCodeResponse } from "../../types/HeadOfficeAdminType"
 
 export const GenerateTicketModal = ({ isModalOpen, setIsModalOpen }: GenerateTicketModalProps) => {
 
-  const { createNewTicket, isGeneratingTicket } = useGenerateTicket()
+  const { mutate: createNewTicket, isPending: isGeneratingTicket } = useMutateGenerateTicketHook()
 
   const { data: childServices = [] } = useQueryGetChildServicesByParentHook()
   const { data: services = [] } = useQueryGetListOfServicesByOfficeHook()
@@ -62,7 +62,7 @@ export const GenerateTicketModal = ({ isModalOpen, setIsModalOpen }: GenerateTic
     setServiceError("")
   }
 
-  const handleGenerateTicket = async () => {
+  const handleGenerateTicket = () => {
     if (selectedService.includes("APPLICATION_FOR_LEAVE") && !selectedChildServices) {
       setChildServiceError("Please select a leave type")
       return
@@ -81,11 +81,20 @@ export const GenerateTicketModal = ({ isModalOpen, setIsModalOpen }: GenerateTic
     setServiceError("")
     setOtherError("")
 
-    const qrCodes = await createNewTicket(selectedService, otherText.trim(), selectedChildServices)
-    if (qrCodes?.length) {
-      setActiveQr(qrCodes[0])
-    }
-
+    createNewTicket(
+      {
+        selectedService,
+        otherServiceDetail: otherText.trim() || undefined,
+        selectedChildServices: selectedChildServices || undefined,
+      },
+      {
+        onSuccess: (qrCodes) => {
+          if (qrCodes.length) {
+            setActiveQr(qrCodes[0])
+          }
+        },
+      }
+    )
   }
 
   const resetModal = () => {
