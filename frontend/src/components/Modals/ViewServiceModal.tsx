@@ -1,21 +1,19 @@
 import { useState } from "react";
 import { ModalUI } from "../../ui/form/ModalUI";
 import { AdminButton } from "../../ui/form/AdminButton";
-import type { Service } from "../../hooks/useGetServices";
 import { useUpdateNewService } from "../../hooks/useUpdateNewService";
 import { useServicePartialUpdate } from "../../hooks/useServicePartialUpdate";
 import { CSFCustomToaster } from "../../utils/Toaster";
 import { ErrorText } from "../../ui/form/ErrorText";
 import { Select } from "../../ui/form/Select";
+import type { ListOfServicesResponse } from "../../types/HeadOfficeAdminType";
 
 type ViewServiceModalProps = {
-  service: Service | null;
+  service: ListOfServicesResponse | null;
   onClose: () => void;
-  onServiceUpdated: (service: Service) => void;
+  onServiceUpdated: (service: ListOfServicesResponse) => void;
 };
 
-// Local edits are kept separate from the saved service so we can tell
-// when there is something new to save.
 type ServiceDraft = {
   serviceId: string;
   name: string;

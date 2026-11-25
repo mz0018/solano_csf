@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import type { Service } from "./useGetServices";
+import type { ListOfServicesResponse } from "../types/HeadOfficeAdminType";
 
-type ServiceChanges = Partial<Pick<Service, "name" | "type">>;
+type ServiceChanges = Partial<Pick<ListOfServicesResponse, "name" | "type">>;
 
 export const useServicePartialUpdate = () => {
 	const [isLoading, setIsLoading] = useState(false);
@@ -10,7 +10,7 @@ export const useServicePartialUpdate = () => {
 	const [isRateLimited, setIsRateLimited] = useState<boolean>(false);
 	const queryClient = useQueryClient();
 
-	const updateService = async (service: Service, edited: ServiceChanges) => {
+	const updateService = async (service: ListOfServicesResponse, edited: ServiceChanges) => {
 		const updates: ServiceChanges = {};
 		if (edited.name !== service.name) updates.name = edited.name;
 		if (edited.type !== service.type) updates.type = edited.type;

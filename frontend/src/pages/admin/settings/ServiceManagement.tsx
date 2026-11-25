@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
-import { useGetServices } from "../../../hooks/useGetServices";
-import type { Service } from "../../../hooks/useGetServices";
+import { useState } from "react";
 import { TableUI } from "../../../ui/form/TableUI";
 import { NewServiceModal } from "../../../components/Modals/NewServiceModal";
 import { ViewServiceModal } from "../../../components/Modals/ViewServiceModal";
 import { AdminButton } from "../../../ui/form/AdminButton";
+import { useQueryGetListOfServicesByOfficeHook } from "../../../hooks/head_office_admin/useQueryGetListOfServicesByOfficeHook";
+
+import type { ListOfServicesResponse } from "../../../types/HeadOfficeAdminType";
 
 const getServiceStatusColors = (status: string = "") => {
   const normalizedStatus = status.toLowerCase();
@@ -33,19 +34,10 @@ const getServiceStatusColors = (status: string = "") => {
 };
 
 const ServiceManagementSettings = () => {
-  const { getOfficeService } = useGetServices();
-  const [services, setServices] = useState<Service[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const [selectedService, setSelectedService] = useState<ListOfServicesResponse | null>(null);
 
-  useEffect(() => {
-    const fetchServices = async () => {
-      const data = await getOfficeService();
-      setServices(data ?? []);
-    };
-
-    fetchServices();
-  }, [getOfficeService]);
+  const { data: services = [] } = useQueryGetListOfServicesByOfficeHook();
 
   return (
     <>
@@ -220,11 +212,6 @@ const ServiceManagementSettings = () => {
           service={selectedService}
           onClose={() => setSelectedService(null)}
           onServiceUpdated={(updatedService) => {
-            setServices((currentServices) =>
-              currentServices.map((service) =>
-                service._id === updatedService._id ? updatedService : service
-              )
-            );
             setSelectedService(updatedService);
           }}
         />
