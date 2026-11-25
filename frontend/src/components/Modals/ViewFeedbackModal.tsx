@@ -1,22 +1,13 @@
 import { ModalUI } from "../../ui/form/ModalUI"
-import { useGetDetailedFeedback } from "../../hooks/useGetDetailedFeedback"
 import { ErrorText } from "../../ui/form/ErrorText"
 import { InlineLoader } from "../Loader"
+import { useQueryGetDetailedFeedbackByCodeHook } from "../../hooks/office_admin/useQueryGetDetailedFeedbackByCodeHook"
 
-type ViewFeedbackModalProps = {
-  feedbackModalOpen: boolean
-  setFeedbackModalOpen: React.Dispatch<React.SetStateAction<boolean>>
-  selectedFeedback: string | null
-}
+import type { ViewFeedbackModalProps } from "../../types/ModalTypes"
 
-export const ViewFeedbackModal = ({
-  feedbackModalOpen,
-  setFeedbackModalOpen,
-  selectedFeedback,
-}: ViewFeedbackModalProps) => {
-  const { data, isLoading, isError } = useGetDetailedFeedback(
-    selectedFeedback ?? ""
-  )
+export const ViewFeedbackModal = ({ feedbackModalOpen, setFeedbackModalOpen, selectedFeedback }: ViewFeedbackModalProps) => {
+  
+  const { data, isLoading, isError } = useQueryGetDetailedFeedbackByCodeHook(selectedFeedback ?? "")
 
   return (
     <ModalUI

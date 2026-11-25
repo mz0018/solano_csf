@@ -6,6 +6,7 @@ import type {
     NotificationsResponse,
     UserChangePasswordRequest,
     UserChangePasswordResponse,
+    DetailedFeedbackByCodeResponse,
 } from '../types/OfficeAdminType';
 
 export const getReportStatisticService = async (page: number = 1, statusFilter: string = ""): Promise<ActiveQueueResponse> => {
@@ -115,7 +116,25 @@ export const getUserNotificationService = async (): Promise<NotificationsRespons
         console.error('Failed to fetch user notification on service.', err);
         throw err;
     }
-} 
+}
+
+export const getDetailedFeedbackByCodeService = async (code: string): Promise<DetailedFeedbackByCodeResponse> => {
+    try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/feedback/${code}`,
+            { credentials: "include" }
+        );
+
+        if (!res.ok) {
+            throw new Error("Failed to fetch detailed feedback response on service.");
+        }
+
+        return res.json();
+
+    } catch (err) {
+        console.error('Failed to fetch detailed feedback on service.', err);
+        throw err;
+    }
+}
 
 export const updateUserPasswordService = async ({ currentPassword, newPassword}: UserChangePasswordRequest): Promise<UserChangePasswordResponse> => {
     try {

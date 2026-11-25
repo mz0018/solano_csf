@@ -79,7 +79,7 @@ export type UserProfileResponse = {
   };
 };
 
-/**updateUserPasswordService */
+/**updateUserPasswordService types */
 export type UserChangePasswordRequest = {
   currentPassword: string;
   newPassword: string;
@@ -89,7 +89,7 @@ export type UserChangePasswordResponse = {
   message: string;
 };
 
-/**getUserLoginHistoryService */
+/**getUserLoginHistoryService types */
 type LoginHistoryEntry = {
   ip: string;
   userAgent: string;
@@ -104,7 +104,7 @@ export type LoginHistoryResponse = {
   page: number;
 };
 
-/**getUserNotificationService */
+/**getUserNotificationService types */
 type Notification = {
   _id: string;
   type: string;
@@ -115,3 +115,30 @@ type Notification = {
 export type NotificationsResponse = {
   notifications: Notification[];
 };
+
+/** getDetailedFeedbackByCodeService types */
+export interface DetailedFeedbackByCodeResponse {
+  // _id: string;
+  queue: DetailedFeedbackQueue;
+  feedback: DetailedFeedback;
+}
+
+export interface DetailedFeedbackQueue {
+  code: string;
+  otherServiceDetail: string | null;
+}
+
+export interface DetailedFeedback {
+  client: DetailedFeedbackClient;
+  comments: string;
+  otherServiceDetail: string | null;
+  ratings: ReportStatisticsRatings;
+  service: string;
+}
+
+export interface DetailedFeedbackClient {
+  name: string;
+  gender: string;
+  employmentStatus: string;
+  address: string;
+}
