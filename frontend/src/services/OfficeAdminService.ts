@@ -118,6 +118,7 @@ export const getUserNotificationService = async (): Promise<NotificationsRespons
     }
 }
 
+/**This Service is also used by HR Admin for Review Office Feedback */
 export const getDetailedFeedbackByCodeService = async (code: string): Promise<DetailedFeedbackByCodeResponse> => {
     try {
         const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/feedback/${code}`,

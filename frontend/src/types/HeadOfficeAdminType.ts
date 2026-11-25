@@ -1,4 +1,4 @@
-/**getTotalServiceRenderedByDateService */
+/**getTotalServiceRenderedByDateService types */
 type RenderedService = {
     _id: string;
     generatedBy: string;
@@ -19,7 +19,7 @@ export type TotalServiceRenderedResponse = {
     totalPages: number;
 };
 
-/**getServicesByOfficeService */
+/**getServicesByOfficeService types */
 export type ListOfServicesResponse = {
   _id: string
   code: string
@@ -28,7 +28,7 @@ export type ListOfServicesResponse = {
   type: string
 }
 
-/**generatedQrCodeResponse */
+/**generatedQrCodeResponse types */
 export type GeneratedQrCodeResponse = {
   ticket: {
     code: string
@@ -44,7 +44,7 @@ export type GeneratedQrCodeResponse = {
   qrCode: string
 }
 
-/**generateNewTicketService */
+/**generateNewTicketService types */
 export type NewTicketRequest = {
   selectedService: string[]
   otherServiceDetail?: string
@@ -63,3 +63,11 @@ export type NewTicketResponse = {
   createdAt: string
   updatedAt: string
 }
+
+/**registerNewOfficeServiceService types */
+export type ServiceType = "external" | "internal" | "";
+
+export type NewServiceRequest = {
+  serviceName: string;
+  serviceType: ServiceType;
+};

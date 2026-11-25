@@ -3,6 +3,7 @@ import type {
     ListOfServicesResponse,
     NewTicketRequest,
     NewTicketResponse,
+    NewServiceRequest,
 } from '../types/HeadOfficeAdminType';
 
 export const getTotalServiceRenderedByDateService = async (selectedDateFrom: string, selectedDateTo: string, page: number, limit: number): Promise<TotalServiceRenderedResponse> => {
@@ -82,6 +83,31 @@ export const generateNewTicketService = async (newTicketRequest: NewTicketReques
         return data.ticket;
     } catch (err) {
         console.error('Failed to generate new ticket on service.', err);
+        throw err;
+    }
+}
+
+export const registerNewOfficeServiceService = async (newServiceRequest: NewServiceRequest) => {
+    try { 
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/services`,
+            {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify({
+                    serviceName: newServiceRequest.serviceName.trim(),
+                    serviceType: newServiceRequest.serviceType,
+                }),
+            }
+        );
+
+        if (!res.ok) {
+            throw new Error((await res.json()).message || "Failed to register new service response services")
+        }
+
+        return res.json();
+    } catch (err) {
+        console.error('Failed to register new service on service', err);
         throw err;
     }
 }

@@ -1,8 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
 import { CSFCustomToaster } from '../../utils/Toaster';
 import { generateNewTicketService } from '../../services/HeadOfficeAdminService';
-import type { NewTicketRequest } from '../../types/HeadOfficeAdminType';
 import { convertToQuickResponseCodeHelper } from '../../helper/convertToQuickResponseCodeHelper';
+import type { NewTicketRequest } from '../../types/HeadOfficeAdminType';
 
 export const useMutateGenerateTicketHook = () => {
 

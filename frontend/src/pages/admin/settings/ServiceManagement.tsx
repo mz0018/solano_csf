@@ -205,7 +205,8 @@ const ServiceManagementSettings = () => {
         </div>
       </div>
 
-      {isModalOpen && <NewServiceModal onClose={() => setIsModalOpen(false)} />}
+      {/* {isModalOpen && <NewServiceModal onClose={() => setIsModalOpen(false)} />} */}
+      {isModalOpen && <NewServiceModal setIsModalOpen={setIsModalOpen} />}
 
       {selectedService && (
         <ViewServiceModal

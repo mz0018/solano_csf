@@ -1,49 +1,50 @@
+import { useState } from "react";
 import { Select } from "../../ui/form/Select";
 import { ModalUI } from "../../ui/form/ModalUI";
-import { AdminButton } from "../../ui/form/AdminButton";
 import { ErrorText } from "../../ui/form/ErrorText";
-import { useSaveNewService, type ServiceType } from "../../hooks/useSaveNewService";
-import { CSFCustomToaster } from "../../utils/Toaster";
+import { AdminButton } from "../../ui/form/AdminButton";
+import { useMutateSaveNewServiceHook } from "../../hooks/head_office_admin/useMutateSaveNewServiceHook";
 
-type NewServiceModalProps = {
-  onClose: () => void;
-};
+import type { ServiceType } from "../../types/HeadOfficeAdminType";
+import type { GenerateTicketModalProps } from "../../types/ModalTypes";
 
-export const NewServiceModal = ({ onClose }: NewServiceModalProps) => {
-  const {
-    isLoading,
-    hasError,
-    handleSubmit,
-    serviceName,
-    serviceType,
-    setServiceName,
-    setServiceType,
-    isRateLimited,
-  } = useSaveNewService();
+export const NewServiceModal = ({ setIsModalOpen }: Pick<GenerateTicketModalProps, "setIsModalOpen">) => {
+
+  const { mutateAsync, isPending } = useMutateSaveNewServiceHook();
+
+  const [serviceName, setServiceName] = useState<string>("");
+  const [serviceType, setServiceType] = useState<ServiceType>("");
+  const [hasError, setHasError] = useState<string>("");
 
   const handleSave = async () => {
-    const result = await handleSubmit({ serviceName, serviceType });
-
-    if (result?.success) {
-      CSFCustomToaster.success("Service Added");
-      onClose();
+    if (!serviceName.trim()) {
+      setHasError("Service name is required.");
+      return;
     }
-  };
+
+    if (!serviceType) {
+      setHasError("Please select a service type.");
+      return;
+    }
+
+    await mutateAsync({ serviceName, serviceType })
+    setIsModalOpen(false);
+  }
 
   return (
     <ModalUI
       isOpen
-      onClose={onClose}
+      onClose={() => setIsModalOpen(false)}
       title="Add New Service"
       description="Fill in the details below to create and add a new service to the system."
       footer={
         <AdminButton
           type="button"
           onClick={handleSave}
-          disabled={isLoading || isRateLimited}
+          disabled={isPending}
           className="w-full bg-[#003566] border border-[#FFC300] text-[#FFD60A] transition-colors duration-200 hover:bg-[#004080] hover:border-[#FFD60A] font-semibold whitespace-nowrap"
         >
-          {isLoading ? "Loading..." : "Save Service"}
+          {isPending ? "Loading..." : "Save Service"}
         </AdminButton>
       }
     >
