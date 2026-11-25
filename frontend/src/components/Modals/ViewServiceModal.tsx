@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { ModalUI } from "../../ui/form/ModalUI";
-import { AdminButton } from "../../ui/form/AdminButton";
-import { useUpdateNewService } from "../../hooks/useUpdateNewService";
-import { useServicePartialUpdate } from "../../hooks/useServicePartialUpdate";
-import { CSFCustomToaster } from "../../utils/Toaster";
-import { ErrorText } from "../../ui/form/ErrorText";
 import { Select } from "../../ui/form/Select";
+import { ModalUI } from "../../ui/form/ModalUI";
+import { ErrorText } from "../../ui/form/ErrorText";
+import { AdminButton } from "../../ui/form/AdminButton";
+
+import { useServicePartialUpdate } from "../../hooks/useServicePartialUpdate";
+import { useMutateUpdateRegisteredServiceHook } from "../../hooks/head_office_admin/useMutateUpdateRegisteredServiceHook";
+
 import type { ListOfServicesResponse } from "../../types/HeadOfficeAdminType";
 
 type ViewServiceModalProps = {
@@ -21,22 +22,9 @@ type ServiceDraft = {
 };
 
 export const ViewServiceModal = ({ service, onClose, onServiceUpdated }: ViewServiceModalProps) => {
-  const {
-    isLoading,
-    updateServiceStatus,
-    hasErrorsUpdate,
-    setHasErrorsUpdate,
-    isRateLimitedUpdate,
-  } = useUpdateNewService();
-
-  const {
-    isLoading: isSaving,
-    updateService,
-    hasErrors,
-    setHasErrors,
-    isRateLimited,
-  } = useServicePartialUpdate();
-
+  
+  const { mutateAsync, isPending } = useMutateUpdateRegisteredServiceHook();
+  const { isLoading: isSaving, updateService, hasErrors, isRateLimited } = useServicePartialUpdate();
   const [draft, setDraft] = useState<ServiceDraft | null>(null);
 
   // Nothing to show without a selected service.
@@ -50,12 +38,6 @@ export const ViewServiceModal = ({ service, onClose, onServiceUpdated }: ViewSer
 
   const hasChanges = serviceName !== service.name || serviceType !== service.type;
 
-  // Both requests share the same error area, so clear both before each action.
-  const clearErrors = () => {
-    setHasErrors(null);
-    setHasErrorsUpdate(null);
-  };
-
   const handleStatusChange = async () => {
     if (service.status === "active") {
       const confirmed = window.confirm("Are you sure you want to deactivate this service?");
@@ -63,28 +45,20 @@ export const ViewServiceModal = ({ service, onClose, onServiceUpdated }: ViewSer
       if (!confirmed) return;
     }
 
-    clearErrors();
-
     const status = service.status === "active" ? "inactive" : "active";
 
     try {
-      const result = await updateServiceStatus(service._id, status);
-      if (!result) return;
+      await mutateAsync({ serviceId: service._id, serviceStatus: status });
 
       onServiceUpdated({ ...service, status });
-      CSFCustomToaster.success(result.message);
     } catch (error) {
-      setHasErrorsUpdate(
-        error instanceof Error ? error.message : "Unable to update the service."
-      );
+      console.error(error instanceof Error ? error.message : "Unable to update the service.");
     }
   };
 
   const handlePartialUpdate = async () => {
-    clearErrors();
-
     if (!serviceName.trim()) {
-      setHasErrors("Service name is required.");
+      alert("Service name is required.");
       return;
     }
 
@@ -95,15 +69,12 @@ export const ViewServiceModal = ({ service, onClose, onServiceUpdated }: ViewSer
       onServiceUpdated({ ...service, ...result.updates });
       // Let the saved service drive the inputs again.
       setDraft(null);
-      CSFCustomToaster.success(result.message);
     } catch (error) {
-      setHasErrors(
-        error instanceof Error ? error.message : "Unable to update the service."
-      );
+      console.error(error instanceof Error ? error.message : "Unable to update the service.");
     }
   };
 
-  const statusButtonLabel = isLoading
+  const statusButtonLabel = isPending
     ? "Updating..."
     : service.status === "active"
       ? "Deactivate"
@@ -125,7 +96,7 @@ export const ViewServiceModal = ({ service, onClose, onServiceUpdated }: ViewSer
           <button
             type="button"
             onClick={handleStatusChange}
-            disabled={isLoading || isRateLimitedUpdate}
+            disabled={isPending}
             className={`w-full border ${statusButtonClasses} p-4 font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer rounded-sm`}
           >
             {statusButtonLabel}
@@ -201,7 +172,7 @@ export const ViewServiceModal = ({ service, onClose, onServiceUpdated }: ViewSer
         {/* Errors */}
         <div>
           {hasErrors && <ErrorText message={hasErrors} />}
-          {hasErrorsUpdate && <ErrorText message={hasErrorsUpdate} />}
+          {/* {hasErrorsUpdate && <ErrorText message={hasErrorsUpdate} />} */}
         </div>
       </dl>
     </ModalUI>

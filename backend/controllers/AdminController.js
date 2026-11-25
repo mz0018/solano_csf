@@ -101,7 +101,7 @@ class AdminController {
         try {
             const service = await AdminService.updateServiceStatus(
                 req.params.id,
-                req.body.status,
+                req.body.serviceStatus,
                 req.user
             )
             res.status(200).json({

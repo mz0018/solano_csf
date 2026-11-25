@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query';
 import { CSFCustomToaster } from '../../utils/Toaster';
 import { registerNewOfficeServiceService } from '../../services/HeadOfficeAdminService';
 

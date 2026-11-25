@@ -4,6 +4,7 @@ import type {
     NewTicketRequest,
     NewTicketResponse,
     NewServiceRequest,
+    UpdateServiceRequest
 } from '../types/HeadOfficeAdminType';
 
 export const getTotalServiceRenderedByDateService = async (selectedDateFrom: string, selectedDateTo: string, page: number, limit: number): Promise<TotalServiceRenderedResponse> => {
@@ -108,6 +109,31 @@ export const registerNewOfficeServiceService = async (newServiceRequest: NewServ
         return res.json();
     } catch (err) {
         console.error('Failed to register new service on service', err);
+        throw err;
+    }
+}
+
+export const updateRegisteredOfficeServiceStatusService = async (updateServiceRequest: UpdateServiceRequest) => {
+    try { 
+        const res = await fetch(
+            `${import.meta.env.VITE_API_URL}/api/admin/services/${updateServiceRequest.serviceId}/status`,
+            {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify({ 
+                    serviceStatus: updateServiceRequest.serviceStatus
+                }),
+            }
+        );
+
+        if (!res.ok) {
+            throw new Error((await res.json()).message || "Failed to update service response services")
+        }
+
+        return res.json();
+    } catch (err) {
+        console.error('Failed to update service on service', err);
         throw err;
     }
 }

@@ -71,3 +71,11 @@ export type NewServiceRequest = {
   serviceName: string;
   serviceType: ServiceType;
 };
+
+/**updateRegisteredOfficeServiceService */
+type ServiceStatusType = "active" | "inactive";
+
+export type UpdateServiceRequest = {
+  serviceId: string;
+  serviceStatus: ServiceStatusType
+}
