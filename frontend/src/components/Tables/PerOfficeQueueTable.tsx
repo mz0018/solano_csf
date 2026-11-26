@@ -3,17 +3,13 @@ import { TableUI } from "../../ui/form/TableUI";
 import { HRViewFeedbackModal } from "../Modals/HRViewFeedbackModal";
 import { PaginationUI } from "../../ui/form/PaginationUI";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+
+import type { FeedbackByOfficeAndDateRangeItem } from "../../types/HumanResourceTypes";
+
 import notFoundReport from "../../assets/not-found-report.json";
 
-type Feedback = {
-    _id: string
-    queueNumber: string
-    createdAt: string
-    averageRating: string
-}
-
 type Props = {
-    feedbacks: Feedback[];
+    feedbacks: FeedbackByOfficeAndDateRangeItem[];
     totalPages: number;
     page: number;
     onPageChange: (page: number) => void;
@@ -22,9 +18,7 @@ type Props = {
     selectedPeriod?: string;
 };
 
-const getRatingClass = (averageRating: string) => {
-    const rating = Number.parseFloat(averageRating);
-
+const getRatingClass = (rating: number) => {
     if (!Number.isFinite(rating)) return "border-slate-300 bg-slate-100 text-slate-500";
     if (rating >= 4.5) return "border-green-400 bg-green-100 text-green-700";
     if (rating >= 3.5) return "border-lime-400 bg-lime-100 text-lime-700";
@@ -34,15 +28,7 @@ const getRatingClass = (averageRating: string) => {
     return "border-red-400 bg-red-100 text-red-700";
 };
 
-export const PerOfficeQueueTable = ({
-    feedbacks,
-    totalPages,
-    page,
-    onPageChange,
-    hasSelectedOffice,
-    selectedOfficeName,
-    selectedPeriod,
-}: Props) => {
+export const PerOfficeQueueTable = ({ feedbacks, totalPages, page, onPageChange, hasSelectedOffice, selectedOfficeName, selectedPeriod }: Props) => {
 
     const [feedbackModalOpen, setFeedbackModalOpen] = useState<boolean>(false);
     const [selectedFeedback, setSelectedFeedback] = useState<string | null>(null);

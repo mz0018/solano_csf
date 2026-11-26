@@ -22,12 +22,12 @@ export const getTotalServiceRenderedByDateService = async (selectedDateFrom: str
         );
 
         if (!res.ok) {
-            throw new Error("Failed to fetch rendered services");
+            throw new Error((await res.json()).message || "Failed to retrieve rendered services");
         }
 
         return res.json();
     } catch (err) {
-        console.error('Failed to fetch service rendered by date on service.', err);
+        console.error('Failed to retrieve service rendered by date on service.', err);
         throw err;
     }
 }
@@ -39,12 +39,12 @@ export const getServicesByOfficeService = async (): Promise<ListOfServicesRespon
         );
 
         if (!res.ok) {
-            throw new Error("Failed to fetch list of services by office response services");
+            throw new Error((await res.json()).message || "Failed to retrieve list of services by office response services");
         };
 
         return res.json();
     } catch (err) {
-        console.error('Failed to fetch service rendered by date on service.', err);
+        console.error('Failed to retrieve service rendered by date on service.', err);
         throw err;
     }
 }
@@ -56,12 +56,12 @@ export const getChildServicesByParentService = async (): Promise<ListOfServicesR
         )
 
         if (!res.ok) {
-            throw new Error("Failed to fetch list of child services by parent response services")
+            throw new Error((await res.json()).message || "Failed to retrieve list of child services by parent response services")
         }
 
         return res.json();
     } catch (err) {
-        console.error('Failed to fetch child services by parent on service.', err);
+        console.error('Failed to retrieve child services by parent on service.', err);
         throw err;
     }
 }

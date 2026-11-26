@@ -1,25 +1,30 @@
 import { useState } from "react";
 import { Select } from "../../ui/form/Select";
-import { useGetOffices } from "../../hooks/useGetOffices";
-import { useGetOfficeFeedbackByDate } from "../../hooks/useGetOfficeFeedbackByDate";
-import { PerOfficeQueueTable } from "../../components/Tables/PerOfficeQueueTable";
 import { ErrorText } from "../../ui/form/ErrorText";
+import { useGetOffices } from "../../hooks/useGetOffices";
+import { PerOfficeQueueTable } from "../../components/Tables/PerOfficeQueueTable";
+import { useQueryGetFeedbackByOfficeAndDateRange } from "../../hooks/hr_office_admin/useQueryGetFeedbackByOfficeAndDateRangeHook";
+
+import type { FeedbackByOfficeAndDateRangeRequest } from "../../types/HumanResourceTypes";
 
 const OfficesFeedbacks = () => {
     const [selectedOfficeCode, setSelectedOfficeCode] = useState("");
     const [selectedMonth, setSelectedMonth] = useState("");
     const [selectedYear, setSelectedYear] = useState("");
     const [page, setPage] = useState<number>(1);
-    const [itemsPerPage] = useState<number>(10);
+    const itemsPerPage = 10;
     
     const { data: offices, isLoading: officesLoading } = useGetOffices();
-    const { data, isLoading, error } = useGetOfficeFeedbackByDate(
-        selectedOfficeCode,
-        selectedMonth, 
-        selectedYear,
+    
+    const feedbackRequest: FeedbackByOfficeAndDateRangeRequest = {
+        officeCode: selectedOfficeCode,
+        month: selectedMonth,
+        year: selectedYear,
         page,
-        itemsPerPage
-    );
+        limit: itemsPerPage
+    }
+
+    const { data, isPending, isError } = useQueryGetFeedbackByOfficeAndDateRange(feedbackRequest);
 
     const selectedOfficeName = offices?.find(
         (office) => office.code === selectedOfficeCode
@@ -53,10 +58,8 @@ const OfficesFeedbacks = () => {
         setPage(1);
     };
 
-    
-
     const handlePageChange = (newPage: number) => {
-        if (newPage < 1 || newPage > (data?.totalPages || 1) || isLoading) return;
+        if (newPage < 1 || newPage > (data?.totalPages || 1) || isPending) return;
         setPage(newPage);
     };
 
@@ -164,8 +167,8 @@ const OfficesFeedbacks = () => {
             </div>
 
             {/* Error Message */}
-            {error && (
-                <ErrorText message={(error as Error).message} />
+            {isError && (
+                <ErrorText message={String(isError)} />
             )}
 
             {/* Feedback Table */}
