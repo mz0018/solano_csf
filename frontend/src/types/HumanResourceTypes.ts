@@ -38,3 +38,9 @@ export type FeedbackByOfficeAndDateRangeResponse = {
     totalPages: number;
     feedbacks: FeedbackByOfficeAndDateRangeItem[];
 };
+
+/**getOfficeListService */
+export type ListOfOfficeResponse = {
+    code: string;
+    name: string;
+}

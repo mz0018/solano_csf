@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Select } from "../../ui/form/Select";
 import { ErrorText } from "../../ui/form/ErrorText";
-import { useGetOffices } from "../../hooks/useGetOffices";
 import { PerOfficeQueueTable } from "../../components/Tables/PerOfficeQueueTable";
-import { useQueryGetFeedbackByOfficeAndDateRange } from "../../hooks/hr_office_admin/useQueryGetFeedbackByOfficeAndDateRangeHook";
+import { useQueryGetOfficeListHook } from "../../hooks/hr_office_admin/useQueryGetOfficeListHook";
+import { useQueryGetFeedbackByOfficeAndDateRangeHook } from "../../hooks/hr_office_admin/useQueryGetFeedbackByOfficeAndDateRangeHook";
 
 import type { FeedbackByOfficeAndDateRangeRequest } from "../../types/HumanResourceTypes";
 
@@ -13,22 +13,20 @@ const OfficesFeedbacks = () => {
     const [selectedYear, setSelectedYear] = useState("");
     const [page, setPage] = useState<number>(1);
     const itemsPerPage = 10;
-    
-    const { data: offices, isLoading: officesLoading } = useGetOffices();
-    
+        
     const feedbackRequest: FeedbackByOfficeAndDateRangeRequest = {
         officeCode: selectedOfficeCode,
         month: selectedMonth,
         year: selectedYear,
         page,
         limit: itemsPerPage
-    }
+    };
 
-    const { data, isPending, isError } = useQueryGetFeedbackByOfficeAndDateRange(feedbackRequest);
+    const { data: offices, isPending: officeLoading, isError: officeError } = useQueryGetOfficeListHook();
+    const { data: feedback, isPending: feedbackLoading, isError: feedbackError } = useQueryGetFeedbackByOfficeAndDateRangeHook(feedbackRequest);
 
-    const selectedOfficeName = offices?.find(
-        (office) => office.code === selectedOfficeCode
-    )?.name;
+    const selectedOfficeName = offices?.find((office) => office.code === selectedOfficeCode)?.name;
+
     const selectedPeriod = selectedMonth && selectedYear
         ? `${new Date(2000, Number(selectedMonth) - 1).toLocaleString("en-US", { month: "long" })} ${selectedYear}`
         : undefined;
@@ -59,7 +57,7 @@ const OfficesFeedbacks = () => {
     };
 
     const handlePageChange = (newPage: number) => {
-        if (newPage < 1 || newPage > (data?.totalPages || 1) || isPending) return;
+        if (newPage < 1 || newPage > (feedback?.totalPages || 1) || feedbackLoading) return;
         setPage(newPage);
     };
 
@@ -96,7 +94,7 @@ const OfficesFeedbacks = () => {
                         onChange={handleOfficeChange}
                     >
                         <option value="">
-                            {officesLoading
+                            {officeLoading
                                 ? "Loading offices..."
                                 : "Select an office"}
                         </option>
@@ -167,15 +165,19 @@ const OfficesFeedbacks = () => {
             </div>
 
             {/* Error Message */}
-            {isError && (
-                <ErrorText message={String(isError)} />
+            {feedbackError && (
+                <ErrorText message={String(feedbackError)} />
+            )}
+
+            {officeError && (
+                <ErrorText message={String(officeError)} />
             )}
 
             {/* Feedback Table */}
             <div className="w-full min-w-0">
                 <PerOfficeQueueTable
-                    feedbacks={data?.feedbacks ?? []}
-                    totalPages={data?.totalPages ?? 0}
+                    feedbacks={feedback?.feedbacks ?? []}
+                    totalPages={feedback?.totalPages ?? 0}
                     page={page}
                     onPageChange={handlePageChange}
                     hasSelectedOffice={!!selectedOfficeCode}

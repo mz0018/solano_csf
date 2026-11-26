@@ -3,7 +3,7 @@ import { getFeedbackByOfficeAndDateRangeService } from '../../services/HumanReso
 
 import type { FeedbackByOfficeAndDateRangeRequest } from '../../types/HumanResourceTypes';
 
-export const useQueryGetFeedbackByOfficeAndDateRange = (request: FeedbackByOfficeAndDateRangeRequest) => {
+export const useQueryGetFeedbackByOfficeAndDateRangeHook = (request: FeedbackByOfficeAndDateRangeRequest) => {
     return useQuery({
         queryKey: ["office-feedback", request.officeCode, request.month, request.year, request.page, request.limit],
         queryFn: () => getFeedbackByOfficeAndDateRangeService(request),

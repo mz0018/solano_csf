@@ -1,16 +1,15 @@
 import { useState } from "react"
 import { Select } from "../../../ui/form/Select"
-import { useGetOffices } from "../../../hooks/useGetOffices"
 import { ErrorText } from "../../../ui/form/ErrorText"
 import { InlineLoader } from "../../../components/Loader"
 import { useGetTicketTracker } from "../../../hooks/useGetTicketTracker"
 import { AdminResponsiveContainer } from "../../../ui/form/AdminResponsiveContainer"
+import { useQueryGetOfficeListHook } from "../../../hooks/hr_office_admin/useQueryGetOfficeListHook"
 
 const TicketTracker = () => {
-
-    const { data: offices, isLoading: officesLoading } = useGetOffices();
-    const [officeCode, setOfficeCode] = useState("");
-    const [dateFrom, setDateFrom] = useState("")
+    const [dateFrom, setDateFrom] = useState<string>("")
+    const [officeCode, setOfficeCode] = useState<string>("");
+    const { data: offices, isPending: officeLoading } = useQueryGetOfficeListHook();
     const { data: tracker, isLoading: trackerLoading, isError: trackerError } = useGetTicketTracker(officeCode, dateFrom)
 
     return (
@@ -35,7 +34,7 @@ const TicketTracker = () => {
 
                         <Select id="office" variant="admin" value={officeCode} onChange={(e) => setOfficeCode(e.target.value)}>
                             <option value="">
-                                {officesLoading ? "Loading offices..." : "Select an office"}
+                                {officeLoading ? "Loading offices..." : "Select an office"}
                             </option>
                             {offices?.map((office) => (
                                 <option key={office.code} value={office.code}>

@@ -1,19 +1,21 @@
 import { useRef, useState } from "react";
 import { Select } from "../../ui/form/Select";
-import { useGetOffices } from "../../hooks/useGetOffices";
-import { FeedbackStatisticTable } from "../../components/Tables/FeedbackStatisticTable";
 import { useCaptureChart } from "../../hooks/useCaptureChart";
 import { BtnGenerateReport } from "../../components/buttons/BtnGenerateReport";
+import { FeedbackStatisticTable } from "../../components/Tables/FeedbackStatisticTable";
+import { useQueryGetOfficeListHook } from "../../hooks/hr_office_admin/useQueryGetOfficeListHook";
 import { useQueryGetReportStatisticsByDateHook } from "../../hooks/office_admin/useQueryGetReportStatisticsByDateHook";
 
 const ReportStatistics = () => {
-    const { data: offices, isLoading: officesLoading } = useGetOffices();
-    const [officeCode, setOfficeCode] = useState("");
-    const [dateFrom, setDateFrom] = useState("");
-    const [dateTo, setDateTo] = useState("");
-    const { data: stats, isLoading, error } = useQueryGetReportStatisticsByDateHook(officeCode, dateFrom, dateTo);
+    const [dateTo, setDateTo] = useState<string>("");
+    const [dateFrom, setDateFrom] = useState<string>("");
+    const [officeCode, setOfficeCode] = useState<string>("");
     const chartRefs = useRef<(HTMLDivElement | null)[]>([]);
     const { handleCapture, isCapturing } = useCaptureChart();
+
+    const { data: offices, isPending: officeLoading } = useQueryGetOfficeListHook();
+    const { data: stats, isLoading, error } = useQueryGetReportStatisticsByDateHook(officeCode, dateFrom, dateTo);
+
     const selectedOfficeName = offices?.find((office) => office.code === officeCode)?.name;
 
     return (
@@ -49,7 +51,7 @@ const ReportStatistics = () => {
                         onChange={(e) => setOfficeCode(e.target.value)}
                     >
                         <option value="">
-                            {officesLoading
+                            {officeLoading
                                 ? "Loading offices..."
                                 : "Select an office"}
                         </option>
