@@ -2,15 +2,15 @@ import { useState } from "react"
 import { Select } from "../../../ui/form/Select"
 import { ErrorText } from "../../../ui/form/ErrorText"
 import { InlineLoader } from "../../../components/Loader"
-import { useGetTicketTracker } from "../../../hooks/useGetTicketTracker"
 import { AdminResponsiveContainer } from "../../../ui/form/AdminResponsiveContainer"
 import { useQueryGetOfficeListHook } from "../../../hooks/hr_office_admin/useQueryGetOfficeListHook"
+import { useQueryGetSuperAdminTicketTrackerHook } from "../../../hooks/super_admin/useQueryGetSuperAdminTicketTrackerHook"
 
 const TicketTracker = () => {
     const [dateFrom, setDateFrom] = useState<string>("")
     const [officeCode, setOfficeCode] = useState<string>("");
     const { data: offices, isPending: officeLoading } = useQueryGetOfficeListHook();
-    const { data: tracker, isLoading: trackerLoading, isError: trackerError } = useGetTicketTracker(officeCode, dateFrom)
+    const { data: tracker, isPending: trackerLoading, isError: trackerError } = useQueryGetSuperAdminTicketTrackerHook({ officeCode, dateFrom, page: 1, limit: 10 });
 
     return (
         <AdminResponsiveContainer>

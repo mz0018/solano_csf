@@ -1,0 +1,11 @@
+// import { useQuery } from "@tanstack/react-query"
+// import { getSuperAdminClientService } from "../../services/SuperAdminService"
+
+// export const useQueryGetSuperAdminClientsHook = (clientId: string, enabled: boolean) => {
+//     return useQuery({
+//         queryKey: ["superadmin-client", clientId],
+//         queryFn: () => getSuperAdminClientService(clientId),
+//         enabled: enabled && !!clientId,
+//         staleTime: 1000 * 60 * 5,
+//     })
+// }
