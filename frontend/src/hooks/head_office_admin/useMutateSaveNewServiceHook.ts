@@ -10,6 +10,11 @@ export const useMutateSaveNewServiceHook = () => {
         mutationFn: (request: NewServiceRequest) => registerNewOfficeServiceService(request),
 
         onSuccess: (data) => {
+
+            if (!data) {
+                return;
+            }
+
             CSFCustomToaster.success(data.message)
         },
 

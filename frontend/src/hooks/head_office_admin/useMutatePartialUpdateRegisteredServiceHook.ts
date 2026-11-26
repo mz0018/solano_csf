@@ -1,18 +1,23 @@
 import { useMutation } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
 import { CSFCustomToaster } from '../../utils/Toaster';
-import { updateRegisteredOfficeServiceStatusService } from '../../services/HeadOfficeAdminService';
+import { updateRegisteredOfficeServiceService } from '../../services/HeadOfficeAdminService';
 
-import type { UpdateServiceRequest } from '../../types/HeadOfficeAdminType';
+import type { UpdatePartialServiceRequest } from '../../types/HeadOfficeAdminType';
 
-export const useMutateUpdateRegisteredServiceHook = () => {
+export const useMutatePartialUpdateRegisteredServiceHook = () => {
 
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (request: UpdateServiceRequest) => updateRegisteredOfficeServiceStatusService(request),
+        mutationFn: (request: UpdatePartialServiceRequest) => updateRegisteredOfficeServiceService(request),
 
         onSuccess: (data) => {
+            
+            if (!data) {
+                return;
+            }
+
             CSFCustomToaster.success(data.message)
 
             queryClient.invalidateQueries({

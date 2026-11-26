@@ -79,3 +79,13 @@ export type UpdateServiceRequest = {
   serviceId: string;
   serviceStatus: ServiceStatusType
 }
+
+/**updateRegisteredOfficeServiceService */
+export type UpdatePartialServiceRequest = {
+  service: ListOfServicesResponse;
+  edited: Partial<Pick<ListOfServicesResponse, "name" | "type" >>;
+}
+
+/**ViewServiceModal Type */
+export type ServiceDraft = Pick<ListOfServicesResponse, "name" | "type"> & 
+  Pick<UpdateServiceRequest, "serviceId" >

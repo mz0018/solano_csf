@@ -4,7 +4,8 @@ import type {
     NewTicketRequest,
     NewTicketResponse,
     NewServiceRequest,
-    UpdateServiceRequest
+    UpdateServiceRequest,
+    UpdatePartialServiceRequest,
 } from '../types/HeadOfficeAdminType';
 
 export const getTotalServiceRenderedByDateService = async (selectedDateFrom: string, selectedDateTo: string, page: number, limit: number): Promise<TotalServiceRenderedResponse> => {
@@ -128,10 +129,48 @@ export const updateRegisteredOfficeServiceStatusService = async (updateServiceRe
         );
 
         if (!res.ok) {
-            throw new Error((await res.json()).message || "Failed to update service response services")
+            throw new Error((await res.json()).message || "Failed to update service status response services")
         }
 
         return res.json();
+    } catch (err) {
+        console.error('Failed to update service status on service', err);
+        throw err;
+    }
+}
+
+export const updateRegisteredOfficeServiceService = async ({ service, edited }: UpdatePartialServiceRequest) => {
+
+    const changes: UpdatePartialServiceRequest["edited"] = {};
+
+    if (edited.name !== undefined && edited.name !== service.name) {
+        changes.name = edited.name;
+    }
+
+    if (edited.type !== undefined && edited.type !== service.type) {
+        changes.type = edited.type;
+    }
+
+    if (Object.keys(changes).length === 0) {
+        return null;
+    }
+
+    try {
+        const res = await fetch(
+            `${import.meta.env.VITE_API_URL}/api/admin/services/update/${service._id}`,
+            {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify(changes),
+            }
+        );
+
+        if (!res.ok) {
+            throw new Error((await res.json()).message || "Failed to update service response services")
+        }
+
+        return res.json()
     } catch (err) {
         console.error('Failed to update service on service', err);
         throw err;

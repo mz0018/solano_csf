@@ -1,50 +1,53 @@
-import { useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
-import type { ListOfServicesResponse } from "../types/HeadOfficeAdminType";
+// import { useState } from "react";
+// import { useQueryClient } from "@tanstack/react-query";
+// import type { ListOfServicesResponse } from "../types/HeadOfficeAdminType";
 
-type ServiceChanges = Partial<Pick<ListOfServicesResponse, "name" | "type">>;
+// type ServiceChanges = Partial<Pick<ListOfServicesResponse, "name" | "type">>;
 
-export const useServicePartialUpdate = () => {
-	const [isLoading, setIsLoading] = useState(false);
-	const [hasErrors, setHasErrors] = useState<string | null>(null);
-	const [isRateLimited, setIsRateLimited] = useState<boolean>(false);
-	const queryClient = useQueryClient();
+// export const useServicePartialUpdate = () => {
+// 	const [isLoading, setIsLoading] = useState(false);
+// 	const [hasErrors, setHasErrors] = useState<string | null>(null);
+// 	const [isRateLimited, setIsRateLimited] = useState<boolean>(false);
+// 	const queryClient = useQueryClient();
 
-	const updateService = async (service: ListOfServicesResponse, edited: ServiceChanges) => {
-		const updates: ServiceChanges = {};
-		if (edited.name !== service.name) updates.name = edited.name;
-		if (edited.type !== service.type) updates.type = edited.type;
-		if (Object.keys(updates).length === 0) return null;
+// 	const updateService = async (service: ListOfServicesResponse, edited: ServiceChanges) => {
+// 		const updates: ServiceChanges = {};
+// 		if (edited.name !== service.name) updates.name = edited.name;
+// 		if (edited.type !== service.type) updates.type = edited.type;
+// 		if (Object.keys(updates).length === 0) return null;
 
-		setIsLoading(true);
-		try {
-			const response = await fetch(
-				`${import.meta.env.VITE_API_URL}/api/admin/services/update/${service._id}`,
-				{
-					method: "PATCH",
-					headers: { "Content-Type": "application/json" },
-					credentials: "include",
-					body: JSON.stringify(updates),
-				}
-			);
-			const result = await response.json();
+// 		console.log("Service:", service)
+// 		console.log("Edited:", edited)
 
-			if (response.status === 429) {
-				setIsRateLimited(true)
-				setHasErrors("Too many request. Please wait and try again later.");
-				return null;
-			}
+// 		setIsLoading(true);
+// 		try {
+// 			const response = await fetch(
+// 				`${import.meta.env.VITE_API_URL}/api/admin/services/update/${service._id}`,
+// 				{
+// 					method: "PATCH",
+// 					headers: { "Content-Type": "application/json" },
+// 					credentials: "include",
+// 					body: JSON.stringify(updates),
+// 				}
+// 			);
+// 			const result = await response.json();
 
-			if (!response.ok || !result.success) {
-				throw new Error(result.message || "Unable to update the service.");
-			}
+// 			if (response.status === 429) {
+// 				setIsRateLimited(true)
+// 				setHasErrors("Too many request. Please wait and try again later.");
+// 				return null;
+// 			}
 
-			await queryClient.invalidateQueries({ queryKey: ["office-services"] });
-			return { updates, message: result.message };
-		} finally {
-			setIsLoading(false);
-		}
-	};
+// 			if (!response.ok || !result.success) {
+// 				throw new Error(result.message || "Unable to update the service.");
+// 			}
 
-	return { isLoading, updateService, hasErrors, setHasErrors, isRateLimited };
-};
+// 			await queryClient.invalidateQueries({ queryKey: ["office-services"] });
+// 			return { updates, message: result.message };
+// 		} finally {
+// 			setIsLoading(false);
+// 		}
+// 	};
+
+// 	return { isLoading, updateService, hasErrors, setHasErrors, isRateLimited };
+// };

@@ -3,28 +3,18 @@ import { Select } from "../../ui/form/Select";
 import { ModalUI } from "../../ui/form/ModalUI";
 import { ErrorText } from "../../ui/form/ErrorText";
 import { AdminButton } from "../../ui/form/AdminButton";
+import { useMutateUpdateRegisteredServiceStatusHook } from "../../hooks/head_office_admin/useMutateUpdateRegisteredServiceStatusHook";
+import { useMutatePartialUpdateRegisteredServiceHook } from "../../hooks/head_office_admin/useMutatePartialUpdateRegisteredServiceHook";
 
-import { useServicePartialUpdate } from "../../hooks/useServicePartialUpdate";
-import { useMutateUpdateRegisteredServiceHook } from "../../hooks/head_office_admin/useMutateUpdateRegisteredServiceHook";
-
-import type { ListOfServicesResponse } from "../../types/HeadOfficeAdminType";
-
-type ViewServiceModalProps = {
-  service: ListOfServicesResponse | null;
-  onClose: () => void;
-  onServiceUpdated: (service: ListOfServicesResponse) => void;
-};
-
-type ServiceDraft = {
-  serviceId: string;
-  name: string;
-  type: string;
-};
+import type { ServiceDraft } from "../../types/HeadOfficeAdminType";
+import type { ViewServiceModalProps } from "../../types/ModalTypes";
 
 export const ViewServiceModal = ({ service, onClose, onServiceUpdated }: ViewServiceModalProps) => {
   
-  const { mutateAsync, isPending } = useMutateUpdateRegisteredServiceHook();
-  const { isLoading: isSaving, updateService, hasErrors, isRateLimited } = useServicePartialUpdate();
+  const { mutateAsync, isPending } = useMutateUpdateRegisteredServiceStatusHook();
+  const { mutateAsync: partialAsync, isPending: partialPending } = useMutatePartialUpdateRegisteredServiceHook();
+
+  const [hasError, setHasError] = useState<string>("");
   const [draft, setDraft] = useState<ServiceDraft | null>(null);
 
   // Nothing to show without a selected service.
@@ -39,39 +29,28 @@ export const ViewServiceModal = ({ service, onClose, onServiceUpdated }: ViewSer
   const hasChanges = serviceName !== service.name || serviceType !== service.type;
 
   const handleStatusChange = async () => {
+    
     if (service.status === "active") {
       const confirmed = window.confirm("Are you sure you want to deactivate this service?");
-
       if (!confirmed) return;
     }
 
     const status = service.status === "active" ? "inactive" : "active";
-
-    try {
-      await mutateAsync({ serviceId: service._id, serviceStatus: status });
-
-      onServiceUpdated({ ...service, status });
-    } catch (error) {
-      console.error(error instanceof Error ? error.message : "Unable to update the service.");
-    }
+    await mutateAsync({ serviceId: service._id, serviceStatus: status });
+    onServiceUpdated({ ...service, status });
   };
 
   const handlePartialUpdate = async () => {
+
     if (!serviceName.trim()) {
-      alert("Service name is required.");
+      setHasError("Service name is required.");
       return;
     }
 
-    try {
-      const result = await updateService(service, { name: serviceName, type: serviceType });
-      if (!result) return;
+    await partialAsync({ service, edited: { name: serviceName, type: serviceType } });
+    onServiceUpdated({ ...service, name: serviceName, type: serviceType });
 
-      onServiceUpdated({ ...service, ...result.updates });
-      // Let the saved service drive the inputs again.
-      setDraft(null);
-    } catch (error) {
-      console.error(error instanceof Error ? error.message : "Unable to update the service.");
-    }
+    setDraft(null);
   };
 
   const statusButtonLabel = isPending
@@ -106,10 +85,10 @@ export const ViewServiceModal = ({ service, onClose, onServiceUpdated }: ViewSer
             icon="/icons/colored-submit.svg"
             iconAlt="Save"
             onClick={handlePartialUpdate}
-            disabled={isSaving || !hasChanges || isRateLimited}
+            disabled={partialPending || !hasChanges}
             className="w-full bg-[#003566] border border-[#FFC300] text-[#FFD60A] transition-colors duration-200 hover:bg-[#004080] hover:border-[#FFD60A] font-semibold whitespace-nowrap"
           >
-            {isSaving ? "Saving..." : "Save Changes"}
+            {partialPending ? "Saving..." : "Save Changes"}
           </AdminButton>
         </>
       }
@@ -169,10 +148,8 @@ export const ViewServiceModal = ({ service, onClose, onServiceUpdated }: ViewSer
           </dt>
         </div>
 
-        {/* Errors */}
         <div>
-          {hasErrors && <ErrorText message={hasErrors} />}
-          {/* {hasErrorsUpdate && <ErrorText message={hasErrorsUpdate} />} */}
+          {hasError && <ErrorText message={hasError} />}
         </div>
       </dl>
     </ModalUI>
