@@ -11,3 +11,16 @@ export interface AuthorizeContextType {
   verifyAuth: () => Promise<void>
   signOut: () => Promise<void>
 } 
+
+/**signInService */
+export type SignInRequest = {
+    userName: string;
+    password: string;
+}
+
+export type SignInResponse = {
+  message: string;
+  officeCode: string;
+  role: string;
+  user: string;
+}

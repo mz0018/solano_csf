@@ -1,25 +1,46 @@
 import { useState } from "react";
-import { useSignin } from "../hooks/useSignin";
-import { CsfFormUI } from "../ui/form/CsfFormUI";
 import { Input } from "../ui/form/Input";
 import { Button } from "../ui/form/Buttons";
+import { ClipLoader } from "react-spinners";
+import { CsfFormUI } from "../ui/form/CsfFormUI";
 import { ErrorText } from "../ui/form/ErrorText";
 import { Eye, EyeOff, LogIn } from "lucide-react";
-import { ClipLoader } from "react-spinners";
+import { useMutateSignInHook } from "../hooks/auth/auth.hooks";
 import { PasswordAssistanceModal } from "../components/Modals/PasswordAssistanceModal";
-import { useAuthorize } from "../hooks/useAuthorize";
-import { getRoleBasedNavigationPath } from "../utils/getRoleBasedNavigationPath";
-import { Loader } from "../components/Loader";
-import { Navigate } from "react-router-dom";
 
 const Signin = () => {
-  const { handleSubmit, isLoading, setUserName, userName, setPassword, password, hasError, status } = useSignin();
-  const { user, loading } = useAuthorize();
+
+  const { mutate: signInRequest, isPending: signInRequestPending } = useMutateSignInHook();
+
+  const [userName, setUserName] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [hasErrors, setHasErrors] = useState<string>("");
+
+  const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!userName.trim()) {
+        setHasErrors("Username is required.");
+        return;
+    }
+
+    if (!password.trim()) {
+        setHasErrors("Password is required.");
+        return;
+    }
+
+    setHasErrors("");
+    signInRequest({ userName, password });
+
+  }
+
+  // const { handleSubmit, isLoading, setUserName, userName, setPassword, password, hasError, status } = useSignin();
+
+  // const { user, loading } = useAuthorize();
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showPasswordAssistance, setShowPasswordAssistance] = useState<boolean>(false);
 
-  if (loading) return <Loader />;
-  if (user) return <Navigate to={getRoleBasedNavigationPath(user.role)} replace />;
+  // if (loading) return <Loader />;
 
  return (
     <section className="min-h-screen grid grid-cols-1 lg:grid-cols-2">
@@ -69,7 +90,7 @@ const Signin = () => {
               value={userName}
               placeholder="e.g., John Doe"
               onChange={(e) => setUserName(e.target.value)}
-              error={hasError.userName || hasError.general}
+              error={hasErrors}
               className="w-full p-3"
             />
 
@@ -84,14 +105,14 @@ const Signin = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Your password here"
-                    error={hasError.password || hasError.general}
+                    error={hasErrors}
                     className="w-full p-3 pr-10"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className={`absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer flex items-center justify-center ${
-                      hasError.password || hasError.general
+                      hasErrors
                         ? "text-red-500"
                         : "text-gray-500 hover:text-gray-700"
                     }`}
@@ -102,18 +123,14 @@ const Signin = () => {
               </div>
             </div>
 
-            <ErrorText
-              message={
-                hasError.userName || hasError.password || hasError.general
-              }
-            />
+            <ErrorText message={hasErrors} />
 
             <Button
               type="submit"
-              disabled={isLoading || status.rateLimit}
+              disabled={signInRequestPending}
               className="w-full rounded-lg bg-[#628dec] mt-6 px-6 py-3 font-semibold text-gray-200 transition hover:opacity-90"
             >
-              {isLoading ? (
+              {signInRequestPending ? (
                 <ClipLoader size={18} color="white" />
               ) : (
                 <>

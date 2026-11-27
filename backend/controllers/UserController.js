@@ -42,7 +42,7 @@ class UserController {
             })
 
             res.status(200).json({
-                message: 'Login 200',
+                message: 'Successfully signed in!',
                 // token,
                 user: credentials.userName,
                 role: decoded.role,
