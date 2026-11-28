@@ -16,6 +16,9 @@ const Signin = () => {
   const [password, setPassword] = useState<string>("");
   const [hasErrors, setHasErrors] = useState<string>("");
 
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showPasswordAssistance, setShowPasswordAssistance] = useState<boolean>(false);
+
   const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -33,14 +36,6 @@ const Signin = () => {
     signInRequest({ userName, password });
 
   }
-
-  // const { handleSubmit, isLoading, setUserName, userName, setPassword, password, hasError, status } = useSignin();
-
-  // const { user, loading } = useAuthorize();
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [showPasswordAssistance, setShowPasswordAssistance] = useState<boolean>(false);
-
-  // if (loading) return <Loader />;
 
  return (
     <section className="min-h-screen grid grid-cols-1 lg:grid-cols-2">

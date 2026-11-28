@@ -70,3 +70,16 @@ export interface FeedbackContextType {
   formData: Partial<FeedbackFormRequest>
   updateFormData: (partial: Record<string, unknown>) => void
 }
+
+/**verifyQueueTicketService */
+export type TicketVerificationResponse = {
+  exists: boolean;
+  officeCode: string;
+  services: { 
+    code: string;
+    name: string;
+  }[]
+  selectedService: string;
+  otherServiceDetail?: string | null;
+  selectedChildService?: string | null;
+}

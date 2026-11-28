@@ -1,34 +1,50 @@
-import { CsfFormUI } from "../ui/form/CsfFormUI";
-import { ArrowLeft, ArrowRightToLine } from "lucide-react";
-import { useTranslation } from "react-i18next";
-import { useVerifyQueue } from "../hooks/useVerifyQueue";
-import { ErrorText } from "../ui/form/ErrorText";
+import { useState } from "react";
 import { Input } from "../ui/form/Input";
-import { useFeedback } from "../hooks/useFeedback";
+import { useTranslation } from "react-i18next";
+import { CsfFormUI } from "../ui/form/CsfFormUI";
+import { ErrorText } from "../ui/form/ErrorText";
 import { useSearchParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useFeedback } from "../hooks/useFeedback";
+import { ArrowLeft, ArrowRightToLine } from "lucide-react";
+import { useMutateVerifyQueueTicketHook } from "../hooks/client/useMutateVerifyQueueTicketHook";
+
 import type { FeedbackFormButtons } from "../types/ClientFeedbackTypes";
 
 export const VerifyQueueForm = ({ onNext, onBack }: Pick<FeedbackFormButtons, "onNext" | "onBack">) => {
   const { t } = useTranslation();
+  const [searchParams] = useSearchParams();
+  const urlCode = searchParams.get('code');
+  const [code, setCode] = useState<string>(urlCode ?? "");
   const { setVerified, updateFormData } = useFeedback();
-  const { code, setCode, isLoading, error, verify, isRateLimited } = useVerifyQueue();
-  const [searchParams] = useSearchParams()
-  const urlCode = searchParams.get('code')
+  const { mutate: verifyCode, isPending: verifyingCode, error: verifyError } = useMutateVerifyQueueTicketHook();
 
-  const handleNext = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleNext = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = await verify();
-    if (data?.exists) {
-      setVerified(data);
-      updateFormData({ queueNumber: code, service: data.selectedService });
-      onNext();
-    }
-  };
 
-  useEffect(() => {
-    if (urlCode) setCode(urlCode)
-  }, [urlCode])
+    const trimmedCode = code.trim();
+
+    if (!trimmedCode) return;
+    
+    verifyCode(code, {
+      onSuccess: (data) => {
+
+        if (!data.exists) return;
+
+        setVerified({
+          code: trimmedCode,
+          officeCode: data.officeCode,
+          services: data.services,
+          selectedService: data.selectedService ? [data.selectedService] : [],
+          selectedChildService: data.selectedChildService
+            ? [data.selectedChildService]
+            : [],
+        });
+
+        updateFormData({ queueNumber: trimmedCode, service: data.selectedService });
+        onNext();
+      }
+    })
+  }
 
   return (
     <CsfFormUI>
@@ -49,15 +65,15 @@ export const VerifyQueueForm = ({ onNext, onBack }: Pick<FeedbackFormButtons, "o
           </label>
         </div>
 
-        {error && <ErrorText message={error} />}
+        {verifyError && <ErrorText message={verifyError.message} />}
 
         <div className="flex justify-between mt-8">
           <button type="button" onClick={onBack} className="flex items-center gap-2 px-6 py-2 rounded-lg border border-[var(--theme-border)] text-[var(--theme-text)] hover:bg-[var(--theme-border)] transition">
             <ArrowLeft size={18} /> {t("common.back")}
           </button>
-          <button type="submit" disabled={isLoading || isRateLimited}
+          <button type="submit" disabled={verifyingCode}
                   className="flex items-center gap-2 px-6 py-2 rounded-lg bg-[var(--theme-btn-bg)] text-[var(--theme-btn-text)] hover:opacity-90 transition disabled:opacity-50">
-            {isLoading ? t("feedback.verifyQueue.checking") : t("common.next")} <ArrowRightToLine size={18} />
+            {verifyingCode ? t("feedback.verifyQueue.checking") : t("common.next")} <ArrowRightToLine size={18} />
           </button>
         </div>
       </form>
