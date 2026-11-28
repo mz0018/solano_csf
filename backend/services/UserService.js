@@ -42,8 +42,9 @@ class UserService {
         })
 
         return {
-            id: newUser._id,
-            userName: newUser.userName,
+            // id: newUser._id,
+            // userName: newUser.userName,
+            message: `Account for ${newUser.userName} created successfully!`,
         }
         
     }

@@ -1,17 +1,66 @@
-import { Button } from '../../../ui/form/Buttons'
-import { ErrorText } from '../../../ui/form/ErrorText'
+import { useState } from 'react'
 import { Input } from '../../../ui/form/Input'
 import { Select } from '../../../ui/form/Select'
+import { Button } from '../../../ui/form/Buttons'
 import { Loader } from '../../../components/Loader'
+import { ErrorText } from '../../../ui/form/ErrorText'
+import { useMutateSignUpHook } from '../../../hooks/auth/auth.useMutateSignUpHook'
 import { AdminResponsiveContainer } from '../../../ui/form/AdminResponsiveContainer'
-import { useRegisterClient, type RegisterClientForm } from '../../../hooks/useRegisterClient'
+import { useQueryGetOfficeListHook } from '../../../hooks/hr_office_admin/useQueryGetOfficeListHook'
+
+import type { SignUpRequest } from '../../../types/AuthorizeTypes'
 
 const RegisterNewClient = () => {
-  const { form, errors, isSubmitting, successMessage, updateField, submit, offices, officesLoading, validRoles } = useRegisterClient()
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    await submit()
+  const { mutate: signUpRequest, isPending: signUpRequestPending } = useMutateSignUpHook();
+  const { data: offices, isPending: officesLoading, error: officesError } = useQueryGetOfficeListHook();
+
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
+  const [userName, setUserName] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [officeCode, setOfficeCode] = useState<string>("");
+
+  const [hasErrors, setHasErrors] = useState<string>("");
+
+  const [role, setRole] = useState<SignUpRequest["role"]>("office_admin");
+  const validRoles = ['office_admin', 'hr_admin', 'super_admin', 'head_office_admin'];
+
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!firstName.trim()) {
+      setHasErrors("First name is required.");
+      return;
+    }
+
+    if (!lastName.trim()) {
+      setHasErrors("Last name is required.");
+      return;
+    }
+
+    if (!userName.trim()) {
+      setHasErrors("Username is required.");
+      return;
+    }
+
+    if (!password.trim()) {
+      setHasErrors("Password is required.");
+      return;
+    }
+
+    if (!officeCode.trim()) {
+      setHasErrors("Office code is required.");
+      return;
+    }
+
+    if (!role.trim()) {
+      setHasErrors("User role is required.");
+      return;
+    }
+
+    setHasErrors("");
+    signUpRequest({ firstName, lastName, userName, password, officeCode, role });
   }
 
   return (
@@ -30,10 +79,10 @@ const RegisterNewClient = () => {
                 id="client-first-name"
                 name="firstName"
                 type="text"
-                value={form.firstName}
-                onChange={(event) => updateField('firstName', event.target.value)}
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
                 placeholder="e.g. Juan"
-                error={errors.firstName}
+                error={hasErrors}
                 className="w-full p-4 text-black"
               />
             </div>
@@ -44,10 +93,10 @@ const RegisterNewClient = () => {
                 id="client-last-name"
                 name="lastName"
                 type="text"
-                value={form.lastName}
-                onChange={(event) => updateField('lastName', event.target.value)}
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
                 placeholder="e.g. Dela Cruz"
-                error={errors.lastName}
+                error={hasErrors}
                 className="w-full p-4 text-black"
               />
             </div>
@@ -59,10 +108,10 @@ const RegisterNewClient = () => {
               id="client-username"
               name="username"
               type="text"
-              value={form.userName}
-              onChange={(event) => updateField('userName', event.target.value)}
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
               placeholder="e.g. juan.delacruz"
-              error={errors.userName}
+              error={hasErrors}
               className="w-full p-4 text-black"
             />
           </div>
@@ -73,10 +122,10 @@ const RegisterNewClient = () => {
               id="client-password"
               name="password"
               type="password"
-              value={form.password}
-              onChange={(event) => updateField('password', event.target.value)}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter a secure password"
-              error={errors.password}
+              error={hasErrors}
               className="w-full p-4 text-black"
             />
           </div>
@@ -84,18 +133,21 @@ const RegisterNewClient = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label htmlFor="client-office" className="mb-1 block text-sm font-medium">Office</label>
+
               {officesLoading ? (
                 <div className="w-full p-4 flex items-center justify-center">
                   <Loader />
                 </div>
+              ) : officesError ? (
+                <ErrorText message={officesError.message} />
               ) : (
                 <Select
                   id="client-office"
                   variant="admin"
                   name="officeCode"
-                  value={form.officeCode}
-                  onChange={(event) => updateField('officeCode', event.target.value)}
-                  error={errors.officeCode}
+                  value={officeCode}
+                  onChange={(e) => setOfficeCode(e.target.value)}
+                  error={hasErrors}
                   className="w-full p-4 text-black"
                 >
                   <option value="">Select an office...</option>
@@ -106,6 +158,7 @@ const RegisterNewClient = () => {
                   ))}
                 </Select>
               )}
+
             </div>
 
             <div>
@@ -114,11 +167,9 @@ const RegisterNewClient = () => {
                 id="client-role"
                 variant="admin"
                 name="role"
-                value={form.role}
-                onChange={(event) =>
-                  updateField('role', event.target.value as RegisterClientForm['role'])
-                }
-                error={errors.role}
+                value={role}
+                onChange={(e) => setRole(e.target.value as SignUpRequest["role"])}
+                error={hasErrors}
                 className="w-full p-4 text-black"
               >
                 <option value="">Select a role...</option>
@@ -131,20 +182,14 @@ const RegisterNewClient = () => {
             </div>
           </div>
 
-          {errors.general && <ErrorText message={errors.general} />}
-
-          {successMessage && (
-            <div className="p-2 flex items-center gap-2 text-green-600 tracking-wider rounded mt-1">
-              <small>{successMessage}</small>
-            </div>
-          )}
+          {hasErrors && <ErrorText message={hasErrors} />}
 
           <Button
             type="submit"
-            disabled={isSubmitting}
+            disabled={signUpRequestPending}
             className="admin-blue-button"
           >
-            {isSubmitting ? 'Creating account...' : 'Create account'}
+            {signUpRequestPending ? 'Creating account...' : 'Create account'}
           </Button>
         </form>
       </div>

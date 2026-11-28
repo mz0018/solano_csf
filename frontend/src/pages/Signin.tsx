@@ -5,7 +5,7 @@ import { ClipLoader } from "react-spinners";
 import { CsfFormUI } from "../ui/form/CsfFormUI";
 import { ErrorText } from "../ui/form/ErrorText";
 import { Eye, EyeOff, LogIn } from "lucide-react";
-import { useMutateSignInHook } from "../hooks/auth/auth.hooks";
+import { useMutateSignInHook } from "../hooks/auth/auth.useMutateSignInHook";
 import { PasswordAssistanceModal } from "../components/Modals/PasswordAssistanceModal";
 
 const Signin = () => {
